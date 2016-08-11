@@ -278,10 +278,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facingRight: 1
-  jump: 1
+  jump: 0
   moveForce: 365
   maxSpeed: 5
-  jumpForce: 1000
+  jumpForce: 10
   groundCheck: {fileID: 855179378}
 --- !u!212 &1491457382
 SpriteRenderer:
