@@ -26,11 +26,26 @@ public class GameController : MonoBehaviour {
 	void Update () {
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 	    
-        if (Input.GetButtonDown("Jump") && grounded)
+        if (Input.GetButtonDown("Jump") /*&& grounded*/)
         {
             jump = true;
         }
-	}
+
+         // 5 - Shooting
+         bool shoot = Input.GetButtonDown("Fire1");
+         shoot |= Input.GetButtonDown("Fire2");
+         // Careful: For Mac users, ctrl + arrow is a bad idea
+         
+        if (shoot)
+        {
+            Weapon weapon = GetComponent<Weapon>();
+            if (weapon != null)
+            {
+                // false because the player is not an enemy
+                weapon.Attack(false);
+            }
+        }
+    }
 
     void FixedUpdate()
     {

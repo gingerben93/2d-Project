@@ -119,7 +119,7 @@ MonoBehaviour:
   useRandomSeed: 1
   randomFillPercent: 50
   passageLength: 4
-  smoothness: 10
+  smoothness: 1
 --- !u!4 &855179378
 Transform:
   m_ObjectHideFlags: 0
@@ -262,6 +262,7 @@ GameObject:
   - 50: {fileID: 1491457384}
   - 95: {fileID: 1491457386}
   - 61: {fileID: 1491457385}
+  - 114: {fileID: 1491457387}
   m_Layer: 9
   m_Name: Hero
   m_TagString: Player
@@ -378,6 +379,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &1491457387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1491457380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00e40a516030dd14e90241b2015c4f59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotPrefab: {fileID: 447600, guid: 76e8f9fe745b4c741ab5990b5099bbc7, type: 2}
+  shootingRate: 0.25
 --- !u!1 &1781668222
 GameObject:
   m_ObjectHideFlags: 0
