@@ -34,8 +34,16 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
     }
 
-    //begining of map generation
-    void GenerateMap()
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            GenerateMap();
+        }
+    }
+
+        //begining of map generation
+        void GenerateMap()
     {
         map = new int[width, height];
         
