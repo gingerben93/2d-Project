@@ -80,7 +80,7 @@ public class MapGenerator : MonoBehaviour
         meshGen.GenerateMesh(borderedMap, 1);
 
         MapAddOns doors = GetComponent<MapAddOns>();
-        doors.GenerateDoors(map, 1);
+        doors.GenerateDoors(map, 1, borderSize);
 
     }
 

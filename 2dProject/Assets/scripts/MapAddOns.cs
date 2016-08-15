@@ -6,7 +6,7 @@ public class MapAddOns : MonoBehaviour
     public Transform doorPrefab;
     public GameObject oldBox;
 
-    public void GenerateDoors(int[,] map, float squareSize)
+    public void GenerateDoors(int[,] map, float squareSize, int borderSize)
     {
         int nodeCountX = map.GetLength(0);
         int nodeCountY = map.GetLength(1);
@@ -14,14 +14,15 @@ public class MapAddOns : MonoBehaviour
         float mapHeight = nodeCountY * squareSize;
         
         oldBox = GameObject.FindWithTag("Door");
-        while (oldBox)
+        if (oldBox)
         {
             Destroy(oldBox.gameObject);
         }
 
-        for (int x = 1; x < map.GetLength(0); x++)
+        //Pass border size to script
+        for (int x = borderSize; x < map.GetLength(0) - borderSize; x++)
         {
-            for (int y = 1; y < map.GetLength(1); y++)
+            for (int y = borderSize; y < map.GetLength(1) - borderSize; y++)
             {
                 if(map[x,y] == 0 && map[x + 1, y] == 0 && map[x - 1, y] == 0 && map[x, y + 1] == 0 && map[x, y - 1] == 1)
                 {
