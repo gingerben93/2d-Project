@@ -79,6 +79,9 @@ public class MapGenerator : MonoBehaviour
         MeshGenerator meshGen = GetComponent<MeshGenerator>();
         meshGen.GenerateMesh(borderedMap, 1);
 
+        MapAddOns doors = GetComponent<MapAddOns>();
+        doors.GenerateDoors(map, 1);
+
     }
 
     //smooths the map with arbitrary process, change be changed and modified 
