@@ -4,6 +4,7 @@ using System.Collections;
 public class MapAddOns : MonoBehaviour
 {
     public Transform doorPrefab;
+    public GameObject oldBox;
 
     public void GenerateDoors(int[,] map, float squareSize)
     {
@@ -11,6 +12,12 @@ public class MapAddOns : MonoBehaviour
         int nodeCountY = map.GetLength(1);
         float mapWidth = nodeCountX * squareSize;
         float mapHeight = nodeCountY * squareSize;
+        
+        oldBox = GameObject.FindWithTag("Door");
+        while (oldBox)
+        {
+            Destroy(oldBox.gameObject);
+        }
 
         for (int x = 1; x < map.GetLength(0); x++)
         {
