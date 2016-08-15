@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 100
   height: 50
-  seed: 2
+  seed: 0
   useRandomSeed: 1
   randomFillPercent: 50
   passageLength: 4
