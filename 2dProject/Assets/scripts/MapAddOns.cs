@@ -4,7 +4,6 @@ using System.Collections;
 public class MapAddOns : MonoBehaviour
 {
     public Transform doorPrefab;
-    public GameObject oldBox;
 
     public void GenerateDoors(int[,] map, float squareSize, int borderSize)
     {
@@ -12,11 +11,12 @@ public class MapAddOns : MonoBehaviour
         int nodeCountY = map.GetLength(1);
         float mapWidth = nodeCountX * squareSize;
         float mapHeight = nodeCountY * squareSize;
-        
-        oldBox = GameObject.FindWithTag("Door");
-        if (oldBox)
+
+        var clones = GameObject.FindGameObjectsWithTag("Door");
+
+        foreach (var clone in clones)
         {
-            Destroy(oldBox.gameObject);
+            Destroy(clone);
         }
 
         //Pass border size to script
@@ -30,7 +30,7 @@ public class MapAddOns : MonoBehaviour
                     var doorTransform = Instantiate(doorPrefab) as Transform;
 
                     // Assign position
-                    doorTransform.position = new Vector3(-mapWidth / 2 + x * squareSize + squareSize, -mapHeight / 2 + y * squareSize + squareSize, 0);
+                    doorTransform.position = new Vector3(-mapWidth / 2 + x * squareSize + squareSize / 2, -mapHeight / 2 + y * squareSize + squareSize, 0);
                     //-mapWidth / 2 + x * squareSize + squareSize / 2, 0, -mapHeight / 2 + y * squareSize + squareSize / 2
                 }
             }
