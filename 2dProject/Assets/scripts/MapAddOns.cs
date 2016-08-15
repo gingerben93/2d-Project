@@ -22,7 +22,7 @@ public class MapAddOns : MonoBehaviour
                     var doorTransform = Instantiate(doorPrefab) as Transform;
 
                     // Assign position
-                    doorTransform.position = new Vector3(-mapWidth / 2 + x * squareSize + squareSize / 2, -mapHeight / 2 + y * squareSize + squareSize / 2, 0);
+                    doorTransform.position = new Vector3(-mapWidth / 2 + x * squareSize + squareSize, -mapHeight / 2 + y * squareSize + squareSize, 0);
                     //-mapWidth / 2 + x * squareSize + squareSize / 2, 0, -mapHeight / 2 + y * squareSize + squareSize / 2
                 }
             }
