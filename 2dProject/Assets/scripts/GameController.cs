@@ -32,8 +32,10 @@ public class GameController : MonoBehaviour {
         {
             MapGenerator map = FindObjectOfType<MapGenerator>();
             map.GenerateMap();
-            GameObject Door = GameObject.FindWithTag("Door");
-            transform.position = new Vector3(Door.transform.position.x, Door.transform.position.y, Door.transform.position.z);
+            //Start();
+            Vector2 door;
+            door = map.drawDoors[1];
+            transform.position = new Vector3(door.x, door.y, 0);
         }
 
         if (Input.GetButtonDown("Jump") /*&& grounded*/)
