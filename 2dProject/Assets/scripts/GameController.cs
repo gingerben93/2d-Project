@@ -17,8 +17,10 @@ public class GameController : MonoBehaviour {
 
 
     // Use this for initialization
-    void Awake () {
+    void Start () {
         rb2d = GetComponent<Rigidbody2D>();
+        GameObject Door = GameObject.FindWithTag("Door");
+        transform.position = new Vector3(Door.transform.position.x, Door.transform.position.y, Door.transform.position.z);
     }
 
 	
