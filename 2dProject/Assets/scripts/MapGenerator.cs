@@ -28,6 +28,10 @@ public class MapGenerator : MonoBehaviour
 
     int[,] map;
 
+    //
+    List<Vector2> drawDoors;
+
+
     //where program stars
     void Start()
     {
@@ -56,6 +60,7 @@ public class MapGenerator : MonoBehaviour
             SmoothMap();
         }
 
+        //adds the mesh and other parts
         ProcessMap();
 
         int borderSize = 5;
@@ -79,8 +84,9 @@ public class MapGenerator : MonoBehaviour
         MeshGenerator meshGen = GetComponent<MeshGenerator>();
         meshGen.GenerateMesh(borderedMap, 1);
 
+        drawDoors = new List<Vector2>();
         MapAddOns doors = GetComponent<MapAddOns>();
-        doors.GenerateDoors(map, 1, borderSize);
+        drawDoors = doors.GenerateDoors(map, 1, borderSize);
 
     }
 
