@@ -19,13 +19,19 @@ public class GameController : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         rb2d = GetComponent<Rigidbody2D>();
-	}
+    }
 
 	
 	// Update is called once per frame
 	void Update () {
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
-	    
+
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            GameObject Door = GameObject.FindWithTag("Door");
+            transform.position = new Vector3(Door.transform.position.x, Door.transform.position.y, Door.transform.position.z);
+        }
+
         if (Input.GetButtonDown("Jump") /*&& grounded*/)
         {
             jump = true;

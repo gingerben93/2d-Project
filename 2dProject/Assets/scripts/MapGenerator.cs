@@ -29,7 +29,7 @@ public class MapGenerator : MonoBehaviour
     int[,] map;
 
     //
-    List<Vector2> drawDoors;
+    public List<Vector2> drawDoors;
 
 
     //where program stars

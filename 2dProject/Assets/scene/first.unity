@@ -121,6 +121,7 @@ MonoBehaviour:
   randomFillPercent: 50
   passageLength: 4
   smoothness: 1
+  drawDoors: []
 --- !u!4 &855179378
 Transform:
   m_ObjectHideFlags: 0
@@ -294,7 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   facingRight: 1
-  jump: 1
+  jump: 0
   moveForce: 365
   maxSpeed: 5
   jumpForce: 300
