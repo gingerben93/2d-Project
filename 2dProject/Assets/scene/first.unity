@@ -276,6 +276,7 @@ GameObject:
   - 95: {fileID: 1491457386}
   - 61: {fileID: 1491457385}
   - 114: {fileID: 1491457387}
+  - 114: {fileID: 1491457388}
   m_Layer: 9
   m_Name: Hero
   m_TagString: Player
@@ -405,6 +406,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 447600, guid: 76e8f9fe745b4c741ab5990b5099bbc7, type: 2}
   shootingRate: 0.25
+--- !u!114 &1491457388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1491457380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34635a27398eabb4f8f7ac5863eef5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1781668222
 GameObject:
   m_ObjectHideFlags: 0
