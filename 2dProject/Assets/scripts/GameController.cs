@@ -28,8 +28,10 @@ public class GameController : MonoBehaviour {
 	void Update () {
         grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.R))
         {
+            MapGenerator map = FindObjectOfType<MapGenerator>();
+            map.GenerateMap();
             GameObject Door = GameObject.FindWithTag("Door");
             transform.position = new Vector3(Door.transform.position.x, Door.transform.position.y, Door.transform.position.z);
         }

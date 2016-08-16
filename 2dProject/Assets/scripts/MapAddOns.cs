@@ -33,10 +33,6 @@ public class MapAddOns : MonoBehaviour
             Destroy(clone);
         }
 
-        //random number
-
-        Random rnd = new Random();
-
         //Pass border size to script
         for (int x = 1; x < map.GetLength(0) - 1; x++)
         {

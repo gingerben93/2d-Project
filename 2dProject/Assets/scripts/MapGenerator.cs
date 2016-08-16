@@ -38,16 +38,16 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
     }
 
-    void Update()
+    /*void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
             GenerateMap();
         }
-    }
+    }*/
 
         //begining of map generation
-        void GenerateMap()
+    public void GenerateMap()
     {
         map = new int[width, height];
         
