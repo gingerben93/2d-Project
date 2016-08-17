@@ -52,7 +52,16 @@ public class GameData : MonoBehaviour
         string nextSeed;
         if (mapSeed.Count > 0)
         {
-            nextSeed = mapSeed[(mapSeed.IndexOf(seed) + 1) % mapSeed.Count];
+            int index = mapSeed.IndexOf(seed);
+
+            if (mapSeed.Count > index + 1)
+            {
+                nextSeed = mapSeed[index + 1];
+            }
+            else
+            {
+                nextSeed = mapSeed[0];
+            }
         }
         else
         {

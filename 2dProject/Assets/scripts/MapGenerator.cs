@@ -100,13 +100,14 @@ public class MapGenerator : MonoBehaviour
         if (useRandomSeed == true)
         {
             doorLocations = new List<Vector2>();
-            
             doorLocations = doors.GenerateDoors(map, 1, borderSize);
             gameData.AddDoorLocations(doorLocations);
         }
         else
         {
-           doors.DrawOldDoors(gameData.GetDoorForMap(gameData.FindMapIndex(seed)));
+            doorLocations = new List<Vector2>();
+            doorLocations = gameData.GetDoorForMap(gameData.FindMapIndex(seed));
+            doors.DrawOldDoors(doorLocations);
         }
 
     }
