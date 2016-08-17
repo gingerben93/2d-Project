@@ -6,13 +6,6 @@ public class GameData : MonoBehaviour
 {
     List<List<Vector2>> doorlocations = new List<List<Vector2>>();
 
-    /*
-    public void addMapSeed(string newMapSeed)
-    {
-        mapSeeds.Add(newMapSeed);
-    }
-    */
-
     // adds door to list
     public void AddDoorLocations(List<Vector2> newDoorLocations)
     {
