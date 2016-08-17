@@ -15,6 +15,9 @@ public class GameController : MonoBehaviour {
     private Animator anim;
     private Rigidbody2D rb2d;
 
+    //is touching door
+    public bool touchingDoor = false;
+
 
     // Use this for initialization
     void Start () {
@@ -28,7 +31,7 @@ public class GameController : MonoBehaviour {
 	void Update () {
         //grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R) && touchingDoor)
         {
             MapGenerator map = FindObjectOfType<MapGenerator>();
             map.GenerateMap();

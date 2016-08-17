@@ -40,15 +40,7 @@ public class MapAddOns : MonoBehaviour
             {
                 if (map[x, y] == 0 && map[x + 1, y] == 0 && map[x - 1, y] == 0 && map[x, y + 1] == 0 && map[x, y - 1] == 1 && map[x + 1, y - 1] == 1 && map[x - 1, y - 1] == 1 && map[x, y + 2] == 0)
                 {
-                    //door
-                    // var doorTransform = Instantiate(doorPrefab) as Transform;
-
-                    // Assign position
-                    //doorTransform.position = new Vector3(-mapWidth / 2 + x * squareSize + squareSize / 2, -mapHeight / 2 + y * squareSize + squareSize, 0);
-                    //-mapWidth / 2 + x * squareSize + squareSize / 2, 0, -mapHeight / 2 + y * squareSize + squareSize / 2
-
                     Vector2 doorXY;
-
                     //storing door positions
                     doorXY = new Vector2(x, y);
                     doorPositions.Add(doorXY);
