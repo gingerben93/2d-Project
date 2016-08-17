@@ -11,7 +11,7 @@ public class GameController : MonoBehaviour {
     public float jumpForce = 1000f;
     public Transform groundCheck;
 
-    private bool grounded = false;
+    //private bool grounded = false;
     private Animator anim;
     private Rigidbody2D rb2d;
 
@@ -26,7 +26,7 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
+        //grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
 
         if (Input.GetKeyDown(KeyCode.R))
         {

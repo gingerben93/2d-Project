@@ -38,13 +38,23 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
     }
 
-    /*void Update()
+    void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.R))
         {
             GenerateMap();
         }
-    }*/
+        */
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            useRandomSeed = false;
+            GameData data = FindObjectOfType<GameData>();
+            seed = data.getSeed(seed);
+        }
+
+
+    }
 
         //begining of map generation
     public void GenerateMap()
@@ -145,9 +155,15 @@ public class MapGenerator : MonoBehaviour
     //for random filling of map with border
     void RandomFillMap()
     {
+        GameData data = FindObjectOfType<GameData>();
         if (useRandomSeed)
         {
             seed = Time.time.ToString();
+            data.AddSeed(seed);
+        }
+        else
+        {
+            seed = data.getSeed(seed);
         }
 
         //get the hash of the seed to fill array, same seed will give same array
