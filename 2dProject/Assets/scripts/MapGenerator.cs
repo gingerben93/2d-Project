@@ -29,7 +29,7 @@ public class MapGenerator : MonoBehaviour
     int[,] map;
 
     //
-    public List<Vector2> drawDoors;
+    public List<Vector2> doorLocations;
 
 
     //where program stars
@@ -50,7 +50,7 @@ public class MapGenerator : MonoBehaviour
         {
             useRandomSeed = false;
             GameData data = FindObjectOfType<GameData>();
-            seed = data.getSeed(seed);
+            seed = data.GetSeed(seed);
         }
 
 
@@ -94,9 +94,20 @@ public class MapGenerator : MonoBehaviour
         MeshGenerator meshGen = GetComponent<MeshGenerator>();
         meshGen.GenerateMesh(borderedMap, 1);
 
-        drawDoors = new List<Vector2>();
+        GameData gameData = FindObjectOfType<GameData>();
         MapAddOns doors = GetComponent<MapAddOns>();
-        drawDoors = doors.GenerateDoors(map, 1, borderSize);
+
+        if (useRandomSeed == true)
+        {
+            doorLocations = new List<Vector2>();
+            
+            doorLocations = doors.GenerateDoors(map, 1, borderSize);
+            gameData.AddDoorLocations(doorLocations);
+        }
+        else
+        {
+           doors.DrawOldDoors(gameData.GetDoorForMap(gameData.FindMapIndex(seed)));
+        }
 
     }
 
@@ -163,7 +174,7 @@ public class MapGenerator : MonoBehaviour
         }
         else
         {
-            seed = data.getSeed(seed);
+            seed = data.GetSeed(seed);
         }
 
         //get the hash of the seed to fill array, same seed will give same array

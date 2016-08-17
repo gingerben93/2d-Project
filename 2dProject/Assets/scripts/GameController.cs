@@ -37,7 +37,7 @@ public class GameController : MonoBehaviour {
             map.GenerateMap();
             //Start();
             Vector2 door;
-            door = map.drawDoors[1];
+            door = map.doorLocations[1];
             transform.position = new Vector3(door.x, door.y, 0);
         }
 

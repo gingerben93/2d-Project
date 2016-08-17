@@ -4,10 +4,37 @@ using System.Collections.Generic;
 
 public class GameData : MonoBehaviour
 {
+    List<List<Vector2>> doorlocations = new List<List<Vector2>>();
+
+    /*
+    public void addMapSeed(string newMapSeed)
+    {
+        mapSeeds.Add(newMapSeed);
+    }
+    */
+
+    // adds door to list
+    public void AddDoorLocations(List<Vector2> newDoorLocations)
+    {
+        doorlocations.Add(newDoorLocations);
+    }
+
+    // gets doors from list
+    public List<Vector2> GetDoorForMap(int mapIndex)
+    {
+        return doorlocations[mapIndex];
+    }
 
     List<string> mapSeed = new List<string>();
 
-    public bool isSeed(string seed)
+    //gets index of map
+    public int FindMapIndex(string map)
+    {
+        return mapSeed.IndexOf(map);
+    }
+
+    //checks if is seed
+    public bool IsSeed(string seed)
     {
         if (mapSeed.Contains(seed))
         {
@@ -19,7 +46,8 @@ public class GameData : MonoBehaviour
         }
     }
 
-    public string getSeed(string seed)
+    // returns the next seeds in list
+    public string GetSeed(string seed)
     {
         string nextSeed;
         if (mapSeed.Count > 0)
@@ -34,6 +62,7 @@ public class GameData : MonoBehaviour
         return nextSeed;
     }
 
+    //adds seed to map
     public void AddSeed(string seed)
     {
         mapSeed.Add(seed);

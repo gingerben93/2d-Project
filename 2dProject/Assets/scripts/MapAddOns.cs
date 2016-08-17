@@ -24,7 +24,7 @@ public class MapAddOns : MonoBehaviour
         drawDoors = new List<Vector2>();
 
         int numDoors = 4;
-        
+
         //for removing doors
         var clones = GameObject.FindGameObjectsWithTag("Door");
 
@@ -72,5 +72,23 @@ public class MapAddOns : MonoBehaviour
         }
 
         return drawDoors;
+    }
+
+    public void DrawOldDoors(List<Vector2> doorLocations)
+    {
+        var oldDoors = GameObject.FindGameObjectsWithTag("Door");
+
+        foreach (var door in oldDoors)
+        {
+            Destroy(door);
+        }
+
+        foreach (var door in doorLocations)
+        {
+            float xPos = door.x;
+            float yPos = door.y;
+            var doorTransform = Instantiate(doorPrefab) as Transform;
+            doorTransform.position = new Vector3(xPos, yPos, 0);
+        }
     }
 }
