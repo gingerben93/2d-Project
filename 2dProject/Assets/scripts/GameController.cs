@@ -62,10 +62,12 @@ public class GameController : MonoBehaviour {
         }
     }
 
+
+
+
     void FixedUpdate()
     {
         float h = Input.GetAxis("Horizontal");
-
         //anim.SetFloat("Speed", Mathf.Abs(h));
 
         if (h * rb2d.velocity.x < maxSpeed)
@@ -82,10 +84,17 @@ public class GameController : MonoBehaviour {
 
         if (jump)
         {
-           // anim.SetTrigger("Jump");
-            rb2d.AddForce(new Vector2(0f, jumpForce));
+            if(rb2d.velocity.y < 25f)
+                rb2d.AddForce(new Vector2(0f, jumpForce));
             jump = false;
         }
+
+        if (Mathf.Sign(rb2d.velocity.x) > 15f)
+        {
+            rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * 0.995f, rb2d.velocity.y);
+        }
+        else
+            rb2d.velocity = new Vector2(0, rb2d.velocity.y);
     }
 
     void Flip()

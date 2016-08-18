@@ -120,8 +120,8 @@ MonoBehaviour:
   useRandomSeed: 1
   randomFillPercent: 50
   passageLength: 4
-  smoothness: 1
-  drawDoors: []
+  smoothness: 10
+  doorLocations: []
 --- !u!4 &855179378
 Transform:
   m_ObjectHideFlags: 0
@@ -297,10 +297,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   facingRight: 1
   jump: 0
-  moveForce: 365
+  moveForce: 800
   maxSpeed: 5
   jumpForce: 300
   groundCheck: {fileID: 855179378}
+  touchingDoor: 0
 --- !u!212 &1491457382
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -370,7 +371,7 @@ BoxCollider2D:
   m_GameObject: {fileID: 1491457380}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 500c3a44ef44e0246b70e3cfa421ebf0, type: 2}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_Offset: {x: -0.09752381, y: 0.13409805}
