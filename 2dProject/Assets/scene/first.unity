@@ -567,6 +567,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d37687ad9fb741c42b14ffbff1b21cf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doorlocations2: []
+  mapSeed: []
 --- !u!4 &1970347000
 Transform:
   m_ObjectHideFlags: 0

@@ -22,8 +22,10 @@ public class GameController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
-        GameObject Door = GameObject.FindWithTag("Door");
-        transform.position = new Vector3(Door.transform.position.x, Door.transform.position.y, Door.transform.position.z);
+        MapGenerator map = FindObjectOfType<MapGenerator>();
+        Vector2 door;
+        door = map.doorLocations[1];
+        transform.position = new Vector3(door.x, door.y, 0);
     }
 
 	

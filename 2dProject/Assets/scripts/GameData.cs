@@ -4,11 +4,15 @@ using System.Collections.Generic;
 
 public class GameData : MonoBehaviour
 {
-    List<List<Vector2>> doorlocations = new List<List<Vector2>>();
+    public List<List<Vector2>> doorlocations = new List<List<Vector2>>();
+    public List<Vector2> doorlocations2 = new List<Vector2>();
 
     // adds door to list
     public void AddDoorLocations(List<Vector2> newDoorLocations)
     {
+        foreach(Vector2 door in newDoorLocations){
+            doorlocations2.Add(new Vector2(door.x, door.y));
+        }
         doorlocations.Add(newDoorLocations);
     }
 
@@ -18,7 +22,7 @@ public class GameData : MonoBehaviour
         return doorlocations[mapIndex];
     }
 
-    List<string> mapSeed = new List<string>();
+    public List<string> mapSeed = new List<string>();
 
     //gets index of map
     public int FindMapIndex(string map)

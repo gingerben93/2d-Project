@@ -26,12 +26,14 @@ public class MapAddOns : MonoBehaviour
         int numDoors = 4;
 
         //for removing doors
+        /*
         var clones = GameObject.FindGameObjectsWithTag("Door");
 
         foreach (var clone in clones)
         {
             Destroy(clone);
         }
+        */
 
         //Pass border size to script
         for (int x = 1; x < map.GetLength(0) - 1; x++)
@@ -56,13 +58,13 @@ public class MapAddOns : MonoBehaviour
             doorPositions.Remove(doorXY);
 
             //door
-            var doorTransform = Instantiate(doorPrefab) as Transform;
+            //var doorTransform = Instantiate(doorPrefab) as Transform;
 
             float xPos = -mapWidth / 2 + doorXY.x * squareSize + squareSize / 2;
             float yPos = -mapHeight / 2 + doorXY.y * squareSize + squareSize;
 
             // Assign position
-            doorTransform.position = new Vector3(xPos, yPos, 0);
+            //doorTransform.position = new Vector3(xPos, yPos, 0);
             //-mapWidth / 2 + x * squareSize + squareSize / 2, 0, -mapHeight / 2 + y * squareSize + squareSize / 2
 
             doorXY = new Vector2(xPos, yPos);

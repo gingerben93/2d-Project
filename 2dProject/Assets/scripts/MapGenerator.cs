@@ -28,6 +28,9 @@ public class MapGenerator : MonoBehaviour
 
     int[,] map;
 
+    int numMaps = 3;
+    int currentMap = 0;
+
     //
     public List<Vector2> doorLocations;
 
@@ -35,7 +38,17 @@ public class MapGenerator : MonoBehaviour
     //where program stars
     void Start()
     {
+        for (currentMap = 0; currentMap < numMaps; currentMap++)
+        {
+            seed = currentMap.ToString();
+            GenerateMap();
+        }
+        useRandomSeed = false;
+        GameData data = FindObjectOfType<GameData>();
+        MapAddOns doors = GetComponent<MapAddOns>();
+        seed = data.mapSeed[0];
         GenerateMap();
+        
     }
 
     void Update()
@@ -46,12 +59,14 @@ public class MapGenerator : MonoBehaviour
             GenerateMap();
         }
         */
+        /*
         if (Input.GetKeyDown(KeyCode.I))
         {
             useRandomSeed = false;
             GameData data = FindObjectOfType<GameData>();
             seed = data.GetSeed(seed);
         }
+        */
 
 
     }
@@ -170,7 +185,7 @@ public class MapGenerator : MonoBehaviour
         GameData data = FindObjectOfType<GameData>();
         if (useRandomSeed)
         {
-            seed = Time.time.ToString();
+            //seed = Time.time.ToString();
             data.AddSeed(seed);
         }
         else
@@ -319,7 +334,7 @@ public class MapGenerator : MonoBehaviour
         return regions;
     }
 
-    //for region detection
+    //for region detection, flood fill algorithm to find rooms
     List<Coord> GetRegionTiles(int startX, int startY)
     {
         List<Coord> tiles = new List<Coord>();

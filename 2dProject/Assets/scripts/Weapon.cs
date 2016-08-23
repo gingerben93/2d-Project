@@ -32,12 +32,12 @@ public class Weapon : MonoBehaviour
             // Assign position
             shotTransform.position = transform.position;
 
-           /* // Make the weapon shot always towards it
-            ShotMove move = shotTransform.gameObject.GetComponent<ShotMove>();
-            if (move != null)
-            {
-                move.direction = this.transform.right; // towards in 2D space is the right of the sprite
-            }*/
+            /* // Make the weapon shot always towards it
+             ShotMove move = shotTransform.gameObject.GetComponent<ShotMove>();
+             if (move != null)
+             {
+                 move.direction = this.transform.right; // towards in 2D space is the right of the sprite
+             }*/
         }
     }
 
