@@ -28,7 +28,6 @@ public class GameController : MonoBehaviour {
         transform.position = new Vector3(door.x, door.y, 0);
     }
 
-	
 	// Update is called once per frame
 	void Update () {
         //grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
@@ -65,18 +64,13 @@ public class GameController : MonoBehaviour {
     }
 
 
-
-
     void FixedUpdate()
     {
         float h = Input.GetAxis("Horizontal");
         //anim.SetFloat("Speed", Mathf.Abs(h));
 
         if (h * rb2d.velocity.x < maxSpeed)
-            rb2d.AddForce(Vector2.right * h * moveForce);
-
-        if (Mathf.Abs(rb2d.velocity.x) > maxSpeed)
-            rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * maxSpeed, rb2d.velocity.y);
+            rb2d.velocity = new Vector2(h * maxSpeed, rb2d.velocity.y);
 
         if (h > 0 && !facingRight)
             Flip();
@@ -86,8 +80,10 @@ public class GameController : MonoBehaviour {
 
         if (jump)
         {
-            if(rb2d.velocity.y < 25f)
+            if (Mathf.Sign(rb2d.velocity.y) < 1.2f)
                 rb2d.AddForce(new Vector2(0f, jumpForce));
+            if (Mathf.Sign(rb2d.velocity.y) > 1.2f)
+                rb2d.velocity = new Vector2(0, Mathf.Sign(rb2d.velocity.y) * 0.2f);
             jump = false;
         }
 
@@ -95,8 +91,6 @@ public class GameController : MonoBehaviour {
         {
             rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * 0.995f, rb2d.velocity.y);
         }
-        else
-            rb2d.velocity = new Vector2(0, rb2d.velocity.y);
     }
 
     void Flip()
