@@ -79,18 +79,34 @@ public class MapAddOns : MonoBehaviour
     public void DrawOldDoors(List<Vector2> doorLocations)
     {
         var oldDoors = GameObject.FindGameObjectsWithTag("Door");
+        MapGenerator map = FindObjectOfType<MapGenerator>();
+
+        string curSeed = map.seed;
 
         foreach (var door in oldDoors)
         {
             Destroy(door);
         }
 
+        int x = 0;
         foreach (var door in doorLocations)
         {
+            
             float xPos = door.x;
             float yPos = door.y;
             var doorTransform = Instantiate(doorPrefab) as Transform;
             doorTransform.position = new Vector3(xPos, yPos, 0);
+
+            DoorPrefabInfo info = doorPrefab.GetComponent<DoorPrefabInfo>();
+
+            info.doorReference = x;
+            info.seedReference = curSeed;
+
+            Debug.Log("curSeed =" + curSeed + "x =" + x);
+            x++;
+
+            
+
         }
     }
 }

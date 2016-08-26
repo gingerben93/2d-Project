@@ -28,7 +28,7 @@ public class MapGenerator : MonoBehaviour
 
     int[,] map;
 
-    int numMaps = 3;
+    int numMaps = 4;
     int currentMap = 0;
 
     //
@@ -45,10 +45,16 @@ public class MapGenerator : MonoBehaviour
         }
         useRandomSeed = false;
         GameData data = FindObjectOfType<GameData>();
-        MapAddOns doors = GetComponent<MapAddOns>();
+        //MapAddOns doors = GetComponent<MapAddOns>();
         seed = data.mapSeed[0];
         GenerateMap();
+
+        data.CreatDoorConnections();
+        data.CreateDoorReferences();
         
+
+        //data.ConnectDoors();
+
     }
 
     void Update()
@@ -62,16 +68,25 @@ public class MapGenerator : MonoBehaviour
         /*
         if (Input.GetKeyDown(KeyCode.I))
         {
-            useRandomSeed = false;
+            //useRandomSeed = false;
+            //GameData data = FindObjectOfType<GameData>();
+            //seed = data.GetSeed(seed);
             GameData data = FindObjectOfType<GameData>();
-            seed = data.GetSeed(seed);
+            data.CreateDoorReferences();
+
+            foreach (KeyValuePair<string, string> kvp in data.doorConnectionDictionary)
+            {
+                //Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
+                Debug.Log("Key =" + kvp.Key + "Value =" + kvp.Value);
+            }
+
         }
         */
 
 
     }
 
-        //begining of map generation
+    //begining of map generation
     public void GenerateMap()
     {
         map = new int[width, height];
@@ -190,7 +205,7 @@ public class MapGenerator : MonoBehaviour
         }
         else
         {
-            seed = data.GetSeed(seed);
+            //seed = data.GetSeed(seed);
         }
 
         //get the hash of the seed to fill array, same seed will give same array

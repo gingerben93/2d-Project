@@ -11,6 +11,7 @@ GameObject:
   - 212: {fileID: 21234374}
   - 61: {fileID: 6165096}
   - 50: {fileID: 5087424}
+  - 114: {fileID: 11422324}
   m_Layer: 11
   m_Name: Door
   m_TagString: Door
@@ -62,6 +63,19 @@ BoxCollider2D:
   m_Offset: {x: -0.1305656, y: 0}
   serializedVersion: 2
   m_Size: {x: 2.314516, y: 4}
+--- !u!114 &11422324
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 166276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f7e43929f83b0d4dbe80810bdd419cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seedReference: 3
+  doorReference: 3
 --- !u!212 &21234374
 SpriteRenderer:
   m_ObjectHideFlags: 1

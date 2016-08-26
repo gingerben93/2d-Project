@@ -18,28 +18,42 @@ public class GameController : MonoBehaviour {
     //is touching door
     public bool touchingDoor = false;
 
+    public string mapSeed;
+    public int doorRef;
+
 
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         MapGenerator map = FindObjectOfType<MapGenerator>();
         Vector2 door;
-        door = map.doorLocations[1];
+        door = map.doorLocations[doorRef];
         transform.position = new Vector3(door.x, door.y, 0);
     }
 
+	
 	// Update is called once per frame
 	void Update () {
         //grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
         Resources.UnloadUnusedAssets();
         if (Input.GetKeyDown(KeyCode.R) && touchingDoor)
         {
+
+
+            var oldDoors = GameObject.FindGameObjectsWithTag("Door");
+            foreach (var door213 in oldDoors)
+            {
+                Destroy(door213);
+            }
             MapGenerator map = FindObjectOfType<MapGenerator>();
+            map.seed = mapSeed;
             map.GenerateMap();
             //Start();
             Vector2 door;
-            door = map.doorLocations[1];
+            door = map.doorLocations[doorRef];
             transform.position = new Vector3(door.x, door.y, 0);
+
+
         }
 
         if (Input.GetButtonDown("Jump") /*&& grounded*/)
@@ -62,6 +76,8 @@ public class GameController : MonoBehaviour {
             }
         }
     }
+
+
 
 
     void FixedUpdate()
