@@ -83,30 +83,29 @@ public class MapAddOns : MonoBehaviour
 
         string curSeed = map.seed;
 
+        //this is for removing the old doors
         foreach (var door in oldDoors)
         {
             Destroy(door);
         }
 
-        int x = 0;
-        foreach (var door in doorLocations)
+        //drawing new doors
+        for (int x = 0; x < doorLocations.Count; x++)
         {
-            
-            float xPos = door.x;
-            float yPos = door.y;
+            float xPos = doorLocations[x].x;
+            float yPos = doorLocations[x].y;
+
             var doorTransform = Instantiate(doorPrefab) as Transform;
             doorTransform.position = new Vector3(xPos, yPos, 0);
 
-            DoorPrefabInfo info = doorPrefab.GetComponent<DoorPrefabInfo>();
+            //want yo use find vs get here to set door info
+            //DoorPrefabInfo info = doorPrefab.GetComponent<DoorPrefabInfo>();
+            DoorPrefabInfo mapInfo = FindObjectOfType<DoorPrefabInfo>();
 
-            info.doorReference = x;
-            info.seedReference = curSeed;
+            mapInfo.doorReference = x;
+            mapInfo.seedReference = curSeed;
 
-            Debug.Log("curSeed =" + curSeed + "x =" + x);
-            x++;
-
-            
-
+            //Debug.Log("curSeed =" + curSeed + "x =" + x);
         }
     }
 }

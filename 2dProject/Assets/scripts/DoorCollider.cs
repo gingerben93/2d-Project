@@ -4,8 +4,8 @@ using System;
 
 public class DoorCollider : MonoBehaviour {
 
-    
 
+    public int numVal;
     public void OnTriggerEnter2D(Collider2D node)
     {
         GameController gameCon = FindObjectOfType<GameController>();
@@ -20,21 +20,22 @@ public class DoorCollider : MonoBehaviour {
             string newSeed;
             string newDoor;
 
-            Debug.Log("oldSeed = " + oldSeed + "oldDoor = " + oldDoor);
+            //Debug.Log("oldSeed = " + oldSeed + "oldDoor = " + oldDoor);
 
             GameData data = FindObjectOfType<GameData>();
             newDicRef = data.GetDoorInfo(dicRef);
 
-            Debug.Log("newDicRef = " + newDicRef);
+            //Debug.Log("newDicRef = " + newDicRef);
 
+            //set new door and map seed info
             newSeed = newDicRef.Substring(0, newDicRef.Length - 1);
-            //MyString.Remove(5, 10))
             newDoor = newDicRef.Remove(newDicRef.Length - 2, newDicRef.Length - 1);
 
-            Debug.Log("newSeed = " + newSeed + "newDoor = " + newDoor);
+            //Debug.Log("newSeed = " + newSeed + "newDoor = " + newDoor);
 
-            int numVal = Int32.Parse(newDoor);
+            numVal = Int32.Parse(newDoor);
 
+            //pass seed and door info to gameController.
             gameCon.mapSeed = newSeed;
             gameCon.doorRef = numVal;
             gameCon.touchingDoor = true; 

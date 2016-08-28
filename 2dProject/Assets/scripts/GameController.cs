@@ -38,19 +38,13 @@ public class GameController : MonoBehaviour {
         Resources.UnloadUnusedAssets();
         if (Input.GetKeyDown(KeyCode.R) && touchingDoor)
         {
-
-
-            var oldDoors = GameObject.FindGameObjectsWithTag("Door");
-            foreach (var door213 in oldDoors)
-            {
-                Destroy(door213);
-            }
             MapGenerator map = FindObjectOfType<MapGenerator>();
+            DoorCollider doorInfo = FindObjectOfType<DoorCollider>();
             map.seed = mapSeed;
             map.GenerateMap();
             //Start();
             Vector2 door;
-            door = map.doorLocations[doorRef];
+            door = map.doorLocations[doorInfo.numVal];
             transform.position = new Vector3(door.x, door.y, 0);
 
 
