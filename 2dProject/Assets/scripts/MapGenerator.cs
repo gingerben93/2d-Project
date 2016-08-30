@@ -50,10 +50,9 @@ public class MapGenerator : MonoBehaviour
         GenerateMap();
 
         data.CreatDoorConnections();
-        data.CreateDoorReferences();
-        
-
-        //data.ConnectDoors();
+        //data.CreateDoorReferences();
+        data.EnsureConnectivityOfMaps();
+        data.ConnectDoors();
 
     }
 
