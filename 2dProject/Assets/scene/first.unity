@@ -302,6 +302,8 @@ MonoBehaviour:
   jumpForce: 300
   groundCheck: {fileID: 855179378}
   touchingDoor: 0
+  mapSeed: 
+  doorRef: 0
 --- !u!212 &1491457382
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -418,6 +420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34635a27398eabb4f8f7ac5863eef5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numVal: 0
 --- !u!1 &1781668222
 GameObject:
   m_ObjectHideFlags: 0
