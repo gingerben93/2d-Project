@@ -28,7 +28,7 @@ public class MapGenerator : MonoBehaviour
 
     int[,] map;
 
-    int numMaps = 2;
+    int numMaps = 3;
     int currentMap = 0;
 
     //

@@ -28,7 +28,7 @@ public class Weapon : MonoBehaviour
 
             // Create a new shot
             var shotTransform = Instantiate(shotPrefab) as Transform;
-
+            shotTransform.transform.SetParent(transform);
             // Assign position
             shotTransform.position = transform.position;
 

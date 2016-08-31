@@ -56,6 +56,7 @@ public class MeshGenerator : MonoBehaviour
 
         Generate2DColliders();
 
+        //save mesh
         MapGenerator mapInfo = GameObject.FindObjectOfType<MapGenerator>();
         string mapSeed = mapInfo.seed;
         var savePath = "Assets/CurrentMaps/" + mapSeed + ".asset";

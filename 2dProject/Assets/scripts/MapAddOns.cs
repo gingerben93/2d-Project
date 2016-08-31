@@ -96,6 +96,7 @@ public class MapAddOns : MonoBehaviour
             float yPos = doorLocations[x].y;
 
             var doorTransform = Instantiate(doorPrefab) as Transform;
+            doorTransform.transform.SetParent(transform);
             doorTransform.position = new Vector3(xPos, yPos, 0);
 
             //want yo use find vs get here to set door info
