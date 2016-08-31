@@ -205,7 +205,16 @@ public class GameData : MonoBehaviour
             doorDicRefs[mapIndex1].TrimExcess();
             doorDicRefs[mapIndex2].TrimExcess();
 
-            if (doorDicRefs[0].Count == 0 && doorDicRefs[1].Count == 0 && doorDicRefs[2].Count == 0 && doorDicRefs[3].Count == 0)
+            //check if any doors are left to connect
+            int allMapsHaveNoDoorsLeft = 0;
+            for(int x = 0; x < doorDicRefs.Count; x++)
+            {
+                if (doorDicRefs[x].Count == 0)
+                {
+                    allMapsHaveNoDoorsLeft += 1;
+                }
+            }
+            if(allMapsHaveNoDoorsLeft == doorDicRefs.Count)
             {
                 break;
             }

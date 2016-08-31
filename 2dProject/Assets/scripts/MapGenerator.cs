@@ -28,7 +28,7 @@ public class MapGenerator : MonoBehaviour
 
     int[,] map;
 
-    int numMaps = 4;
+    int numMaps = 2;
     int currentMap = 0;
 
     //
@@ -121,19 +121,22 @@ public class MapGenerator : MonoBehaviour
         }
 
         MeshGenerator meshGen = GetComponent<MeshGenerator>();
-        meshGen.GenerateMesh(borderedMap, 1);
 
         GameData gameData = FindObjectOfType<GameData>();
         MapAddOns doors = GetComponent<MapAddOns>();
 
         if (useRandomSeed == true)
         {
+            meshGen.GenerateMesh(borderedMap, 1);
             doorLocations = new List<Vector2>();
             doorLocations = doors.GenerateDoors(map, 1, borderSize);
             gameData.AddDoorLocations(doorLocations);
         }
         else
         {
+            //find a way to save the map data so oyu don't even have to recreate the borderedMap (and doorLocations); this can jsut go right at the top.
+            meshGen.LoadMeshFromAssests(borderedMap, 1);
+            
             doorLocations = new List<Vector2>();
             doorLocations = gameData.GetDoorForMap(gameData.FindMapIndex(seed));
             doors.DrawOldDoors(doorLocations);

@@ -1,15 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 
 public class MeshGenerator : MonoBehaviour
 {
 
     public SquareGrid squareGrid;
-    public MeshFilter walls;
     public MeshFilter cave;
-
-    public bool is2D;
 
     List<Vector3> vertices;
     List<int> triangles;
@@ -18,6 +16,7 @@ public class MeshGenerator : MonoBehaviour
     List<List<int>> outlines = new List<List<int>>();
     HashSet<int> checkedVertices = new HashSet<int>();
 
+    // need to save the mesh for the map
     public void GenerateMesh(int[,] map, float squareSize)
     {
 
@@ -55,51 +54,45 @@ public class MeshGenerator : MonoBehaviour
         }
         mesh.uv = uvs;
 
+        Generate2DColliders();
 
-        if (is2D)
-        {
-            Generate2DColliders();
-        }
-        else {
-            CreateWallMesh();
-        }
+        MapGenerator mapInfo = GameObject.FindObjectOfType<MapGenerator>();
+        string mapSeed = mapInfo.seed;
+        var savePath = "Assets/CurrentMaps/" + mapSeed + ".asset";
+        Debug.Log("Saved Mesh to:" + savePath);
+        AssetDatabase.CreateAsset(cave.mesh, savePath);
     }
-
-    void CreateWallMesh()
+    
+    //doesn't recreate mesh; load it from data; need to find a way to save 2d edge collider as well
+    public void LoadMeshFromAssests(int[,] map, float squareSize)
     {
+        MapGenerator mapInfo = GameObject.FindObjectOfType<MapGenerator>();
+        string mapSeed = mapInfo.seed;
+        var loadPath = "Assets/CurrentMaps/" + mapSeed + ".asset";
 
-        CalculateMeshOutlines();
+        Debug.Log("Load Mesh from:" + loadPath);
+        Mesh mesh = (Mesh)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Mesh));
+        cave.mesh = mesh;
 
-        List<Vector3> wallVertices = new List<Vector3>();
-        List<int> wallTriangles = new List<int>();
-        Mesh wallMesh = new Mesh();
-        float wallHeight = 5;
+        triangleDictionary.Clear();
+        outlines.Clear();
+        checkedVertices.Clear();
 
-        foreach (List<int> outline in outlines)
+        squareGrid = new SquareGrid(map, squareSize);
+
+        vertices = new List<Vector3>();
+        triangles = new List<int>();
+
+        for (int x = 0; x < squareGrid.squares.GetLength(0); x++)
         {
-            for (int i = 0; i < outline.Count - 1; i++)
+            for (int y = 0; y < squareGrid.squares.GetLength(1); y++)
             {
-                int startIndex = wallVertices.Count;
-                wallVertices.Add(vertices[outline[i]]); // left
-                wallVertices.Add(vertices[outline[i + 1]]); // right
-                wallVertices.Add(vertices[outline[i]] - Vector3.up * wallHeight); // bottom left
-                wallVertices.Add(vertices[outline[i + 1]] - Vector3.up * wallHeight); // bottom right
-
-                wallTriangles.Add(startIndex + 0);
-                wallTriangles.Add(startIndex + 2);
-                wallTriangles.Add(startIndex + 3);
-
-                wallTriangles.Add(startIndex + 3);
-                wallTriangles.Add(startIndex + 1);
-                wallTriangles.Add(startIndex + 0);
+                TriangulateSquare(squareGrid.squares[x, y]);
             }
         }
-        wallMesh.vertices = wallVertices.ToArray();
-        wallMesh.triangles = wallTriangles.ToArray();
-        walls.mesh = wallMesh;
 
-        MeshCollider wallCollider = walls.gameObject.AddComponent<MeshCollider>();
-        wallCollider.sharedMesh = wallMesh;
+        Generate2DColliders();
+
     }
 
     void Generate2DColliders()
