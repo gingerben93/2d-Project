@@ -81,7 +81,7 @@ public class DrawPlayerMap : MonoBehaviour {
         playerLocalMap.mesh = mesh;
 
         //scale size down and set position
-        transform.localScale = new Vector3(.05f, .05f, .05f);
+        transform.localScale = new Vector3(.035f, .035f, .035f);
         transform.position = player.transform.position;
         transform.eulerAngles = new Vector3(270, 0, 0);
         //transform.Rotate(Vector3.zero);
@@ -95,7 +95,7 @@ public class DrawPlayerMap : MonoBehaviour {
         }
         else
         {
-            transform.position = player.transform.position - new Vector3(8,-3,0);
+            transform.position = player.transform.position - new Vector3(0, 0, 0);
         }
         //transform.Rotate(Vector3.zero);
     }
@@ -106,10 +106,11 @@ public class DrawPlayerMap : MonoBehaviour {
         {
             makeMap = false;
             GameData gameData = FindObjectOfType<GameData>();
+            int totalMaps = gameData.mapSeed.Count;
 
-            MeshFilter[] meshFilters = new MeshFilter[gameData.mapSeed.Count];
+            MeshFilter[] meshFilters = new MeshFilter[totalMaps];
 
-            for (int x = 0; x < gameData.mapSeed.Count; x++)
+            for (int x = 0; x < totalMaps; x++)
             {
                 string mapSeed = gameData.mapSeed[x];
                 var loadPath = "Assets/CurrentMaps/" + mapSeed + ".asset";
@@ -123,22 +124,28 @@ public class DrawPlayerMap : MonoBehaviour {
                 meshFilters[x] = tempMapPrefab.GetComponent<MeshFilter>();
             }
 
-            CombineInstance[] combine = new CombineInstance[gameData.mapSeed.Count];
+            CombineInstance[] combine = new CombineInstance[totalMaps];
 
             Debug.Log("combine.Length = " + combine.Length);
 
-            for (int x = 0; x < gameData.mapSeed.Count; x++)
+            for (int x = 0; x < totalMaps; x++)
             {
                 combine[x].mesh = meshFilters[x].sharedMesh;
-                combine[x].transform = Matrix4x4.TRS(new Vector3(x * 150, 0, 0), Quaternion.identity, new Vector3(1, 1, 1));
+                combine[x].transform = Matrix4x4.TRS(new Vector3(Mathf.Cos(2 * Mathf.PI * x / totalMaps) * 100, 0, Mathf.Sin(2 * Mathf.PI * x / totalMaps) * 100), Quaternion.identity, new Vector3(1, 1, 1));
                 
             }
             //65k max vertices or won't work
             playerWorldMap.mesh.CombineMeshes(combine);
 
             //set scale
-            transform.localScale = new Vector3(.05f, .05f, .05f);
+            transform.localScale = new Vector3(.035f, .035f, .035f);
             transform.position = player.transform.position;
+
+            //removes all the children of map object
+            foreach (Transform child in transform)
+            {
+                GameObject.Destroy(child.gameObject);
+            }
 
             string worldMap = "WorldMap";
             var savePath = "Assets/CurrentMaps/" + worldMap + ".asset";
@@ -152,7 +159,7 @@ public class DrawPlayerMap : MonoBehaviour {
             string worldMap = "WorldMap";
             var loadPath = "Assets/CurrentMaps/" + worldMap + ".asset";
             Mesh mesh = (Mesh)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Mesh));
-            transform.localScale = new Vector3(.05f, .05f, .05f);
+            transform.localScale = new Vector3(.035f, .035f, .035f);
             transform.position = player.transform.position;
             playerWorldMap.mesh = mesh;
         }
