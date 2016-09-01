@@ -136,21 +136,28 @@ public class MeshGenerator : MonoBehaviour
                         if(vertices[outline[i]].x > vertices[outline[i + 1]].x)
                         {
                             groundPiece.eulerAngles = new Vector3(180, 0, 0);
+                            groundPiece.transform.position = new Vector3(vertices[outline[i]].x - .5f, vertices[outline[i]].z + .5f, 0);
+                            groundPiece.transform.localScale = new Vector3(.125f, .125f, 0);
                         }
                         if (vertices[outline[i]].x < vertices[outline[i + 1]].x)
                         {
                             groundPiece.eulerAngles = new Vector3(0, 0, 0);
+                            groundPiece.transform.position = new Vector3(vertices[outline[i]].x + .5f, vertices[outline[i]].z - .5f, 0);
+                            groundPiece.transform.localScale = new Vector3(.125f, .125f, 0);
                         }
                         if (vertices[outline[i]].z > vertices[outline[i + 1]].z)
                         {
                             groundPiece.eulerAngles = new Vector3(0, 0, -90);
+                            groundPiece.transform.position = new Vector3(vertices[outline[i]].x - .5f, vertices[outline[i]].z - .5f, 0);
+                            groundPiece.transform.localScale = new Vector3(.125f, .125f, 0);
                         }
                         if (vertices[outline[i]].z < vertices[outline[i + 1]].z)
                         {
                             groundPiece.eulerAngles = new Vector3(0, 0, 90);
+                            groundPiece.transform.position = new Vector3(vertices[outline[i]].x + .5f, vertices[outline[i]].z + .5f, 0);
+                            groundPiece.transform.localScale = new Vector3(.125f, .125f, 0);
                         }
-                        groundPiece.transform.position = new Vector3(vertices[outline[i]].x, vertices[outline[i]].z, 0);
-                        //groundPiece.transform.localScale = new Vector3(.035f, .035f, .035f);
+                        
                         SpriteRenderer renderer = groundSprite.GetComponent<SpriteRenderer>();
                         renderer.sprite = Resources.Load("FlatGround_CAVE", typeof(Sprite)) as Sprite;
                     }
