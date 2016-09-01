@@ -95,9 +95,8 @@ public class DrawPlayerMap : MonoBehaviour {
         }
         else
         {
-            transform.position = player.transform.position - new Vector3(0, 0, 0);
+            transform.position = player.transform.position;
         }
-        //transform.Rotate(Vector3.zero);
     }
 
     void DrawWorldMap()
@@ -110,13 +109,14 @@ public class DrawPlayerMap : MonoBehaviour {
 
             MeshFilter[] meshFilters = new MeshFilter[totalMaps];
 
+            //create prefabs for all maps then add them to a list of filters, then remove all prefabs later
             for (int x = 0; x < totalMaps; x++)
             {
                 string mapSeed = gameData.mapSeed[x];
                 var loadPath = "Assets/CurrentMaps/" + mapSeed + ".asset";
                 Mesh mesh = (Mesh)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Mesh));
                
-
+                // create prefab
                 var tempMapPrefab = Instantiate(tempMap) as Transform;
                 tempMapPrefab.transform.SetParent(transform);
                 tempMapPrefab.name = mapSeed;
@@ -128,9 +128,11 @@ public class DrawPlayerMap : MonoBehaviour {
 
             Debug.Log("combine.Length = " + combine.Length);
 
+            //put all mesh filters into the combiner object
             for (int x = 0; x < totalMaps; x++)
             {
                 combine[x].mesh = meshFilters[x].sharedMesh;
+                //draw maps in a polygon shape based on how many there are
                 combine[x].transform = Matrix4x4.TRS(new Vector3(Mathf.Cos(2 * Mathf.PI * x / totalMaps) * 100, 0, Mathf.Sin(2 * Mathf.PI * x / totalMaps) * 100), Quaternion.identity, new Vector3(1, 1, 1));
                 
             }
@@ -147,6 +149,7 @@ public class DrawPlayerMap : MonoBehaviour {
                 GameObject.Destroy(child.gameObject);
             }
 
+            //save fullmap to assests
             string worldMap = "WorldMap";
             var savePath = "Assets/CurrentMaps/" + worldMap + ".asset";
             Debug.Log("Saved Mesh to:" + savePath);

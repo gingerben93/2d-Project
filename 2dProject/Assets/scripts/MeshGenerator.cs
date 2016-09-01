@@ -16,6 +16,8 @@ public class MeshGenerator : MonoBehaviour
     List<List<int>> outlines = new List<List<int>>();
     HashSet<int> checkedVertices = new HashSet<int>();
 
+    public Transform groundPiece;
+
     // need to save the mesh for the map
     public void GenerateMesh(int[,] map, float squareSize)
     {
@@ -112,9 +114,33 @@ public class MeshGenerator : MonoBehaviour
             EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
             Vector2[] edgePoints = new Vector2[outline.Count];
 
+            foreach (Transform child in transform)
+            {
+                if (child.tag == "Ground")
+                {
+                    GameObject.Destroy(child.gameObject);
+                }
+            }
+
             for (int i = 0; i < outline.Count; i++)
             {
                 edgePoints[i] = new Vector2(vertices[outline[i]].x, vertices[outline[i]].z);
+
+                //for loading sprites in
+                if (i < outline.Count - 1) {
+                    if (vertices[outline[i]].z == vertices[outline[i + 1]].z)
+                    {
+
+                        var groundSprite = Instantiate(groundPiece) as Transform;
+                        groundSprite.transform.SetParent(transform);
+                        groundSprite.name = i.ToString();
+
+                        groundPiece.transform.position = new Vector3(vertices[outline[i]].x, vertices[outline[i]].z, 0);
+                        //groundPiece.transform.localScale = new Vector3(.035f, .035f, .035f);
+                        SpriteRenderer renderer = groundSprite.GetComponent<SpriteRenderer>();
+                        renderer.sprite = Resources.Load("FlatGround_CAVE", typeof(Sprite)) as Sprite;
+                    }
+                }
             }
             edgeCollider.points = edgePoints;
         }

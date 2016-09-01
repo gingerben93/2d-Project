@@ -98,7 +98,7 @@ GameObject:
   - 114: {fileID: 855179380}
   m_Layer: 8
   m_Name: MapGenerator
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -148,6 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cave: {fileID: 1781668223}
+  groundPiece: {fileID: 412290, guid: f44495a337df4884a9e6a942692c3d76, type: 2}
 --- !u!114 &855179380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,7 +432,7 @@ GameObject:
   - 23: {fileID: 1781668224}
   m_Layer: 8
   m_Name: Cave
-  m_TagString: Ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
