@@ -128,13 +128,27 @@ public class MeshGenerator : MonoBehaviour
 
                 //for loading sprites in
                 if (i < outline.Count - 1) {
-                    if (vertices[outline[i]].z == vertices[outline[i + 1]].z)
+                    if (vertices[outline[i]].z == vertices[outline[i + 1]].z || vertices[outline[i]].x == vertices[outline[i + 1]].x)
                     {
-
                         var groundSprite = Instantiate(groundPiece) as Transform;
                         groundSprite.transform.SetParent(transform);
                         groundSprite.name = i.ToString();
-
+                        if(vertices[outline[i]].x > vertices[outline[i + 1]].x)
+                        {
+                            groundPiece.eulerAngles = new Vector3(180, 0, 0);
+                        }
+                        if (vertices[outline[i]].x < vertices[outline[i + 1]].x)
+                        {
+                            groundPiece.eulerAngles = new Vector3(0, 0, 0);
+                        }
+                        if (vertices[outline[i]].z > vertices[outline[i + 1]].z)
+                        {
+                            groundPiece.eulerAngles = new Vector3(0, 0, -90);
+                        }
+                        if (vertices[outline[i]].z < vertices[outline[i + 1]].z)
+                        {
+                            groundPiece.eulerAngles = new Vector3(0, 0, 90);
+                        }
                         groundPiece.transform.position = new Vector3(vertices[outline[i]].x, vertices[outline[i]].z, 0);
                         //groundPiece.transform.localScale = new Vector3(.035f, .035f, .035f);
                         SpriteRenderer renderer = groundSprite.GetComponent<SpriteRenderer>();

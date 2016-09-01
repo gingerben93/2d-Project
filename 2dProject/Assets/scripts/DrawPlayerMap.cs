@@ -11,9 +11,14 @@ public class DrawPlayerMap : MonoBehaviour {
     public Transform tempMap;
     //private Vector3 offset;
 
+    //map bools
     bool localMapOn = false;
     bool worldMapOn = false;
     bool makeMap = true;
+
+    //if change room bool
+    public bool touchingDoor = false;
+
     // Update is called once per frame
     void LateUpdate () {
 
@@ -34,6 +39,11 @@ public class DrawPlayerMap : MonoBehaviour {
                 localMapOn = true;
                 DrawLocalMap();
             }
+        }
+        if(touchingDoor == true && Input.GetKeyDown(KeyCode.R) && localMapOn)
+        {
+            DrawLocalMap();
+            touchingDoor = false;
         }
         if (localMapOn)
         {

@@ -40,8 +40,11 @@ public class GameController : MonoBehaviour {
         {
             MapGenerator map = FindObjectOfType<MapGenerator>();
             DoorCollider doorInfo = FindObjectOfType<DoorCollider>();
+            DrawPlayerMap changeLocalMap = FindObjectOfType<DrawPlayerMap>();
+
             map.seed = mapSeed;
             map.GenerateMap();
+            changeLocalMap.touchingDoor = true;
             //Start();
             Vector2 door;
             door = map.doorLocations[doorInfo.numVal];
