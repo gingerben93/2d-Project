@@ -7,7 +7,7 @@ public class GameController : MonoBehaviour {
     [HideInInspector] public bool jump = true;
 
     public float moveForce = 365f;
-    public float maxSpeed = 5f;
+    public float maxSpeed = 500f;
     public float jumpForce = 1000f;
     public Transform groundCheck;
 
@@ -53,14 +53,14 @@ public class GameController : MonoBehaviour {
 
         }
 
-        if (Input.GetButtonDown("Jump") /*&& grounded*/)
+        if (Input.GetKeyDown(KeyCode.Space) /*&& grounded*/)
         {
             jump = true;
         }
 
          // 5 - Shooting
-         bool shoot = Input.GetButtonDown("Fire1");
-         shoot |= Input.GetButtonDown("Fire2");
+         bool shoot = Input.GetKeyDown(KeyCode.Space);
+         shoot |= Input.GetKeyDown(KeyCode.Space);
          // Careful: For Mac users, ctrl + arrow is a bad idea
          
         if (shoot)

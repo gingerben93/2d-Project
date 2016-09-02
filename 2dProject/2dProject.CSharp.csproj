@@ -66,6 +66,7 @@
     <Compile Include="Assets\scripts\CamraController.cs" />
     <Compile Include="Assets\scripts\DoorCollider.cs" />
     <Compile Include="Assets\scripts\DoorPrefabInfo.cs" />
+    <Compile Include="Assets\scripts\DrawGrapHook.cs" />
     <Compile Include="Assets\scripts\DrawPlayerMap.cs" />
     <Compile Include="Assets\scripts\GameController.cs" />
     <Compile Include="Assets\scripts\GameData.cs" />

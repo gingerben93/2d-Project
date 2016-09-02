@@ -156,37 +156,73 @@ public class MeshGenerator : MonoBehaviour
     void DrawSprites(float vertX, float vertXPLus1,  float vertXMinus1 ,float vertZ , float vertZPLus1 ,float vertZMinus1 , int count, int i)
     {
         
-        //horizontal and vetical sprites
+        
         var groundSprite = Instantiate(groundPiece) as Transform;
         groundSprite.transform.SetParent(transform);
         groundSprite.name = i.ToString();
 
+        //horizontal and vetical sprites
+        //does not work when change between - and minus fix that problem
         if (vertZ == vertZPLus1 || vertX == vertXPLus1 || vertZ == vertZMinus1 || vertX == vertXMinus1)
         {
+            //top piece
             if (vertX > vertXPLus1 && (vertZ == vertZPLus1 || vertZ == vertZMinus1))
             {
-                groundPiece.eulerAngles = new Vector3(180, 0, 0);
                 groundPiece.transform.position = new Vector3(vertX, vertZ + .5f, 0);
+                groundPiece.eulerAngles = new Vector3(180, 0, 0);
+                if (Mathf.Abs(Mathf.Abs(vertX) - Mathf.Abs(vertXPLus1)) <= .5f || Mathf.Abs(Mathf.Abs(vertX) - Mathf.Abs(vertXMinus1)) <= .5f)
+                {
+                    groundPieceIndex = 2;
+                }
+                else {
+                    groundPieceIndex = 0;
+                }
             }
+            //bottom pieces
             else if (vertX < vertXPLus1 && (vertZ == vertZPLus1 || vertZ == vertZMinus1))
             {
-                groundPiece.eulerAngles = new Vector3(0, 0, 0);
+                
                 groundPiece.transform.position = new Vector3(vertX, vertZ - .5f, 0);
+                groundPiece.eulerAngles = new Vector3(0, 0, 0);
+                if (Mathf.Abs(Mathf.Abs(vertX) - Mathf.Abs(vertXPLus1)) <= .5f || Mathf.Abs(Mathf.Abs(vertX) - Mathf.Abs(vertXMinus1)) <= .5f)
+                {
+                    groundPieceIndex = 2;
+                }
+                else {
+                    groundPieceIndex = 0;
+                }
+                
             }
+
+            //left wall
             else if (vertZ > vertZPLus1 || vertZ < vertZMinus1)
             {
-                groundPiece.eulerAngles = new Vector3(0, 0, 270);
                 groundPiece.transform.position = new Vector3(vertX - .5f, vertZ , 0);
+                groundPiece.eulerAngles = new Vector3(0, 0, 270);
+                if (Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZPLus1)) <= .5f || Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZMinus1)) <= .5f)
+                {
+                    groundPieceIndex = 2;
+                }
+                else {
+                    groundPieceIndex = 0;
+                }
             }
+
+            //right wall
             else if (vertZ < vertZPLus1 || vertZ > vertZMinus1)
             {
-                groundPiece.eulerAngles = new Vector3(0, 0, 90);
                 groundPiece.transform.position = new Vector3(vertX + .5f, vertZ, 0);
+                groundPiece.eulerAngles = new Vector3(0, 0, 90);
+                if (Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZPLus1)) <= .5f || Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZMinus1)) <= .5f)
+                {
+                    groundPieceIndex = 2;
+                }
+                else {
+                    groundPieceIndex = 0;
+                }
             }
-            groundPieceIndex = 0;
-            //groundPiece.transform.position = new Vector3(vertX, vertZ, 0);
-
         }
+
         //diagonal sprites
         else if (vertX != vertXPLus1 && vertZ != vertZPLus1)
         {
@@ -207,8 +243,6 @@ public class MeshGenerator : MonoBehaviour
                 groundPiece.eulerAngles = new Vector3(0, 0, 270);
             }
             groundPieceIndex = 1;
-
-            //groundPiece.eulerAngles = new Vector3(0, 0, 0);
             groundPiece.transform.position = new Vector3(vertX, vertZ, 0);
             groundPiece.transform.localScale = new Vector3(.125f, .125f, 0);
 
