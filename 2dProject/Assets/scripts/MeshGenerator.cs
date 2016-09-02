@@ -16,6 +16,9 @@ public class MeshGenerator : MonoBehaviour
     List<List<int>> outlines = new List<List<int>>();
     HashSet<int> checkedVertices = new HashSet<int>();
 
+    List<string> groundPieceName = new List<string>();
+    int groundPieceIndex;
+
     public Transform groundPiece;
 
     // need to save the mesh for the map
@@ -121,51 +124,99 @@ public class MeshGenerator : MonoBehaviour
                     GameObject.Destroy(child.gameObject);
                 }
             }
+            float vertX;
+            float vertXPLus1;
+            float vertXMinus1;
+            float vertZ;
+            float vertZPLus1;
+            float vertZMinus1;
+            int count = outline.Count;
+            groundPieceName.Add("FlatGround_CAVE");
+            groundPieceName.Add("RLGround_CAVE");
+            groundPieceName.Add("RLGroundConnector_CAVE");
 
             for (int i = 0; i < outline.Count; i++)
             {
                 edgePoints[i] = new Vector2(vertices[outline[i]].x, vertices[outline[i]].z);
 
                 //for loading sprites in
-                if (i < outline.Count - 1) {
-                    if (vertices[outline[i]].z == vertices[outline[i + 1]].z || vertices[outline[i]].x == vertices[outline[i + 1]].x)
-                    {
-                        var groundSprite = Instantiate(groundPiece) as Transform;
-                        groundSprite.transform.SetParent(transform);
-                        groundSprite.name = i.ToString();
-                        if(vertices[outline[i]].x > vertices[outline[i + 1]].x)
-                        {
-                            groundPiece.eulerAngles = new Vector3(180, 0, 0);
-                            groundPiece.transform.position = new Vector3(vertices[outline[i]].x - .5f, vertices[outline[i]].z + .5f, 0);
-                            groundPiece.transform.localScale = new Vector3(.125f, .125f, 0);
-                        }
-                        if (vertices[outline[i]].x < vertices[outline[i + 1]].x)
-                        {
-                            groundPiece.eulerAngles = new Vector3(0, 0, 0);
-                            groundPiece.transform.position = new Vector3(vertices[outline[i]].x + .5f, vertices[outline[i]].z - .5f, 0);
-                            groundPiece.transform.localScale = new Vector3(.125f, .125f, 0);
-                        }
-                        if (vertices[outline[i]].z > vertices[outline[i + 1]].z)
-                        {
-                            groundPiece.eulerAngles = new Vector3(0, 0, -90);
-                            groundPiece.transform.position = new Vector3(vertices[outline[i]].x - .5f, vertices[outline[i]].z - .5f, 0);
-                            groundPiece.transform.localScale = new Vector3(.125f, .125f, 0);
-                        }
-                        if (vertices[outline[i]].z < vertices[outline[i + 1]].z)
-                        {
-                            groundPiece.eulerAngles = new Vector3(0, 0, 90);
-                            groundPiece.transform.position = new Vector3(vertices[outline[i]].x + .5f, vertices[outline[i]].z + .5f, 0);
-                            groundPiece.transform.localScale = new Vector3(.125f, .125f, 0);
-                        }
-                        
-                        SpriteRenderer renderer = groundSprite.GetComponent<SpriteRenderer>();
-                        renderer.sprite = Resources.Load("FlatGround_CAVE", typeof(Sprite)) as Sprite;
-                    }
-                }
+
+                vertX = vertices[outline[i]].x;
+                vertXPLus1 = vertices[outline[(i + 1) % count]].x;
+                vertXMinus1 = vertices[outline[(count + i - 1) % count]].x;
+                vertZ = vertices[outline[i]].z;
+                vertZPLus1 = vertices[outline[(i + 1) % count]].z;
+                vertZMinus1 = vertices[outline[(count + i - 1) % count]].z;
+                DrawSprites(vertX, vertXPLus1, vertXMinus1, vertZ, vertZPLus1, vertZMinus1, count, i);
             }
             edgeCollider.points = edgePoints;
         }
+    }
 
+    void DrawSprites(float vertX, float vertXPLus1,  float vertXMinus1 ,float vertZ , float vertZPLus1 ,float vertZMinus1 , int count, int i)
+    {
+        
+        //horizontal and vetical sprites
+        var groundSprite = Instantiate(groundPiece) as Transform;
+        groundSprite.transform.SetParent(transform);
+        groundSprite.name = i.ToString();
+
+        if (vertZ == vertZPLus1 || vertX == vertXPLus1 || vertZ == vertZMinus1 || vertX == vertXMinus1)
+        {
+            if (vertX > vertXPLus1 && (vertZ == vertZPLus1 || vertZ == vertZMinus1))
+            {
+                groundPiece.eulerAngles = new Vector3(180, 0, 0);
+                groundPiece.transform.position = new Vector3(vertX, vertZ + .5f, 0);
+            }
+            else if (vertX < vertXPLus1 && (vertZ == vertZPLus1 || vertZ == vertZMinus1))
+            {
+                groundPiece.eulerAngles = new Vector3(0, 0, 0);
+                groundPiece.transform.position = new Vector3(vertX, vertZ - .5f, 0);
+            }
+            else if (vertZ > vertZPLus1 || vertZ < vertZMinus1)
+            {
+                groundPiece.eulerAngles = new Vector3(0, 0, 270);
+                groundPiece.transform.position = new Vector3(vertX - .5f, vertZ , 0);
+            }
+            else if (vertZ < vertZPLus1 || vertZ > vertZMinus1)
+            {
+                groundPiece.eulerAngles = new Vector3(0, 0, 90);
+                groundPiece.transform.position = new Vector3(vertX + .5f, vertZ, 0);
+            }
+            groundPieceIndex = 0;
+            //groundPiece.transform.position = new Vector3(vertX, vertZ, 0);
+
+        }
+        //diagonal sprites
+        else if (vertX != vertXPLus1 && vertZ != vertZPLus1)
+        {
+            if (vertX < vertXPLus1 && vertZ < vertZPLus1)
+            {
+                groundPiece.eulerAngles = new Vector3(0, 0, 0);
+            }
+            else if (vertX > vertXPLus1 && vertZ < vertZPLus1)
+            {
+                groundPiece.eulerAngles = new Vector3(0, 0, 90);
+            }
+            else if (vertX > vertXPLus1 && vertZ > vertZPLus1)
+            {
+                groundPiece.eulerAngles = new Vector3(0, 0, 180);
+            }
+            else if (vertX < vertXPLus1 && vertZ > vertZPLus1)
+            {
+                groundPiece.eulerAngles = new Vector3(0, 0, 270);
+            }
+            groundPieceIndex = 1;
+
+            //groundPiece.eulerAngles = new Vector3(0, 0, 0);
+            groundPiece.transform.position = new Vector3(vertX, vertZ, 0);
+            groundPiece.transform.localScale = new Vector3(.125f, .125f, 0);
+
+        }
+        SpriteRenderer renderer = groundSprite.GetComponent<SpriteRenderer>();
+        renderer.sprite = Resources.Load(groundPieceName[groundPieceIndex], typeof(Sprite)) as Sprite;
+        renderer.transform.eulerAngles = groundPiece.eulerAngles;
+        renderer.transform.position = groundPiece.transform.position;
     }
 
     void TriangulateSquare(Square square)
