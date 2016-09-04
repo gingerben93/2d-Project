@@ -11,7 +11,7 @@ public class MapGenerator : MonoBehaviour
     public int height;
 
     //fill seeds
-    public string seed;
+    public string seed { get; set; }
     public bool useRandomSeed;
 
     //fill range

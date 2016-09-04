@@ -116,7 +116,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   width: 100
   height: 50
-  seed: 0
   useRandomSeed: 1
   randomFillPercent: 50
   passageLength: 4
@@ -593,12 +592,12 @@ LineRenderer:
   m_GameObject: {fileID: 1957466730}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_Materials:
   - {fileID: 0}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
+  m_UseLightProbes: 0
   m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
   m_ScaleInLightmap: 1

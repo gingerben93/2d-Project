@@ -82,6 +82,7 @@ public class GameController : MonoBehaviour {
         float h = Input.GetAxis("Horizontal");
         //anim.SetFloat("Speed", Mathf.Abs(h));
 
+
         if (h * rb2d.velocity.x < maxSpeed)
             rb2d.velocity = new Vector2(h * maxSpeed, rb2d.velocity.y);
 
@@ -93,6 +94,10 @@ public class GameController : MonoBehaviour {
 
         if (jump)
         {
+            if (rb2d.velocity.y < 0)
+            {
+                rb2d.velocity = new Vector3(0, 0, 0);
+            }
             if (Mathf.Sign(rb2d.velocity.y) < 1.2f)
                 rb2d.AddForce(new Vector2(0f, jumpForce));
             if (Mathf.Sign(rb2d.velocity.y) > 1.2f)
