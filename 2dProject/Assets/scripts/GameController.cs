@@ -16,14 +16,14 @@ public class GameController : MonoBehaviour {
     private Rigidbody2D rb2d;
 
     //is touching door
-    public bool touchingDoor = false;
+    public bool touchingDoor { get; set; }
 
-    public string mapSeed;
-    public int doorRef;
-
+    public string mapSeed { get; set; }
+    public int doorRef { get; set; }
 
     // Use this for initialization
     void Start () {
+        touchingDoor = false;
         rb2d = GetComponent<Rigidbody2D>();
         MapGenerator map = FindObjectOfType<MapGenerator>();
         Vector2 door;
@@ -34,7 +34,7 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));
+        
         Resources.UnloadUnusedAssets();
         if (Input.GetKeyDown(KeyCode.R) && touchingDoor)
         {
@@ -45,7 +45,7 @@ public class GameController : MonoBehaviour {
             map.seed = mapSeed;
             map.GenerateMap();
             changeLocalMap.touchingDoor = true;
-            //Start();
+
             Vector2 door;
             door = map.doorLocations[doorInfo.numVal];
             transform.position = new Vector3(door.x, door.y, 0);
@@ -56,6 +56,7 @@ public class GameController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Space) /*&& grounded*/)
         {
             jump = true;
+            rb2d.gravityScale = 1;
         }
 
          // 5 - Shooting

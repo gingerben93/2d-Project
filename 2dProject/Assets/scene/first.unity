@@ -299,9 +299,6 @@ MonoBehaviour:
   maxSpeed: 5
   jumpForce: 300
   groundCheck: {fileID: 855179378}
-  touchingDoor: 0
-  mapSeed: 
-  doorRef: 0
 --- !u!212 &1491457382
 SpriteRenderer:
   m_ObjectHideFlags: 0
