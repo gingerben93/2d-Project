@@ -15,7 +15,7 @@ public class DrawGrapHook : MonoBehaviour {
 
     private float currentDrawDistance;
     //private float currentPlayerDistance;
-    private float lineDrawSpeed = 20f;
+    private float lineDrawSpeed = .1f;
 
     //reference to player
     public GameObject player;
@@ -41,9 +41,16 @@ public class DrawGrapHook : MonoBehaviour {
 
     private Vector3 StartDirection;
 
+    //grappling hook tip
+    private GameObject GrapTip;
+    private bool HasTipCollided = true;
+    private Rigidbody2D rb2dTip;
+    private Vector3 TipDirection;
+
     //on start
     void Start()
     {
+        //line info
         line = GetComponent<LineRenderer>();
         line.material = new Material(Shader.Find("Diffuse"));
         line.SetVertexCount(2);
@@ -62,6 +69,12 @@ public class DrawGrapHook : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
+            //grap tip
+            GrapTip = GameObject.Find("Grappling Hook Tip");
+            GrapTip.GetComponent<BoxCollider2D>().enabled = true;
+            rb2dTip = GrapTip.GetComponent<Rigidbody2D>();
+            HasTipCollided = true;
+
             //turn gravity back on
             rb2d.gravityScale = 1;
             moveUpRope = false;
@@ -87,6 +100,11 @@ public class DrawGrapHook : MonoBehaviour {
             currentDrawDistance = 0;
             distCurrent = 0;
 
+            GrapTip.transform.position = currentPosLine;
+
+            heading = endPosLine - startPosLine;
+            distance = heading.magnitude;
+            TipDirection = heading / distance;
             //set joint
             //joint.connectedAnchor = endPosLine;
         }
@@ -94,6 +112,9 @@ public class DrawGrapHook : MonoBehaviour {
         currentPosPlayer = player.transform.position;
         if (drawHook == true)
         {
+            //GrapTip.transform.position = currentPosLine;
+
+            rb2dTip.velocity = new Vector2(5 * TipDirection.x, 5 * TipDirection.y);
             // move up rope
             if (Input.GetKeyDown(KeyCode.W))
             {
@@ -104,6 +125,8 @@ public class DrawGrapHook : MonoBehaviour {
                 StartDirection = heading / distance;
 
                 moveUpRope = true;
+
+                
             }
 
             else if (Input.GetKeyUp(KeyCode.W))
@@ -129,8 +152,9 @@ public class DrawGrapHook : MonoBehaviour {
                 moveDownRope = false;
             }
 
+            
             //draw the rope
-            if (distCurrent < distEnd)
+            if (HasTipCollided)
             {
                 MoveLine();
                 /*
@@ -161,6 +185,7 @@ public class DrawGrapHook : MonoBehaviour {
                     distCurrent = 0;
                     drawHook = false;
                     line.enabled = false;
+                    GrapTip.GetComponent<BoxCollider2D>().enabled = false;
                 }
 
                 if (moveUpRope == true)
@@ -189,8 +214,25 @@ public class DrawGrapHook : MonoBehaviour {
 
     }
 
+    public void OnTriggerEnter2D(Collider2D tip)
+    {
+        HasTipCollided = false;
+        Debug.Log("worked");
+    }
+    public void OnTriggerStay2D(Collider2D tip)
+    {
+        HasTipCollided = false;
+        Debug.Log("worked");
+    }
+    public void OnTriggerExit2D(Collider2D tip)
+    {
+        HasTipCollided = false;
+        Debug.Log("worked");
+    }
+
     void MoveLine()
     {
+        /*
         currentDrawDistance += .5f / lineDrawSpeed;
 
         //linear interpolation to find a point between line
@@ -201,8 +243,21 @@ public class DrawGrapHook : MonoBehaviour {
 
         //get current distance from start to hook (rope length)
         distCurrent = Vector3.Distance(startPosLine, currentPosLine);
+        */
 
         //currentRopeLength = Vector3.Distance(currentPosPlayer, currentPosLine);
+        currentDrawDistance = lineDrawSpeed;
+
+
+
+        heading = endPosLine - startPosLine;
+
+        distance = heading.magnitude;
+        StartDirection = heading / distance;
+
+        currentPosLine += StartDirection * currentDrawDistance;
+
+        //distCurrent = Vector3.Distance(startPosLine, currentPosLine);
 
 
         //set line coordinates
