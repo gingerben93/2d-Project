@@ -7,16 +7,14 @@ public class DrawGrapHook : MonoBehaviour {
     private bool moveUpRope = false;
     private bool moveDownRope = false;
 
-    private float xPower;
-    private float yPower;
     private float distEnd;
     private float distCurrent;
-    private float playerDistToEnd;
-    private float currentRopeLength;
+    //private float playerDistToEnd;
+    //private float currentRopeLength;
 
 
     private float currentDrawDistance;
-    private float currentPlayerDistance;
+    //private float currentPlayerDistance;
     private float lineDrawSpeed = 20f;
 
     //reference to player
@@ -24,6 +22,7 @@ public class DrawGrapHook : MonoBehaviour {
 
     //for movement 
     private Rigidbody2D rb2d;
+    private DistanceJoint2D joint;
 
     private LineRenderer line;
     private Vector3 mousePos;
@@ -34,6 +33,13 @@ public class DrawGrapHook : MonoBehaviour {
 
     private float yIncrement;
     private float xIncrement;
+
+    //for moving player up or down rope
+    private Vector3 heading;
+    private float distance;
+    private Vector3 direction;
+
+    private Vector3 StartDirection;
 
     //on start
     void Start()
@@ -46,6 +52,9 @@ public class DrawGrapHook : MonoBehaviour {
         line.useWorldSpace = true;
         line.enabled = false;
         rb2d = player.GetComponent<Rigidbody2D>();
+
+        joint = GetComponent<DistanceJoint2D>();
+        joint.enabled = false;
     }
 
         // Update is called once per frame
@@ -53,6 +62,11 @@ public class DrawGrapHook : MonoBehaviour {
 
         if (Input.GetMouseButtonDown(0))
         {
+            //turn gravity back on
+            rb2d.gravityScale = 1;
+            moveUpRope = false;
+            moveDownRope = false;
+
             startPosLine = player.transform.position;
             drawHook = true;
             mousePos = Input.mousePosition;
@@ -72,6 +86,9 @@ public class DrawGrapHook : MonoBehaviour {
             //reset variable in MoveLine
             currentDrawDistance = 0;
             distCurrent = 0;
+
+            //set joint
+            //joint.connectedAnchor = endPosLine;
         }
 
         currentPosPlayer = player.transform.position;
@@ -80,21 +97,27 @@ public class DrawGrapHook : MonoBehaviour {
             // move up rope
             if (Input.GetKeyDown(KeyCode.W))
             {
-                rb2d.velocity = new Vector3(0, 0, 0);
+                //rb2d.velocity = new Vector3(0, 0, 0);
+                heading = endPosLine - startPosLine;
+
+                distance = heading.magnitude;
+                StartDirection = heading / distance;
+
                 moveUpRope = true;
             }
 
             else if (Input.GetKeyUp(KeyCode.W))
             {
                 rb2d.gravityScale = 1;
-                currentPlayerDistance = 0;
+                //currentPlayerDistance = 0;
                 moveUpRope = false;
             }
 
             //move down rope
             if (Input.GetKeyDown(KeyCode.S))
             {
-                rb2d.velocity = new Vector3(0, 0, 0);
+
+                //rb2d.velocity = new Vector3(0, 0, 0);
                 rb2d.gravityScale = 0;
                 moveDownRope = true;
             }
@@ -102,7 +125,7 @@ public class DrawGrapHook : MonoBehaviour {
             else if (Input.GetKeyUp(KeyCode.S))
             {
                 rb2d.gravityScale = 1;
-                currentPlayerDistance = 0;
+                //currentPlayerDistance = 0;
                 moveDownRope = false;
             }
 
@@ -118,6 +141,7 @@ public class DrawGrapHook : MonoBehaviour {
                 */
             }
             else {
+
                 line.SetPosition(0, currentPosPlayer);
                 //rb2d = player.GetComponent<Rigidbody2D>();
                 //CalculateForceHook();
@@ -142,14 +166,22 @@ public class DrawGrapHook : MonoBehaviour {
                 if (moveUpRope == true)
                 {
                     rb2d.gravityScale = 0;
-                    playerDistToEnd = Vector3.Distance(currentPosPlayer, endPosLine);
+                    //playerDistToEnd = Vector3.Distance(currentPosPlayer, endPosLine);
                     MovePlayerUpRope();
+
+                    joint.enabled = false;
+                }
+                else
+                {
+                    //joint.anchor = currentPosPlayer;
+                    joint.distance = Vector3.Distance(currentPosPlayer, endPosLine);
+                    joint.enabled = true;
                 }
 
                 if (moveDownRope == true)
                 {
                     rb2d.gravityScale = 0;
-                    playerDistToEnd = Vector3.Distance(currentPosPlayer, endPosLine);
+                    //playerDistToEnd = Vector3.Distance(currentPosPlayer, endPosLine);
                     MovePlayerDownRope();
                 }
             }
@@ -170,7 +202,7 @@ public class DrawGrapHook : MonoBehaviour {
         //get current distance from start to hook (rope length)
         distCurrent = Vector3.Distance(startPosLine, currentPosLine);
 
-        currentRopeLength = Vector3.Distance(currentPosPlayer, currentPosLine);
+        //currentRopeLength = Vector3.Distance(currentPosPlayer, currentPosLine);
 
 
         //set line coordinates
@@ -180,12 +212,33 @@ public class DrawGrapHook : MonoBehaviour {
 
     void MovePlayerUpRope()
     {
-        Vector3 heading = endPosLine - currentPosPlayer;
+        heading = endPosLine - currentPosPlayer;
 
-        float distance = heading.magnitude;
-        Vector3 direction = heading / distance;
+        distance = heading.magnitude;
+        direction = heading / distance;
 
-        rb2d.AddForce(new Vector2(direction.x * 500f, direction.y * 10f));
+        if (StartDirection.x != direction.x)
+        {
+            rb2d.velocity = new Vector3(0, rb2d.velocity.y, 0);
+            rb2d.AddForce(new Vector2(0, direction.y * 500f));
+        }
+        else
+        {
+            rb2d.AddForce(new Vector2(direction.x * 500f, 0));
+        }
+
+        if (StartDirection.y != direction.y)
+        {
+            rb2d.velocity = new Vector3(rb2d.velocity.x, 0, 0);
+            rb2d.AddForce(new Vector2(direction.x * 500f, 0));
+        }
+        else
+        {
+            rb2d.AddForce(new Vector2(0, direction.y * 500f));
+        }
+
+        //rb2d.AddForce(new Vector2(direction.x * 500f, direction.y * 10f));
+
         /*
         currentPlayerDistance += .5f / lineDrawSpeed;
         float x = Mathf.Lerp(0, playerDistToEnd, currentPlayerDistance);
@@ -197,12 +250,12 @@ public class DrawGrapHook : MonoBehaviour {
 
     void MovePlayerDownRope()
     {
-        Vector3 heading = endPosLine - currentPosPlayer;
+        heading = endPosLine - currentPosPlayer;
 
-        float distance = heading.magnitude;
-        Vector3 direction = heading / distance;
+        distance = heading.magnitude;
+        direction = heading / distance;
 
-        rb2d.AddForce(new Vector2(-direction.x * 500f, -direction.y * 10f));
+        rb2d.AddForce(new Vector2(-direction.x * 500f, -direction.y * 50f));
     }
 
 

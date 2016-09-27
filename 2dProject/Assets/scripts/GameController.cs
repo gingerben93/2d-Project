@@ -6,7 +6,7 @@ public class GameController : MonoBehaviour {
     [HideInInspector] public bool facingRight = true;
     [HideInInspector] public bool jump = true;
 
-    public float moveForce = 365f;
+    public float moveForce { get; set; }
     public float maxSpeed = 500f;
     public float jumpForce = 1000f;
     public Transform groundCheck;
@@ -23,7 +23,12 @@ public class GameController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        //variables on start
+        moveForce = 365f;
         touchingDoor = false;
+
+        //other start stuff
+
         rb2d = GetComponent<Rigidbody2D>();
         MapGenerator map = FindObjectOfType<MapGenerator>();
         Vector2 door;
@@ -95,6 +100,7 @@ public class GameController : MonoBehaviour {
 
         if (jump)
         {
+            rb2d.gravityScale = 1;
             if (rb2d.velocity.y < 0)
             {
                 rb2d.velocity = new Vector3(0, 0, 0);

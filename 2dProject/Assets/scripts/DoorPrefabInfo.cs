@@ -2,6 +2,6 @@
 using System.Collections;
 
 public class DoorPrefabInfo : MonoBehaviour {
-    public string seedReference;
-    public int doorReference;
+    public string seedReference { get; set; }
+    public int doorReference { get; set; }
 }

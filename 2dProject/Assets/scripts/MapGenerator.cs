@@ -7,6 +7,7 @@ using System;
 public class MapGenerator : MonoBehaviour
 {
     //map size
+    //needs to be changed to  public int width {get; set;}
     public int width;
     public int height;
 

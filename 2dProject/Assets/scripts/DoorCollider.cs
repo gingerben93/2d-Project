@@ -5,7 +5,7 @@ using System;
 public class DoorCollider : MonoBehaviour {
 
 
-    public int numVal;
+    public int numVal { get; set; }
     public void OnTriggerEnter2D(Collider2D node)
     {
         GameController gameCon = FindObjectOfType<GameController>();
