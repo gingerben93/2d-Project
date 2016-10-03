@@ -171,7 +171,8 @@ GameObject:
   - 50: {fileID: 945216780}
   - 61: {fileID: 945216779}
   - 114: {fileID: 945216782}
-  m_Layer: 0
+  - 232: {fileID: 945216783}
+  m_Layer: 12
   m_Name: Grappling Hook Tip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -200,10 +201,10 @@ Rigidbody2D:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 945216778}
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 0.0001
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_AngularDrag: 0
+  m_GravityScale: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -216,7 +217,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 945216778}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.779906, y: -5.419184, z: -18.65625}
+  m_LocalPosition: {x: -100, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -230,9 +231,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 945216778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 558d842cb8f07ac4fbef69f63e453ae3, type: 3}
+  m_Script: {fileID: 11500000, guid: 311ed2bc388af024981bc4b7ac244dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!232 &945216783
+DistanceJoint2D:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 945216778}
+  m_Enabled: 0
+  serializedVersion: 4
+  m_EnableCollision: 1
+  m_ConnectedRigidBody: {fileID: 945216780}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 0
+  m_Distance: 0.005
+  m_MaxDistanceOnly: 0
 --- !u!1 &1319288961
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,8 +639,6 @@ GameObject:
   - 4: {fileID: 1957466731}
   - 114: {fileID: 1957466732}
   - 120: {fileID: 1957466733}
-  - 50: {fileID: 1957466735}
-  - 232: {fileID: 1957466734}
   m_Layer: 9
   m_Name: GrapplingHook
   m_TagString: Untagged
@@ -654,6 +671,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1491457380}
+  HasTipCollided: 0
 --- !u!120 &1957466733
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -693,41 +711,6 @@ LineRenderer:
       serializedVersion: 2
       rgba: 4294967295
   m_UseWorldSpace: 1
---- !u!232 &1957466734
-DistanceJoint2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1957466730}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 1491457384}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 0
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: 0}
-  m_AutoConfigureDistance: 0
-  m_Distance: 10
-  m_MaxDistanceOnly: 0
---- !u!50 &1957466735
-Rigidbody2D:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1957466730}
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &1970346998
 GameObject:
   m_ObjectHideFlags: 0

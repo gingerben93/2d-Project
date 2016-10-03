@@ -9,7 +9,7 @@ public class DrawGrapHook : MonoBehaviour {
 
     private float distEnd;
     private float distCurrent;
-    //private float playerDistToEnd;
+    private float playerDistToEnd;
     //private float currentRopeLength;
 
 
@@ -22,7 +22,6 @@ public class DrawGrapHook : MonoBehaviour {
 
     //for movement 
     private Rigidbody2D rb2d;
-    private DistanceJoint2D joint;
 
     private LineRenderer line;
     private Vector3 mousePos;
@@ -43,9 +42,12 @@ public class DrawGrapHook : MonoBehaviour {
 
     //grappling hook tip
     private GameObject GrapTip;
-    private bool HasTipCollided = true;
+    public bool HasTipCollided;
     private Rigidbody2D rb2dTip;
     private Vector3 TipDirection;
+
+    //grab hook joint
+    DistanceJoint2D joint;
 
     //on start
     void Start()
@@ -60,20 +62,25 @@ public class DrawGrapHook : MonoBehaviour {
         line.enabled = false;
         rb2d = player.GetComponent<Rigidbody2D>();
 
-        joint = GetComponent<DistanceJoint2D>();
-        joint.enabled = false;
+        //grap hook info
+        GrapTip = GameObject.Find("Grappling Hook Tip");
+        HasTipCollided = true;
+        joint = GrapTip.GetComponent<DistanceJoint2D>();
+        joint.connectedAnchor = Vector2.zero;
     }
 
         // Update is called once per frame
-        void Update () {
+    void Update ()
+    {
 
         if (Input.GetMouseButtonDown(0))
         {
-            //grap tip
-            GrapTip = GameObject.Find("Grappling Hook Tip");
+            //grap tip info
             GrapTip.GetComponent<BoxCollider2D>().enabled = true;
             rb2dTip = GrapTip.GetComponent<Rigidbody2D>();
             HasTipCollided = true;
+            joint.enabled = true;
+            
 
             //turn gravity back on
             rb2d.gravityScale = 1;
@@ -100,33 +107,28 @@ public class DrawGrapHook : MonoBehaviour {
             currentDrawDistance = 0;
             distCurrent = 0;
 
-            GrapTip.transform.position = currentPosLine;
-
+            //info grap hook tip
+            GrapTip.transform.position = currentPosPlayer;
             heading = endPosLine - startPosLine;
             distance = heading.magnitude;
             TipDirection = heading / distance;
-            //set joint
-            //joint.connectedAnchor = endPosLine;
+
         }
 
         currentPosPlayer = player.transform.position;
+        //GrapTip.transform.position = currentPosPlayer;
         if (drawHook == true)
         {
             //GrapTip.transform.position = currentPosLine;
-
-            rb2dTip.velocity = new Vector2(5 * TipDirection.x, 5 * TipDirection.y);
             // move up rope
             if (Input.GetKeyDown(KeyCode.W))
             {
                 //rb2d.velocity = new Vector3(0, 0, 0);
                 heading = endPosLine - startPosLine;
-
                 distance = heading.magnitude;
                 StartDirection = heading / distance;
 
                 moveUpRope = true;
-
-                
             }
 
             else if (Input.GetKeyUp(KeyCode.W))
@@ -156,7 +158,9 @@ public class DrawGrapHook : MonoBehaviour {
             //draw the rope
             if (HasTipCollided)
             {
+                rb2dTip.velocity = new Vector2(10 * TipDirection.x, 10 * TipDirection.y);
                 MoveLine();
+                playerDistToEnd = Vector3.Distance(currentPosPlayer, currentPosLine);
                 /*
                 distCurrent = Vector3.Distance(startPosLine, currentPosLine);
                 currentPosLine.x += xIncrement;
@@ -165,55 +169,44 @@ public class DrawGrapHook : MonoBehaviour {
                 */
             }
             else {
-
+                joint.anchor = Vector2.zero;
+                joint.connectedAnchor = currentPosPlayer - currentPosLine;
+                joint.distance = playerDistToEnd;
                 line.SetPosition(0, currentPosPlayer);
-                //rb2d = player.GetComponent<Rigidbody2D>();
-                //CalculateForceHook();
-                //rb2d.AddForce(new Vector2(xPower, yPower));
-
-
-                /*
-                if (distEnd <= distCurrent)
-                {
-                    rb2d.velocity = new Vector3(rb2d.velocity.x, 0, 0);
-                }
-                */
 
                 //jump to turn off rope
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
+                    joint.enabled = false;
                     distCurrent = 0;
                     drawHook = false;
                     line.enabled = false;
                     GrapTip.GetComponent<BoxCollider2D>().enabled = false;
+                    GrapTip.transform.position = currentPosPlayer;
                 }
 
                 if (moveUpRope == true)
                 {
                     rb2d.gravityScale = 0;
-                    //playerDistToEnd = Vector3.Distance(currentPosPlayer, endPosLine);
+                    playerDistToEnd = Vector3.Distance(currentPosPlayer, currentPosLine);
                     MovePlayerUpRope();
-
-                    joint.enabled = false;
                 }
                 else
                 {
                     //joint.anchor = currentPosPlayer;
-                    joint.distance = Vector3.Distance(currentPosPlayer, endPosLine);
-                    joint.enabled = true;
                 }
 
                 if (moveDownRope == true)
                 {
                     rb2d.gravityScale = 0;
-                    //playerDistToEnd = Vector3.Distance(currentPosPlayer, endPosLine);
+                    playerDistToEnd = Vector3.Distance(currentPosPlayer, endPosLine);
                     MovePlayerDownRope();
                 }
             }
         }
-
     }
 
+    /*
     public void OnTriggerEnter2D(Collider2D tip)
     {
         HasTipCollided = false;
@@ -229,6 +222,7 @@ public class DrawGrapHook : MonoBehaviour {
         HasTipCollided = false;
         Debug.Log("worked");
     }
+    */
 
     void MoveLine()
     {
@@ -261,13 +255,14 @@ public class DrawGrapHook : MonoBehaviour {
 
 
         //set line coordinates
+        currentPosLine = GrapTip.transform.position;
         line.SetPosition(0, currentPosPlayer);
         line.SetPosition(1, currentPosLine);
     }
 
     void MovePlayerUpRope()
     {
-        heading = endPosLine - currentPosPlayer;
+        heading = currentPosLine - currentPosPlayer;
 
         distance = heading.magnitude;
         direction = heading / distance;
