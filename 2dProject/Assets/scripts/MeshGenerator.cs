@@ -133,7 +133,8 @@ public class MeshGenerator : MonoBehaviour
             int count = outline.Count;
             groundPieceName.Add("FlatGround_CAVE");
             groundPieceName.Add("RLGround_CAVE");
-            groundPieceName.Add("RLGroundConnector_CAVE");
+            groundPieceName.Add("UPSlope_To_Ground");
+            groundPieceName.Add("Groud_To_UPSlope");
 
             for (int i = 0; i < outline.Count; i++)
             {
@@ -144,6 +145,7 @@ public class MeshGenerator : MonoBehaviour
                 vertX = vertices[outline[i]].x;
                 vertXPLus1 = vertices[outline[(i + 1) % count]].x;
                 vertXMinus1 = vertices[outline[(count + i - 1) % count]].x;
+                //Z IS Y VALUE
                 vertZ = vertices[outline[i]].z;
                 vertZPLus1 = vertices[outline[(i + 1) % count]].z;
                 vertZMinus1 = vertices[outline[(count + i - 1) % count]].z;
@@ -172,8 +174,13 @@ public class MeshGenerator : MonoBehaviour
                 groundPiece.eulerAngles = new Vector3(180, 0, 0);
                 if (Mathf.Abs(Mathf.Abs(vertX) - Mathf.Abs(vertXPLus1)) <= .5f || Mathf.Abs(Mathf.Abs(vertX) - Mathf.Abs(vertXMinus1)) <= .5f)
                 {
-                    groundPieceIndex = 2;
-                }
+                    if ((Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZPLus1)) >= .5f) && (Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZMinus1)) == 0f) ) { 
+                        groundPiece.eulerAngles = new Vector3(0, 0, 180);
+                        groundPieceIndex = 3;
+                    }
+                    else
+                        groundPieceIndex = 2;
+                    }
                 else {
                     groundPieceIndex = 0;
                 }
