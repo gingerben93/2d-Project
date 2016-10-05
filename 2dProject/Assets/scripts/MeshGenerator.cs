@@ -136,7 +136,7 @@ public class MeshGenerator : MonoBehaviour
             groundPieceName.Add("UPSlope_To_Ground");
             groundPieceName.Add("Groud_To_UPSlope");
 
-            for (int i = 0; i < outline.Count; i++)
+            for (int i = 0; i <  outline.Count; i++)
             {
                 edgePoints[i] = new Vector2(vertices[outline[i]].x, vertices[outline[i]].z);
 
@@ -172,15 +172,28 @@ public class MeshGenerator : MonoBehaviour
             {
                 groundPiece.transform.position = new Vector3(vertX, vertZ + .5f, 0);
                 groundPiece.eulerAngles = new Vector3(180, 0, 0);
-                if (Mathf.Abs(Mathf.Abs(vertX) - Mathf.Abs(vertXPLus1)) <= .5f || Mathf.Abs(Mathf.Abs(vertX) - Mathf.Abs(vertXMinus1)) <= .5f)
+                if (Mathf.Abs(vertX - vertXPLus1) <= .5f || Mathf.Abs(vertX - vertXMinus1) <= .5f)
                 {
-                    if ((Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZPLus1)) >= .5f) && (Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZMinus1)) == 0f) ) { 
+                    if ((Mathf.Abs(vertZ - vertZMinus1) == 0f) && (vertZ - vertZPLus1) > 0)
+                    {
                         groundPiece.eulerAngles = new Vector3(0, 0, 180);
                         groundPieceIndex = 3;
                     }
-                    else
-                        groundPieceIndex = 2;
+                    else if ((Mathf.Abs(vertZ - vertZPLus1) == 0f) && (vertZ - vertZMinus1) > 0)
+                    {
+                        groundPieceIndex = 3;
                     }
+                    else
+                    {
+                        if ((vertZ - vertZMinus1) < 0)
+                        {
+                            groundPiece.eulerAngles = new Vector3(0, 0, 180);
+                            groundPieceIndex = 2;
+                        }
+                        else
+                            groundPieceIndex = 2;
+                    }
+                }
                 else {
                     groundPieceIndex = 0;
                 }
@@ -191,9 +204,31 @@ public class MeshGenerator : MonoBehaviour
                 
                 groundPiece.transform.position = new Vector3(vertX, vertZ - .5f, 0);
                 groundPiece.eulerAngles = new Vector3(0, 0, 0);
-                if (Mathf.Abs(Mathf.Abs(vertX) - Mathf.Abs(vertXPLus1)) <= .5f || Mathf.Abs(Mathf.Abs(vertX) - Mathf.Abs(vertXMinus1)) <= .5f)
+                if (Mathf.Abs(vertX - vertXPLus1) <= .5f || Mathf.Abs(vertX - vertXMinus1) <= .5f)
                 {
-                    groundPieceIndex = 2;
+                    if (Mathf.Abs(vertX - vertXPLus1) <= .5f || Mathf.Abs(vertX - vertXMinus1) <= .5f)
+                    {
+                        if ((Mathf.Abs(vertZ - vertZMinus1) == 0f) && (vertZ - vertZPLus1) < 0)
+                        {
+                            groundPiece.eulerAngles = new Vector3(0, 0, 0);
+                            groundPieceIndex = 3;
+                        }
+                        else if ((Mathf.Abs(vertZ - vertZPLus1) == 0f) && (vertZ - vertZMinus1) < 0)
+                        {
+                            groundPiece.eulerAngles = new Vector3(0, 180, 0);
+                            groundPieceIndex = 3;
+                        }
+                        else
+                        {
+                            if ((vertZ - vertZPLus1) > 0)
+                            {
+                                groundPiece.eulerAngles = new Vector3(0, 180, 0);
+                                groundPieceIndex = 2;
+                            }
+                            else
+                                groundPieceIndex = 2;
+                        }
+                    }
                 }
                 else {
                     groundPieceIndex = 0;
@@ -206,12 +241,37 @@ public class MeshGenerator : MonoBehaviour
             {
                 groundPiece.transform.position = new Vector3(vertX - .5f, vertZ , 0);
                 groundPiece.eulerAngles = new Vector3(0, 0, 270);
-                if (Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZPLus1)) <= .5f || Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZMinus1)) <= .5f)
+                if (vertZ > vertZPLus1 && (vertX == vertXPLus1 || vertX == vertXMinus1))
                 {
-                    groundPieceIndex = 2;
-                }
-                else {
-                    groundPieceIndex = 0;
+                    groundPiece.transform.position = new Vector3(vertX - .5f, vertZ, 0);
+                    groundPiece.eulerAngles = new Vector3(0, 0, 270);
+                    if (Mathf.Abs(vertZ - vertZPLus1) <= .5f || Mathf.Abs(vertZ - vertZMinus1) <= .5f)
+                    {
+                        if ((Mathf.Abs(vertX - vertXMinus1) == 0f) && (vertX - vertXPLus1) < 0)
+                        {
+                            groundPiece.eulerAngles = new Vector3(0, 0, 270);
+                            groundPieceIndex = 3;
+                        }
+                        else if ((Mathf.Abs(vertX - vertXPLus1) == 0f) && (vertX - vertXMinus1) < 0)
+                        {
+                            groundPiece.eulerAngles = new Vector3(180, 0, 270);
+                            groundPieceIndex = 3;
+                        }
+                        else
+                        {
+                            if ((vertX - vertXPLus1) > 0)
+                            {
+                                groundPiece.eulerAngles = new Vector3(180, 0, 270);
+                                groundPieceIndex = 2;
+                            }
+                            else
+                                groundPieceIndex = 2;
+                        }
+                    }
+                    else
+                    {
+                        groundPieceIndex = 0;
+                    }
                 }
             }
 
@@ -220,11 +280,31 @@ public class MeshGenerator : MonoBehaviour
             {
                 groundPiece.transform.position = new Vector3(vertX + .5f, vertZ, 0);
                 groundPiece.eulerAngles = new Vector3(0, 0, 90);
-                if (Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZPLus1)) <= .5f || Mathf.Abs(Mathf.Abs(vertZ) - Mathf.Abs(vertZMinus1)) <= .5f)
+                if (Mathf.Abs(vertZ - vertZPLus1) <= .5f || Mathf.Abs(vertZ - vertZMinus1) <= .5f)
                 {
-                    groundPieceIndex = 2;
+                    if ((Mathf.Abs(vertX - vertXMinus1) == 0f) && (vertX - vertXPLus1) > 0)
+                    {
+                        groundPiece.eulerAngles = new Vector3(0, 0, 90);
+                        groundPieceIndex = 3;
+                    }
+                    else if ((Mathf.Abs(vertX - vertXPLus1) == 0f) && (vertX - vertXMinus1) > 0)
+                    {
+                        groundPiece.eulerAngles = new Vector3(180, 0, 90);
+                        groundPieceIndex = 3;
+                    }
+                    else
+                    {
+                        if ((vertX - vertXPLus1) < 0)
+                        {
+                            groundPiece.eulerAngles = new Vector3(180, 0, 90);
+                            groundPieceIndex = 2;
+                        }
+                        else
+                            groundPieceIndex = 2;
+                    }
                 }
-                else {
+                else
+                {
                     groundPieceIndex = 0;
                 }
             }
