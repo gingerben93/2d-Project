@@ -45,9 +45,11 @@ public class DrawGrapHook : MonoBehaviour {
     public bool HasTipCollided;
     private Rigidbody2D rb2dTip;
     private Vector3 TipDirection;
+    private float angleTipCollider;
 
     //grab hook joint
-    DistanceJoint2D joint;
+    //DistanceJoint2D joint;
+
 
     //on start
     void Start()
@@ -63,10 +65,10 @@ public class DrawGrapHook : MonoBehaviour {
         rb2d = player.GetComponent<Rigidbody2D>();
 
         //grap hook info
-        GrapTip = GameObject.Find("Grappling Hook Tip");
+        GrapTip = GameObject.Find("GrapplingHookTip");
         HasTipCollided = true;
-        joint = GrapTip.GetComponent<DistanceJoint2D>();
-        joint.connectedAnchor = Vector2.zero;
+        //joint = GrapTip.GetComponent<DistanceJoint2D>();
+        //joint.connectedAnchor = Vector2.zero;
     }
 
         // Update is called once per frame
@@ -79,7 +81,7 @@ public class DrawGrapHook : MonoBehaviour {
             GrapTip.GetComponent<BoxCollider2D>().enabled = true;
             rb2dTip = GrapTip.GetComponent<Rigidbody2D>();
             HasTipCollided = true;
-            joint.enabled = true;
+            //joint.enabled = true;
             
 
             //turn gravity back on
@@ -119,11 +121,12 @@ public class DrawGrapHook : MonoBehaviour {
         //GrapTip.transform.position = currentPosPlayer;
         if (drawHook == true)
         {
+            angleTipCollider = Vector2.Angle(currentPosPlayer, GrapTip.transform.position);
+            GrapTip.transform.eulerAngles = new Vector3(0, 0, angleTipCollider);
             //GrapTip.transform.position = currentPosLine;
             // move up rope
             if (Input.GetKeyDown(KeyCode.W))
             {
-                //rb2d.velocity = new Vector3(0, 0, 0);
                 heading = endPosLine - startPosLine;
                 distance = heading.magnitude;
                 StartDirection = heading / distance;
@@ -141,9 +144,10 @@ public class DrawGrapHook : MonoBehaviour {
             //move down rope
             if (Input.GetKeyDown(KeyCode.S))
             {
+                heading = endPosLine - startPosLine;
+                distance = heading.magnitude;
+                StartDirection = heading / distance;
 
-                //rb2d.velocity = new Vector3(0, 0, 0);
-                rb2d.gravityScale = 0;
                 moveDownRope = true;
             }
 
@@ -169,15 +173,17 @@ public class DrawGrapHook : MonoBehaviour {
                 */
             }
             else {
+                /*
                 joint.anchor = Vector2.zero;
                 joint.connectedAnchor = currentPosPlayer - currentPosLine;
                 joint.distance = playerDistToEnd;
+                */
                 line.SetPosition(0, currentPosPlayer);
 
                 //jump to turn off rope
                 if (Input.GetKeyDown(KeyCode.Space))
                 {
-                    joint.enabled = false;
+                    //joint.enabled = false;
                     distCurrent = 0;
                     drawHook = false;
                     line.enabled = false;
@@ -199,30 +205,12 @@ public class DrawGrapHook : MonoBehaviour {
                 if (moveDownRope == true)
                 {
                     rb2d.gravityScale = 0;
-                    playerDistToEnd = Vector3.Distance(currentPosPlayer, endPosLine);
+                    playerDistToEnd = Vector3.Distance(currentPosPlayer, currentPosLine);
                     MovePlayerDownRope();
                 }
             }
         }
     }
-
-    /*
-    public void OnTriggerEnter2D(Collider2D tip)
-    {
-        HasTipCollided = false;
-        Debug.Log("worked");
-    }
-    public void OnTriggerStay2D(Collider2D tip)
-    {
-        HasTipCollided = false;
-        Debug.Log("worked");
-    }
-    public void OnTriggerExit2D(Collider2D tip)
-    {
-        HasTipCollided = false;
-        Debug.Log("worked");
-    }
-    */
 
     void MoveLine()
     {
@@ -300,97 +288,29 @@ public class DrawGrapHook : MonoBehaviour {
 
     void MovePlayerDownRope()
     {
-        heading = endPosLine - currentPosPlayer;
+        heading = currentPosLine - currentPosPlayer;
 
         distance = heading.magnitude;
         direction = heading / distance;
 
-        rb2d.AddForce(new Vector2(-direction.x * 500f, -direction.y * 50f));
-    }
-
-
-        /*
-        void CalculateForceHook()
+        if (StartDirection.x != direction.x)
         {
-            distEnd = Vector3.Distance(startPosLine, endPosLine);
-            if (player.transform.position.x < mousePos.x)
-            {
-                xPower = 500;
-            }
-            if (player.transform.position.x > mousePos.x)
-            {
-                xPower = -500;
-            }
-            if (player.transform.position.y < mousePos.y)
-            {
-                yPower = 50;
-            }
-            if (player.transform.position.y > mousePos.y)
-            {
-                yPower = -50;
-            }
-
+            rb2d.velocity = new Vector3(0, rb2d.velocity.y, 0);
+            rb2d.AddForce(new Vector2(0, -direction.y * 500f));
+        }
+        else
+        {
+            rb2d.AddForce(new Vector2(-direction.x * 500f, 0));
         }
 
-        void CalculateCurrentDrawPosition()
+        if (StartDirection.y != direction.y)
         {
-            //x distance between vectors
-            if(startPosLine.x <= 0)
-            {
-                if(endPosLine.x >= 0)
-                {
-                    Mathf.Abs(xIncrement = endPosLine.x - startPosLine.x);
-                    xIncrement *= -1;
-                }
-                if (endPosLine.x < 0)
-                {
-                    Mathf.Abs(xIncrement = endPosLine.x + startPosLine.x);
-
-                }
-            }
-            if (startPosLine.x > 0)
-            {
-                if (endPosLine.x >= 0)
-                {
-                    Mathf.Abs(xIncrement = endPosLine.x + startPosLine.x);
-                }
-                if (endPosLine.x < 0)
-                {
-                    Mathf.Abs(xIncrement = endPosLine.x - startPosLine.x);
-                    xIncrement *= -1;
-                }
-            }
-
-            //y distance between vectors
-            if (startPosLine.y <= 0)
-            {
-                if (endPosLine.y >= 0)
-                {
-                    Mathf.Abs(yIncrement = endPosLine.y - startPosLine.y);
-                }
-                if (endPosLine.y < 0)
-                {
-                    Mathf.Abs(yIncrement = endPosLine.y + startPosLine.y);
-                    yIncrement *= -1;
-                }
-            }
-            if (startPosLine.y > 0)
-            {
-                if (endPosLine.y >= 0)
-                {
-                    Mathf.Abs(yIncrement = endPosLine.y + startPosLine.y);
-                }
-                if (endPosLine.y < 0)
-                {
-                    Mathf.Abs(yIncrement = endPosLine.y - startPosLine.y);
-                    yIncrement *= -1;
-                }
-            }
-            xIncrement /= 500;
-            yIncrement /= 500;
-
-            Debug.Log("xIncrement = " + xIncrement);
-            Debug.Log("yIncrement = " + yIncrement);
+            rb2d.velocity = new Vector3(rb2d.velocity.x, 0, 0);
+            rb2d.AddForce(new Vector2(-direction.x * 500f, 0));
         }
-        */
-    }
+        else
+        {
+            rb2d.AddForce(new Vector2(0, -direction.y * 500f));
+        }
+    }   
+}

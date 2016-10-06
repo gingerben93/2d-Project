@@ -173,7 +173,7 @@ GameObject:
   - 114: {fileID: 945216782}
   - 232: {fileID: 945216783}
   m_Layer: 12
-  m_Name: Grappling Hook Tip
+  m_Name: GrapplingHookTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

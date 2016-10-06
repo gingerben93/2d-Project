@@ -311,7 +311,7 @@ public class MeshGenerator : MonoBehaviour
         }
 
         //diagonal sprites
-        else if (vertX != vertXPLus1 && vertZ != vertZPLus1)
+        else if (vertX != vertXPLus1 && vertZ != vertZPLus1 && (vertZPLus1 - vertZMinus1) != 0 && (vertXPLus1 - vertXMinus1) != 0)
         {
             if (vertX < vertXPLus1 && vertZ < vertZPLus1)
             {
