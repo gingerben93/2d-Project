@@ -8,6 +8,7 @@ TagManager:
   - Ground
   - Bullet
   - Door
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Bullet
   - Door
   - NotHitPLayer
-  - 
+  - Enemy
   - 
   - 
   - 
