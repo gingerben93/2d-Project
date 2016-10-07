@@ -65,8 +65,8 @@ public class GameController : MonoBehaviour {
         }
 
          // 5 - Shooting
-         bool shoot = Input.GetKeyDown(KeyCode.Space);
-         shoot |= Input.GetKeyDown(KeyCode.Space);
+         bool shoot = Input.GetMouseButtonDown(1);
+         shoot |= Input.GetMouseButtonDown(1);
          // Careful: For Mac users, ctrl + arrow is a bad idea
          
         if (shoot)

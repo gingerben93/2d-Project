@@ -136,7 +136,7 @@ public class MeshGenerator : MonoBehaviour
             groundPieceName.Add("UPSlope_To_Ground");
             groundPieceName.Add("Groud_To_UPSlope");
 
-            for (int i = 0; i <  outline.Count; i++)
+            for (int i = 1; i <  outline.Count; i++)
             {
                 edgePoints[i] = new Vector2(vertices[outline[i]].x, vertices[outline[i]].z);
 
@@ -149,6 +149,13 @@ public class MeshGenerator : MonoBehaviour
                 vertZ = vertices[outline[i]].z;
                 vertZPLus1 = vertices[outline[(i + 1) % count]].z;
                 vertZMinus1 = vertices[outline[(count + i - 1) % count]].z;
+
+                if (i == (outline.Count - 1))
+                {
+                    vertXPLus1 = vertices[outline[0]].x;
+                    vertZPLus1 = vertices[outline[0]].z;
+                }
+
                 DrawSprites(vertX, vertXPLus1, vertXMinus1, vertZ, vertZPLus1, vertZMinus1, count, i);
             }
             edgeCollider.points = edgePoints;
