@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEditor;
+using System.Collections.Generic;
+using System;
 
 public class DrawPlayerMap : MonoBehaviour {
 
@@ -19,9 +21,21 @@ public class DrawPlayerMap : MonoBehaviour {
     //if change room bool
     public bool touchingDoor = false;
 
+    //for map marker
+    GameObject MapMarkerTeemo;
+    public List<Vector3> MapPos;
+    int mapSeed;
+
+    void Start()
+    {
+        MapMarkerTeemo = GameObject.Find("MapMarker");
+        MapPos = new List<Vector3>();
+        //mapSeed = Int32.Parse(GameObject.FindObjectOfType<MapGenerator>().seed);
+    }
+
     // Update is called once per frame
     void LateUpdate () {
-
+        mapSeed = Int32.Parse(GameObject.FindObjectOfType<MapGenerator>().seed);
         // local map
         if (Input.GetKeyDown(KeyCode.M))
         {
@@ -56,12 +70,16 @@ public class DrawPlayerMap : MonoBehaviour {
         {
             if (worldMapOn)
             {
+                //turn off teemo marker
+                MapMarkerTeemo.GetComponent<SpriteRenderer>().enabled = false;
                 //turn map off and erase it
                 worldMapOn = false;
                 playerWorldMap.mesh = null;
             }
             else
             {
+                //TURN ON TEEMO MARKER
+                MapMarkerTeemo.GetComponent<SpriteRenderer>().enabled = true;
                 //turn map on and draw it
                 worldMapOn = true;
                 playerLocalMap.mesh = null;
@@ -72,13 +90,19 @@ public class DrawPlayerMap : MonoBehaviour {
         if (worldMapOn)
         {
             //keep map locked on character
+            MapMarkerTeemo.GetComponent<Transform>().position = player.transform.position + (MapPos[mapSeed] * 3.5f) + (player.transform.position * .035f);
+            //MapMarkerTeemo.transform.position = transform.position;
             UpdatePosition();
         }
     }
 
-    void DrawLocalMap()
+    void DrawPlayerOnMap()
     {
-        
+
+    }
+
+    void DrawLocalMap()
+    {        
         MapGenerator mapGen = FindObjectOfType<MapGenerator>();
 
         //use this to get all maps
@@ -144,7 +168,7 @@ public class DrawPlayerMap : MonoBehaviour {
                 combine[x].mesh = meshFilters[x].sharedMesh;
                 //draw maps in a polygon shape based on how many there are
                 combine[x].transform = Matrix4x4.TRS(new Vector3(Mathf.Cos(2 * Mathf.PI * x / totalMaps) * 100, 0, Mathf.Sin(2 * Mathf.PI * x / totalMaps) * 100), Quaternion.identity, new Vector3(1, 1, 1));
-                
+                MapPos.Add(new Vector2(Mathf.Cos(2 * Mathf.PI * x / totalMaps), Mathf.Sin(2 * Mathf.PI * x / totalMaps)));
             }
             //65k max vertices or won't work
             playerWorldMap.mesh.CombineMeshes(combine);
@@ -156,7 +180,10 @@ public class DrawPlayerMap : MonoBehaviour {
             //removes all the children of map object
             foreach (Transform child in transform)
             {
-                GameObject.Destroy(child.gameObject);
+                if (child.name != "MapMarker")
+                {
+                    GameObject.Destroy(child.gameObject);
+                }
             }
 
             //save fullmap to assests
