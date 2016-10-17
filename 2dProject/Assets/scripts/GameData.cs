@@ -10,6 +10,8 @@ public class GameData : MonoBehaviour
     public List<List<string>> doorDicRefs = new List<List<string>>();
     int[] numDoorCountPerMap = new int[6];
 
+    public List<string> mapSeed = new List<string>();
+
     /*
     int NumMaps = GameObject.Find("MapMarker").GetComponent<MapGenerator>().numMaps;
     int[] numDoorCountPerMap;
@@ -34,8 +36,6 @@ public class GameData : MonoBehaviour
     {
         return doorlocations[mapIndex];
     }
-
-    public List<string> mapSeed = new List<string>();
 
     //gets index of map
     public int FindMapIndex(string map)

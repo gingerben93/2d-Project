@@ -28,6 +28,10 @@ public class DrawPlayerMap : MonoBehaviour {
     public List<Vector3> MapPos;
     int mapSeed;
 
+    //for combine map and draw lines
+    GameData gameData;
+    int totalMaps;
+
     //for drawing door connections
     private List<List<Vector2>> doorLocations;
     public Transform mapLine;
@@ -37,7 +41,6 @@ public class DrawPlayerMap : MonoBehaviour {
     public int nextDoor { get; set; }
     private Vector3 linePos1;
     private Vector3 linePos2;
-    private List<string> drawnDoors;
     private List<Vector3> LinePos;
 
     //for line color
@@ -46,31 +49,33 @@ public class DrawPlayerMap : MonoBehaviour {
 
     void Start()
     {
+        //for drawing map
+        gameData = FindObjectOfType<GameData>();
+        totalMaps = gameData.mapSeed.Count;
+
+        // this is for teemo marker and lines
+        MapPos = new List<Vector3>();
+        for (int x = 0; x < totalMaps; x++)
+        {
+            MapPos.Add(new Vector2(Mathf.Cos(2 * Mathf.PI * x / totalMaps), Mathf.Sin(2 * Mathf.PI * x / totalMaps)));
+        }
+
         //for teemo mapmarker
         MapMarkerTeemo = GameObject.Find("MapMarker");
         MapMarkerTeemoSprite = MapMarkerTeemo.GetComponent<SpriteRenderer>();
         MapMarkerTeemoPos = MapMarkerTeemo.GetComponent<Transform>();
-        MapPos = new List<Vector3>();
-        //mapSeed = Int32.Parse(GameObject.FindObjectOfType<MapGenerator>().seed);
-
-
+        
 
         //for line between doors map marker
         GameData data = FindObjectOfType<GameData>();
         doorLocations = new List<List<Vector2>>();
         doorLocations = data.doorlocations;
-        drawnDoors = new List<string>();
         LinePos = new List<Vector3>();
 
     }
 
     // Update is called once per frame
     void LateUpdate () {
-        //mapSeed = Int32.Parse(GameObject.FindObjectOfType<MapGenerator>().seed);
-        //currentMap = Int32.Parse(GameObject.FindObjectOfType<DoorCollider>().oldSeed);
-        //nextMap = Int32.Parse(GameObject.FindObjectOfType<DoorCollider>().newSeed);
-        //currentDoor = Int32.Parse(GameObject.FindObjectOfType<DoorCollider>().oldDoor);
-        //nextDoor = Int32.Parse(GameObject.FindObjectOfType<DoorCollider>().newDoor);
 
         // local map
         if (Input.GetKeyDown(KeyCode.M))
@@ -92,6 +97,12 @@ public class DrawPlayerMap : MonoBehaviour {
                 playerWorldMap.mesh = null;
                 localMapOn = true;
                 DrawLocalMap();
+
+                //turn off world map lines
+                foreach (Transform child in GameObject.Find("MapDoorLines").transform)
+                {
+                    child.GetComponent<LineRenderer>().enabled = false;
+                }
             }
         }
         if (touchingDoor == true && Input.GetKeyDown(KeyCode.R)) {
@@ -113,36 +124,13 @@ public class DrawPlayerMap : MonoBehaviour {
             }
             if (test == false)
             {
-                //have to do a weird .45 shift in y, find out why later; might be due to vertex being at top of door
-                linePos1 = (MapPos[currentMap] * 3.5f) + new Vector3(doorLocations[currentMap][currentDoor].x * .035f, doorLocations[currentMap][currentDoor].y * .035f, 0);
-                linePos2 = (MapPos[nextMap] * 3.5f) + new Vector3(doorLocations[nextMap][nextDoor].x * .035f, doorLocations[nextMap][nextDoor].y * .035f, 0);
-
-                //save pos for moving with player
-                LinePos.Add(linePos1);
-                LinePos.Add(linePos2);
-
-                //Instantiate line
-                var tempMapLine = Instantiate(mapLine) as Transform;
-                tempMapLine.SetParent(GameObject.Find("MapDoorLines").transform);
-                tempMapLine.GetComponent<LineRenderer>().SetWidth(.1f, .1f);
-                tempMapLine.GetComponent<LineRenderer>().SetPosition(0, player.transform.position + linePos1);
-                tempMapLine.GetComponent<LineRenderer>().SetPosition(1, player.transform.position + linePos2);
-                tempMapLine.name = currentMap.ToString() + currentDoor.ToString() + nextMap.ToString() + nextDoor.ToString();
-
-                //for color; try to enum the colors for each map i.e. map 0 is red, map 1 is blue ...
-                firstColor = PickLineColor(currentMap);
-                secondColor = PickLineColor(nextMap);
-
-                tempMapLine.GetComponent<LineRenderer>().material.shader = Shader.Find("Self-Illumin/Specular");
-                tempMapLine.GetComponent<LineRenderer>().material.color = Color.Lerp(firstColor, secondColor, .5f);
-
+                CreateLines();
             }
 
         }
 
         if (localMapOn)
         {
-
             //keep map locked on character
             MapMarkerTeemoPos.position = player.transform.position + (new Vector3(0,1,0) * 3.5f) + (player.transform.position * .035f);
             //keep map locked on character
@@ -159,11 +147,22 @@ public class DrawPlayerMap : MonoBehaviour {
                 //turn map off and erase it
                 worldMapOn = false;
                 playerWorldMap.mesh = null;
+
+                //turn on lines
+                foreach (Transform child in GameObject.Find("MapDoorLines").transform)
+                {
+                    child.GetComponent<LineRenderer>().enabled = false;
+                }
             }
             else
             {
-                //TURN ON TEEMO MARKER
-                MapMarkerTeemoSprite.enabled = true;
+                //turn off lines
+                foreach (Transform child in GameObject.Find("MapDoorLines").transform)
+                {
+                    child.GetComponent<LineRenderer>().enabled = true;
+                }
+                 //TURN ON TEEMO MARKER
+                 MapMarkerTeemoSprite.enabled = true;
                 //turn map on and draw it
                 worldMapOn = true;
                 playerLocalMap.mesh = null;
@@ -191,6 +190,38 @@ public class DrawPlayerMap : MonoBehaviour {
         }
     }
 
+    void CreateLines()
+    {
+        //save line position
+        linePos1 = (MapPos[currentMap] * 3.5f) + new Vector3(doorLocations[currentMap][currentDoor].x * .035f, doorLocations[currentMap][currentDoor].y * .035f, 0);
+        linePos2 = (MapPos[nextMap] * 3.5f) + new Vector3(doorLocations[nextMap][nextDoor].x * .035f, doorLocations[nextMap][nextDoor].y * .035f, 0);
+
+        //save pos for moving with player
+        LinePos.Add(linePos1);
+        LinePos.Add(linePos2);
+
+        //Instantiate line
+        var tempMapLine = Instantiate(mapLine) as Transform;
+        tempMapLine.SetParent(GameObject.Find("MapDoorLines").transform);
+        tempMapLine.GetComponent<LineRenderer>().SetWidth(.1f, .1f);
+        tempMapLine.GetComponent<LineRenderer>().SetPosition(0, player.transform.position + linePos1);
+        tempMapLine.GetComponent<LineRenderer>().SetPosition(1, player.transform.position + linePos2);
+        tempMapLine.name = currentMap.ToString() + currentDoor.ToString() + nextMap.ToString() + nextDoor.ToString();
+
+        if (!worldMapOn)
+        {
+            tempMapLine.GetComponent<LineRenderer>().enabled = false;
+        }
+
+        //for color; try to enum the colors for each map i.e. map 0 is red, map 1 is blue ...
+        firstColor = PickLineColor(currentMap);
+        secondColor = PickLineColor(nextMap);
+
+        tempMapLine.GetComponent<LineRenderer>().material.shader = Shader.Find("Self-Illumin/Specular");
+        tempMapLine.GetComponent<LineRenderer>().material.color = Color.Lerp(firstColor, secondColor, .5f);
+    }
+
+    //for picking map line colors
     Color PickLineColor(int mapNum)
     {
         if (mapNum == 0)
@@ -259,8 +290,7 @@ public class DrawPlayerMap : MonoBehaviour {
         if (makeMap)
         {
             makeMap = false;
-            GameData gameData = FindObjectOfType<GameData>();
-            int totalMaps = gameData.mapSeed.Count;
+            
 
             MeshFilter[] meshFilters = new MeshFilter[totalMaps];
 
@@ -289,7 +319,6 @@ public class DrawPlayerMap : MonoBehaviour {
                 combine[x].mesh = meshFilters[x].sharedMesh;
                 //draw maps in a polygon shape based on how many there are
                 combine[x].transform = Matrix4x4.TRS(new Vector3(Mathf.Cos(2 * Mathf.PI * x / totalMaps) * 100, 0, Mathf.Sin(2 * Mathf.PI * x / totalMaps) * 100), Quaternion.identity, new Vector3(1, 1, 1));
-                MapPos.Add(new Vector2(Mathf.Cos(2 * Mathf.PI * x / totalMaps), Mathf.Sin(2 * Mathf.PI * x / totalMaps)));
             }
             //65k max vertices or won't work
             playerWorldMap.mesh.CombineMeshes(combine);
