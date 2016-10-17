@@ -3,19 +3,20 @@ using System.Collections;
 
 public class ShotMove : MonoBehaviour
 {
+    public GameObject player;
 
-    public Vector2 speed = new Vector2(10, 10);
-    public Vector2 direction = new Vector2(1, 0);
+    private Vector3 mousePos;
+    private Vector3 heading;
+    private float distance;
+    private Vector3 direction;
 
     private Vector2 movement;
     private Rigidbody2D rigidbodyComponent;
     // Update is called once per frame
-    void Update()
+
+    void Start()
     {
-        // 2 - Movement
-        movement = new Vector2(
-          speed.x * direction.x,
-          speed.y * direction.y);
+        Shoot();
     }
 
     void FixedUpdate()
@@ -25,4 +26,19 @@ public class ShotMove : MonoBehaviour
         // Apply movement to the rigidbody
         rigidbodyComponent.velocity = movement;
     }
+
+    void Shoot()
+    {
+        player = GameObject.FindWithTag("Player");
+        mousePos = Input.mousePosition;
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0;
+
+        heading = mousePos - player.transform.position;
+        distance = heading.magnitude;
+        direction = heading / distance;
+
+        movement = new Vector2(10 * direction.x, 10 * direction.y);
+    }
+
 }
