@@ -29,7 +29,7 @@ public class MapGenerator : MonoBehaviour
 
     int[,] map;
 
-    int numMaps = 4;
+    public int numMaps { get; private set; }
     int currentMap = 0;
 
     //
@@ -39,6 +39,7 @@ public class MapGenerator : MonoBehaviour
     //where program stars
     void Start()
     {
+        numMaps = 6;
         for (currentMap = 0; currentMap < numMaps; currentMap++)
         {
             seed = currentMap.ToString();
@@ -54,35 +55,6 @@ public class MapGenerator : MonoBehaviour
         //data.CreateDoorReferences();
         data.EnsureConnectivityOfMaps();
         data.ConnectDoors();
-
-    }
-
-    void Update()
-    {
-        /*
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            GenerateMap();
-        }
-        */
-        /*
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            //useRandomSeed = false;
-            //GameData data = FindObjectOfType<GameData>();
-            //seed = data.GetSeed(seed);
-            GameData data = FindObjectOfType<GameData>();
-            data.CreateDoorReferences();
-
-            foreach (KeyValuePair<string, string> kvp in data.doorConnectionDictionary)
-            {
-                //Console.WriteLine("Key = {0}, Value = {1}", kvp.Key, kvp.Value);
-                Debug.Log("Key =" + kvp.Key + "Value =" + kvp.Value);
-            }
-
-        }
-        */
-
 
     }
 

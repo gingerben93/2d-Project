@@ -4,28 +4,27 @@ using System;
 
 public class DoorCollider : MonoBehaviour {
 
-
     public int numVal { get; set; }
+    private string oldSeed;
+    private string oldDoor;
+    private string dicRef;
+
+    private string newSeed;
+    private string newDoor;
+    private string newDicRef;
+
     public void OnTriggerEnter2D(Collider2D node)
     {
         GameController gameCon = FindObjectOfType<GameController>();
         DoorPrefabInfo info = node.GetComponent<DoorPrefabInfo>();
         if (node.gameObject.tag == "Door")
         {
-            string oldSeed = info.seedReference;
-            string oldDoor = info.doorReference.ToString();
-            string dicRef = oldSeed + oldDoor;
-
-            string newDicRef;
-            string newSeed;
-            string newDoor;
-
-            //Debug.Log("oldSeed = " + oldSeed + "oldDoor = " + oldDoor);
+            oldSeed = info.seedReference;
+            oldDoor = info.doorReference.ToString();
+            dicRef = oldSeed + oldDoor;
 
             GameData data = FindObjectOfType<GameData>();
             newDicRef = data.GetDoorInfo(dicRef);
-
-            //Debug.Log("newDicRef = " + newDicRef);
 
             //set new door and map seed info
             newSeed = newDicRef.Substring(0, newDicRef.Length - 1);
@@ -34,6 +33,12 @@ public class DoorCollider : MonoBehaviour {
             //Debug.Log("newSeed = " + newSeed + "newDoor = " + newDoor);
 
             numVal = Int32.Parse(newDoor);
+
+            //for drawing lines
+            GameObject.FindObjectOfType<DrawPlayerMap>().currentDoor = Int32.Parse(oldDoor);
+            GameObject.FindObjectOfType<DrawPlayerMap>().nextDoor = Int32.Parse(newDoor);
+            GameObject.FindObjectOfType<DrawPlayerMap>().currentMap = Int32.Parse(oldSeed);
+            GameObject.FindObjectOfType<DrawPlayerMap>().nextMap = Int32.Parse(newSeed);
 
             //pass seed and door info to gameController.
             gameCon.mapSeed = newSeed;

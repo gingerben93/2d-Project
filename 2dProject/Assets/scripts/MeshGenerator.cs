@@ -167,8 +167,6 @@ public class MeshGenerator : MonoBehaviour
 
     void DrawSprites(float vertX, float vertXPLus1,  float vertXMinus1 ,float vertZ , float vertZPLus1 ,float vertZMinus1 , int count, int i)
     {
-        
-        
         var groundSprite = Instantiate(groundPiece) as Transform;
         groundSprite.transform.SetParent(transform);
         groundSprite.name = i.ToString();

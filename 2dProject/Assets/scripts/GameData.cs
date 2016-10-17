@@ -8,7 +8,17 @@ public class GameData : MonoBehaviour
     public List<Vector2> doorlocations2 = new List<Vector2>();
     public Dictionary<string, string> doorConnectionDictionary = new Dictionary<string, string>();
     public List<List<string>> doorDicRefs = new List<List<string>>();
-    int[] numDoorCountPerMap = new int[4];
+    int[] numDoorCountPerMap = new int[6];
+
+    /*
+    int NumMaps = GameObject.Find("MapMarker").GetComponent<MapGenerator>().numMaps;
+    int[] numDoorCountPerMap;
+
+    void Start()
+    {
+        numDoorCountPerMap = new int[NumMaps];
+    }
+    */
 
     // adds door to list
     public void AddDoorLocations(List<Vector2> newDoorLocations)
@@ -218,7 +228,6 @@ public class GameData : MonoBehaviour
             {
                 break;
             }
-
         }
 
         /*

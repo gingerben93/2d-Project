@@ -85,6 +85,34 @@ NavMeshSettings:
     cellSize: 0.16666667
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &256146475
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 256146476}
+  m_Layer: 0
+  m_Name: MapDoorLines
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &256146476
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 256146475}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -21.690956, y: -22.387648, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
 --- !u!1 &855179376
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,7 +199,6 @@ GameObject:
   - 50: {fileID: 945216780}
   - 61: {fileID: 945216779}
   - 114: {fileID: 945216782}
-  - 232: {fileID: 945216783}
   m_Layer: 12
   m_Name: GrapplingHookTip
   m_TagString: Untagged
@@ -234,24 +261,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 311ed2bc388af024981bc4b7ac244dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!232 &945216783
-DistanceJoint2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 945216778}
-  m_Enabled: 0
-  serializedVersion: 4
-  m_EnableCollision: 1
-  m_ConnectedRigidBody: {fileID: 945216780}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_AutoConfigureConnectedAnchor: 0
-  m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: 0, y: 0}
-  m_AutoConfigureDistance: 0
-  m_Distance: 0.005
-  m_MaxDistanceOnly: 0
 --- !u!1 &1267908942
 GameObject:
   m_ObjectHideFlags: 0
@@ -337,7 +346,7 @@ AudioListener:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1319288961}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!124 &1319288963
 Behaviour:
   m_ObjectHideFlags: 0
@@ -602,7 +611,7 @@ AudioSource:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1562866334}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b62fb9973cd5a8f489dcb62f1fec072e, type: 3}
@@ -929,7 +938,7 @@ GameObject:
   - 23: {fileID: 2039687086}
   m_Layer: 5
   m_Name: PlayerMap
-  m_TagString: Untagged
+  m_TagString: Map
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -951,6 +960,7 @@ MonoBehaviour:
   tempMap: {fileID: 480198, guid: e1882fa7e28651c43bd2b552365c96ab, type: 2}
   touchingDoor: 0
   MapPos: []
+  mapLine: {fileID: 439000, guid: b5067d86c034213469285d6188d35502, type: 2}
 --- !u!4 &2039687085
 Transform:
   m_ObjectHideFlags: 0

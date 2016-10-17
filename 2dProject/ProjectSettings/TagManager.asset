@@ -9,6 +9,8 @@ TagManager:
   - Bullet
   - Door
   - Enemy
+  - Map
+  - MapLines
   layers:
   - Default
   - TransparentFX
@@ -45,4 +47,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Map
+    uniqueID: 893249859
+    locked: 0
+  - name: MapLines
+    uniqueID: 1160316469
     locked: 0
