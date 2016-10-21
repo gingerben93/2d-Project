@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEditor;
 using System.Collections.Generic;
 using System;
+using System.IO;
 
 public class DrawPlayerMap : MonoBehaviour {
 
@@ -132,7 +133,7 @@ public class DrawPlayerMap : MonoBehaviour {
         if (localMapOn)
         {
             //keep map locked on character
-            MapMarkerTeemoPos.position = player.transform.position + (new Vector3(0,1,0) * 3.5f) + (player.transform.position * .035f);
+            MapMarkerTeemoPos.position = player.transform.position + (player.transform.position * .075f);
             //keep map locked on character
             UpdatePosition();
         }
@@ -173,7 +174,7 @@ public class DrawPlayerMap : MonoBehaviour {
         if (worldMapOn)
         {
             //keep map locked on character
-            MapMarkerTeemoPos.position = player.transform.position + (MapPos[currentMap] * 3.5f) + (player.transform.position * .035f);
+            MapMarkerTeemoPos.position = player.transform.position + GetCurrentMapLocation(currentMap) + (player.transform.position * .075f);
 
             //update door lines pos
             int x = 0;
@@ -193,8 +194,8 @@ public class DrawPlayerMap : MonoBehaviour {
     void CreateLines()
     {
         //save line position
-        linePos1 = (MapPos[currentMap] * 3.5f) + new Vector3(doorLocations[currentMap][currentDoor].x * .035f, doorLocations[currentMap][currentDoor].y * .035f, 0);
-        linePos2 = (MapPos[nextMap] * 3.5f) + new Vector3(doorLocations[nextMap][nextDoor].x * .035f, doorLocations[nextMap][nextDoor].y * .035f, 0);
+        linePos1 = GetCurrentMapLocation(currentMap) + new Vector3(doorLocations[currentMap][currentDoor].x * .075f, doorLocations[currentMap][currentDoor].y * .075f, 0);
+        linePos2 = GetCurrentMapLocation(nextMap) + new Vector3(doorLocations[nextMap][nextDoor].x * .075f, doorLocations[nextMap][nextDoor].y * .075f, 0);
 
         //save pos for moving with player
         LinePos.Add(linePos1);
@@ -217,8 +218,8 @@ public class DrawPlayerMap : MonoBehaviour {
         firstColor = PickLineColor(currentMap);
         secondColor = PickLineColor(nextMap);
 
-        tempMapLine.GetComponent<LineRenderer>().material.shader = Shader.Find("Self-Illumin/Specular");
-        tempMapLine.GetComponent<LineRenderer>().material.color = Color.Lerp(firstColor, secondColor, .5f);
+        tempMapLine.GetComponent<LineRenderer>().material = new Material(Shader.Find("Particles/Additive"));
+        tempMapLine.GetComponent<LineRenderer>().SetColors(firstColor, secondColor);
     }
 
     //for picking map line colors
@@ -248,9 +249,15 @@ public class DrawPlayerMap : MonoBehaviour {
         }
         else if (mapNum == 5)
         {
-            return Color.magenta;
+            return Color.gray;
         }
         return Color.white;
+    }
+
+    //for the world map; gets shift of x and y; used for setting map marker line pos
+    Vector3 GetCurrentMapLocation(int pickMap)
+    {
+        return new Vector3(MapPos[pickMap].x * .075f * 150, MapPos[pickMap].y * .075f * 100, 0);
     }
 
     void DrawLocalMap()
@@ -267,7 +274,7 @@ public class DrawPlayerMap : MonoBehaviour {
         playerLocalMap.mesh = mesh;
 
         //scale size down and set position
-        transform.localScale = new Vector3(.035f, .035f, .035f);
+        transform.localScale = new Vector3(.075f, .075f, .075f);
         transform.position = player.transform.position;
         transform.eulerAngles = new Vector3(270, 0, 0);
         //transform.Rotate(Vector3.zero);
@@ -277,7 +284,7 @@ public class DrawPlayerMap : MonoBehaviour {
     {
         if (localMapOn)
         {
-            transform.position = player.transform.position - new Vector3(0, -3.5f, 0);
+            transform.position = player.transform.position;
         }
         else
         {
@@ -317,14 +324,15 @@ public class DrawPlayerMap : MonoBehaviour {
             for (int x = 0; x < totalMaps; x++)
             {
                 combine[x].mesh = meshFilters[x].sharedMesh;
-                //draw maps in a polygon shape based on how many there are
-                combine[x].transform = Matrix4x4.TRS(new Vector3(Mathf.Cos(2 * Mathf.PI * x / totalMaps) * 100, 0, Mathf.Sin(2 * Mathf.PI * x / totalMaps) * 100), Quaternion.identity, new Vector3(1, 1, 1));
+                //draw maps in a polygon shape based on how many there are 
+                //numbers are map dimentions Ex: 150 in x and 100 in y;
+                combine[x].transform = Matrix4x4.TRS(new Vector3(Mathf.Cos(2 * Mathf.PI * x / totalMaps) * 150, 0, Mathf.Sin(2 * Mathf.PI * x / totalMaps) * 100), Quaternion.identity, new Vector3(1, 1, 1));
             }
             //65k max vertices or won't work
             playerWorldMap.mesh.CombineMeshes(combine);
 
             //set scale
-            transform.localScale = new Vector3(.035f, .035f, .035f);
+            transform.localScale = new Vector3(.075f, .075f, .075f);
             transform.position = player.transform.position;
 
             //removes all the children of map object
@@ -350,7 +358,7 @@ public class DrawPlayerMap : MonoBehaviour {
             string worldMap = "WorldMap";
             var loadPath = "Assets/CurrentMaps/" + worldMap + ".asset";
             Mesh mesh = (Mesh)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Mesh));
-            transform.localScale = new Vector3(.035f, .035f, .035f);
+            transform.localScale = new Vector3(.075f, .075f, .075f);
             transform.position = player.transform.position;
             playerWorldMap.mesh = mesh;
         }
