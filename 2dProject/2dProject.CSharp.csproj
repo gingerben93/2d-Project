@@ -71,6 +71,7 @@
     <Compile Include="Assets\scripts\EnemyStats.cs" />
     <Compile Include="Assets\scripts\GameController.cs" />
     <Compile Include="Assets\scripts\GameData.cs" />
+    <Compile Include="Assets\scripts\GrapplingHookBody.cs" />
     <Compile Include="Assets\scripts\GrapplingHookTip.cs" />
     <Compile Include="Assets\scripts\MapAddOns.cs" />
     <Compile Include="Assets\scripts\MapGenerator.cs" />

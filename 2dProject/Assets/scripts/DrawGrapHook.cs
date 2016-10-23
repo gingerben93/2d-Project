@@ -35,10 +35,19 @@ public class DrawGrapHook : MonoBehaviour {
 
     //grappling hook tip
     private GameObject GrapTip;
-    public bool HasTipCollided;
+    public bool HasTipCollided { get; set; }
     private Rigidbody2D rb2dTip;
     private Vector3 TipDirection;
     private float angleTipCollider;
+
+    //grap body
+    private GameObject grapBody;
+    private Vector3 difference;
+    private float distanceInX;
+    private float distanceInY;
+    private float grapBodyAngle;
+    private Quaternion q;
+    public bool hasBodyCollided { get; set; }
 
     //on start
     void Start()
@@ -55,7 +64,14 @@ public class DrawGrapHook : MonoBehaviour {
 
         //grap hook info
         GrapTip = GameObject.Find("GrapplingHookTip");
-        HasTipCollided = true;
+        //change to false at somepoint
+        HasTipCollided = false;
+        hasBodyCollided = false;
+        rb2dTip = GrapTip.GetComponent<Rigidbody2D>();
+
+        //grap hook body
+        grapBody = GameObject.Find("BodyCollider");
+
     }
 
     // Update is called once per frame
@@ -66,8 +82,9 @@ public class DrawGrapHook : MonoBehaviour {
         {
             //grap tip info
             GrapTip.GetComponent<BoxCollider2D>().enabled = true;
-            rb2dTip = GrapTip.GetComponent<Rigidbody2D>();
-            HasTipCollided = true;
+            
+            HasTipCollided = false;
+            hasBodyCollided = false;
 
             //turn gravity back on
             rb2d.gravityScale = 1;
@@ -96,14 +113,18 @@ public class DrawGrapHook : MonoBehaviour {
             distance = heading.magnitude;
             TipDirection = heading / distance;
 
+            //grap body info
+            grapBody.GetComponent<BoxCollider2D>().enabled = true;
+            grapBody.GetComponent<BoxCollider2D>().size = new Vector2(.5f, .5f);
+
         }
 
         currentPosPlayer = player.transform.position;
 
         if (drawHook == true)
         {
-            angleTipCollider = Vector2.Angle(currentPosPlayer, GrapTip.transform.position);
-            GrapTip.transform.eulerAngles = new Vector3(0, 0, angleTipCollider);
+            //angleTipCollider = Vector3.Angle(currentPosPlayer, mousePos);
+            //GrapTip.transform.eulerAngles = new Vector3(0, 0, angleTipCollider);
 
             // move up rope
             if (Input.GetKeyDown(KeyCode.W))
@@ -139,9 +160,19 @@ public class DrawGrapHook : MonoBehaviour {
                 moveDownRope = false;
             }
 
+            //if rope hits anything; like a wall
+            if(hasBodyCollided == true)
+            {
+                drawHook = false;
+                line.enabled = false;
+                GrapTip.GetComponent<BoxCollider2D>().enabled = false;
+                grapBody.GetComponent<BoxCollider2D>().enabled = false;
+                HasTipCollided = false;
+                rb2d.gravityScale = 1;
+            }
             
             //draw the rope
-            if (HasTipCollided)
+            if (!HasTipCollided)
             {
                 rb2dTip.velocity = new Vector2(10 * TipDirection.x, 10 * TipDirection.y);
                 MoveLine();
@@ -155,6 +186,7 @@ public class DrawGrapHook : MonoBehaviour {
                     drawHook = false;
                     line.enabled = false;
                     GrapTip.GetComponent<BoxCollider2D>().enabled = false;
+                    grapBody.GetComponent<BoxCollider2D>().enabled = false;
                     GrapTip.transform.position = currentPosPlayer;
                 }
 
@@ -170,6 +202,19 @@ public class DrawGrapHook : MonoBehaviour {
                     MovePlayerDownRope();
                 }
             }
+
+            //for rotating body
+            difference = GrapTip.transform.position - player.transform.position;
+            distanceInX = difference.x;
+            distanceInY = difference.y;
+
+            grapBodyAngle = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+
+            grapBody.transform.position = GrapTip.transform.position - new Vector3(distanceInX / 2f, distanceInY / 2f, 0);
+            q = Quaternion.AngleAxis(grapBodyAngle, Vector3.forward);
+            grapBody.transform.rotation = q;
+            grapBody.GetComponent<BoxCollider2D>().size = new Vector2(Vector3.Distance(GrapTip.transform.position, player.transform.position)*4, .5f);
+
         }
     }
 

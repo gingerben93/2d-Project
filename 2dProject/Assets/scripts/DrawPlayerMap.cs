@@ -54,6 +54,9 @@ public class DrawPlayerMap : MonoBehaviour {
         gameData = FindObjectOfType<GameData>();
         totalMaps = gameData.mapSeed.Count;
 
+        //map opacity
+        transform.GetComponent<MeshRenderer>().material.color = new Vector4(1, 1, 1, .5f);
+
         // this is for teemo marker and lines
         MapPos = new List<Vector3>();
         for (int x = 0; x < totalMaps; x++)
@@ -133,7 +136,7 @@ public class DrawPlayerMap : MonoBehaviour {
         if (localMapOn)
         {
             //keep map locked on character
-            MapMarkerTeemoPos.position = player.transform.position + (player.transform.position * .075f);
+            MapMarkerTeemoPos.position = player.transform.position + (player.transform.position * .175f);
             //keep map locked on character
             UpdatePosition();
         }
@@ -274,7 +277,7 @@ public class DrawPlayerMap : MonoBehaviour {
         playerLocalMap.mesh = mesh;
 
         //scale size down and set position
-        transform.localScale = new Vector3(.075f, .075f, .075f);
+        transform.localScale = new Vector3(.175f, .175f, .175f);
         transform.position = player.transform.position;
         transform.eulerAngles = new Vector3(270, 0, 0);
         //transform.Rotate(Vector3.zero);

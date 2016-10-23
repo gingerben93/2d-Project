@@ -6,10 +6,12 @@ public class Weapon : MonoBehaviour
     public float shootingRate = 0.25f;
 
     private float shootCooldown;
+    private Transform holdForBullets; 
 
     void Start()
     {
         shootCooldown = 0f;
+        holdForBullets = GameObject.Find("PlayerProjectiles").transform;
     }
 
     void Update()
@@ -28,7 +30,7 @@ public class Weapon : MonoBehaviour
 
             // Create a new shot
             var shotTransform = Instantiate(shotPrefab) as Transform;
-            shotTransform.transform.SetParent(transform);
+            shotTransform.transform.SetParent(holdForBullets);
             // Assign position
             shotTransform.position = transform.position;
 

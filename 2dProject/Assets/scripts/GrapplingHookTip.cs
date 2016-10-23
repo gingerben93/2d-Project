@@ -6,7 +6,7 @@ public class GrapplingHookTip : MonoBehaviour {
     public void OnTriggerEnter2D(Collider2D tip)
     {
         DrawGrapHook HasTipCollided = FindObjectOfType<DrawGrapHook>();
-        HasTipCollided.HasTipCollided = false;
+        HasTipCollided.HasTipCollided = true;
         gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
 
