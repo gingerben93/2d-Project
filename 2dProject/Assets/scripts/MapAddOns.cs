@@ -7,6 +7,8 @@ public class MapAddOns : MonoBehaviour
 {
     public Transform doorPrefab;
 
+    public List<Vector2> TestEnemyWalkPath;
+
     public List<Vector2> GenerateDoors(int[,] map, float squareSize, int borderSize)
     {
         //for size of map
@@ -109,4 +111,39 @@ public class MapAddOns : MonoBehaviour
             //Debug.Log("curSeed =" + curSeed + "x =" + x);
         }
     }
+
+    public void PlaceEnemies(int[,] map)
+    {
+       TestEnemyWalkPath = new List<Vector2>();
+
+        for (int x = 1; x < map.GetLength(0) - 1; x++)
+        {
+            for (int y = 1; y < map.GetLength(1) - 1; y++)
+            {
+                AddPlaceToEnemyWalkArea(map, x, y, TestEnemyWalkPath);
+            }
+        }
+    }
+
+    private void AddPlaceToEnemyWalkArea(int[,] map, int x, int y, List<Vector2> list)
+    {
+        if (map[x, y] == 0 && map[x + 1, y] == 0 && map[x - 1, y] == 0 && map[x, y + 1] == 0 && map[x, y - 1] == 1 && map[x + 1, y - 1] == 1 && map[x - 1, y - 1] == 1 && map[x, y + 2] == 0)
+        {
+            int nodeCountX = map.GetLength(0);
+            int nodeCountY = map.GetLength(1);
+            float mapWidth = nodeCountX * 1;
+            float mapHeight = nodeCountY * 1;
+            float xPos = -mapWidth / 2 + x * 1 + 1 / 2;
+            float yPos = -mapHeight / 2 + y * 1 + 1;
+            list.Add(new Vector2(xPos, yPos));
+        }
+        else
+        {
+
+        }
+    }
+
+
+
+
 }

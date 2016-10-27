@@ -232,7 +232,8 @@ public class DrawGrapHook : MonoBehaviour {
         //set line coordinates
         currentPosLine = GrapTip.transform.position;
         line.SetPosition(0, currentPosPlayer);
-        line.SetPosition(1, currentPosLine);
+        //off set is to make it appeat closer to wall ; + StartDirection * .5f
+        line.SetPosition(1, currentPosLine + StartDirection * .5f);
     }
 
     void MovePlayerUpRope()

@@ -8,9 +8,4 @@ public class GrapplingHookBody : MonoBehaviour
         DrawGrapHook hasBodyCollided = FindObjectOfType<DrawGrapHook>();
         hasBodyCollided.hasBodyCollided = true;
     }
-    public void OnTriggerStay2D(Collider2D tip)
-    {
-        DrawGrapHook hasBodyCollided = FindObjectOfType<DrawGrapHook>();
-        hasBodyCollided.hasBodyCollided = true;
-    }
 }

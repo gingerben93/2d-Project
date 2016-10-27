@@ -9,5 +9,4 @@ public class GrapplingHookTip : MonoBehaviour {
         HasTipCollided.HasTipCollided = true;
         gameObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }
-
 }

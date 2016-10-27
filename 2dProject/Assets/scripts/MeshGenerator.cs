@@ -65,7 +65,7 @@ public class MeshGenerator : MonoBehaviour
         MapGenerator mapInfo = GameObject.FindObjectOfType<MapGenerator>();
         string mapSeed = mapInfo.seed;
         var savePath = "Assets/CurrentMaps/" + mapSeed + ".asset";
-        Debug.Log("Saved Mesh to:" + savePath);
+        //Debug.Log("Saved Mesh to:" + savePath);
         AssetDatabase.CreateAsset(cave.mesh, savePath);
     }
     

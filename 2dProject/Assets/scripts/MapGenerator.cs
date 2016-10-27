@@ -35,6 +35,10 @@ public class MapGenerator : MonoBehaviour
     //
     public List<Vector2> doorLocations;
 
+    // for storing game information
+    GameData gameData;
+    MeshGenerator meshGen;
+    MapAddOns doors;
 
     //where program stars
     void Start()
@@ -46,15 +50,13 @@ public class MapGenerator : MonoBehaviour
             GenerateMap();
         }
         useRandomSeed = false;
-        GameData data = FindObjectOfType<GameData>();
-        //MapAddOns doors = GetComponent<MapAddOns>();
-        seed = data.mapSeed[0];
+        gameData = FindObjectOfType<GameData>();
+        seed = gameData.mapSeed[0];
         GenerateMap();
 
-        data.CreatDoorConnections();
-        //data.CreateDoorReferences();
-        data.EnsureConnectivityOfMaps();
-        data.ConnectDoors();
+        gameData.CreatDoorConnections();
+        gameData.EnsureConnectivityOfMaps();
+        gameData.ConnectDoors();
 
     }
 
@@ -93,10 +95,10 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-        MeshGenerator meshGen = GetComponent<MeshGenerator>();
+        meshGen = GetComponent<MeshGenerator>();
 
-        GameData gameData = FindObjectOfType<GameData>();
-        MapAddOns doors = GetComponent<MapAddOns>();
+        gameData = FindObjectOfType<GameData>();
+        doors = GetComponent<MapAddOns>();
 
         if (useRandomSeed == true)
         {
@@ -104,6 +106,7 @@ public class MapGenerator : MonoBehaviour
             doorLocations = new List<Vector2>();
             doorLocations = doors.GenerateDoors(map, 1, borderSize);
             gameData.AddDoorLocations(doorLocations);
+            //doors.PlaceEnemies(map);
         }
         else
         {
@@ -172,11 +175,11 @@ public class MapGenerator : MonoBehaviour
     //for random filling of map with border
     void RandomFillMap()
     {
-        GameData data = FindObjectOfType<GameData>();
+        gameData = FindObjectOfType<GameData>();
         if (useRandomSeed)
         {
             //seed = Time.time.ToString();
-            data.AddSeed(seed);
+            gameData.AddSeed(seed);
         }
         else
         {
