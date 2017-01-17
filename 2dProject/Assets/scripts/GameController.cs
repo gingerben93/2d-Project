@@ -15,14 +15,14 @@ public class GameController : MonoBehaviour {
     private Animator anim;
     private Rigidbody2D rb2d;
 
+    //Inventory
+    public CanvasGroup InvMenu;
+
     //is touching door
     public bool touchingDoor { get; set; }
+
     public string mapSeed { get; set; }
     public int doorRef { get; set; }
-
-    //play stats
-    public int health = 10;
-    //public int health { get; private set;}
 
     // Use this for initialization
     void Start () {
@@ -81,10 +81,12 @@ public class GameController : MonoBehaviour {
                 weapon.Attack(false);
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            InvMenu.alpha = (InvMenu.alpha + 1) % 2;
+        }
     }
-
-
-
 
     void FixedUpdate()
     {
