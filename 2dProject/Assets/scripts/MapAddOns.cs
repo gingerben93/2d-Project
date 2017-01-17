@@ -7,7 +7,7 @@ public class MapAddOns : MonoBehaviour
 {
     public Transform doorPrefab;
 
-    public List<Vector2> TestEnemyWalkPath;
+    public Transform EnenyPreFab;
 
     public List<Vector2> GenerateDoors(int[,] map, float squareSize, int borderSize)
     {
@@ -26,16 +26,6 @@ public class MapAddOns : MonoBehaviour
         drawDoors = new List<Vector2>();
 
         int numDoors = 4;
-
-        //for removing doors
-        /*
-        var clones = GameObject.FindGameObjectsWithTag("Door");
-
-        foreach (var clone in clones)
-        {
-            Destroy(clone);
-        }
-        */
 
         //Pass border size to script
         for (int x = 1; x < map.GetLength(0) - 1; x++)
@@ -59,15 +49,8 @@ public class MapAddOns : MonoBehaviour
             doorXY = doorPositions[Random.Range(0, doorPositions.Count)];
             doorPositions.Remove(doorXY);
 
-            //door
-            //var doorTransform = Instantiate(doorPrefab) as Transform;
-
             float xPos = -mapWidth / 2 + doorXY.x * squareSize + squareSize / 2;
             float yPos = -mapHeight / 2 + doorXY.y * squareSize + squareSize;
-
-            // Assign position
-            //doorTransform.position = new Vector3(xPos, yPos, 0);
-            //-mapWidth / 2 + x * squareSize + squareSize / 2, 0, -mapHeight / 2 + y * squareSize + squareSize / 2
 
             doorXY = new Vector2(xPos, yPos);
 
@@ -112,38 +95,79 @@ public class MapAddOns : MonoBehaviour
         }
     }
 
-    public void PlaceEnemies(int[,] map)
+    public List<Vector2> SpawnEnemy(int[,] map, float squareSize, int borderSize)
     {
-       TestEnemyWalkPath = new List<Vector2>();
+        //for size of map
+        int nodeCountX = map.GetLength(0);
+        int nodeCountY = map.GetLength(1);
+        float mapWidth = nodeCountX * squareSize;
+        float mapHeight = nodeCountY * squareSize;
 
+        //for pos doors
+        List<Vector2> enemyPositions;
+        List<Vector2> drawEnemys;
+
+        int numEnemies = 5;
+
+        enemyPositions = new List<Vector2>();
+        drawEnemys = new List<Vector2>();
+
+        //Pass border size to script
         for (int x = 1; x < map.GetLength(0) - 1; x++)
         {
             for (int y = 1; y < map.GetLength(1) - 1; y++)
             {
-                AddPlaceToEnemyWalkArea(map, x, y, TestEnemyWalkPath);
+                if ((map[x, y] == 0 && map[x + 1, y] == 0 && map[x - 1, y] == 0 && map[x, y + 1] == 0) && 
+                    (map[x, y - 1] == 1 || map[x + 1, y - 1] == 1 || map[x - 1, y - 1] == 1))
+                {
+                    Vector2 enemyXY;
+                    enemyXY = new Vector2(x, y);
+                    enemyPositions.Add(enemyXY);
+                }
             }
         }
+
+        for (int x = 0; x < numEnemies; x++)
+        {
+            Vector2 doorXY;
+
+            doorXY = enemyPositions[Random.Range(0, enemyPositions.Count)];
+            enemyPositions.Remove(doorXY);
+
+            float xPos = -mapWidth / 2 + doorXY.x * squareSize + squareSize / 2;
+            float yPos = -mapHeight / 2 + doorXY.y * squareSize + squareSize;
+
+
+            doorXY = new Vector2(xPos, yPos);
+
+            drawEnemys.Add(doorXY);
+
+        }
+
+        return drawEnemys;
     }
 
-    private void AddPlaceToEnemyWalkArea(int[,] map, int x, int y, List<Vector2> list)
+    public void DrawEnemys(List<Vector2> enemyLocations)
     {
-        if (map[x, y] == 0 && map[x + 1, y] == 0 && map[x - 1, y] == 0 && map[x, y + 1] == 0 && map[x, y - 1] == 1 && map[x + 1, y - 1] == 1 && map[x - 1, y - 1] == 1 && map[x, y + 2] == 0)
+        var oldEnemy = GameObject.FindGameObjectsWithTag("Enemy");
+        MapGenerator map = FindObjectOfType<MapGenerator>();
+
+        //this is for removing the old doors
+        foreach (var enemy in oldEnemy)
         {
-            int nodeCountX = map.GetLength(0);
-            int nodeCountY = map.GetLength(1);
-            float mapWidth = nodeCountX * 1;
-            float mapHeight = nodeCountY * 1;
-            float xPos = -mapWidth / 2 + x * 1 + 1 / 2;
-            float yPos = -mapHeight / 2 + y * 1 + 1;
-            list.Add(new Vector2(xPos, yPos));
+            Destroy(enemy);
         }
-        else
+
+        //drawing new doors
+        for (int x = 0; x < enemyLocations.Count; x++)
         {
+            float xPos = enemyLocations[x].x;
+            float yPos = enemyLocations[x].y;
+
+            var doorTransform = Instantiate(EnenyPreFab) as Transform;
+            doorTransform.transform.SetParent(GameObject.Find("EnemyList").transform);
+            doorTransform.position = new Vector3(xPos, yPos, 0);
 
         }
     }
-
-
-
-
 }

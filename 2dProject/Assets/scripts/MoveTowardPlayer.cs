@@ -35,14 +35,14 @@ public class MoveTowardPlayer : MonoBehaviour {
     void Start ()
     {
         //enemy = transform.GetComponentInParent<Transform>();
-        enemy = GameObject.Find("Enemy").transform;
+        enemy = transform.parent.transform;
         player = GameObject.Find("Hero").transform;
 
         //
         enemyRigBody = enemy.GetComponent<Rigidbody2D>();
 
         //
-        maxSpeed = 5f;
+        maxSpeed = 2f;
 
         //for enemy direction
         randomDirection = false;
@@ -83,7 +83,7 @@ public class MoveTowardPlayer : MonoBehaviour {
 
         distanceToPlayer = Vector3.Distance(enemy.position, player.position);
 
-        if ( distanceToPlayer <= 20)
+        if (distanceToPlayer <= 10)
         {
             // set for picking direction after player leaves range
             randomDirection = false;
@@ -91,9 +91,23 @@ public class MoveTowardPlayer : MonoBehaviour {
             if (distanceToPlayer <= 5)
             {
                 enemyRigBody.velocity = new Vector2(enemyRigBody.velocity.x * .95f, enemyRigBody.velocity.y);
+                scriptDelayLastTime = Time.time + scriptDelayAmount;
             }
             else
             {
+                //for jumping if chasing player and got stuck
+                if (scriptDelayLastTime < Time.time)
+                {
+                    for (int i = 0; i < previousLocations.Length - 1; i++)
+                    {
+                        if (Vector3.Distance(previousLocations[i], previousLocations[i + 1]) <= noMovementThreshold)
+                        {
+                            enemyRigBody.AddForce(new Vector2(0f, 500));
+                            scriptDelayLastTime = Time.time + scriptDelayAmount;
+                        }
+                    }
+                }
+
                 heading = player.position - enemy.position;
                 distance = heading.magnitude;
                 StartDirection = heading / distance;
@@ -125,10 +139,22 @@ public class MoveTowardPlayer : MonoBehaviour {
                 //check for hitting wall
                 for (int i = 0; i < previousLocations.Length - 1; i++)
                 {
+                    pickDirection = Random.Range(0, 100);
+
+
                     if (Vector3.Distance(previousLocations[i], previousLocations[i + 1]) <= noMovementThreshold)
                     {
-                        enemySpeed *= -1;
-                        scriptDelayLastTime = Time.time + scriptDelayAmount;
+                        if (pickDirection < 49)
+                        {
+                            enemySpeed *= -1;
+                            scriptDelayLastTime = Time.time + scriptDelayAmount;
+                        }
+
+                        else
+                        {
+                            enemyRigBody.AddForce(new Vector2(0f, 500));
+                            scriptDelayLastTime = Time.time + scriptDelayAmount;
+                        }
                     }
                 }
             }

@@ -4,23 +4,21 @@ using System.Collections.Generic;
 
 public class GameData : MonoBehaviour
 {
+    //useless; for vizualzation
     public List<List<Vector2>> doorlocations = new List<List<Vector2>>();
+    //saves door locations
     public List<Vector2> doorlocations2 = new List<Vector2>();
+
+
     public Dictionary<string, string> doorConnectionDictionary = new Dictionary<string, string>();
     public List<List<string>> doorDicRefs = new List<List<string>>();
     int[] numDoorCountPerMap = new int[6];
 
     public List<string> mapSeed = new List<string>();
 
-    /*
-    int NumMaps = GameObject.Find("MapMarker").GetComponent<MapGenerator>().numMaps;
-    int[] numDoorCountPerMap;
+    //for enemy locations
+    public List<List<Vector2>> enemylocations = new List<List<Vector2>>();
 
-    void Start()
-    {
-        numDoorCountPerMap = new int[NumMaps];
-    }
-    */
 
     // adds door to list
     public void AddDoorLocations(List<Vector2> newDoorLocations)
@@ -31,10 +29,23 @@ public class GameData : MonoBehaviour
         doorlocations.Add(newDoorLocations);
     }
 
+
+    // add enemy location
+    public void AddEnemyLocations(List<Vector2> newEnemyLocations)
+    {
+        enemylocations.Add(newEnemyLocations);
+    }
+
     // gets doors from list
     public List<Vector2> GetDoorForMap(int mapIndex)
     {
         return doorlocations[mapIndex];
+    }
+
+    //for enemy list
+    public List<Vector2> GetEnemyForMap(int mapIndex)
+    {
+        return enemylocations[mapIndex];
     }
 
     //gets index of map
