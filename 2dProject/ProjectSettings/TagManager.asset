@@ -11,6 +11,7 @@ TagManager:
   - Enemy
   - Map
   - MapLines
+  - MapDoor
   layers:
   - Default
   - TransparentFX

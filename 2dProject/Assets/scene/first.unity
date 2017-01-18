@@ -1457,6 +1457,7 @@ MonoBehaviour:
   playerLocalMap: {fileID: 2039687087}
   playerWorldMap: {fileID: 2039687087}
   player: {fileID: 1906573249}
+  doorPrefab: {fileID: 4930750581074272, guid: 4d4802e022a8bd847aa0374b62f8416b, type: 2}
   tempMap: {fileID: 480198, guid: e1882fa7e28651c43bd2b552365c96ab, type: 2}
   touchingDoor: 0
   MapPos: []

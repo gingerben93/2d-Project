@@ -11,6 +11,9 @@ public class DrawPlayerMap : MonoBehaviour {
     public MeshFilter playerWorldMap;
     public GameObject player;
 
+    //for drawing doors on map
+    public Transform doorPrefab;
+
     public Transform tempMap;
     //private Vector3 offset;
 
@@ -47,6 +50,9 @@ public class DrawPlayerMap : MonoBehaviour {
     //for line color
     Color firstColor;
     Color secondColor;
+
+    //for drawing doors
+    bool drawDoors = false;
 
     void Start()
     {
@@ -86,6 +92,13 @@ public class DrawPlayerMap : MonoBehaviour {
         {
             if (localMapOn)
             {
+                //turn map doors off
+                var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
+                foreach (var door in oldMapDoors)
+                {
+                    door.GetComponent<SpriteRenderer>().enabled = false;
+                }
+
                 //turn off teemo marker
                 MapMarkerTeemoSprite.enabled = false;
                 //turn map off and erase it
@@ -102,6 +115,13 @@ public class DrawPlayerMap : MonoBehaviour {
                 localMapOn = true;
                 DrawLocalMap();
 
+                //turn map doors on
+                var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
+                foreach (var door in oldMapDoors)
+                {
+                    door.GetComponent<SpriteRenderer>().enabled = true;
+                }
+
                 //turn off world map lines
                 foreach (Transform child in GameObject.Find("MapDoorLines").transform)
                 {
@@ -110,12 +130,30 @@ public class DrawPlayerMap : MonoBehaviour {
             }
         }
         if (touchingDoor == true && Input.GetKeyDown(KeyCode.R)) {
+
+            
             if (localMapOn)
             {
+                drawDoors = false;
                 DrawLocalMap();
                 touchingDoor = false;
 
             }
+            else
+            {
+                //for door maps
+                transform.localScale = new Vector3(.175f, .175f, .175f);
+                transform.position = player.transform.position;
+                drawDoors = false;
+                DrawDoorsLocalMap(nextMap);
+                var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
+                foreach (var door in oldMapDoors)
+                {
+                    door.GetComponent<SpriteRenderer>().enabled = false;
+                }
+                transform.localScale = new Vector3(.075f, .075f, .075f);
+            }
+
             //for drawing map lines
             bool test = false;
             foreach (Transform child in GameObject.Find("MapDoorLines").transform)
@@ -130,7 +168,6 @@ public class DrawPlayerMap : MonoBehaviour {
             {
                 CreateLines();
             }
-
         }
 
         if (localMapOn)
@@ -152,7 +189,7 @@ public class DrawPlayerMap : MonoBehaviour {
                 worldMapOn = false;
                 playerWorldMap.mesh = null;
 
-                //turn on lines
+                //turn off lines
                 foreach (Transform child in GameObject.Find("MapDoorLines").transform)
                 {
                     child.GetComponent<LineRenderer>().enabled = false;
@@ -160,7 +197,14 @@ public class DrawPlayerMap : MonoBehaviour {
             }
             else
             {
-                //turn off lines
+                //turn map doors off
+                var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
+                foreach (var door in oldMapDoors)
+                {
+                    door.GetComponent<SpriteRenderer>().enabled = false;
+                }
+
+                //turn on lines
                 foreach (Transform child in GameObject.Find("MapDoorLines").transform)
                 {
                     child.GetComponent<LineRenderer>().enabled = true;
@@ -263,8 +307,31 @@ public class DrawPlayerMap : MonoBehaviour {
         return new Vector3(MapPos[pickMap].x * .075f * 150, MapPos[pickMap].y * .075f * 100, 0);
     }
 
+    void DrawDoorsLocalMap(int curMap)
+    {
+        if (drawDoors == false)
+        {
+            var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
+
+            //this is for removing the old doors
+            foreach (var door in oldMapDoors)
+            {
+                Destroy(door);
+            }
+
+            drawDoors = true;
+            foreach (Vector3 door in doorLocations[curMap])
+            {
+                var doorTransform = Instantiate(doorPrefab);
+                doorTransform.transform.SetParent(transform);
+                doorTransform.position = player.transform.position + new Vector3(door.x * .175f, door.y *.175f, 0);
+                doorTransform.localScale = new Vector3(.7f, .7f, .7f);
+            }
+        }
+    }
+
     void DrawLocalMap()
-    {        
+    {
         MapGenerator mapGen = FindObjectOfType<MapGenerator>();
 
         //use this to get all maps
@@ -281,6 +348,16 @@ public class DrawPlayerMap : MonoBehaviour {
         transform.position = player.transform.position;
         transform.eulerAngles = new Vector3(270, 0, 0);
         //transform.Rotate(Vector3.zero);
+
+        //for mapdoors
+        if (touchingDoor == true)
+        {
+            DrawDoorsLocalMap(nextMap);
+        }
+        else
+        {
+            DrawDoorsLocalMap(currentMap);
+        }
     }
 
     void UpdatePosition()
@@ -338,6 +415,8 @@ public class DrawPlayerMap : MonoBehaviour {
             transform.localScale = new Vector3(.075f, .075f, .075f);
             transform.position = player.transform.position;
 
+            //this remove all objects in playmap; problem beacuse it was removing mapdoors. only want to remove maps
+            /*
             //removes all the children of map object
             foreach (Transform child in transform)
             {
@@ -347,6 +426,7 @@ public class DrawPlayerMap : MonoBehaviour {
                     GameObject.Destroy(child.gameObject);
                 }
             }
+            */
 
             //save fullmap to assests
             string worldMap = "WorldMap";
