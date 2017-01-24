@@ -1459,7 +1459,6 @@ MonoBehaviour:
   player: {fileID: 1906573249}
   doorPrefab: {fileID: 4930750581074272, guid: 4d4802e022a8bd847aa0374b62f8416b, type: 2}
   tempMap: {fileID: 480198, guid: e1882fa7e28651c43bd2b552365c96ab, type: 2}
-  touchingDoor: 0
   MapPos: []
   mapLine: {fileID: 439000, guid: b5067d86c034213469285d6188d35502, type: 2}
 --- !u!4 &2039687085

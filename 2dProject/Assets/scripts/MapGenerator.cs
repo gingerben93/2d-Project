@@ -45,10 +45,11 @@ public class MapGenerator : MonoBehaviour
     void Start()
     {
         numMaps = 6;
-        for (currentMap = 0; currentMap < numMaps; currentMap++)
+        for (int x = 0; x < numMaps; x++)
         {
             seed = currentMap.ToString();
             GenerateMap();
+            currentMap += 1;
         }
         useRandomSeed = false;
         gameData = FindObjectOfType<GameData>();

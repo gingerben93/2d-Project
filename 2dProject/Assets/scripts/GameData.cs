@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class GameData : MonoBehaviour
 {
-    //useless; for vizualzation
-    public List<List<Vector2>> doorlocations = new List<List<Vector2>>();
     //saves door locations
+    public List<List<Vector2>> doorlocations = new List<List<Vector2>>();
+    //useless; for vizualzation
     public List<Vector2> doorlocations2 = new List<Vector2>();
 
 

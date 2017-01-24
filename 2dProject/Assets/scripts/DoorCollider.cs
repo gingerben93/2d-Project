@@ -15,6 +15,8 @@ public class DoorCollider : MonoBehaviour {
 
     public void OnTriggerEnter2D(Collider2D node)
     {
+        //for door colliding in DrawPlayerMap
+        DrawPlayerMap changeLocalMap = FindObjectOfType<DrawPlayerMap>();
         GameController gameCon = FindObjectOfType<GameController>();
         DoorPrefabInfo info = node.GetComponent<DoorPrefabInfo>();
         if (node.gameObject.tag == "Door")
@@ -43,7 +45,8 @@ public class DoorCollider : MonoBehaviour {
             //pass seed and door info to gameController.
             gameCon.mapSeed = newSeed;
             gameCon.doorRef = numVal;
-            gameCon.touchingDoor = true; 
+            gameCon.touchingDoor = true;
+            changeLocalMap.touchingDoor = true;
         }
     }
 
@@ -60,9 +63,12 @@ public class DoorCollider : MonoBehaviour {
 
     public void OnTriggerExit2D(Collider2D node)
     {
+        //for door colliding in DrawPlayerMap
+        DrawPlayerMap changeLocalMap = FindObjectOfType<DrawPlayerMap>();
         GameController gameCon = FindObjectOfType<GameController>();
         if (node.gameObject.tag == "Door")
         {
+            changeLocalMap.touchingDoor = false;
             gameCon.touchingDoor = false;
         }
     }

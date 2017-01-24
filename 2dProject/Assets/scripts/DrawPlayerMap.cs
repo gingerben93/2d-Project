@@ -23,7 +23,7 @@ public class DrawPlayerMap : MonoBehaviour {
     bool makeMap = true;
 
     //if change room bool
-    public bool touchingDoor = false;
+    public bool touchingDoor { get; set; }
 
     //for map marker
     GameObject MapMarkerTeemo;
@@ -54,6 +54,9 @@ public class DrawPlayerMap : MonoBehaviour {
     //for drawing doors
     bool drawDoors = false;
 
+    //for door map
+    bool firstRun = false;
+
     void Start()
     {
         //for drawing map
@@ -81,6 +84,20 @@ public class DrawPlayerMap : MonoBehaviour {
         doorLocations = new List<List<Vector2>>();
         doorLocations = data.doorlocations;
         LinePos = new List<Vector3>();
+
+        //for making world map
+        DrawWorldMap();
+        //removes all the children of map object
+        foreach (Transform child in transform)
+        {
+            //currently does nothngn beacuse map marker is not a child
+            if (child.name != "MapMarker")
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+        }
+        makeMap = false;
+        playerWorldMap.mesh = null;
 
     }
 
@@ -136,7 +153,7 @@ public class DrawPlayerMap : MonoBehaviour {
             {
                 drawDoors = false;
                 DrawLocalMap();
-                touchingDoor = false;
+                //touchingDoor = false;
 
             }
             else
@@ -251,7 +268,9 @@ public class DrawPlayerMap : MonoBehaviour {
         //Instantiate line
         var tempMapLine = Instantiate(mapLine) as Transform;
         tempMapLine.SetParent(GameObject.Find("MapDoorLines").transform);
-        tempMapLine.GetComponent<LineRenderer>().SetWidth(.1f, .1f);
+        //tempMapLine.GetComponent<LineRenderer>().SetWidth(.1f, .1f); old version now outdated
+        tempMapLine.GetComponent<LineRenderer>().startWidth = .1f;
+        tempMapLine.GetComponent<LineRenderer>().endWidth = .1f;
         tempMapLine.GetComponent<LineRenderer>().SetPosition(0, player.transform.position + linePos1);
         tempMapLine.GetComponent<LineRenderer>().SetPosition(1, player.transform.position + linePos2);
         tempMapLine.name = currentMap.ToString() + currentDoor.ToString() + nextMap.ToString() + nextDoor.ToString();
@@ -266,7 +285,9 @@ public class DrawPlayerMap : MonoBehaviour {
         secondColor = PickLineColor(nextMap);
 
         tempMapLine.GetComponent<LineRenderer>().material = new Material(Shader.Find("Particles/Additive"));
-        tempMapLine.GetComponent<LineRenderer>().SetColors(firstColor, secondColor);
+        //tempMapLine.GetComponent<LineRenderer>().SetColors(firstColor, secondColor); old version, now outdated
+        tempMapLine.GetComponent<LineRenderer>().startColor = firstColor;
+        tempMapLine.GetComponent<LineRenderer>().endColor = secondColor;
     }
 
     //for picking map line colors
@@ -330,6 +351,29 @@ public class DrawPlayerMap : MonoBehaviour {
         }
     }
 
+    void PutObjectOnLocalMap(GameObject MapObject, List<Vector2> listOfMapObjects, Transform PrefabObject)
+    {
+        string newTag = "Map" + MapObject.tag;
+
+        var oldMapObject = GameObject.FindGameObjectsWithTag(newTag);
+
+        //this is for removing the old map objects
+        foreach (var single in oldMapObject)
+        {
+            Destroy(single);
+        }
+
+        //adds objects to map
+        drawDoors = true;
+        foreach (Vector3 single in listOfMapObjects)
+        {
+            var objectTransform = Instantiate(PrefabObject);
+            objectTransform.transform.SetParent(transform);
+            objectTransform.position = player.transform.position + new Vector3(single.x * .175f, single.y * .175f, 0);
+            objectTransform.localScale = new Vector3(.7f, .7f, .7f);
+        }
+    }
+
     void DrawLocalMap()
     {
         MapGenerator mapGen = FindObjectOfType<MapGenerator>();
@@ -350,12 +394,13 @@ public class DrawPlayerMap : MonoBehaviour {
         //transform.Rotate(Vector3.zero);
 
         //for mapdoors
-        if (touchingDoor == true)
+        if (touchingDoor == true && firstRun != false)
         {
             DrawDoorsLocalMap(nextMap);
         }
         else
         {
+            firstRun = true;
             DrawDoorsLocalMap(currentMap);
         }
     }
@@ -377,7 +422,6 @@ public class DrawPlayerMap : MonoBehaviour {
         if (makeMap)
         {
             makeMap = false;
-            
 
             MeshFilter[] meshFilters = new MeshFilter[totalMaps];
 

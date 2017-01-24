@@ -55,9 +55,17 @@ public class DrawGrapHook : MonoBehaviour {
         //line info
         line = GetComponent<LineRenderer>();
         line.material = new Material(Shader.Find("Diffuse"));
-        line.SetVertexCount(2);
-        line.SetWidth(.1f, .1f);
-        line.SetColors(Color.green, Color.green);
+        //line.SetVertexCount(2);
+        //line.SetWidth(.1f, .1f);
+        //line.SetColors(Color.green, Color.green);
+
+        line.numPositions = 2;
+        line.startWidth = .1f;
+        line.endWidth = .1f;
+        line.startColor = Color.green;
+        line.endColor = Color.green;
+
+
         line.useWorldSpace = true;
         line.enabled = false;
         rb2d = player.GetComponent<Rigidbody2D>();
