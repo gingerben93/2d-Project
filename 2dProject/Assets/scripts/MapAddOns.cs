@@ -42,23 +42,26 @@ public class MapAddOns : MonoBehaviour
             }
         }
 
-        for (int x = 0; x < numDoors; x++)
-        {
-            Vector2 doorXY;
+        //this picks where the doors should be. Now I want to do this later.
+        //for (int x = 0; x < numDoors; x++)
+        //{
+        //    Vector2 doorXY;
 
-            doorXY = doorPositions[Random.Range(0, doorPositions.Count)];
-            doorPositions.Remove(doorXY);
+        //    doorXY = doorPositions[Random.Range(0, doorPositions.Count)];
+        //    doorPositions.Remove(doorXY);
 
-            float xPos = -mapWidth / 2 + doorXY.x * squareSize + squareSize / 2;
-            float yPos = -mapHeight / 2 + doorXY.y * squareSize + squareSize;
+        //    float xPos = -mapWidth / 2 + doorXY.x * squareSize + squareSize / 2;
+        //    float yPos = -mapHeight / 2 + doorXY.y * squareSize + squareSize;
 
-            doorXY = new Vector2(xPos, yPos);
+        //    doorXY = new Vector2(xPos, yPos);
 
-            drawDoors.Add(doorXY);
+        //    drawDoors.Add(doorXY);
 
-        }
+        //}
 
-        return drawDoors;
+        //return drawDoors;
+
+        return doorPositions;
     }
 
     public void DrawOldDoors(List<Vector2> doorLocations)

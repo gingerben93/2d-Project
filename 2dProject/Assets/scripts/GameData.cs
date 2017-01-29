@@ -5,14 +5,22 @@ using System.Collections.Generic;
 public class GameData : MonoBehaviour
 {
     //saves door locations
+    public List<List<Vector2>> possibleDoorLocations = new List<List<Vector2>>();
     public List<List<Vector2>> doorlocations = new List<List<Vector2>>();
+
     //useless; for vizualzation
     public List<Vector2> doorlocations2 = new List<Vector2>();
+
+    //saves the width and height of each map
+    public List<int[,]> MapWidthHeight = new List<int[,]>();
+
+    public int squareSize { get; set; }
 
 
     public Dictionary<string, string> doorConnectionDictionary = new Dictionary<string, string>();
     public List<List<string>> doorDicRefs = new List<List<string>>();
-    int[] numDoorCountPerMap = new int[6];
+    //int[] numDoorCountPerMap = new int[6];
+    List<int> numDoorCountPerMap = new List<int>();
 
     public List<string> mapSeed = new List<string>();
 
@@ -26,7 +34,7 @@ public class GameData : MonoBehaviour
         foreach(Vector2 door in newDoorLocations){
             doorlocations2.Add(new Vector2(door.x, door.y));
         }
-        doorlocations.Add(newDoorLocations);
+        possibleDoorLocations.Add(newDoorLocations);
     }
 
 
@@ -98,28 +106,95 @@ public class GameData : MonoBehaviour
         mapSeed.Add(seed);
     }
 
-    public void CreatDoorConnections()
+    public List<Vector2> createNumberOfDoors(int currentMap, int numDoors)
     {
-        // fills a dictionary with all with map seeds concatenated to door index;
-        for (int listDoor = 0; listDoor < doorlocations.Count; listDoor++)
+        List<Vector2> drawDoors = new List<Vector2>();
+
+        //Debug.Log("create doors for map = " + currentMap);
+
+        for (int x = 0; x < numDoors; x++)
         {
+            squareSize = 1;
+            //for size of map
+            int nodeCountX = MapWidthHeight[currentMap].GetLength(0);
+            int nodeCountY = MapWidthHeight[currentMap].GetLength(1);
+            float mapWidth = nodeCountX * squareSize;
+            float mapHeight = nodeCountY * squareSize;
+
+            Vector2 doorXY;
+
+            doorXY = possibleDoorLocations[currentMap][Random.Range(0, possibleDoorLocations.Count)];
+            possibleDoorLocations[currentMap].Remove(doorXY);
+
+            float xPos = -mapWidth / 2 + doorXY.x * squareSize + squareSize / 2;
+            float yPos = -mapHeight / 2 + doorXY.y * squareSize + squareSize;
+
+            doorXY = new Vector2(xPos, yPos);
+            //Debug.Log("create door doorXY = " + doorXY + " on map" + currentMap);
+            drawDoors.Add(doorXY);
+
+        }
+
+        return drawDoors;
+    }
+
+    public void CreatDoorConnections(int startMap, int endMap)
+    {
+        int numberOfMaps = endMap - startMap + 1;
+        //int[] numDoorCountPerMap = new int[numberOfMaps];
+        numDoorCountPerMap = new List<int>();
+        numDoorCountPerMap.Clear();
+        numDoorCountPerMap.TrimExcess();
+        //Debug.Log("numberOfMaps = " + numberOfMaps);
+        //create the number of doors
+
+        List<List<Vector2>> currentSetDoors = new List<List<Vector2>>();
+        doorDicRefs = new List<List<string>>();
+
+
+        for (int listDoor = startMap; listDoor < endMap + 1; listDoor++)
+        {
+            List<Vector2> ListOfDoors = new List<Vector2>();
+            ListOfDoors = createNumberOfDoors(listDoor, 2);
+            currentSetDoors.Add(ListOfDoors);
+            //all door locations
+            doorlocations.Add(ListOfDoors);
+            //Debug.Log("Times Run = " + listDoor);
+        }
+
+        //int test = 0;
+        //foreach (List<Vector2> doors in doorlocations)
+        //{
+        //    Debug.Log("Times Run  test = " + test);
+        //    foreach (Vector2 door in doors)
+        //    {
+        //        Debug.Log("List<Vector2> door = " + door);
+        //    }
+        //    test += 1;
+        //}
+
+        // fills a dictionary with all with map seeds concatenated to door index;
+        for (int listDoor = startMap; listDoor < endMap + 1; listDoor++)
+        {
+            //Debug.Log("Times Run 2 = " + listDoor);
             List<string> tempList = new List<string>();
             int doorNum;
-            for (doorNum = 0; doorNum < doorlocations[listDoor].Count; doorNum++)
+            for (doorNum = 0; doorNum < currentSetDoors[listDoor - startMap].Count; doorNum++)
             {
                 doorConnectionDictionary.Add(mapSeed[listDoor] + doorNum.ToString(), "");
                 tempList.Add(mapSeed[listDoor] + doorNum.ToString());
             }
 
-            numDoorCountPerMap[listDoor] = doorNum;
+            numDoorCountPerMap.Add(doorNum);
+            //numDoorCountPerMap[listDoor] = doorNum;
             doorDicRefs.Add(tempList);
         }
     }
 
-    public void EnsureConnectivityOfMaps()
+    public void EnsureConnectivityOfMaps(int startMap, int endMap)
     {
         // connects a door in map 1 to map 2, map 2 to map 3, etc
-        for (int listDoor = 0; listDoor < doorlocations.Count - 1; listDoor++)
+        for (int listDoor = startMap - startMap; listDoor < endMap - startMap; listDoor++)
         {
             int doorIndex1 = Random.Range(0, doorDicRefs[listDoor].Count - 1);
             int doorIndex2 = Random.Range(0, doorDicRefs[listDoor + 1].Count - 1);
@@ -141,15 +216,15 @@ public class GameData : MonoBehaviour
             doorDicRefs[listDoor + 1].TrimExcess();
 
         }
-        /*
-        foreach (KeyValuePair<string, string> kvp in doorConnectionDictionary)
-        {
-            Debug.Log("Key =" + kvp.Key + "Value =" + kvp.Value);
-        }
-        */
+        
+        //foreach (KeyValuePair<string, string> kvp in doorConnectionDictionary)
+        //{
+        //    Debug.Log("Key =" + kvp.Key + "Value =" + kvp.Value);
+        //}
+        
     }
 
-    public void ConnectDoors()
+    public void ConnectDoors(int startMap)
     {
         int maxDoorCountAllRooms = 0;
         List<int> possibleDoorChoices = new List<int>();
@@ -162,7 +237,8 @@ public class GameData : MonoBehaviour
             maxDoorCountAllRooms = 0;
 
             //first door info get and set
-            for (int doorNumIndex = 0; doorNumIndex < numDoorCountPerMap.Length; doorNumIndex++)
+            //Debug.Log("numDoorCountPerMap.Length = " + numDoorCountPerMap.Count);
+            for (int doorNumIndex = 0; doorNumIndex < numDoorCountPerMap.Count; doorNumIndex++)
             {
                 if (maxDoorCountAllRooms < numDoorCountPerMap[doorNumIndex])
                 {
@@ -179,8 +255,14 @@ public class GameData : MonoBehaviour
 
             //get right map; decrease door count; get random door; get dictionary key;
             int mapIndex1 = possibleDoorChoices[Random.Range(0, possibleDoorChoices.Count - 1)];
+            Debug.Log("mapIndex1 = " + mapIndex1 + "startMap = " + startMap + "; numDoorCountPerMap[mapIndex1].count = " + numDoorCountPerMap.Count);
+            foreach(int count in numDoorCountPerMap)
+            {
+                Debug.Log("What's in numDoorCountPerMap = " + count + " StartMap = " + startMap);
+            }
             numDoorCountPerMap[mapIndex1] -= 1;
             int doorIndex1 = Random.Range(0, doorDicRefs[mapIndex1].Count - 1);
+            Debug.Log("mapIndex1 = " + mapIndex1 + " doorIndex1 = " + doorIndex1 + "StartMap = " + startMap);
             string doorRef1 = doorDicRefs[mapIndex1][doorIndex1];
 
             //begin second door info get and set
@@ -191,7 +273,7 @@ public class GameData : MonoBehaviour
 
             while(possibleDoorChoices.Count == 0)
             {
-                for (int doorNumIndex = 0; doorNumIndex < numDoorCountPerMap.Length; doorNumIndex++)
+                for (int doorNumIndex = 0; doorNumIndex < numDoorCountPerMap.Count; doorNumIndex++)
                 {
                     if (mapIndex1 == doorNumIndex)
                     {
@@ -241,14 +323,58 @@ public class GameData : MonoBehaviour
             }
         }
 
-        /*
+        
+        //foreach (KeyValuePair<string, string> kvp in doorConnectionDictionary)
+        //{
+        //    Debug.Log("Key =" + kvp.Key + "Value =" + kvp.Value);
+        //}
+        
+
+    }
+
+    public void ConnectSetOfRooms(int mapOne, int mapTwo)
+    {
+        Vector2 door1 = possibleDoorLocations[mapOne][Random.Range(0, possibleDoorLocations[mapOne].Count)];
+        Vector2 door2 = possibleDoorLocations[mapTwo][Random.Range(0, possibleDoorLocations[mapTwo].Count)];
+        possibleDoorLocations[mapOne].Remove(door1);
+        possibleDoorLocations[mapTwo].Remove(door2);
+
+        squareSize = 1;
+        //for size of map
+        int nodeCountXMapOne = MapWidthHeight[mapOne].GetLength(0);
+        int nodeCountYMapOne = MapWidthHeight[mapOne].GetLength(1);
+        float mapWidthMapOne = nodeCountXMapOne * squareSize;
+        float mapHeightMapOne = nodeCountYMapOne * squareSize;
+
+        int nodeCountXMapTwo = MapWidthHeight[mapTwo].GetLength(0);
+        int nodeCountYMapTwo = MapWidthHeight[mapTwo].GetLength(1);
+        float mapWidthMapTwo = nodeCountXMapOne * squareSize;
+        float mapHeightMapTwo = nodeCountYMapOne * squareSize;
+
+        float xPosMapOne = -mapWidthMapOne / 2 + door1.x * squareSize + squareSize / 2;
+        float yPosMapOne = -mapHeightMapOne / 2 + door1.y * squareSize + squareSize;
+
+        float xPosMapTwo = -mapWidthMapTwo / 2 + door2.x * squareSize + squareSize / 2;
+        float yPosMapTwo = -mapHeightMapTwo / 2 + door2.y * squareSize + squareSize;
+
+        door1 = new Vector2(xPosMapOne, yPosMapOne);
+        door2 = new Vector2(xPosMapTwo, yPosMapTwo);
+
+        doorlocations[mapOne].Add(door1);
+        doorlocations[mapTwo].Add(door2);
+
+        Debug.Log("mapSeed[mapOne] + doorlocations[mapOne].Count.ToString()" + mapSeed[mapOne] + (doorlocations[mapOne].Count - 1).ToString());
+        Debug.Log("mapSeed[mapTwo] + doorlocations[mapTwo].Count.ToString()" + mapSeed[mapTwo] + (doorlocations[mapTwo].Count - 1).ToString());
+
+        doorConnectionDictionary.Add(mapSeed[mapOne] + (doorlocations[mapOne].Count - 1).ToString(), mapSeed[mapTwo] + (doorlocations[mapOne].Count - 1).ToString());
+        doorConnectionDictionary.Add(mapSeed[mapTwo] + (doorlocations[mapOne].Count - 1).ToString(), mapSeed[mapOne] + (doorlocations[mapTwo].Count - 1).ToString());
+
         foreach (KeyValuePair<string, string> kvp in doorConnectionDictionary)
         {
             Debug.Log("Key =" + kvp.Key + "Value =" + kvp.Value);
         }
-        */
-
     }
+
 
     public string GetDoorInfo(string oldDoor)
     {

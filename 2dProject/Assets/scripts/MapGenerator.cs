@@ -33,6 +33,7 @@ public class MapGenerator : MonoBehaviour
     int currentMap = 0;
 
     //
+    public List<Vector2> possibleDoorLocations;
     public List<Vector2> doorLocations;
     public List<Vector2> enemyLocations;
 
@@ -52,21 +53,35 @@ public class MapGenerator : MonoBehaviour
             currentMap += 1;
         }
         useRandomSeed = false;
+
+        gameData.CreatDoorConnections(0, 2);
+        gameData.EnsureConnectivityOfMaps(0, 2);
+        gameData.ConnectDoors(0);
+
+        Debug.Log("set one done");
+
+        gameData.CreatDoorConnections(3, 5);
+        gameData.EnsureConnectivityOfMaps(3, 5);
+        gameData.ConnectDoors(3);
+
+        Debug.Log("set two done");
+
+        gameData.ConnectSetOfRooms(0, 3);
+
         gameData = FindObjectOfType<GameData>();
         seed = gameData.mapSeed[0];
         GenerateMap();
 
-        gameData.CreatDoorConnections();
-        gameData.EnsureConnectivityOfMaps();
-        gameData.ConnectDoors();
 
     }
 
     //begining of map generation
     public void GenerateMap()
     {
+        gameData = FindObjectOfType<GameData>();
         map = new int[width, height];
-        
+        gameData.MapWidthHeight.Add(map);
+
         //fills map
         RandomFillMap();
 
@@ -108,9 +123,9 @@ public class MapGenerator : MonoBehaviour
             meshGen.GenerateMesh(borderedMap, 1);
 
             //for doors spawns
-            doorLocations = new List<Vector2>();
-            doorLocations = MapAddOns.GenerateDoors(map, 1, borderSize);
-            gameData.AddDoorLocations(doorLocations);
+            possibleDoorLocations = new List<Vector2>();
+            possibleDoorLocations = MapAddOns.GenerateDoors(map, 1, borderSize);
+            gameData.AddDoorLocations(possibleDoorLocations);
 
             //for enemy spawns
             enemyLocations = new List<Vector2>();
@@ -122,9 +137,10 @@ public class MapGenerator : MonoBehaviour
         {
             //find a way to save the map data so oyu don't even have to recreate the borderedMap (and doorLocations); this can jsut go right at the top.
             meshGen.LoadMeshFromAssests(borderedMap, 1);
-            
+
             //for door spawns
             doorLocations = new List<Vector2>();
+            Debug.Log("seed =" + seed);
             doorLocations = gameData.GetDoorForMap(gameData.FindMapIndex(seed));
             MapAddOns.DrawOldDoors(doorLocations);
 
@@ -134,6 +150,7 @@ public class MapGenerator : MonoBehaviour
             MapAddOns.DrawEnemys(enemyLocations);
 
         }
+        
 
     }
 
