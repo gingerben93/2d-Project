@@ -258,6 +258,7 @@ MonoBehaviour:
   randomFillPercent: 50
   passageLength: 4
   smoothness: 10
+  possibleDoorLocations: []
   doorLocations: []
   enemyLocations: []
 --- !u!4 &855179378
@@ -778,7 +779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   facingRight: 1
   jump: 0
-  maxSpeed: 5
+  maxSpeed: 8
   jumpForce: 300
   groundCheck: {fileID: 855179378}
   InvMenu: {fileID: 302587096}
@@ -1380,6 +1381,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorlocations2: []
+  MapFillPassLengthAndSmoothness: []
   mapSeed: []
 --- !u!4 &1970347000
 Transform:

@@ -45,6 +45,7 @@ public class MapGenerator : MonoBehaviour
     //where program stars
     void Start()
     {
+        gameData = FindObjectOfType<GameData>();
         numMaps = 6;
         for (int x = 0; x < numMaps; x++)
         {
@@ -52,15 +53,25 @@ public class MapGenerator : MonoBehaviour
             GenerateMap();
             currentMap += 1;
         }
+
+        width = 50; height = 100;
+        randomFillPercent = 0;
+        seed = currentMap.ToString();
+        GenerateMap();
+        currentMap += 1;
+
+
+
         useRandomSeed = false;
 
-        gameData.CreatDoorConnections(0, 2);
+        //use is map index one, map index 2 and number of doors for each map.
+        gameData.CreatDoorConnections(0, 2, 2);
         gameData.EnsureConnectivityOfMaps(0, 2);
         gameData.ConnectDoors(0);
 
         Debug.Log("set one done");
 
-        gameData.CreatDoorConnections(3, 5);
+        gameData.CreatDoorConnections(3, 5 , 2);
         gameData.EnsureConnectivityOfMaps(3, 5);
         gameData.ConnectDoors(3);
 
@@ -68,8 +79,13 @@ public class MapGenerator : MonoBehaviour
 
         gameData.ConnectSetOfRooms(0, 3);
 
-        gameData = FindObjectOfType<GameData>();
+        gameData.CreatDoorConnections(6, 6, 0);
+        gameData.ConnectSetOfRooms(0, 6);
+
+        //gameData = FindObjectOfType<GameData>();
         seed = gameData.mapSeed[0];
+
+        map = new int[gameData.MapWidthHeight[Int32.Parse(seed)].GetLength(0), gameData.MapWidthHeight[Int32.Parse(seed)].GetLength(1)];
         GenerateMap();
 
 
@@ -79,8 +95,26 @@ public class MapGenerator : MonoBehaviour
     public void GenerateMap()
     {
         gameData = FindObjectOfType<GameData>();
-        map = new int[width, height];
-        gameData.MapWidthHeight.Add(map);
+
+        if (useRandomSeed == true)
+        {
+            //save game data for recall later
+            gameData.AddSeed(seed);
+            gameData.MapFillPassLengthAndSmoothness.Add(new Vector3(randomFillPercent, passageLength, smoothness));
+            map = new int[width, height];
+            gameData.MapWidthHeight.Add(map);
+        }
+        else
+        {
+            int tempIntSeed = Int32.Parse(seed);
+            Debug.Log("gameData.MapWidthHeight[Int32.Parse(seed)].GetLength(1) = " + gameData.MapWidthHeight[tempIntSeed].GetLength(1));
+            map = new int[gameData.MapWidthHeight[tempIntSeed].GetLength(0), gameData.MapWidthHeight[tempIntSeed].GetLength(1)];
+            width = gameData.MapWidthHeight[tempIntSeed].GetLength(0);
+            height = gameData.MapWidthHeight[tempIntSeed].GetLength(1);
+            randomFillPercent = (int)gameData.MapFillPassLengthAndSmoothness[tempIntSeed].x;
+            passageLength = (int)gameData.MapFillPassLengthAndSmoothness[tempIntSeed].y;
+            smoothness = (int)gameData.MapFillPassLengthAndSmoothness[tempIntSeed].z;
+        }
 
         //fills map
         RandomFillMap();
@@ -150,8 +184,6 @@ public class MapGenerator : MonoBehaviour
             MapAddOns.DrawEnemys(enemyLocations);
 
         }
-        
-
     }
 
     //smooths the map with arbitrary process, change be changed and modified 
@@ -209,17 +241,6 @@ public class MapGenerator : MonoBehaviour
     //for random filling of map with border
     void RandomFillMap()
     {
-        gameData = FindObjectOfType<GameData>();
-        if (useRandomSeed)
-        {
-            //seed = Time.time.ToString();
-            gameData.AddSeed(seed);
-        }
-        else
-        {
-            //seed = data.GetSeed(seed);
-        }
-
         //get the hash of the seed to fill array, same seed will give same array
         System.Random pseudoRandom = new System.Random(seed.GetHashCode());
 

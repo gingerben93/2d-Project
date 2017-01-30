@@ -11,21 +11,11 @@ public class MapAddOns : MonoBehaviour
 
     public List<Vector2> GenerateDoors(int[,] map, float squareSize, int borderSize)
     {
-        //for size of map
-        int nodeCountX = map.GetLength(0);
-        int nodeCountY = map.GetLength(1);
-        float mapWidth = nodeCountX * squareSize;
-        float mapHeight = nodeCountY * squareSize;
-
         //for pos doors
         List<Vector2> doorPositions;
-        List<Vector2> drawDoors;
 
 
         doorPositions = new List<Vector2>();
-        drawDoors = new List<Vector2>();
-
-        int numDoors = 4;
 
         //Pass border size to script
         for (int x = 1; x < map.GetLength(0) - 1; x++)
@@ -41,26 +31,6 @@ public class MapAddOns : MonoBehaviour
                 }
             }
         }
-
-        //this picks where the doors should be. Now I want to do this later.
-        //for (int x = 0; x < numDoors; x++)
-        //{
-        //    Vector2 doorXY;
-
-        //    doorXY = doorPositions[Random.Range(0, doorPositions.Count)];
-        //    doorPositions.Remove(doorXY);
-
-        //    float xPos = -mapWidth / 2 + doorXY.x * squareSize + squareSize / 2;
-        //    float yPos = -mapHeight / 2 + doorXY.y * squareSize + squareSize;
-
-        //    doorXY = new Vector2(xPos, yPos);
-
-        //    drawDoors.Add(doorXY);
-
-        //}
-
-        //return drawDoors;
-
         return doorPositions;
     }
 
@@ -153,7 +123,7 @@ public class MapAddOns : MonoBehaviour
     public void DrawEnemys(List<Vector2> enemyLocations)
     {
         var oldEnemy = GameObject.FindGameObjectsWithTag("Enemy");
-        MapGenerator map = FindObjectOfType<MapGenerator>();
+        //MapGenerator map = FindObjectOfType<MapGenerator>();
 
         //this is for removing the old doors
         foreach (var enemy in oldEnemy)
