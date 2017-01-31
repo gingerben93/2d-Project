@@ -17,7 +17,7 @@ public class MoveTowardPlayer : MonoBehaviour {
     private Vector3 heading;
     private float distance;
     private Vector3 StartDirection;
-    float distanceToPlayer;
+    private float distanceToPlayer;
 
     //for enemy random movement
     private int pickDirection;

@@ -12,35 +12,52 @@ public class DoorCollider : MonoBehaviour {
     private string newSeed;
     private string newDoor;
     private string newDicRef;
+    private string[] values;
+
+    GameData gameData;
+    DrawPlayerMap changeLocalMap;
+    GameController gameCon;
+    DoorPrefabInfo info;
+
+    void Start()
+    {
+        gameData = FindObjectOfType<GameData>();
+        changeLocalMap = FindObjectOfType<DrawPlayerMap>();
+        gameCon = FindObjectOfType<GameController>();
+        
+    }
 
     public void OnTriggerEnter2D(Collider2D node)
     {
         //for door colliding in DrawPlayerMap
-        DrawPlayerMap changeLocalMap = FindObjectOfType<DrawPlayerMap>();
-        GameController gameCon = FindObjectOfType<GameController>();
-        DoorPrefabInfo info = node.GetComponent<DoorPrefabInfo>();
+        info = node.GetComponent<DoorPrefabInfo>();
+
         if (node.gameObject.tag == "Door")
         {
             oldSeed = info.seedReference;
             oldDoor = info.doorReference.ToString();
-            dicRef = oldSeed + oldDoor;
+            dicRef = oldSeed + "," + oldDoor;
 
             GameData data = FindObjectOfType<GameData>();
             newDicRef = data.GetDoorInfo(dicRef);
 
-            //set new door and map seed info
-            newSeed = newDicRef.Substring(0, newDicRef.Length - 1);
-            newDoor = newDicRef.Remove(newDicRef.Length - 2, newDicRef.Length - 1);
+            //Debug.Log("newDicRef = " + newDicRef);
 
-            //Debug.Log("newSeed = " + newSeed + "newDoor = " + newDoor);
+            //splits the dic ref apart into the map seed and the door index value
+            values = newDicRef.Split(',');
+
+            //Debug.Log("newSeed = " + values[0] + "newDoor = " + values[1]);
+            newSeed = values[0];
+            newDoor = values[1];
 
             numVal = Int32.Parse(newDoor);
+            numVal = gameData.FindMapIndex(newDoor);
 
             //for drawing lines
-            GameObject.FindObjectOfType<DrawPlayerMap>().currentDoor = Int32.Parse(oldDoor);
-            GameObject.FindObjectOfType<DrawPlayerMap>().nextDoor = Int32.Parse(newDoor);
-            GameObject.FindObjectOfType<DrawPlayerMap>().currentMap = Int32.Parse(oldSeed);
-            GameObject.FindObjectOfType<DrawPlayerMap>().nextMap = Int32.Parse(newSeed);
+            changeLocalMap.currentDoor = Int32.Parse(oldDoor);
+            changeLocalMap.nextDoor = gameData.FindMapIndex(newDoor);
+            changeLocalMap.currentMap = Int32.Parse(oldSeed);
+            changeLocalMap.nextMap = gameData.FindMapIndex(newSeed);
 
             //pass seed and door info to gameController.
             gameCon.mapSeed = newSeed;
@@ -64,8 +81,9 @@ public class DoorCollider : MonoBehaviour {
     public void OnTriggerExit2D(Collider2D node)
     {
         //for door colliding in DrawPlayerMap
-        DrawPlayerMap changeLocalMap = FindObjectOfType<DrawPlayerMap>();
-        GameController gameCon = FindObjectOfType<GameController>();
+        changeLocalMap = FindObjectOfType<DrawPlayerMap>();
+        gameCon = FindObjectOfType<GameController>();
+
         if (node.gameObject.tag == "Door")
         {
             changeLocalMap.touchingDoor = false;

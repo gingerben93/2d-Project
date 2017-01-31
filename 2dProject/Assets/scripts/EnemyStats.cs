@@ -4,10 +4,18 @@ using System.Collections;
 /// Handle hitpoints and damages
 public class EnemyStats : MonoBehaviour
 {
-    /// Total hitpoints
-    public int hp = 1;
 
-    public bool isEnemy = true;
+    Shot shot;
+
+    /// Total hitpoints
+    public int hp { get; set; }
+    public bool isEnemy { get; set; }
+
+    void Start()
+    {
+        hp = 1;
+        isEnemy = true;
+    }
 
     /// Inflicts damage and check if the object should be destroyed
     public void Damage(int damageCount)
@@ -24,7 +32,7 @@ public class EnemyStats : MonoBehaviour
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
         // Is this a shot?
-        Shot shot = otherCollider.gameObject.GetComponent<Shot>();
+        shot = otherCollider.gameObject.GetComponent<Shot>();
         if (shot != null)
         {
             // Avoid friendly fire

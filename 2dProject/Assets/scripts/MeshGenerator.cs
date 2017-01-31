@@ -76,7 +76,7 @@ public class MeshGenerator : MonoBehaviour
         string mapSeed = mapInfo.seed;
         var loadPath = "Assets/CurrentMaps/" + mapSeed + ".asset";
 
-        Debug.Log("Load Mesh from:" + loadPath);
+        //Debug.Log("Load Mesh from:" + loadPath);
         Mesh mesh = (Mesh)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Mesh));
         cave.mesh = mesh;
 

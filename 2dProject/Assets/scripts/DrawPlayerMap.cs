@@ -18,9 +18,9 @@ public class DrawPlayerMap : MonoBehaviour {
     //private Vector3 offset;
 
     //map bools
-    bool localMapOn = false;
-    bool worldMapOn = false;
-    bool makeMap = true;
+    private bool localMapOn = false;
+    private bool worldMapOn = false;
+    private bool makeMap = true;
 
     //if change room bool
     public bool touchingDoor { get; set; }
@@ -30,11 +30,11 @@ public class DrawPlayerMap : MonoBehaviour {
     SpriteRenderer MapMarkerTeemoSprite;
     Transform MapMarkerTeemoPos;
     public List<Vector3> MapPos;
-    int mapSeed;
+    private int mapSeed;
 
     //for combine map and draw lines
     GameData gameData;
-    int totalMaps;
+    private int totalMaps;
 
     //for drawing door connections
     private List<List<Vector2>> doorLocations;
@@ -52,10 +52,10 @@ public class DrawPlayerMap : MonoBehaviour {
     Color secondColor;
 
     //for drawing doors
-    bool drawDoors = false;
+    private bool drawDoors = false;
 
     //for door map
-    bool firstRun = false;
+    private bool firstRun = false;
 
     void Start()
     {
@@ -80,9 +80,8 @@ public class DrawPlayerMap : MonoBehaviour {
         
 
         //for line between doors map marker
-        GameData data = FindObjectOfType<GameData>();
         doorLocations = new List<List<Vector2>>();
-        doorLocations = data.doorlocations;
+        doorLocations = gameData.doorlocations;
         LinePos = new List<Vector3>();
 
         //for making world map
@@ -442,7 +441,7 @@ public class DrawPlayerMap : MonoBehaviour {
 
             CombineInstance[] combine = new CombineInstance[totalMaps];
 
-            Debug.Log("combine.Length = " + combine.Length);
+            //Debug.Log("combine.Length = " + combine.Length);
 
             //put all mesh filters into the combiner object
             for (int x = 0; x < totalMaps; x++)
@@ -475,7 +474,7 @@ public class DrawPlayerMap : MonoBehaviour {
             //save fullmap to assests
             string worldMap = "WorldMap";
             var savePath = "Assets/CurrentMaps/" + worldMap + ".asset";
-            Debug.Log("Saved Mesh to:" + savePath);
+            //Debug.Log("Saved Mesh to:" + savePath);
             AssetDatabase.CreateAsset(playerWorldMap.mesh, savePath);
             
         }

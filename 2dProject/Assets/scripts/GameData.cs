@@ -182,8 +182,8 @@ public class GameData : MonoBehaviour
             int doorNum;
             for (doorNum = 0; doorNum < doorlocations[listDoor - startMap].Count; doorNum++)
             {
-                doorConnectionDictionary.Add(mapSeed[listDoor] + doorNum.ToString(), "");
-                tempList.Add(mapSeed[listDoor] + doorNum.ToString());
+                doorConnectionDictionary.Add(mapSeed[listDoor] + "," + doorNum.ToString(), "");
+                tempList.Add(mapSeed[listDoor] + "," + doorNum.ToString());
             }
 
             numDoorCountPerMap.Add(doorNum);
@@ -214,12 +214,12 @@ public class GameData : MonoBehaviour
             doorDicRefs[listDoor + 1].TrimExcess();
 
         }
-        
+
         //foreach (KeyValuePair<string, string> kvp in doorConnectionDictionary)
         //{
         //    Debug.Log("Key =" + kvp.Key + "Value =" + kvp.Value);
         //}
-        
+
     }
 
     public void ConnectDoors(int startMap)
@@ -361,24 +361,22 @@ public class GameData : MonoBehaviour
 
         doorlocations[mapOne].Add(door1);
         doorlocations[mapTwo].Add(door2);
+        
 
-        Debug.Log("mapSeed[mapOne] + doorlocations[mapOne].Count.ToString()" + mapSeed[mapOne] + (doorlocations[mapOne].Count - 1).ToString());
-        Debug.Log("mapSeed[mapTwo] + doorlocations[mapTwo].Count.ToString()" + mapSeed[mapTwo] + (doorlocations[mapTwo].Count - 1).ToString());
+        doorConnectionDictionary.Add(mapSeed[mapOne] + "," + (doorlocations[mapOne].Count - 1).ToString(), mapSeed[mapTwo] + "," + (doorlocations[mapTwo].Count - 1).ToString());
+        doorConnectionDictionary.Add(mapSeed[mapTwo] + "," + (doorlocations[mapTwo].Count - 1).ToString(), mapSeed[mapOne] + "," + (doorlocations[mapOne].Count - 1).ToString());
 
-        doorConnectionDictionary.Add(mapSeed[mapOne] + (doorlocations[mapOne].Count - 1).ToString(), mapSeed[mapTwo] + (doorlocations[mapTwo].Count - 1).ToString());
-        doorConnectionDictionary.Add(mapSeed[mapTwo] + (doorlocations[mapTwo].Count - 1).ToString(), mapSeed[mapOne] + (doorlocations[mapOne].Count - 1).ToString());
-
-        foreach (KeyValuePair<string, string> kvp in doorConnectionDictionary)
-        {
-            Debug.Log("Key =" + kvp.Key + "Value =" + kvp.Value);
-        }
+        //foreach (KeyValuePair<string, string> kvp in doorConnectionDictionary)
+        //{
+        //    Debug.Log("Key =" + kvp.Key + "Value =" + kvp.Value);
+        //}
     }
 
 
-    public string GetDoorInfo(string oldDoor)
+    public string GetDoorInfo(string DicRef)
     {
         string newDoor;
-        newDoor = doorConnectionDictionary[oldDoor];
+        newDoor = doorConnectionDictionary[DicRef];
         return newDoor;
     }
 }

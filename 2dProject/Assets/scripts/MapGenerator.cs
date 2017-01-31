@@ -71,11 +71,11 @@ public class MapGenerator : MonoBehaviour
 
         Debug.Log("set one done");
 
-        gameData.CreatDoorConnections(3, 5 , 2);
+        gameData.CreatDoorConnections(3, 5, 2);
         gameData.EnsureConnectivityOfMaps(3, 5);
         gameData.ConnectDoors(3);
 
-        Debug.Log("set two done");
+        //Debug.Log("set two done");
 
         gameData.ConnectSetOfRooms(0, 3);
 
@@ -85,7 +85,7 @@ public class MapGenerator : MonoBehaviour
         //gameData = FindObjectOfType<GameData>();
         seed = gameData.mapSeed[0];
 
-        map = new int[gameData.MapWidthHeight[Int32.Parse(seed)].GetLength(0), gameData.MapWidthHeight[Int32.Parse(seed)].GetLength(1)];
+        map = new int[gameData.MapWidthHeight[gameData.FindMapIndex(seed)].GetLength(0), gameData.MapWidthHeight[gameData.FindMapIndex(seed)].GetLength(1)];
         GenerateMap();
 
 
@@ -106,8 +106,8 @@ public class MapGenerator : MonoBehaviour
         }
         else
         {
-            int tempIntSeed = Int32.Parse(seed);
-            Debug.Log("gameData.MapWidthHeight[Int32.Parse(seed)].GetLength(1) = " + gameData.MapWidthHeight[tempIntSeed].GetLength(1));
+            //load current map data from gamedata
+            int tempIntSeed = gameData.FindMapIndex(seed);
             map = new int[gameData.MapWidthHeight[tempIntSeed].GetLength(0), gameData.MapWidthHeight[tempIntSeed].GetLength(1)];
             width = gameData.MapWidthHeight[tempIntSeed].GetLength(0);
             height = gameData.MapWidthHeight[tempIntSeed].GetLength(1);
@@ -174,7 +174,6 @@ public class MapGenerator : MonoBehaviour
 
             //for door spawns
             doorLocations = new List<Vector2>();
-            Debug.Log("seed =" + seed);
             doorLocations = gameData.GetDoorForMap(gameData.FindMapIndex(seed));
             MapAddOns.DrawOldDoors(doorLocations);
 

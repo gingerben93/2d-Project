@@ -3,37 +3,44 @@ using System.Collections;
 
 public class GameController : MonoBehaviour {
 
-    [HideInInspector] public bool facingRight = true;
-    [HideInInspector] public bool jump = true;
+    public bool facingRight { get; set; }
+    public bool jump { get; set; }
 
     public float moveForce { get; set; }
-    public float maxSpeed = 500f;
-    public float jumpForce = 1000f;
+    public float maxSpeed{ get; set; }
+    public float jumpForce{ get; set; }
     public Transform groundCheck;
 
     //private bool grounded = false;
     private Animator anim;
     private Rigidbody2D rb2d;
+    DoorCollider doorInfo;
 
     //Inventory
     public CanvasGroup InvMenu;
 
     //is touching door
     public bool touchingDoor { get; set; }
-
     public string mapSeed { get; set; }
     public int doorRef { get; set; }
+
+    //getting map generator
+    MapGenerator map;
 
     // Use this for initialization
     void Start () {
         //variables on start
-        moveForce = 365f;
+        maxSpeed = 5f;
+        moveForce = 5f;
+        jumpForce = 500;
         touchingDoor = false;
+        facingRight = true;
+        jump = false;
 
         //other start stuff
-
+        doorInfo = FindObjectOfType<DoorCollider>();
         rb2d = GetComponent<Rigidbody2D>();
-        MapGenerator map = FindObjectOfType<MapGenerator>();
+        map = FindObjectOfType<MapGenerator>();
         Vector2 door;
         door = map.doorLocations[doorRef];
         transform.position = new Vector3(door.x, door.y, 0);
@@ -46,8 +53,8 @@ public class GameController : MonoBehaviour {
         Resources.UnloadUnusedAssets();
         if (Input.GetKeyDown(KeyCode.R) && touchingDoor)
         {
-            MapGenerator map = FindObjectOfType<MapGenerator>();
-            DoorCollider doorInfo = FindObjectOfType<DoorCollider>();
+            map = FindObjectOfType<MapGenerator>();
+            doorInfo = FindObjectOfType<DoorCollider>();
             
 
             map.seed = mapSeed;
