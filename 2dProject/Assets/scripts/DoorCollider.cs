@@ -38,8 +38,8 @@ public class DoorCollider : MonoBehaviour {
             oldDoor = info.doorReference.ToString();
             dicRef = oldSeed + "," + oldDoor;
 
-            GameData data = FindObjectOfType<GameData>();
-            newDicRef = data.GetDoorInfo(dicRef);
+            //gameData = FindObjectOfType<GameData>();
+            newDicRef = gameData.GetDoorInfo(dicRef);
 
             //Debug.Log("newDicRef = " + newDicRef);
 
@@ -51,13 +51,13 @@ public class DoorCollider : MonoBehaviour {
             newDoor = values[1];
 
             numVal = Int32.Parse(newDoor);
-            numVal = gameData.FindMapIndex(newDoor);
+            //numVal = gameData.FindMapIndex(newDoor);
 
             //for drawing lines
             changeLocalMap.currentDoor = Int32.Parse(oldDoor);
-            changeLocalMap.nextDoor = gameData.FindMapIndex(newDoor);
-            changeLocalMap.currentMap = Int32.Parse(oldSeed);
-            changeLocalMap.nextMap = gameData.FindMapIndex(newSeed);
+            changeLocalMap.nextDoor = Int32.Parse(newDoor);
+            changeLocalMap.currentMap = oldSeed;
+            changeLocalMap.nextMap = newSeed;
 
             //pass seed and door info to gameController.
             gameCon.mapSeed = newSeed;

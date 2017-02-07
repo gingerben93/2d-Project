@@ -14,9 +14,6 @@ public class GameData : MonoBehaviour
     //saves the width and height of each map
     public List<int[,]> MapWidthHeight = new List<int[,]>();
 
-    //save random fill for each map
-    public List<Vector3> MapFillPassLengthAndSmoothness = new List<Vector3>();
-
     public int squareSize { get; set; }
 
 
@@ -29,6 +26,9 @@ public class GameData : MonoBehaviour
 
     //for enemy locations
     public List<List<Vector2>> enemylocations = new List<List<Vector2>>();
+
+    //for the size of the map sets for making the world map
+    public List<Vector2> mapSets = new List<Vector2>();
 
 
     // adds door to list
@@ -222,7 +222,7 @@ public class GameData : MonoBehaviour
 
     }
 
-    public void ConnectDoors(int startMap)
+    public void ConnectDoors()
     {
         int maxDoorCountAllRooms = 0;
         List<int> possibleDoorChoices = new List<int>();
@@ -253,14 +253,9 @@ public class GameData : MonoBehaviour
 
             //get right map; decrease door count; get random door; get dictionary key;
             int mapIndex1 = possibleDoorChoices[Random.Range(0, possibleDoorChoices.Count - 1)];
-            //Debug.Log("mapIndex1 = " + mapIndex1 + "startMap = " + startMap + "; numDoorCountPerMap[mapIndex1].count = " + numDoorCountPerMap.Count);
-            //foreach(int count in numDoorCountPerMap)
-            //{
-            //    Debug.Log("What's in numDoorCountPerMap = " + count + " StartMap = " + startMap);
-            //}
+
             numDoorCountPerMap[mapIndex1] -= 1;
             int doorIndex1 = Random.Range(0, doorDicRefs[mapIndex1].Count - 1);
-            //Debug.Log("mapIndex1 = " + mapIndex1 + " doorIndex1 = " + doorIndex1 + "StartMap = " + startMap);
             string doorRef1 = doorDicRefs[mapIndex1][doorIndex1];
 
             //begin second door info get and set

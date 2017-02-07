@@ -29,55 +29,118 @@ public class MapGenerator : MonoBehaviour
 
     int[,] map;
 
+    public int squareSize;
+
     public int numMaps { get; private set; }
-    int currentMap = 0;
+    private int currentMap = 0;
 
     //
     public List<Vector2> possibleDoorLocations;
     public List<Vector2> doorLocations;
     public List<Vector2> enemyLocations;
 
+    public List<Vector2> mapSets;
+    public List<string> bossRooms;
+
     // for storing game information
     GameData gameData;
     MeshGenerator meshGen;
     MapAddOns MapAddOns;
 
+    public Dictionary<string, MapInformation> MapInfo = new Dictionary<string, MapInformation>();
+
     //where program stars
     void Start()
     {
+        squareSize = 1;
         gameData = FindObjectOfType<GameData>();
         numMaps = 6;
-        for (int x = 0; x < numMaps; x++)
+
+
+        int startMap = 0;
+        int y = numMaps;
+
+        mapSets = new List<Vector2>();
+        UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
+
+        while (y > 0)
+        {
+            //make size 2 or 3
+            int ranSizeSetMaps = UnityEngine.Random.Range(2, 4);
+            if (y >= ranSizeSetMaps)
+            {
+                //Debug.Log("ranSizeSetMaps = " + ranSizeSetMaps + "startMap = " + startMap);
+                mapSets.Add(new Vector2(ranSizeSetMaps, numMaps - y));
+                y -= ranSizeSetMaps;
+                startMap += y;
+            }
+            else
+            {
+                //Debug.Log("new Vector2(mapSets[mapSets.Count - 1].x + x = " + (mapSets[mapSets.Count - 1].x + x)  + " mapSets[mapSets.Count - 1].y) = " + mapSets[mapSets.Count - 1].y);
+                mapSets[mapSets.Count - 1] = new Vector2(mapSets[mapSets.Count - 1].x + y, mapSets[mapSets.Count - 1].y);
+                break;
+            }
+        }
+
+
+        int x = 0;
+        for (x = 0; x < numMaps; x++)
         {
             seed = currentMap.ToString();
             GenerateMap();
             currentMap += 1;
         }
-
+        
         width = 50; height = 100;
         randomFillPercent = 0;
         seed = currentMap.ToString();
+        bossRooms.Add(seed);
         GenerateMap();
         currentMap += 1;
 
+        
 
 
+        //for mapgenerator second runs
         useRandomSeed = false;
+        
+        foreach (Vector2 num in mapSets)
+        {
+            //Debug.Log("(int)num.y = " + (int)num.y + "(int)num.x = " + (int)num.x);
+            //use: start map, end map, num doors
+            gameData.CreatDoorConnections((int)num.y, (int)num.x + (int)num.y - 1, 2);
+            gameData.EnsureConnectivityOfMaps((int)num.y, (int)num.x + (int)num.y - 1);
+            gameData.ConnectDoors();
+        }
+        
+        foreach (Vector2 num in mapSets)
+        {
+            if (mapSets[mapSets.Count - 1] == num)
+            {
+                break;
+            }
+            gameData.ConnectSetOfRooms((int)num.y, (int)num.x + (int)num.y);
+        }
+
+        //shoudl now erase the mapsets that is in mapGenerator
+        gameData.mapSets = mapSets;
+
+
 
         //use is map index one, map index 2 and number of doors for each map.
-        gameData.CreatDoorConnections(0, 2, 2);
-        gameData.EnsureConnectivityOfMaps(0, 2);
-        gameData.ConnectDoors(0);
+        //gameData.CreatDoorConnections(0, 2, 2);
+        //gameData.EnsureConnectivityOfMaps(0, 2);
+        //gameData.ConnectDoors();
 
-        Debug.Log("set one done");
+        //Debug.Log("set one done");
 
-        gameData.CreatDoorConnections(3, 5, 2);
-        gameData.EnsureConnectivityOfMaps(3, 5);
-        gameData.ConnectDoors(3);
+        //gameData.CreatDoorConnections(3, 5, 2);
+        //gameData.EnsureConnectivityOfMaps(3, 5);
+        //gameData.ConnectDoors();
 
         //Debug.Log("set two done");
 
-        gameData.ConnectSetOfRooms(0, 3);
+        //gameData.ConnectSetOfRooms(0, 3);
 
         gameData.CreatDoorConnections(6, 6, 0);
         gameData.ConnectSetOfRooms(0, 6);
@@ -87,8 +150,6 @@ public class MapGenerator : MonoBehaviour
 
         map = new int[gameData.MapWidthHeight[gameData.FindMapIndex(seed)].GetLength(0), gameData.MapWidthHeight[gameData.FindMapIndex(seed)].GetLength(1)];
         GenerateMap();
-
-
     }
 
     //begining of map generation
@@ -98,22 +159,46 @@ public class MapGenerator : MonoBehaviour
 
         if (useRandomSeed == true)
         {
+            //for getting map set number
+            int currentSetMap = 0;
+            foreach (Vector2 mapSet in mapSets)
+            {
+
+                if (currentMap >= (int)mapSet.y && currentMap < (int)mapSet.y + (int)mapSet.x)
+                {
+                    break;
+                }
+                currentSetMap += 1;
+            }
+
+            map = new int[width, height];
             //save game data for recall later
             gameData.AddSeed(seed);
-            gameData.MapFillPassLengthAndSmoothness.Add(new Vector3(randomFillPercent, passageLength, smoothness));
-            map = new int[width, height];
             gameData.MapWidthHeight.Add(map);
+            //save map data
+            MapInformation TempData = new MapInformation();
+            TempData.index = currentMap;
+            TempData.mapSet = currentSetMap;
+            TempData.width = width;
+            TempData.height = height;
+            TempData.randomFillPercent = randomFillPercent;
+            TempData.passageLength = passageLength;
+            TempData.smoothness = smoothness;
+            TempData.squareSize = squareSize;
+            MapInfo.Add(seed, TempData);
         }
         else
         {
+            MapInformation currentData = MapInfo[seed];
             //load current map data from gamedata
-            int tempIntSeed = gameData.FindMapIndex(seed);
-            map = new int[gameData.MapWidthHeight[tempIntSeed].GetLength(0), gameData.MapWidthHeight[tempIntSeed].GetLength(1)];
-            width = gameData.MapWidthHeight[tempIntSeed].GetLength(0);
-            height = gameData.MapWidthHeight[tempIntSeed].GetLength(1);
-            randomFillPercent = (int)gameData.MapFillPassLengthAndSmoothness[tempIntSeed].x;
-            passageLength = (int)gameData.MapFillPassLengthAndSmoothness[tempIntSeed].y;
-            smoothness = (int)gameData.MapFillPassLengthAndSmoothness[tempIntSeed].z;
+            //Debug.Log("currentData.index = " + currentData.index + " currentData.mapSet = " + currentData.mapSet);
+            width = currentData.width;
+            height = currentData.height;
+            map = new int[width, height];
+            randomFillPercent = currentData.randomFillPercent;
+            passageLength = currentData.passageLength;
+            smoothness = currentData.smoothness;
+            squareSize = currentData.squareSize;
         }
 
         //fills map
@@ -154,16 +239,16 @@ public class MapGenerator : MonoBehaviour
         if (useRandomSeed == true)
         {
             //for mesh
-            meshGen.GenerateMesh(borderedMap, 1);
+            meshGen.GenerateMesh(borderedMap, squareSize);
 
             //for doors spawns
             possibleDoorLocations = new List<Vector2>();
-            possibleDoorLocations = MapAddOns.GenerateDoors(map, 1, borderSize);
+            possibleDoorLocations = MapAddOns.GenerateDoors(map, squareSize, borderSize);
             gameData.AddDoorLocations(possibleDoorLocations);
 
             //for enemy spawns
             enemyLocations = new List<Vector2>();
-            enemyLocations = MapAddOns.SpawnEnemy(map, 1, borderSize);
+            enemyLocations = MapAddOns.SpawnEnemy(map, squareSize, borderSize);
             gameData.AddEnemyLocations(enemyLocations);
 
         }

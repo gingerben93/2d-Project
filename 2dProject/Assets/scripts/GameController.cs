@@ -70,14 +70,14 @@ public class GameController : MonoBehaviour {
 
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) /*&& grounded*/)
+        if (Input.GetKeyDown(KeyCode.Space) && rb2d.velocity.y < maxSpeed /*&& grounded*/)
         {
             jump = true;
             rb2d.gravityScale = 1;
         }
 
-         // 5 - Shooting
-         bool shoot = Input.GetMouseButtonDown(1);
+        // 5 - Shooting
+        bool shoot = Input.GetMouseButtonDown(1);
          shoot |= Input.GetMouseButtonDown(1);
          // Careful: For Mac users, ctrl + arrow is a bad idea
          
