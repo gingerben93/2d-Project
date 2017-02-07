@@ -17,6 +17,21 @@ public class Inventory : MonoBehaviour
 
     private List<GameObject> allSlots;
 
+    private static int emptySlots;
+
+    public static int EmptySlots
+    {
+        get
+        {
+            return emptySlots;
+        }
+
+        set
+        {
+            emptySlots = value;
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
@@ -33,6 +48,8 @@ public class Inventory : MonoBehaviour
     private void CreateLayout()
     {
         allSlots = new List<GameObject>();
+
+        emptySlots = slots;
 
         /*
         slots = 128;
@@ -215,5 +232,55 @@ public class Inventory : MonoBehaviour
         //Helm Location
 
 
+    }
+
+    public bool AddItem(Item item)
+    {
+        if (item.maxSize == 1)
+        {
+            PlaceEmpty(item);
+            return true;
+        }
+        else
+        {
+            foreach (GameObject slot in allSlots)
+            {
+                Slot tmp = slot.GetComponent<Slot>();
+
+                if (!tmp.IsEmpty)
+                {
+                    if (tmp.CurrentItem.type == item.type && tmp.IsAvailable)
+                    {
+                        tmp.AddItem(item);
+                        return true;
+                    }
+                }
+            }
+            if (emptySlots > 0)
+            {
+                PlaceEmpty(item);
+            }
+        }
+        return false;
+    }
+
+    private bool PlaceEmpty(Item item)
+    {
+        if (emptySlots > 0)
+        {
+            foreach (GameObject slot in allSlots)
+            {
+                Slot tmp = slot.GetComponent<Slot>();
+
+
+                if (tmp.IsEmpty)
+                {
+                    tmp.AddItem(item);
+                    emptySlots--;
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

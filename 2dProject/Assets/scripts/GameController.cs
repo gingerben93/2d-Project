@@ -24,6 +24,9 @@ public class GameController : MonoBehaviour {
     public string mapSeed { get; set; }
     public int doorRef { get; set; }
 
+    //Inventory
+    public Inventory inventory;
+
     //getting map generator
     MapGenerator map;
 
@@ -135,5 +138,14 @@ public class GameController : MonoBehaviour {
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "Item")
+        {
+            Debug.Log("touching health");
+            inventory.AddItem(collision.GetComponent<Item>());
+        }
     }
 }

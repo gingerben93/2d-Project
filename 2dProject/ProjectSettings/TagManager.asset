@@ -12,6 +12,7 @@ TagManager:
   - Map
   - MapLines
   - MapDoor
+  - Item
   layers:
   - Default
   - TransparentFX
