@@ -16,23 +16,36 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 
     public bool IsEmpty
     {
-        get { return items.Count == 0; }
+        get { return Items.Count == 0; }
     }
 
     public bool IsAvailable
     {
-        get { return CurrentItem.maxSize > items.Count; }
+        get { return CurrentItem.maxSize > Items.Count; }
     }
 
     public Item CurrentItem
     {
-        get { return items.Peek(); }
+        get { return Items.Peek(); }
+    }
+
+    public Stack<Item> Items
+    {
+        get
+        {
+            return items;
+        }
+
+        set
+        {
+            items = value;
+        }
     }
 
     // Use this for initialization
     void Start()
     {
-        items = new Stack<Item>();
+        Items = new Stack<Item>();
         RectTransform slotRect = GetComponent<RectTransform>();
         RectTransform txtRect = stackTxt.GetComponent<RectTransform>();
 
@@ -55,14 +68,24 @@ public class Slot : MonoBehaviour, IPointerClickHandler
 
     public void AddItem(Item item)
     {
-        items.Push(item);
+        Items.Push(item);
 
-        if (items.Count > 1)
+        if (Items.Count > 1)
         {
-            stackTxt.text = items.Count.ToString();
+            stackTxt.text = Items.Count.ToString();
         }
 
         ChangeSprite(item.spriteNeutral, item.spriteHighlighted);
+    }
+
+    public void AddItems(Stack<Item> items)
+    {
+        this.Items = new Stack<Item>(items);
+
+        stackTxt.text = items.Count > 1 ? items.Count.ToString() : string.Empty;
+
+        ChangeSprite(CurrentItem.spriteNeutral, CurrentItem.spriteHighlighted);
+
     }
 
     private void ChangeSprite(Sprite neutral, Sprite highlight)
@@ -80,9 +103,9 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     {
         if (!IsEmpty)
         {
-            items.Pop().Use();
+            Items.Pop().Use();
 
-            stackTxt.text = items.Count > 1 ? items.Count.ToString() : string.Empty;
+            stackTxt.text = Items.Count > 1 ? Items.Count.ToString() : string.Empty;
 
             if (IsEmpty)
             {
@@ -90,6 +113,14 @@ public class Slot : MonoBehaviour, IPointerClickHandler
                 Inventory.EmptySlots++;
             }
         }
+    }
+
+
+    public void ClearSlot()
+    {
+        items.Clear();
+        ChangeSprite(slotEmpty, slotHighlight);
+        stackTxt.text = string.Empty;
     }
 
     public void OnPointerClick(PointerEventData eventData)
