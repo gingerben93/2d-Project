@@ -117,7 +117,7 @@ public class Inventory : MonoBehaviour
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
 
-                    allSlots.Add(newSlot);
+                    //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
                 }
                 if (y == 0 && x == 1)
@@ -131,7 +131,7 @@ public class Inventory : MonoBehaviour
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
 
-                    allSlots.Add(newSlot);
+                    //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
                 }
                 if (y == 0 && x == 2)
@@ -145,7 +145,7 @@ public class Inventory : MonoBehaviour
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize * 3);
 
-                    allSlots.Add(newSlot);
+                    //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
                 }
                 if (y == 0 && x == 3)
@@ -159,7 +159,7 @@ public class Inventory : MonoBehaviour
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize * 2);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize * 3);
 
-                    allSlots.Add(newSlot);
+                    //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
                 }
                 if (y == 0 && x == 4)
@@ -173,7 +173,7 @@ public class Inventory : MonoBehaviour
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize * 2);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize * 2);
 
-                    allSlots.Add(newSlot);
+                    //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
                 }
                 if (y == 0 && x == 5)
@@ -187,7 +187,7 @@ public class Inventory : MonoBehaviour
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize * 2);
 
-                    allSlots.Add(newSlot);
+                    //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
                 }
                 if (y == 0 && x == 6)
@@ -201,7 +201,7 @@ public class Inventory : MonoBehaviour
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize * 2);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
 
-                    allSlots.Add(newSlot);
+                    //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
                 }
                 if (y == 0 && x == 7)
@@ -215,7 +215,7 @@ public class Inventory : MonoBehaviour
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize * 2);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
 
-                    allSlots.Add(newSlot);
+                    //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
                 }
                 if (y == 0 && x == 8)
@@ -229,7 +229,7 @@ public class Inventory : MonoBehaviour
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
 
-                    allSlots.Add(newSlot);
+                    //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
                 }
                 if (y == 0 && x == 9)
@@ -243,7 +243,7 @@ public class Inventory : MonoBehaviour
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
 
-                    allSlots.Add(newSlot);
+                    //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
                 }
 
