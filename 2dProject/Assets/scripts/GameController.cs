@@ -144,8 +144,9 @@ public class GameController : MonoBehaviour {
     {
         if (collision.tag == "Item")
         {
-            Debug.Log("touching health");
             inventory.AddItem(collision.GetComponent<Item>());
+            Destroy(collision.gameObject);
         }
     }
+
 }

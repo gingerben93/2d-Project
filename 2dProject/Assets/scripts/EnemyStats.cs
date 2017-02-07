@@ -4,6 +4,7 @@ using System.Collections;
 /// Handle hitpoints and damages
 public class EnemyStats : MonoBehaviour
 {
+    public Transform loot;
 
     Shot shot;
 
@@ -24,6 +25,7 @@ public class EnemyStats : MonoBehaviour
 
         if (hp <= 0)
         {
+            Instantiate(loot, transform.position, Quaternion.identity);
             // Dead!
             Destroy(gameObject);
         }
