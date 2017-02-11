@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class GameController : MonoBehaviour {
 
@@ -87,15 +88,23 @@ public class GameController : MonoBehaviour {
         // 5 - Shooting
         bool shoot = Input.GetMouseButtonDown(1);
         shoot |= Input.GetMouseButtonDown(1);
-         // Careful: For Mac users, ctrl + arrow is a bad idea
-         
+        // Careful: For Mac users, ctrl + arrow is a bad idea
+
         if (shoot)
         {
-            Weapon weapon = GetComponent<Weapon>();
-            if (weapon != null)
+            EventSystem eventSystem = EventSystem.current;
+            if (eventSystem.IsPointerOverGameObject() && InvMenu.alpha == 1)
             {
-                // false because the player is not an enemy
-                weapon.Attack(false);
+                return;
+            }
+            else
+            {
+                Weapon weapon = GetComponent<Weapon>();
+                if (weapon != null)
+                {
+                    // false because the player is not an enemy
+                    weapon.Attack(false);
+                }
             }
         }
 
@@ -154,11 +163,12 @@ public class GameController : MonoBehaviour {
         transform.localScale = theScale;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.tag == "Item")
+        if (collision.gameObject.tag == "Item")
         {
-            inventory.AddItem(collision.GetComponent<Item>());
+            collision.gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
+            inventory.AddItem(collision.gameObject.GetComponent<Item>());
             Destroy(collision.gameObject);
         }
     }

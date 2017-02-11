@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 public class Inventory : MonoBehaviour
 {
 
+    //int alph; //For moving items when canvas is hidden
+
     private RectTransform invRect;
     private float invWidth, invHeight;
 
@@ -55,6 +57,7 @@ public class Inventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //alph = (int)GetComponent<CanvasGroup>().alpha;
         if (Input.GetMouseButtonUp(0))
         {
             if (!eventSystem.IsPointerOverGameObject(-1) && from != null)
@@ -320,50 +323,57 @@ public class Inventory : MonoBehaviour
 
     public void MoveItem(GameObject clicked)
     {
-        if (from == null)
+        if (GameObject.Find("Inventory").GetComponent<CanvasGroup>().alpha == 0)
         {
-            if (!clicked.GetComponent<Slot>().IsEmpty)
-            {
-                from = clicked.GetComponent<Slot>();
-                from.GetComponent<Image>().color = Color.gray;
-
-                hoverObject = (GameObject)Instantiate(iconPrefab);
-                hoverObject.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
-                hoverObject.name = "Hover";
-
-                RectTransform hoverTransform = hoverObject.GetComponent<RectTransform>();
-                RectTransform clickedTransform = clicked.GetComponent<RectTransform>();
-
-                hoverTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, clickedTransform.sizeDelta.x);
-                hoverTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, clickedTransform.sizeDelta.y);
-
-                hoverObject.transform.SetParent(GameObject.Find("Canvas").transform, true);
-                hoverObject.transform.localScale = from.gameObject.transform.localScale;
-            }
+            return;
         }
-        else if(to == null)
+        else
         {
-            to = clicked.GetComponent<Slot>();
-            Destroy(GameObject.Find("Hover"));
-        }
-        if (to != null && from != null)
-        {
-            Stack<Item> tmpTo = new Stack<Item>(to.Items);
-            to.AddItems(from.Items);
-
-            if (tmpTo.Count == 0)
+            if (from == null)
             {
-                from.ClearSlot();
-            }
-            else
-            {
-                from.AddItems(tmpTo);
-            }
+                if (!clicked.GetComponent<Slot>().IsEmpty)
+                {
+                    from = clicked.GetComponent<Slot>();
+                    from.GetComponent<Image>().color = Color.gray;
 
-            from.GetComponent<Image>().color = Color.white;
-            to = null;
-            from = null;
-            hoverObject = null;
+                    hoverObject = (GameObject)Instantiate(iconPrefab);
+                    hoverObject.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
+                    hoverObject.name = "Hover";
+
+                    RectTransform hoverTransform = hoverObject.GetComponent<RectTransform>();
+                    RectTransform clickedTransform = clicked.GetComponent<RectTransform>();
+
+                    hoverTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, clickedTransform.sizeDelta.x);
+                    hoverTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, clickedTransform.sizeDelta.y);
+
+                    hoverObject.transform.SetParent(GameObject.Find("Canvas").transform, true);
+                    hoverObject.transform.localScale = from.gameObject.transform.localScale;
+                }
+            }
+            else if (to == null)
+            {
+                to = clicked.GetComponent<Slot>();
+                Destroy(GameObject.Find("Hover"));
+            }
+            if (to != null && from != null)
+            {
+                Stack<Item> tmpTo = new Stack<Item>(to.Items);
+                to.AddItems(from.Items);
+
+                if (tmpTo.Count == 0)
+                {
+                    from.ClearSlot();
+                }
+                else
+                {
+                    from.AddItems(tmpTo);
+                }
+
+                from.GetComponent<Image>().color = Color.white;
+                to = null;
+                from = null;
+                hoverObject = null;
+            }
         }
     }
 }
