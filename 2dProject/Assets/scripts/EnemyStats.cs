@@ -11,9 +11,19 @@ public class EnemyStats : MonoBehaviour
     /// Total hitpoints
     public int hp { get; set; }
     public bool isEnemy { get; set; }
+    private int experiencePoint;
+
+    //for giving experiencePoint
+    public GameController GameCon;
 
     void Start()
     {
+        // make reference to gameCon
+        GameCon = FindObjectOfType<GameController>();
+
+        // set emeny information
+        experiencePoint = 5;
+
         hp = 1;
         isEnemy = true;
     }
@@ -25,6 +35,9 @@ public class EnemyStats : MonoBehaviour
 
         if (hp <= 0)
         {
+            //set exp
+            GameCon.experiencePoint += experiencePoint;
+
             Instantiate(loot, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform; ;
             // Dead!
             Destroy(gameObject);

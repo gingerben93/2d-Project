@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
 
@@ -24,8 +25,13 @@ public class GameController : MonoBehaviour {
     public string mapSeed { get; set; }
     public int doorRef { get; set; }
 
+    public int experiencePoint { get; set; }
+
     //Inventory
     public Inventory inventory;
+    public GameObject StatsExperience;
+
+    private bool OnOff = false;
 
     //getting map generator
     MapGenerator map;
@@ -40,6 +46,10 @@ public class GameController : MonoBehaviour {
         facingRight = true;
         jump = false;
 
+        //EXP
+        experiencePoint = 0;
+        StatsExperience = GameObject.Find("Experience");
+
         //other start stuff
         doorInfo = FindObjectOfType<DoorCollider>();
         rb2d = GetComponent<Rigidbody2D>();
@@ -47,6 +57,7 @@ public class GameController : MonoBehaviour {
         Vector2 door;
         door = map.doorLocations[doorRef];
         transform.position = new Vector3(door.x, door.y, 0);
+
     }
 
 	
@@ -98,7 +109,8 @@ public class GameController : MonoBehaviour {
     {
         float h = Input.GetAxis("Horizontal");
         //anim.SetFloat("Speed", Mathf.Abs(h));
-
+        
+        StatsExperience.GetComponent<Text>().text = "EXP: " + experiencePoint;
 
         if (h * rb2d.velocity.x < maxSpeed)
             rb2d.velocity = new Vector2(h * maxSpeed, rb2d.velocity.y);
@@ -128,6 +140,11 @@ public class GameController : MonoBehaviour {
             rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * 0.995f, rb2d.velocity.y);
         }
     }
+
+    //void OnGUI()
+    //{
+    //    GUI.Label(new Rect(60, 10, 100, 30), "EXP: " + experiencePoint);
+    //}
 
     void Flip()
     {
