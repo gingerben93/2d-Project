@@ -25,7 +25,7 @@ public class EnemyStats : MonoBehaviour
 
         if (hp <= 0)
         {
-            Instantiate(loot, transform.position, Quaternion.identity);
+            Instantiate(loot, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform; ;
             // Dead!
             Destroy(gameObject);
         }
