@@ -142,6 +142,7 @@ public class MeshGenerator : MonoBehaviour
 
                 //for loading sprites in
 
+                // consider replacing with Vector3.Distance(a,b)
                 vertX = vertices[outline[i]].x;
                 vertXPLus1 = vertices[outline[(i + 1) % count]].x;
                 vertXMinus1 = vertices[outline[(count + i - 1) % count]].x;
@@ -188,6 +189,7 @@ public class MeshGenerator : MonoBehaviour
 
         //horizontal and vetical sprites
         //does not work when change between - and minus fix that problem
+        //Vector3.Distance(a,b) could be used here maybe
         if (vertZ == vertZPLus1 || vertX == vertXPLus1 || vertZ == vertZMinus1 || vertX == vertXMinus1)
         {
             //top piece

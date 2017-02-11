@@ -38,7 +38,7 @@ public class DrawPlayerMap : MonoBehaviour {
     private int totalMaps;
 
     //for drawing door connections
-    private List<List<Vector2>> doorLocations;
+    //private List<List<Vector2>> doorLocations;
     public Transform mapLine;
     public string currentMap { get; set; }
     public string nextMap { get; set; }
@@ -103,8 +103,6 @@ public class DrawPlayerMap : MonoBehaviour {
         
 
         //for line between doors map marker
-        doorLocations = new List<List<Vector2>>();
-        doorLocations = gameData.doorlocations;
         LinePos = new List<Vector3>();
 
         //for making world map
@@ -300,8 +298,9 @@ public class DrawPlayerMap : MonoBehaviour {
                     return;
                 }
             }
-            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(doorLocations[gameData.FindMapIndex(seed1)][door1].x * .075f, doorLocations[gameData.FindMapIndex(seed1)][door1].y * .075f, 0);
-            linePos2 = GetCurrentMapLocation(seed2) + new Vector3(doorLocations[gameData.FindMapIndex(seed2)][door2].x * .075f, doorLocations[gameData.FindMapIndex(seed2)][door2].y * .075f, 0);
+            
+            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(mapGen.MapInfo[seed1].doorLocations[door1].x * .075f, mapGen.MapInfo[seed1].doorLocations[door1].y * .075f, 0);
+            linePos2 = GetCurrentMapLocation(seed2) + new Vector3(mapGen.MapInfo[seed2].doorLocations[door2].x * .075f, mapGen.MapInfo[seed2].doorLocations[door2].y * .075f, 0);
 
         }
         else
@@ -345,13 +344,13 @@ public class DrawPlayerMap : MonoBehaviour {
 
         if(set1 < gameData.mapSets.Count)
         {
-            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(doorLocations[gameData.FindMapIndex(seed1)][door1].x * .075f, doorLocations[gameData.FindMapIndex(seed1)][door1].y * .075f, 0);
+            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(mapGen.MapInfo[seed1].doorLocations[door1].x * .075f, mapGen.MapInfo[seed1].doorLocations[door1].y * .075f, 0);
             linePos2 = GetCurrentMapLocation(seed1)*2;
         }
         else
         {
-            Debug.Log("linePos1: RAN");
-            linePos1 = new Vector3(doorLocations[gameData.FindMapIndex(seed1)][door1].x * .075f, doorLocations[gameData.FindMapIndex(seed1)][door1].y * .075f, 0);
+            //Debug.Log("linePos1: RAN");
+            linePos1 = new Vector3(mapGen.MapInfo[seed1].doorLocations[door1].x * .075f, mapGen.MapInfo[seed1].doorLocations[door1].y * .075f, 0);
             linePos2 = new Vector3(0, -10f, 0);
         }
         
@@ -438,7 +437,7 @@ public class DrawPlayerMap : MonoBehaviour {
             }
 
             drawDoors = true;
-            foreach (Vector3 door in doorLocations[gameData.FindMapIndex(curMap)])
+            foreach (Vector3 door in mapGen.MapInfo[curMap].doorLocations)
             {
                 var doorTransform = Instantiate(doorPrefab);
                 doorTransform.transform.SetParent(transform);
@@ -561,10 +560,10 @@ public class DrawPlayerMap : MonoBehaviour {
                 transform.position = player.transform.position;
 
                 //save fullmap to assests
-                Debug.Log("currentSetMaps = " + currentSetMaps + " (int)mapSet.x = " + (int)mapSet.x);
+                //Debug.Log("currentSetMaps = " + currentSetMaps + " (int)mapSet.x = " + (int)mapSet.x);
                 worldMapName = "WorldMap" + currentSetMaps;
                 savePathForMaps = "Assets/CurrentMaps/" + worldMapName + ".asset";
-                Debug.Log("Saved Mesh to:" + savePathForMaps);
+                //Debug.Log("Saved Mesh to:" + savePathForMaps);
                 AssetDatabase.CreateAsset(playerWorldMap.mesh, savePathForMaps);
                 playerWorldMap.mesh = null;
 
@@ -618,21 +617,6 @@ public class DrawPlayerMap : MonoBehaviour {
         {
             string worldMap = "WorldMap";
             int currentSetMaps = 0;
-            ////loads in the correct map for world map
-            //foreach (Vector2 mapSet in gameData.mapSets)
-            //{
-
-            //    Debug.Log("currentMap = " + currentMap + " mapSet.y = " + mapSet.y);
-            //    if (currentMap >= (int)mapSet.y && currentMap < (int)mapSet.y + (int)mapSet.x)
-            //    {
-            //        //save path
-            //        worldMap = "WorldMap" + currentSetMaps;
-            //        Debug.Log("worldMap = " + worldMap);
-            //        break;
-            //    }
-            //    currentSetMaps += 1;
-            //}
-
             string mapSeed = mapGen.seed;
 
             MapInformation newData = mapGen.MapInfo[mapSeed];
@@ -647,7 +631,6 @@ public class DrawPlayerMap : MonoBehaviour {
             }
 
             //load map in
-
             var loadPath = "Assets/CurrentMaps/" + worldMap + ".asset";
             Mesh mesh = (Mesh)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Mesh));
             transform.localScale = new Vector3(.075f, .075f, .075f);
@@ -696,7 +679,7 @@ public class DrawPlayerMap : MonoBehaviour {
             //}
             MapInformation oldData = mapGen.MapInfo[oldSeed];
             oldCurrentSetMaps = oldData.mapSet;
-            Debug.Log("oldSeed = " + oldSeed + "oldDoor = " + oldDoor + " oldCurrentSetMaps = " + oldCurrentSetMaps);
+            //Debug.Log("oldSeed = " + oldSeed + "oldDoor = " + oldDoor + " oldCurrentSetMaps = " + oldCurrentSetMaps);
             //for the connecting map and door
             values = tempDoorConnectionDictionary[oldDicRef].Split(',');
             newDicRef = tempDoorConnectionDictionary[oldDicRef];
@@ -717,7 +700,7 @@ public class DrawPlayerMap : MonoBehaviour {
             MapInformation newData = mapGen.MapInfo[newSeed];
             newCurrentSetMaps = newData.mapSet;
 
-            Debug.Log("newSeed = " + oldSeed + "newDoor = " + oldDoor + " oldCurrentSetMaps = " + newCurrentSetMaps);
+            //Debug.Log("newSeed = " + oldSeed + "newDoor = " + oldDoor + " oldCurrentSetMaps = " + newCurrentSetMaps);
 
             //need fix for the special add maps
             if (oldCurrentSetMaps < gameData.mapSets.Count && newCurrentSetMaps < gameData.mapSets.Count && oldCurrentSetMaps == newCurrentSetMaps)
@@ -739,13 +722,13 @@ public class DrawPlayerMap : MonoBehaviour {
 
         string[] values;
         string set1;
-        string set2;
+        //string set2;
 
         foreach (Transform child in GameObject.Find("MapDoorLines").transform)
         {
             values = child.name.Split(',');
             set1 = values[1];
-            set2 = values[2];
+            //set2 = values[2];
             if (set1 == currentMapSet)
             {
                 child.GetComponent<LineRenderer>().enabled = true;

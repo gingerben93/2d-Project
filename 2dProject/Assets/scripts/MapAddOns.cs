@@ -9,18 +9,20 @@ public class MapAddOns : MonoBehaviour
 
     public Transform EnenyPreFab;
 
-    public List<Vector2> GenerateDoors(int[,] map, float squareSize, int borderSize)
+    public List<Vector2> GenerateDoors(int[,] map)
     {
         //for pos doors
         List<Vector2> doorPositions;
 
+        MapGenerator mapInfo = FindObjectOfType<MapGenerator>();
+        MapInformation data = mapInfo.MapInfo[mapInfo.seed];
 
         doorPositions = new List<Vector2>();
 
         //Pass border size to script
-        for (int x = 1; x < map.GetLength(0) - 1; x++)
+        for (int x = 1; x < data.width - 1; x++)
         {
-            for (int y = 1; y < map.GetLength(1) - 1; y++)
+            for (int y = 1; y < data.height - 1; y++)
             {
                 if (map[x, y] == 0 && map[x + 1, y] == 0 && map[x - 1, y] == 0 && map[x, y + 1] == 0 && map[x, y - 1] == 1 && map[x + 1, y - 1] == 1 && map[x - 1, y - 1] == 1 && map[x, y + 2] == 0)
                 {
@@ -68,14 +70,8 @@ public class MapAddOns : MonoBehaviour
         }
     }
 
-    public List<Vector2> SpawnEnemy(int[,] map, float squareSize, int borderSize)
+    public List<Vector2> SpawnEnemy(MapInformation map1)
     {
-        //for size of map
-        int nodeCountX = map.GetLength(0);
-        int nodeCountY = map.GetLength(1);
-        float mapWidth = nodeCountX * squareSize;
-        float mapHeight = nodeCountY * squareSize;
-
         //for pos doors
         List<Vector2> enemyPositions;
         List<Vector2> drawEnemys;
@@ -84,52 +80,69 @@ public class MapAddOns : MonoBehaviour
 
         enemyPositions = new List<Vector2>();
         drawEnemys = new List<Vector2>();
-
-        //Pass border size to script
-        for (int x = 1; x < map.GetLength(0) - 1; x++)
+        Debug.Log("map1.width = " + map1.width + " map1.height = " + map1.height);
+        //pick spots for enemies to spawn
+        for (int x = 1; x < map1.width - 1; x++)
         {
-            for (int y = 1; y < map.GetLength(1) - 1; y++)
+            for (int y = 1; y < map1.height - 1; y++)
             {
-                if ((map[x, y] == 0 && map[x + 1, y] == 0 && map[x - 1, y] == 0 && map[x, y + 1] == 0) && 
-                    (map[x, y - 1] == 1 || map[x + 1, y - 1] == 1 || map[x - 1, y - 1] == 1))
+                if ((map1.map[x, y] == 0 && map1.map[x + 1, y] == 0 && map1.map[x - 1, y] == 0 && map1.map[x, y + 1] == 0) &&
+                    (map1.map[x, y - 1] == 1 || map1.map[x + 1, y - 1] == 1 || map1.map[x - 1, y - 1] == 1))
                 {
-                    Vector2 enemyXY;
-                    enemyXY = new Vector2(x, y);
-                    enemyPositions.Add(enemyXY);
+                    Vector2 possibleEnemyXY;
+                    possibleEnemyXY = new Vector2(x, y);
+                    enemyPositions.Add(possibleEnemyXY);
                 }
             }
         }
 
+        Vector2 enemyXY;
+        float xPos;
+        float yPos;
         for (int x = 0; x < numEnemies; x++)
         {
-            Vector2 doorXY;
+            //don't spawn enemies by possible door locations
+            enemyXY = CheckIfDoorLocations(enemyPositions, map1.doorLocations);
 
-            doorXY = enemyPositions[Random.Range(0, enemyPositions.Count)];
-            enemyPositions.Remove(doorXY);
+            xPos = -map1.width / 2 + enemyXY.x * map1.squareSize + map1.squareSize / 2;
+            yPos = -map1.height / 2 + enemyXY.y * map1.squareSize + map1.squareSize;
 
-            float xPos = -mapWidth / 2 + doorXY.x * squareSize + squareSize / 2;
-            float yPos = -mapHeight / 2 + doorXY.y * squareSize + squareSize;
+            enemyXY = new Vector2(xPos, yPos);
 
-
-            doorXY = new Vector2(xPos, yPos);
-
-            drawEnemys.Add(doorXY);
-
+            drawEnemys.Add(enemyXY);
         }
-
         return drawEnemys;
     }
 
-    public void DrawEnemys(List<Vector2> enemyLocations)
+    public Vector2 CheckIfDoorLocations(List<Vector2> enemyPositions, List<Vector2> doorLocations)
+    {
+        Vector2 tempEnemyPos;
+        tempEnemyPos = enemyPositions[Random.Range(0, enemyPositions.Count)];
+        foreach (Vector2 possibleDoor in doorLocations)
+        {
+            if (Vector2.Distance(tempEnemyPos, possibleDoor) <= 1)
+            {
+                enemyPositions.Remove(tempEnemyPos);
+                tempEnemyPos = CheckIfDoorLocations(enemyPositions, doorLocations);
+            }
+        }
+        return tempEnemyPos;
+    }
+
+    public void RemoveAllEnemies()
     {
         var oldEnemy = GameObject.FindGameObjectsWithTag("Enemy");
-        //MapGenerator map = FindObjectOfType<MapGenerator>();
 
         //this is for removing the old doors
         foreach (var enemy in oldEnemy)
         {
             Destroy(enemy);
         }
+    }
+
+    public void DrawEnemys(List<Vector2> enemyLocations)
+    {
+        RemoveAllEnemies();
 
         //drawing new doors
         for (int x = 0; x < enemyLocations.Count; x++)

@@ -58,16 +58,13 @@ public class GameController : MonoBehaviour {
         {
             map = FindObjectOfType<MapGenerator>();
             doorInfo = FindObjectOfType<DoorCollider>();
-            
 
             map.seed = mapSeed;
-            map.GenerateMap();
+            map.LoadMap();
 
             Vector2 door;
             door = map.doorLocations[doorInfo.numVal];
             transform.position = new Vector3(door.x, door.y, 0);
-
-
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && rb2d.velocity.y < maxSpeed /*&& grounded*/)
@@ -78,7 +75,7 @@ public class GameController : MonoBehaviour {
 
         // 5 - Shooting
         bool shoot = Input.GetMouseButtonDown(1);
-         shoot |= Input.GetMouseButtonDown(1);
+        shoot |= Input.GetMouseButtonDown(1);
          // Careful: For Mac users, ctrl + arrow is a bad idea
          
         if (shoot)

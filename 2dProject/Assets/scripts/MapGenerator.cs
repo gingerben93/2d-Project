@@ -13,7 +13,6 @@ public class MapGenerator : MonoBehaviour
 
     //fill seeds
     public string seed { get; set; }
-    public bool useRandomSeed;
 
     //fill range
     [Range(0, 100)]
@@ -28,8 +27,9 @@ public class MapGenerator : MonoBehaviour
     public int smoothness;
 
     int[,] map;
+    int[,] borderedMap;
 
-    public int squareSize;
+    //public int squareSize;
 
     public int numMaps { get; private set; }
     private int currentMap = 0;
@@ -52,10 +52,8 @@ public class MapGenerator : MonoBehaviour
     //where program stars
     void Start()
     {
-        squareSize = 1;
         gameData = FindObjectOfType<GameData>();
         numMaps = 6;
-
 
         int startMap = 0;
         int y = numMaps;
@@ -82,7 +80,6 @@ public class MapGenerator : MonoBehaviour
             }
         }
 
-
         int x = 0;
         for (x = 0; x < numMaps; x++)
         {
@@ -97,17 +94,10 @@ public class MapGenerator : MonoBehaviour
         bossRooms.Add(seed);
         GenerateMap();
         currentMap += 1;
-
-        
-
-
-        //for mapgenerator second runs
-        useRandomSeed = false;
         
         foreach (Vector2 num in mapSets)
         {
-            //Debug.Log("(int)num.y = " + (int)num.y + "(int)num.x = " + (int)num.x);
-            //use: start map, end map, num doors
+            //use: start map, end map, num doors, map1 seed, map2 seed
             gameData.CreatDoorConnections((int)num.y, (int)num.x + (int)num.y - 1, 2);
             gameData.EnsureConnectivityOfMaps((int)num.y, (int)num.x + (int)num.y - 1);
             gameData.ConnectDoors();
@@ -125,81 +115,56 @@ public class MapGenerator : MonoBehaviour
         //shoudl now erase the mapsets that is in mapGenerator
         gameData.mapSets = mapSets;
 
-
-
-        //use is map index one, map index 2 and number of doors for each map.
-        //gameData.CreatDoorConnections(0, 2, 2);
-        //gameData.EnsureConnectivityOfMaps(0, 2);
-        //gameData.ConnectDoors();
-
-        //Debug.Log("set one done");
-
-        //gameData.CreatDoorConnections(3, 5, 2);
-        //gameData.EnsureConnectivityOfMaps(3, 5);
-        //gameData.ConnectDoors();
-
-        //Debug.Log("set two done");
-
-        //gameData.ConnectSetOfRooms(0, 3);
-
         gameData.CreatDoorConnections(6, 6, 0);
         gameData.ConnectSetOfRooms(0, 6);
 
+        for (x = 0; x < numMaps; x++)
+        {
+            enemyLocations = new List<Vector2>();
+            map = new int[MapInfo[gameData.mapSeed[x]].width, MapInfo[gameData.mapSeed[x]].height];
+            enemyLocations = MapAddOns.SpawnEnemy(MapInfo[gameData.mapSeed[x]]);
+            MapInfo[gameData.mapSeed[x]].enemyLocations = enemyLocations;
+        }
+
         //gameData = FindObjectOfType<GameData>();
         seed = gameData.mapSeed[0];
-
-        map = new int[gameData.MapWidthHeight[gameData.FindMapIndex(seed)].GetLength(0), gameData.MapWidthHeight[gameData.FindMapIndex(seed)].GetLength(1)];
-        GenerateMap();
+        LoadMap();
     }
-
+    
     //begining of map generation
     public void GenerateMap()
     {
+        int squareSize = 1;
         gameData = FindObjectOfType<GameData>();
+        meshGen = GetComponent<MeshGenerator>();
+        MapAddOns = GetComponent<MapAddOns>();
 
-        if (useRandomSeed == true)
+        //for getting map set number
+        int currentSetMap = 0;
+        foreach (Vector2 mapSet in mapSets)
         {
-            //for getting map set number
-            int currentSetMap = 0;
-            foreach (Vector2 mapSet in mapSets)
+
+            if (currentMap >= (int)mapSet.y && currentMap < (int)mapSet.y + (int)mapSet.x)
             {
-
-                if (currentMap >= (int)mapSet.y && currentMap < (int)mapSet.y + (int)mapSet.x)
-                {
-                    break;
-                }
-                currentSetMap += 1;
+                break;
             }
+            currentSetMap += 1;
+        }
 
-            map = new int[width, height];
-            //save game data for recall later
-            gameData.AddSeed(seed);
-            gameData.MapWidthHeight.Add(map);
-            //save map data
-            MapInformation TempData = new MapInformation();
-            TempData.index = currentMap;
-            TempData.mapSet = currentSetMap;
-            TempData.width = width;
-            TempData.height = height;
-            TempData.randomFillPercent = randomFillPercent;
-            TempData.passageLength = passageLength;
-            TempData.smoothness = smoothness;
-            TempData.squareSize = squareSize;
-            MapInfo.Add(seed, TempData);
-        }
-        else
-        {
-            MapInformation currentData = MapInfo[seed];
-            //load current map data from gamedata
-            //Debug.Log("currentData.index = " + currentData.index + " currentData.mapSet = " + currentData.mapSet);
-            width = currentData.width;
-            height = currentData.height;
-            map = new int[width, height];
-            randomFillPercent = currentData.randomFillPercent;
-            passageLength = currentData.passageLength;
-            smoothness = currentData.smoothness;
-            squareSize = currentData.squareSize;
-        }
+        map = new int[width, height];
+        //save game data for recall later
+        gameData.AddSeed(seed);
+        //save map data
+        MapInformation TempData = new MapInformation();
+        TempData.index = currentMap;
+        TempData.mapSet = currentSetMap;
+        TempData.width = width;
+        TempData.height = height;
+        TempData.randomFillPercent = randomFillPercent;
+        TempData.passageLength = passageLength;
+        TempData.smoothness = smoothness;
+        TempData.squareSize = squareSize;
+        MapInfo.Add(seed, TempData);
 
         //fills map
         RandomFillMap();
@@ -209,12 +174,12 @@ public class MapGenerator : MonoBehaviour
         {
             SmoothMap();
         }
-
         //adds the mesh and other parts
         ProcessMap();
+        MapInfo[seed].map = map;
 
         int borderSize = 5;
-        int[,] borderedMap = new int[width + borderSize * 2, height + borderSize * 2];
+        borderedMap = new int[width + borderSize * 2, height + borderSize * 2];
 
         for (int x = 0; x < borderedMap.GetLength(0); x++)
         {
@@ -230,43 +195,39 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
+        MapInfo[seed].borderedMap = borderedMap;
+ 
+        meshGen.GenerateMesh(borderedMap, squareSize);
 
-        meshGen = GetComponent<MeshGenerator>();
+        //for doors spawns
+        possibleDoorLocations = new List<Vector2>();
+        possibleDoorLocations = MapAddOns.GenerateDoors(map);
+        MapInfo[seed].possibleDoorLocations = possibleDoorLocations;
+    }
 
-        gameData = FindObjectOfType<GameData>();
-        MapAddOns = GetComponent<MapAddOns>();
+    public void LoadMap()
+    {
+        MapInformation currentData = MapInfo[seed];
+        borderedMap = currentData.borderedMap;
 
-        if (useRandomSeed == true)
+        //find a way to save the map data so oyu don't even have to recreate the borderedMap (and doorLocations); this can jsut go right at the top.
+        meshGen.LoadMeshFromAssests(borderedMap, currentData.squareSize);
+
+        //for door spawns
+        doorLocations = new List<Vector2>();
+        doorLocations = MapInfo[seed].doorLocations;
+        MapAddOns.DrawOldDoors(doorLocations);
+
+        //for enemy spawns
+        enemyLocations = new List<Vector2>();
+        enemyLocations = MapInfo[seed].enemyLocations;
+        if (enemyLocations != null && enemyLocations.Count > 0)
         {
-            //for mesh
-            meshGen.GenerateMesh(borderedMap, squareSize);
-
-            //for doors spawns
-            possibleDoorLocations = new List<Vector2>();
-            possibleDoorLocations = MapAddOns.GenerateDoors(map, squareSize, borderSize);
-            gameData.AddDoorLocations(possibleDoorLocations);
-
-            //for enemy spawns
-            enemyLocations = new List<Vector2>();
-            enemyLocations = MapAddOns.SpawnEnemy(map, squareSize, borderSize);
-            gameData.AddEnemyLocations(enemyLocations);
-
+            MapAddOns.DrawEnemys(enemyLocations);
         }
         else
         {
-            //find a way to save the map data so oyu don't even have to recreate the borderedMap (and doorLocations); this can jsut go right at the top.
-            meshGen.LoadMeshFromAssests(borderedMap, 1);
-
-            //for door spawns
-            doorLocations = new List<Vector2>();
-            doorLocations = gameData.GetDoorForMap(gameData.FindMapIndex(seed));
-            MapAddOns.DrawOldDoors(doorLocations);
-
-            //for enemy spawns
-            enemyLocations = new List<Vector2>();
-            enemyLocations = gameData.GetEnemyForMap(gameData.FindMapIndex(seed));
-            MapAddOns.DrawEnemys(enemyLocations);
-
+            MapAddOns.RemoveAllEnemies();
         }
     }
 
