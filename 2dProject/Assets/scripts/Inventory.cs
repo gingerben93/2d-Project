@@ -32,8 +32,6 @@ public class Inventory : MonoBehaviour
 
     private float hoverYOffset;
 
-    public EventSystem eventSystem;
-
     public static int EmptySlots
     {
         get
@@ -47,11 +45,24 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    public static Inventory InventorySingle;
+
+    void Awake()
+    {
+        if (InventorySingle == null)
+        {
+            InventorySingle = this;
+        }
+        else if (InventorySingle != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     // Use this for initialization
     void Start()
     {
         CreateLayout();
-
     }
 
     // Update is called once per frame
@@ -60,7 +71,7 @@ public class Inventory : MonoBehaviour
         //alph = (int)GetComponent<CanvasGroup>().alpha;
         if (Input.GetMouseButtonUp(0))
         {
-            if (!eventSystem.IsPointerOverGameObject(-1) && from != null)
+            if (!EventSystem.current.IsPointerOverGameObject(-1) && from != null)
             {
                 from.GetComponent<Image>().color = Color.white;
                 from.ClearSlot();
@@ -323,11 +334,11 @@ public class Inventory : MonoBehaviour
 
     public void MoveItem(GameObject clicked)
     {
-        if (GameObject.Find("Inventory").GetComponent<CanvasGroup>().alpha == 0)
-        {
-            return;
-        }
-        else
+        //if (Inventory.InventorySingle.GetComponent<CanvasGroup>().alpha == 0)
+        //{
+        //    return;
+        //}
+        //else
         {
             if (from == null)
             {

@@ -36,7 +36,7 @@ public class MoveTowardPlayer : MonoBehaviour {
     {
         //enemy = transform.GetComponentInParent<Transform>();
         enemy = transform.parent.transform;
-        player = GameObject.Find("Hero").transform;
+        player = GameController.GameControllerSingle.transform;
 
         //
         enemyRigBody = enemy.GetComponent<Rigidbody2D>();

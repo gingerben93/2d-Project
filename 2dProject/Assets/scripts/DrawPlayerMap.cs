@@ -9,7 +9,7 @@ public class DrawPlayerMap : MonoBehaviour {
 
     public MeshFilter playerLocalMap;
     public MeshFilter playerWorldMap;
-    public GameObject player;
+    public Transform player;
 
     //for drawing doors on map
     public Transform doorPrefab;
@@ -65,9 +65,26 @@ public class DrawPlayerMap : MonoBehaviour {
     private string currentMapSet = "";
     private int currentMapSetIndex = 0;
 
+    public static DrawPlayerMap PlayerMapSingle;
+
+    void Awake()
+    {
+        if (PlayerMapSingle == null)
+        {
+            PlayerMapSingle = this;
+        }
+        else if (PlayerMapSingle != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
 
     void Start()
     {
+        //get reference to player transform
+        player = GameController.GameControllerSingle.transform;
+
         //map gen
         mapGen = FindObjectOfType<MapGenerator>();
 
@@ -299,8 +316,8 @@ public class DrawPlayerMap : MonoBehaviour {
                 }
             }
             
-            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(mapGen.MapInfo[seed1].doorLocations[door1].x * .075f, mapGen.MapInfo[seed1].doorLocations[door1].y * .075f, 0);
-            linePos2 = GetCurrentMapLocation(seed2) + new Vector3(mapGen.MapInfo[seed2].doorLocations[door2].x * .075f, mapGen.MapInfo[seed2].doorLocations[door2].y * .075f, 0);
+            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(mapGen.MapInfo[seed1].doorLocationsX[door1] * .075f, mapGen.MapInfo[seed1].doorLocationsY[door1] * .075f, 0);
+            linePos2 = GetCurrentMapLocation(seed2) + new Vector3(mapGen.MapInfo[seed2].doorLocationsX[door2] * .075f, mapGen.MapInfo[seed2].doorLocationsY[door2] * .075f, 0);
 
         }
         else
@@ -344,13 +361,13 @@ public class DrawPlayerMap : MonoBehaviour {
 
         if(set1 < gameData.mapSets.Count)
         {
-            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(mapGen.MapInfo[seed1].doorLocations[door1].x * .075f, mapGen.MapInfo[seed1].doorLocations[door1].y * .075f, 0);
+            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(mapGen.MapInfo[seed1].doorLocationsX[door1] * .075f, mapGen.MapInfo[seed1].doorLocationsY[door1] * .075f, 0);
             linePos2 = GetCurrentMapLocation(seed1)*2;
         }
         else
         {
             //Debug.Log("linePos1: RAN");
-            linePos1 = new Vector3(mapGen.MapInfo[seed1].doorLocations[door1].x * .075f, mapGen.MapInfo[seed1].doorLocations[door1].y * .075f, 0);
+            linePos1 = new Vector3(mapGen.MapInfo[seed1].doorLocationsX[door1] * .075f, mapGen.MapInfo[seed1].doorLocationsY[door1] * .075f, 0);
             linePos2 = new Vector3(0, -10f, 0);
         }
         
@@ -437,11 +454,13 @@ public class DrawPlayerMap : MonoBehaviour {
             }
 
             drawDoors = true;
-            foreach (Vector3 door in mapGen.MapInfo[curMap].doorLocations)
+            //foreach (Vector3 door in mapGen.MapInfo[curMap].doorLocations)
+            for(int tempCounter = 0; tempCounter < mapGen.MapInfo[curMap].doorLocationsX.Count; tempCounter++)
             {
                 var doorTransform = Instantiate(doorPrefab);
                 doorTransform.transform.SetParent(transform);
-                doorTransform.position = player.transform.position + new Vector3(door.x * .175f, door.y *.175f, 0);
+                doorTransform.position = player.transform.position + new Vector3(mapGen.MapInfo[curMap].doorLocationsX[tempCounter] * .175f, 
+                                                                                 mapGen.MapInfo[curMap].doorLocationsY[tempCounter] * .175f, 0);
                 doorTransform.localScale = new Vector3(.7f, .7f, .7f);
             }
         }

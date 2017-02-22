@@ -13,7 +13,7 @@ public class DrawGrapHook : MonoBehaviour
     private float lineDrawSpeed = .1f;
 
     //reference to player
-    public GameObject player;
+    private GameObject player;
 
     //for movement 
     private Rigidbody2D rb2d;
@@ -67,6 +67,7 @@ public class DrawGrapHook : MonoBehaviour
         line.startColor = Color.green;
         line.endColor = Color.green;
 
+        player = GameController.GameControllerSingle.gameObject;
 
         line.useWorldSpace = true;
         line.enabled = false;
@@ -190,7 +191,7 @@ public class DrawGrapHook : MonoBehaviour
             }
 
             //draw the rope
-            if (!HasTipCollided)
+            else if (!HasTipCollided)
             {
                 rb2dTip.velocity = new Vector2(10 * TipDirection.x, 10 * TipDirection.y);
                 MoveLine();
@@ -233,7 +234,6 @@ public class DrawGrapHook : MonoBehaviour
             q = Quaternion.AngleAxis(grapBodyAngle, Vector3.forward);
             grapBody.transform.rotation = q;
             grapBody.GetComponent<BoxCollider2D>().size = new Vector2(Vector3.Distance(GrapTip.transform.position, player.transform.position) * 4, .5f);
-
         }
     }
 

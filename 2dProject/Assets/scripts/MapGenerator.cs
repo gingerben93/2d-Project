@@ -7,7 +7,7 @@ using System;
 public class MapGenerator : MonoBehaviour
 {
     //map size
-    //needs to be changed to  public int width {get; set;}
+    //needs to be changed to private
     public int width;
     public int height;
 
@@ -49,12 +49,26 @@ public class MapGenerator : MonoBehaviour
 
     public Dictionary<string, MapInformation> MapInfo = new Dictionary<string, MapInformation>();
 
+    public static MapGenerator MapGeneratorSingle;
+
+    void Awake()
+    {
+        if (MapGeneratorSingle == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            MapGeneratorSingle = this;
+        }
+        else if (MapGeneratorSingle != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
     //where program stars
     void Start()
     {
         gameData = FindObjectOfType<GameData>();
         numMaps = 6;
-
         int startMap = 0;
         int y = numMaps;
 
@@ -87,14 +101,14 @@ public class MapGenerator : MonoBehaviour
             GenerateMap();
             currentMap += 1;
         }
-        
+
         width = 50; height = 100;
         randomFillPercent = 0;
         seed = currentMap.ToString();
         bossRooms.Add(seed);
         GenerateMap();
         currentMap += 1;
-        
+
         foreach (Vector2 num in mapSets)
         {
             //use: start map, end map, num doors, map1 seed, map2 seed
@@ -102,7 +116,7 @@ public class MapGenerator : MonoBehaviour
             gameData.EnsureConnectivityOfMaps((int)num.y, (int)num.x + (int)num.y - 1);
             gameData.ConnectDoors();
         }
-        
+
         foreach (Vector2 num in mapSets)
         {
             if (mapSets[mapSets.Count - 1] == num)
@@ -123,12 +137,29 @@ public class MapGenerator : MonoBehaviour
             enemyLocations = new List<Vector2>();
             map = new int[MapInfo[gameData.mapSeed[x]].width, MapInfo[gameData.mapSeed[x]].height];
             enemyLocations = MapAddOns.SpawnEnemy(MapInfo[gameData.mapSeed[x]]);
-            MapInfo[gameData.mapSeed[x]].enemyLocations = enemyLocations;
-        }
 
-        //gameData = FindObjectOfType<GameData>();
+            //for storing data in not unity vectors
+            List<float> tempHolderX = new List<float>();
+            List<float> tempHolderY = new List<float>();
+            foreach (Vector2 XYCoord in enemyLocations)
+            {
+                tempHolderX.Add(XYCoord.x);
+                tempHolderY.Add(XYCoord.y);
+            }
+            MapInfo[gameData.mapSeed[x]].enemyLocationsX = tempHolderX;
+            MapInfo[gameData.mapSeed[x]].enemyLocationsY = tempHolderY;
+        }
+        
+
+        PlayerStats.playerStatistics.MapInfo = MapInfo;
+
+        MapInfo = PlayerStats.playerStatistics.MapInfo;
+
         seed = gameData.mapSeed[0];
         LoadMap();
+        GameController.GameControllerSingle.respawnLocation = new Vector3(PlayerStats.playerStatistics.MapInfo[seed].doorLocationsX[0],
+                                                                          PlayerStats.playerStatistics.MapInfo[seed].doorLocationsY[0],0);
+        DrawPlayerMap.PlayerMapSingle.currentMap = seed;
     }
     
     //begining of map generation
@@ -202,11 +233,21 @@ public class MapGenerator : MonoBehaviour
         //for doors spawns
         possibleDoorLocations = new List<Vector2>();
         possibleDoorLocations = MapAddOns.GenerateDoors(map);
-        MapInfo[seed].possibleDoorLocations = possibleDoorLocations;
+
+        List<float> tempHolderX = new List<float>();
+        List<float> tempHolderY = new List<float>();
+        foreach (Vector2 XYCoord in possibleDoorLocations)
+        {
+            tempHolderX.Add(XYCoord.x);
+            tempHolderY.Add(XYCoord.y);
+        }
+        MapInfo[seed].possibleDoorLocationsX = tempHolderX;
+        MapInfo[seed].possibleDoorLocationsY = tempHolderY;
     }
 
     public void LoadMap()
     {
+        //Debug.Log("seed = " + seed);
         MapInformation currentData = MapInfo[seed];
         borderedMap = currentData.borderedMap;
 
@@ -215,20 +256,34 @@ public class MapGenerator : MonoBehaviour
 
         //for door spawns
         doorLocations = new List<Vector2>();
-        doorLocations = MapInfo[seed].doorLocations;
+
+        for(int tempCounter = 0; tempCounter < MapInfo[seed].doorLocationsX.Count; tempCounter++)
+        {
+            doorLocations.Add(new Vector2(MapInfo[seed].doorLocationsX[tempCounter], MapInfo[seed].doorLocationsY[tempCounter]));
+        }
+        //doorLocations = MapInfo[seed].doorLocations;
         MapAddOns.DrawOldDoors(doorLocations);
 
         //for enemy spawns
         enemyLocations = new List<Vector2>();
-        enemyLocations = MapInfo[seed].enemyLocations;
-        if (enemyLocations != null && enemyLocations.Count > 0)
+        //foreach (float tempXY in MapInfo[seed].enemyLocationsX)
+        if (MapInfo[seed].enemyLocationsX != null)
         {
-            MapAddOns.DrawEnemys(enemyLocations);
+            for (int tempCounter = 0; tempCounter < MapInfo[seed].enemyLocationsX.Count; tempCounter++)
+            {
+                enemyLocations.Add(new Vector2(MapInfo[seed].enemyLocationsX[tempCounter], (MapInfo[seed].enemyLocationsY[tempCounter])));
+            }
+
+            if (enemyLocations != null && enemyLocations.Count > 0)
+            {
+                MapAddOns.DrawEnemys(enemyLocations);
+            }
+            else
+            {
+                MapAddOns.RemoveAllEnemies();
+            }
         }
-        else
-        {
-            MapAddOns.RemoveAllEnemies();
-        }
+
     }
 
     //smooths the map with arbitrary process, change be changed and modified 

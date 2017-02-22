@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/scene/startMenu.unity
   - enabled: 1
     path: Assets/scene/MainGame.unity
+  - enabled: 1
+    path: Assets/scene/StartArea.unity

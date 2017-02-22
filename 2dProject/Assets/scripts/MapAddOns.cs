@@ -80,7 +80,6 @@ public class MapAddOns : MonoBehaviour
 
         enemyPositions = new List<Vector2>();
         drawEnemys = new List<Vector2>();
-        Debug.Log("map1.width = " + map1.width + " map1.height = " + map1.height);
         //pick spots for enemies to spawn
         for (int x = 1; x < map1.width - 1; x++)
         {
@@ -102,7 +101,7 @@ public class MapAddOns : MonoBehaviour
         for (int x = 0; x < numEnemies; x++)
         {
             //don't spawn enemies by possible door locations
-            enemyXY = CheckIfDoorLocations(enemyPositions, map1.doorLocations);
+            enemyXY = CheckIfDoorLocations(enemyPositions, map1.doorLocationsX, map1.doorLocationsY);
 
             xPos = -map1.width / 2 + enemyXY.x * map1.squareSize + map1.squareSize / 2;
             yPos = -map1.height / 2 + enemyXY.y * map1.squareSize + map1.squareSize;
@@ -114,16 +113,18 @@ public class MapAddOns : MonoBehaviour
         return drawEnemys;
     }
 
-    public Vector2 CheckIfDoorLocations(List<Vector2> enemyPositions, List<Vector2> doorLocations)
+    //make sure enemies can't spawn at x distance within door spawn
+    public Vector2 CheckIfDoorLocations(List<Vector2> enemyPositions, List<float> doorLocationsX, List<float> doorLocationsY)
     {
         Vector2 tempEnemyPos;
         tempEnemyPos = enemyPositions[Random.Range(0, enemyPositions.Count)];
-        foreach (Vector2 possibleDoor in doorLocations)
+        //foreach (float door in doorLocationsX)
+        for(int x = 0; x < doorLocationsX.Count; x++)
         {
-            if (Vector2.Distance(tempEnemyPos, possibleDoor) <= 1)
+            if (Vector2.Distance(tempEnemyPos, new Vector2(doorLocationsX[x], doorLocationsY[x])) <= 2)
             {
                 enemyPositions.Remove(tempEnemyPos);
-                tempEnemyPos = CheckIfDoorLocations(enemyPositions, doorLocations);
+                tempEnemyPos = CheckIfDoorLocations(enemyPositions, doorLocationsX, doorLocationsY);
             }
         }
         return tempEnemyPos;

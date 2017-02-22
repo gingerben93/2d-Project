@@ -24,7 +24,6 @@ public class DoorCollider : MonoBehaviour {
         gameData = FindObjectOfType<GameData>();
         changeLocalMap = FindObjectOfType<DrawPlayerMap>();
         gameCon = FindObjectOfType<GameController>();
-        
     }
 
     public void OnTriggerEnter2D(Collider2D node)

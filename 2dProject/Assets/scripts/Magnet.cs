@@ -10,9 +10,9 @@ public class Magnet : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(item.transform.position, GameObject.Find("Hero").transform.position) < 5)
+        if (Vector3.Distance(item.transform.position, GameController.GameControllerSingle.transform.position) < 5)
         {
-            transform.position = Vector3.MoveTowards(item.transform.position, GameObject.Find("Hero").transform.position, Time.deltaTime * 6);
+            transform.position = Vector3.MoveTowards(item.transform.position, GameController.GameControllerSingle.transform.position, Time.deltaTime * 6);
         }
     }
 }

@@ -76,7 +76,6 @@ MonoBehaviour:
   slotPrefab: {fileID: 1180141628489860, guid: 68e6c0870d9ae4143bf962e0c35af2bd, type: 2}
   iconPrefab: {fileID: 1380255374502104, guid: 2bab44d95b0a3d743b268c18837504a3, type: 2}
   canvas: {fileID: 0}
-  eventSystem: {fileID: 0}
 --- !u!222 &222505633442322796
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -108,7 +107,7 @@ CanvasGroup:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1925015624211520}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

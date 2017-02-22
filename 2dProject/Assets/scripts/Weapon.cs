@@ -6,15 +6,16 @@ public class Weapon : MonoBehaviour
     public float shootingRate = 0.25f;
 
     private float shootCooldown;
-    private Transform holdForBullets; 
+    private Transform holdForBullets;
 
     void Start()
     {
         shootCooldown = 0f;
+        //rotation = transform.rotation;
         holdForBullets = GameObject.Find("PlayerProjectiles").transform;
     }
 
-    void Update()
+    void LateUpdate()
     {
         if (shootCooldown > 0)
         {
