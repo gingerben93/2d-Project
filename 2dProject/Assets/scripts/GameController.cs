@@ -112,26 +112,6 @@ public class GameController : MonoBehaviour {
         shoot |= Input.GetMouseButtonDown(1);
         // Careful: For Mac users, ctrl + arrow is a bad idea
 
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem.IsPointerOverGameObject() && InvMenu.alpha == 1 || eventSystem.IsPointerOverGameObject() && StartMenu.alpha == 1)
-        {
-            return;
-        }
-        else if (shoot)
-        {
-            if (attack == 2)
-            {
-                Weapon weapon = GetComponent<Weapon>();
-                if (weapon != null)
-                {
-                    // false because the player is not an enemy
-                    weapon.Attack(false);
-                }
-            }
-            else
-            {
-            }
-        }
 
         //toggle inventory on and off
         if (Input.GetKeyDown(KeyCode.I))
@@ -150,6 +130,29 @@ public class GameController : MonoBehaviour {
             StartMenu.alpha = (StartMenu.alpha + 1) % 2;
             StartMenu.interactable = !StartMenu.interactable;
             StartMenu.blocksRaycasts = !StartMenu.blocksRaycasts;
+        }
+
+
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem.IsPointerOverGameObject() && InvMenu.alpha == 1 || eventSystem.IsPointerOverGameObject() && StartMenu.alpha == 1)
+        {
+            return;
+        }
+        else if (shoot)
+        {
+            if (attack == 2)
+            {
+                Weapon weapon = GetComponent<Weapon>();
+                if (weapon != null)
+                {
+                    // false because the player is not an enemy
+                    weapon.Attack(false);
+                }
+            }
+            else if (attack == 1)
+            {
+                Debug.Log("pewpew");
+            }
         }
     }
 
