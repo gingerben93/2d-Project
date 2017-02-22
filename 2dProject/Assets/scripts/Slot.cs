@@ -103,14 +103,25 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     {
         if (!IsEmpty)
         {
-            Items.Pop().Use();
-
-            stackTxt.text = Items.Count > 1 ? Items.Count.ToString() : string.Empty;
-
-            if (IsEmpty)
+            if (CurrentItem.type == ItemType.HEALTH)
             {
-                ChangeSprite(slotEmpty, slotHighlight);
-                Inventory.EmptySlots++;
+                Items.Pop().Use();
+
+                stackTxt.text = Items.Count > 1 ? Items.Count.ToString() : string.Empty;
+
+                if (IsEmpty)
+                {
+                    ChangeSprite(slotEmpty, slotHighlight);
+                    Inventory.EmptySlots++;
+                }
+            }
+            else if (CurrentItem.type == ItemType.RWEAPON)
+            {
+                Debug.Log("range weapon");
+            }
+            else if (CurrentItem.type == ItemType.MWEAPON)
+            {
+                Debug.Log("melee weapon");
             }
         }
     }

@@ -133,6 +133,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loot: {fileID: 4714627539353674, guid: 6037edee721d36b45a3414f115fcf23e, type: 2}
+  loot2: {fileID: 4568709328624982, guid: b6fd51c9f95fc474b94f7579577cb2f8, type: 2}
+  loot3: {fileID: 4091342300454142, guid: ddda9a7bc282c24459e0044624ee7df9, type: 2}
 --- !u!212 &21256748
 SpriteRenderer:
   m_ObjectHideFlags: 1

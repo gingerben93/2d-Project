@@ -6,7 +6,8 @@ using UnityEngine.EventSystems;
 
 public class Inventory : MonoBehaviour
 {
-
+    //Used when moving around items to equipment slots.
+    public Item info;
     //int alph; //For moving items when canvas is hidden
 
     private RectTransform invRect;
@@ -334,57 +335,106 @@ public class Inventory : MonoBehaviour
 
     public void MoveItem(GameObject clicked)
     {
-        //if (Inventory.InventorySingle.GetComponent<CanvasGroup>().alpha == 0)
-        //{
-        //    return;
-        //}
-        //else
+        if (from == null)
         {
-            if (from == null)
+            if (!clicked.GetComponent<Slot>().IsEmpty)
             {
-                if (!clicked.GetComponent<Slot>().IsEmpty)
-                {
-                    from = clicked.GetComponent<Slot>();
-                    from.GetComponent<Image>().color = Color.gray;
+                from = clicked.GetComponent<Slot>();
+                from.GetComponent<Image>().color = Color.gray;
 
-                    hoverObject = (GameObject)Instantiate(iconPrefab);
-                    hoverObject.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
-                    hoverObject.name = "Hover";
+                hoverObject = (GameObject)Instantiate(iconPrefab);
+                hoverObject.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
+                hoverObject.name = "Hover";
 
-                    RectTransform hoverTransform = hoverObject.GetComponent<RectTransform>();
-                    RectTransform clickedTransform = clicked.GetComponent<RectTransform>();
+                RectTransform hoverTransform = hoverObject.GetComponent<RectTransform>();
+                RectTransform clickedTransform = clicked.GetComponent<RectTransform>();
 
-                    hoverTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, clickedTransform.sizeDelta.x);
-                    hoverTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, clickedTransform.sizeDelta.y);
+                hoverTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, clickedTransform.sizeDelta.x);
+                hoverTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, clickedTransform.sizeDelta.y);
 
-                    hoverObject.transform.SetParent(GameObject.Find("Canvas").transform, true);
-                    hoverObject.transform.localScale = from.gameObject.transform.localScale;
-                }
+                hoverObject.transform.SetParent(GameObject.Find("Canvas").transform, true);
+                hoverObject.transform.localScale = from.gameObject.transform.localScale;
             }
-            else if (to == null)
+        }
+        else if (to == null)
+        {
+            to = clicked.GetComponent<Slot>();
+            Destroy(GameObject.Find("Hover"));
+        }
+        if (to != null && from != null)
+        {
+            Stack<Item> tmpTo = new Stack<Item>(to.Items);
+            to.AddItems(from.Items);
+
+            if (tmpTo.Count == 0)
             {
-                to = clicked.GetComponent<Slot>();
-                Destroy(GameObject.Find("Hover"));
+                info = from.Items.Peek();
+                Debug.Log(from.Items.Peek());
+                Debug.Log(info.type);
+                if (info.type == ItemType.RWEAPON || info.type == ItemType.MWEAPON)
+                {
+                    //Moving items into the weapon slot
+                    if (to.gameObject.name == "Weapon" && info.type == ItemType.MWEAPON) //melee weapon
+                    {
+                        Debug.Log("melee weapon");
+                        //GameController wep = GetComponent<GameController>();
+                        //wep.attack = 1;
+                        GameController.GameControllerSingle.attack = 1;
+                    }
+                    else if (to.gameObject.name == "Weapon" && info.type == ItemType.RWEAPON) //ranged weapon
+                    {
+                        Debug.Log("range weapon");
+                        //GameController wep = GetComponent<GameController>();
+                        //wep.attack = 2;
+                        GameController.GameControllerSingle.attack = 2;
+                    }
+                    /*else //no weapon
+                    {
+                        //GameController wep = GetComponent<GameController>();
+                        //wep.attack = 0;
+                        GameController.GameControllerSingle.attack = 0;
+                    }*/
+                }
+                from.ClearSlot();
             }
-            if (to != null && from != null)
+            else
             {
-                Stack<Item> tmpTo = new Stack<Item>(to.Items);
-                to.AddItems(from.Items);
-
-                if (tmpTo.Count == 0)
+                //PEEK IS NOT THE RIGHT WAY TO GO, RETURNS NULL
+                info = from.Items.Peek();
+                Debug.Log(from.Items.Peek());
+                Debug.Log(info.type);
+                if (info.type == ItemType.RWEAPON || info.type == ItemType.MWEAPON)
                 {
-                    from.ClearSlot();
+                    //Moving items into the weapon slot
+                    if (to.gameObject.name == "Weapon" && info.type == ItemType.MWEAPON) //melee weapon
+                    {
+                        Debug.Log("melee weapon");
+                        //GameController wep = GetComponent<GameController>();
+                        //wep.attack = 1;
+                        GameController.GameControllerSingle.attack = 1;
+                    }
+                    else if (to.gameObject.name == "Weapon" && info.type == ItemType.RWEAPON) //ranged weapon
+                    {
+                        Debug.Log("range weapon");
+                        //GameController wep = GetComponent<GameController>();
+                        //wep.attack = 2;
+                        GameController.GameControllerSingle.attack = 2;
+                    }
+                    /*else //no weapon
+                    {
+                        //GameController wep = GetComponent<GameController>();
+                        //wep.attack = 0;
+                        GameController.GameControllerSingle.attack = 0;
+                    }*/
                 }
-                else
-                {
-                    from.AddItems(tmpTo);
-                }
-
-                from.GetComponent<Image>().color = Color.white;
-                to = null;
-                from = null;
-                hoverObject = null;
+                from.AddItems(tmpTo);
             }
+
+            from.GetComponent<Image>().color = Color.white;
+            info = null;
+            to = null;
+            from = null;
+            hoverObject = null;
         }
     }
 }

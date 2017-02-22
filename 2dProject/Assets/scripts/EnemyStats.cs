@@ -5,6 +5,8 @@ using System.Collections;
 public class EnemyStats : MonoBehaviour
 {
     public Transform loot;
+    public Transform loot2;
+    public Transform loot3;
 
     Shot shot;
 
@@ -32,7 +34,9 @@ public class EnemyStats : MonoBehaviour
             //set exp
             PlayerStats.playerStatistics.experiencePoints += experiencePoint;
 
-            Instantiate(loot, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform; ;
+            Instantiate(loot, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
+            Instantiate(loot2, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
+            Instantiate(loot3, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
             // Dead!
             Destroy(gameObject);
         }

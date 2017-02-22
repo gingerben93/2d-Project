@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour {
     public bool facingRight { get; set; }
     public bool jump { get; set; }
 
+    public float attack { get; set; }
     public float moveForce { get; set; }
     public float maxSpeed{ get; set; }
     public float jumpForce{ get; set; }
@@ -61,6 +62,7 @@ public class GameController : MonoBehaviour {
         touchingDoor = false;
         facingRight = true;
         jump = false;
+        attack = 2;
 
         StatsMenu = GameObject.Find("StatsMenu").GetComponent<CanvasGroup>();
         StartMenu = GameObject.Find("StartMenu").GetComponent<CanvasGroup>();
@@ -105,18 +107,19 @@ public class GameController : MonoBehaviour {
         }
 
         // 5 - Shooting
+        //attack = 2; //TESTING PURPOSE
         bool shoot = Input.GetMouseButtonDown(1);
         shoot |= Input.GetMouseButtonDown(1);
         // Careful: For Mac users, ctrl + arrow is a bad idea
 
-        if (shoot)
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem.IsPointerOverGameObject() && InvMenu.alpha == 1 || eventSystem.IsPointerOverGameObject() && StartMenu.alpha == 1)
         {
-            EventSystem eventSystem = EventSystem.current;
-            if (eventSystem.IsPointerOverGameObject() && InvMenu.alpha == 1)
-            {
-                return;
-            }
-            else
+            return;
+        }
+        else if (shoot)
+        {
+            if (attack == 2)
             {
                 Weapon weapon = GetComponent<Weapon>();
                 if (weapon != null)
@@ -124,6 +127,9 @@ public class GameController : MonoBehaviour {
                     // false because the player is not an enemy
                     weapon.Attack(false);
                 }
+            }
+            else
+            {
             }
         }
 

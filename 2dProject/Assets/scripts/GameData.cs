@@ -84,7 +84,7 @@ public class GameData : MonoBehaviour
             //Debug.Log("doorXY.x = " + xPos + " doorXY.y = " + yPos);
 
             //for removing doors left and right of current door
-            if (tempDoorIndex < map1.possibleDoorLocationsX.Count - 1)
+            if (tempDoorIndex < map1.possibleDoorLocationsX.Count - 2)
             {
                 tempDoor = new Vector2(map1.possibleDoorLocationsX[tempDoorIndex + 1], map1.possibleDoorLocationsY[tempDoorIndex + 1]);
                 if (Vector2.Distance(tempDoor, doorXY) <= 1)
@@ -321,7 +321,7 @@ public class GameData : MonoBehaviour
         Vector2 door1 = new Vector2(map1.possibleDoorLocationsX[tempDoorIndex1], map1.possibleDoorLocationsY[tempDoorIndex1]);
 
         //for removing doors left and right of current door
-        if (tempDoorIndex1 < map1.possibleDoorLocationsX.Count - 1)
+        if (tempDoorIndex1 < map1.possibleDoorLocationsX.Count - 2)
         {
             tempDoor = new Vector2(map1.possibleDoorLocationsX[tempDoorIndex1 + 1], map1.possibleDoorLocationsY[tempDoorIndex1 + 1]);
             if (Vector2.Distance(tempDoor, door1) <= 1)
@@ -350,7 +350,7 @@ public class GameData : MonoBehaviour
         Vector2 door2 = new Vector2(map2.possibleDoorLocationsX[tempDoorIndex2], map2.possibleDoorLocationsY[tempDoorIndex2]);
 
         //for removing doors left and right of current door
-        if (tempDoorIndex2 < map2.possibleDoorLocationsX.Count - 1)
+        if (tempDoorIndex2 < map2.possibleDoorLocationsX.Count - 2)
         {
             tempDoor = new Vector2(map2.possibleDoorLocationsX[tempDoorIndex2 + 1], map2.possibleDoorLocationsY[tempDoorIndex2 + 1]);
             if (Vector2.Distance(tempDoor, door2) <= 1)
