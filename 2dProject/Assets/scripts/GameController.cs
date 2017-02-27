@@ -109,6 +109,7 @@ public class GameController : MonoBehaviour {
         shoot |= Input.GetMouseButtonDown(1);
         // Careful: For Mac users, ctrl + arrow is a bad idea
 
+<<<<<<< HEAD
         //toggle inventory on and off
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -150,6 +151,50 @@ public class GameController : MonoBehaviour {
         }
 
         
+=======
+
+        //toggle inventory on and off
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            InvMenu.alpha = (InvMenu.alpha + 1) % 2;
+            InvMenu.interactable = !InvMenu.interactable;
+            InvMenu.blocksRaycasts = !InvMenu.blocksRaycasts;
+
+            //stats menu is never interactable
+            StatsMenu.alpha = (StatsMenu.alpha + 1) % 2;
+            //StatsMenu.interactable = !StatsMenu.interactable;
+            //StatsMenu.blocksRaycasts = !StatsMenu.blocksRaycasts;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            StartMenu.alpha = (StartMenu.alpha + 1) % 2;
+            StartMenu.interactable = !StartMenu.interactable;
+            StartMenu.blocksRaycasts = !StartMenu.blocksRaycasts;
+        }
+
+
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem.IsPointerOverGameObject() && InvMenu.alpha == 1 || eventSystem.IsPointerOverGameObject() && StartMenu.alpha == 1)
+        {
+            return;
+        }
+        else if (shoot)
+        {
+            if (attack == 2)
+            {
+                Weapon weapon = GetComponent<Weapon>();
+                if (weapon != null)
+                {
+                    // false because the player is not an enemy
+                    weapon.Attack(false);
+                }
+            }
+            else if (attack == 1)
+            {
+                Debug.Log("pewpew");
+            }
+        }
+>>>>>>> origin/master
     }
 
     void FixedUpdate()
