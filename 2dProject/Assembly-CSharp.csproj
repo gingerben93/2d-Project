@@ -72,11 +72,14 @@
      <Compile Include="Assets\scripts\SaveGrapplingHook.cs" />
      <Compile Include="Assets\scripts\SaveMapAsSingleton.cs" />
      <Compile Include="Assets\scripts\Shot.cs" />
+     <Compile Include="Assets\scripts\ShotM.cs" />
      <Compile Include="Assets\scripts\ShotMove.cs" />
      <Compile Include="Assets\scripts\Slot.cs" />
+     <Compile Include="Assets\scripts\StartGame.cs" />
      <Compile Include="Assets\scripts\StatsMenu.cs" />
      <Compile Include="Assets\scripts\StatsMenuController.cs" />
      <Compile Include="Assets\scripts\Weapon.cs" />
+     <Compile Include="Assets\scripts\WeaponMelee.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

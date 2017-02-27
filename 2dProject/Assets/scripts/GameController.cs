@@ -144,8 +144,14 @@ public class GameController : MonoBehaviour {
                     weapon.Attack(false);
                 }
             }
-            else
+            else if (attack ==1)
             {
+                WeaponMelee weaponM = GetComponent<WeaponMelee>();
+                if (weaponM != null)
+                {
+                    // false because the player is not an enemy
+                    weaponM.Attack(false);
+                }
             }
         }
 

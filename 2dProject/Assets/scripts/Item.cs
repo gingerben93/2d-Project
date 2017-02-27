@@ -22,6 +22,7 @@ public class Item : MonoBehaviour {
         switch (type)
         {
             case ItemType.HEALTH:
+                PlayerStats.playerStatistics.health += 1;
                 Debug.Log("Health potion was used");
                 break;
             case ItemType.MWEAPON:
