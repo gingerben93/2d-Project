@@ -6,9 +6,6 @@ using UnityEngine.EventSystems;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEditor;
-using UnityEngine.SceneManagement;
-using System.Xml;
-using System.Xml.Serialization;
 
 public class GameController : MonoBehaviour {
 
@@ -112,8 +109,27 @@ public class GameController : MonoBehaviour {
         shoot |= Input.GetMouseButtonDown(1);
         // Careful: For Mac users, ctrl + arrow is a bad idea
 
+        //toggle inventory on and off
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            InvMenu.alpha = (InvMenu.alpha + 1) % 2;
+            InvMenu.interactable = !InvMenu.interactable;
+            InvMenu.blocksRaycasts = !InvMenu.blocksRaycasts;
+
+            //stats menu is never interactable
+            StatsMenu.alpha = (StatsMenu.alpha + 1) % 2;
+            //StatsMenu.interactable = !StatsMenu.interactable;
+            //StatsMenu.blocksRaycasts = !StatsMenu.blocksRaycasts;
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            StartMenu.alpha = (StartMenu.alpha + 1) % 2;
+            StartMenu.interactable = !StartMenu.interactable;
+            StartMenu.blocksRaycasts = !StartMenu.blocksRaycasts;
+        }
+
         EventSystem eventSystem = EventSystem.current;
-        if (eventSystem.IsPointerOverGameObject() && InvMenu.alpha == 1 || eventSystem.IsPointerOverGameObject() && StartMenu.alpha == 1)
+        if (eventSystem.IsPointerOverGameObject())
         {
             return;
         }
@@ -133,24 +149,7 @@ public class GameController : MonoBehaviour {
             }
         }
 
-        //toggle inventory on and off
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            InvMenu.alpha = (InvMenu.alpha + 1) % 2;
-            InvMenu.interactable = !InvMenu.interactable;
-            InvMenu.blocksRaycasts = !InvMenu.blocksRaycasts;
-
-            //stats menu is never interactable
-            StatsMenu.alpha = (StatsMenu.alpha + 1) % 2;
-            //StatsMenu.interactable = !StatsMenu.interactable;
-            //StatsMenu.blocksRaycasts = !StatsMenu.blocksRaycasts;
-        }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            StartMenu.alpha = (StartMenu.alpha + 1) % 2;
-            StartMenu.interactable = !StartMenu.interactable;
-            StartMenu.blocksRaycasts = !StartMenu.blocksRaycasts;
-        }
+        
     }
 
     void FixedUpdate()
@@ -193,14 +192,14 @@ public class GameController : MonoBehaviour {
     void OnGUI()
     {
         GUI.Label(new Rect(30, -3, 100, 30), "Health: " + PlayerStats.playerStatistics.health);
-        if(GUI.Button(new Rect(Screen.width  / 2 + Screen.width / 4, Screen.height / 2, 100, 30), "Save"))
-        {
-            Save();
-        }
-        if (GUI.Button(new Rect(Screen.width / 2 + Screen.width/ 4, Screen.height / 2 - 40, 100, 30), "Load"))
-        {
-            Load();
-        }
+        //if(GUI.Button(new Rect(Screen.width  / 2 + Screen.width / 4, Screen.height / 2, 100, 30), "Save"))
+        //{
+        //    Save();
+        //}
+        //if (GUI.Button(new Rect(Screen.width / 2 + Screen.width/ 4, Screen.height / 2 - 40, 100, 30), "Load"))
+        //{
+        //    Load();
+        //}
     }
 
     void Flip()
@@ -226,9 +225,28 @@ public class GameController : MonoBehaviour {
         FileStream file = File.Create(Application.persistentDataPath + "/playerInfo.dat");
 
         PlayerData playerDat = new PlayerData();
+
         playerDat.health = PlayerStats.playerStatistics.health;
         playerDat.experiencePoints = PlayerStats.playerStatistics.experiencePoints;
+
         playerDat.MapInfo = MapGenerator.MapGeneratorSingle.MapInfo;
+
+        GameData gameData = FindObjectOfType<GameData>();
+        playerDat.doorConnectionDictionary = gameData.doorConnectionDictionary;
+        playerDat.mapSeed = gameData.mapSeed;
+        for (int x = 0; x < gameData.mapSets.Count; x++)
+        {
+            playerDat.mapSetsX.Add(gameData.mapSets[x].x);
+            playerDat.mapSetsY.Add(gameData.mapSets[x].y);
+        }
+
+        //Debug.Log("gameData.mapSets.Count = " + gameData.mapSets.Count);
+        //Debug.Log("gameData.mapSeed.Count = " + gameData.mapSeed.Count);
+        //Debug.Log("gameData.doorConnectionDictionary.Count = " + gameData.doorConnectionDictionary.Count);
+
+        //Debug.Log("playerDat.mapSetsX.Count = " + playerDat.mapSetsX.Count);
+        //Debug.Log("playerDat.mapSeed.Count = " + playerDat.mapSeed.Count);
+        //Debug.Log("playerDat.doorConnectionDictionary.Count = " + playerDat.doorConnectionDictionary.Count);
 
         bf.Serialize(file, playerDat);
         file.Close();
@@ -236,13 +254,6 @@ public class GameController : MonoBehaviour {
 
     public void Load()
     {
-        //SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().name);
-        //GameObject loadPlayer;
-        //if((loadPlayer = (GameObject)Resources.Load("player/Hero", typeof(GameObject))) != null)
-        //{
-
-        //}
-
         if (File.Exists(Application.persistentDataPath + "/playerInfo.dat"))
         {
             BinaryFormatter bf = new BinaryFormatter();
@@ -260,11 +271,20 @@ public class GameController : MonoBehaviour {
 }
 
 [System.Serializable]
-class PlayerData
+public class PlayerData
 {
+    //for PlayerStats
     public int health;
     public int experiencePoints;
+
+    //for MapGenerator
     public Dictionary<string, MapInformation> MapInfo;
+
+    //for DameData
+    public Dictionary<string, string> doorConnectionDictionary;
+    public List<string> mapSeed = new List<string>();
+    public List<float> mapSetsX = new List<float>();
+    public List<float> mapSetsY = new List<float>();
 }
 
 [System.Serializable]

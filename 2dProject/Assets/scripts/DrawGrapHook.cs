@@ -92,7 +92,7 @@ public class DrawGrapHook : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             EventSystem eventSystem = EventSystem.current;
-            if (eventSystem.IsPointerOverGameObject() && GameObject.Find("Inventory").GetComponent<CanvasGroup>().alpha == 1)
+            if (eventSystem.IsPointerOverGameObject())
             {
                 return;
             }

@@ -117,7 +117,7 @@ public class MapAddOns : MonoBehaviour
     public Vector2 CheckIfDoorLocations(List<Vector2> enemyPositions, List<float> doorLocationsX, List<float> doorLocationsY)
     {
         Vector2 tempEnemyPos;
-        tempEnemyPos = enemyPositions[Random.Range(0, enemyPositions.Count)];
+        tempEnemyPos = enemyPositions[Random.Range(0, enemyPositions.Count - 1)];
         //foreach (float door in doorLocationsX)
         for(int x = 0; x < doorLocationsX.Count; x++)
         {
@@ -154,7 +154,6 @@ public class MapAddOns : MonoBehaviour
             var doorTransform = Instantiate(EnenyPreFab) as Transform;
             doorTransform.transform.SetParent(GameObject.Find("EnemyList").transform);
             doorTransform.position = new Vector3(xPos, yPos, 0);
-
         }
     }
 }

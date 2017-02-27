@@ -9,7 +9,7 @@ public class DrawPlayerMap : MonoBehaviour {
 
     public MeshFilter playerLocalMap;
     public MeshFilter playerWorldMap;
-    public Transform player;
+    private Transform player;
 
     //for drawing doors on map
     public Transform doorPrefab;
@@ -20,7 +20,7 @@ public class DrawPlayerMap : MonoBehaviour {
     //map bools
     private bool localMapOn = false;
     private bool worldMapOn = false;
-    private bool makeMap = true;
+    public bool makeMap { get; set; }
 
     //if change room bool
     public bool touchingDoor { get; set; }
@@ -65,15 +65,15 @@ public class DrawPlayerMap : MonoBehaviour {
     private string currentMapSet = "";
     private int currentMapSetIndex = 0;
 
-    public static DrawPlayerMap PlayerMapSingle;
+    public static DrawPlayerMap DrawPlayerMapSingle;
 
     void Awake()
     {
-        if (PlayerMapSingle == null)
+        if (DrawPlayerMapSingle == null)
         {
-            PlayerMapSingle = this;
+            DrawPlayerMapSingle = this;
         }
-        else if (PlayerMapSingle != this)
+        else if (DrawPlayerMapSingle != this)
         {
             Destroy(gameObject);
         }
@@ -82,11 +82,12 @@ public class DrawPlayerMap : MonoBehaviour {
 
     void Start()
     {
+        makeMap = true;
         //get reference to player transform
         player = GameController.GameControllerSingle.transform;
 
         //map gen
-        mapGen = FindObjectOfType<MapGenerator>();
+        mapGen = MapGenerator.MapGeneratorSingle;
 
         //for drawing map
         gameData = FindObjectOfType<GameData>();
@@ -184,6 +185,7 @@ public class DrawPlayerMap : MonoBehaviour {
             }
         }
         if (touchingDoor == true && Input.GetKeyDown(KeyCode.R)) {
+
             if (localMapOn)
             {
                 drawDoors = false;
@@ -267,8 +269,8 @@ public class DrawPlayerMap : MonoBehaviour {
                 //    child.GetComponent<LineRenderer>().enabled = true;
                 //}
                 LoadCorrectDoorLines(currentMap);
-                 //TURN ON TEEMO MARKER
-                 MapMarkerTeemoSprite.enabled = true;
+                //TURN ON TEEMO MARKER
+                MapMarkerTeemoSprite.enabled = true;
                 //turn map on and draw it
                 worldMapOn = true;
                 playerLocalMap.mesh = null;
@@ -587,19 +589,16 @@ public class DrawPlayerMap : MonoBehaviour {
                 playerWorldMap.mesh = null;
 
                 currentSetMaps += 1;
-
             }
 
             CombineInstance[] combine = new CombineInstance[totalMaps];
-
-            //Debug.Log("combine.Length = " + combine.Length);
 
             //put all mesh filters into the combiner object
             for (int x = 0; x < totalMaps; x++)
             {
                 combine[x].mesh = meshFilters[x].sharedMesh;
                 //draw maps in a polygon shape based on how many there are 
-                //numbers are map dimentions Ex: 150 in x and 100 in y;
+                //numbers are map dimensions Ex: 150 in x and 100 in y;
                 combine[x].transform = Matrix4x4.TRS(new Vector3(Mathf.Cos(2 * Mathf.PI * x / totalMaps) * 150, 0, Mathf.Sin(2 * Mathf.PI * x / totalMaps) * 100), Quaternion.identity, new Vector3(1, 1, 1));
             }
             //65k max vertices or won't work
@@ -621,16 +620,12 @@ public class DrawPlayerMap : MonoBehaviour {
                 }
             }
             */
-
             //save fullmap to assests
             string worldMap = "WorldMap";
             var savePath = "Assets/CurrentMaps/" + worldMap + ".asset";
-            //Debug.Log("Saved Mesh to:" + savePath);
             AssetDatabase.CreateAsset(playerWorldMap.mesh, savePath);
 
             CreateDoorConnections();
-
-
         }
         else
         {
@@ -640,7 +635,7 @@ public class DrawPlayerMap : MonoBehaviour {
 
             MapInformation newData = mapGen.MapInfo[mapSeed];
             currentSetMaps = newData.mapSet;
-            if (currentSetMaps < mapGen.mapSets.Count)
+            if (currentSetMaps < gameData.mapSets.Count)
             {
                 worldMap = "WorldMap" + currentSetMaps;
             }
@@ -686,35 +681,13 @@ public class DrawPlayerMap : MonoBehaviour {
             oldSeed = values[0];
             oldDoor = values[1];
 
-            //oldCurrentSetMaps = 0;
-            //foreach (Vector2 mapSet in gameData.mapSets)
-            //{
-
-            //    if (gameData.FindMapIndex(oldSeed) >= (int)mapSet.y && gameData.FindMapIndex(oldSeed) < (int)mapSet.y + (int)mapSet.x)
-            //    {
-            //        break;
-            //    }
-            //    oldCurrentSetMaps += 1;
-            //}
             MapInformation oldData = mapGen.MapInfo[oldSeed];
             oldCurrentSetMaps = oldData.mapSet;
-            //Debug.Log("oldSeed = " + oldSeed + "oldDoor = " + oldDoor + " oldCurrentSetMaps = " + oldCurrentSetMaps);
             //for the connecting map and door
             values = tempDoorConnectionDictionary[oldDicRef].Split(',');
             newDicRef = tempDoorConnectionDictionary[oldDicRef];
             newSeed = values[0];
             newDoor = values[1];
-
-            
-            //newCurrentSetMaps = 0;
-            //foreach (Vector2 mapSet in gameData.mapSets)
-            //{
-            //    if (gameData.FindMapIndex(newSeed) >= (int)mapSet.y && gameData.FindMapIndex(newSeed) < (int)mapSet.y + (int)mapSet.x)
-            //    {
-            //        break;
-            //    }
-            //    newCurrentSetMaps += 1;
-            //}
 
             MapInformation newData = mapGen.MapInfo[newSeed];
             newCurrentSetMaps = newData.mapSet;

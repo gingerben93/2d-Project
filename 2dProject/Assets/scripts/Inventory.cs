@@ -369,8 +369,6 @@ public class Inventory : MonoBehaviour
             if (tmpTo.Count == 0)
             {
                 info = from.Items.Peek();
-                Debug.Log(from.Items.Peek());
-                Debug.Log(info.type);
                 if (info.type == ItemType.RWEAPON || info.type == ItemType.MWEAPON)
                 {
                     //Moving items into the weapon slot
@@ -399,10 +397,8 @@ public class Inventory : MonoBehaviour
             }
             else
             {
-                //PEEK IS NOT THE RIGHT WAY TO GO, RETURNS NULL
+                ////PEEK IS NOT THE RIGHT WAY TO GO, RETURNS NULL
                 info = from.Items.Peek();
-                Debug.Log(from.Items.Peek());
-                Debug.Log(info.type);
                 if (info.type == ItemType.RWEAPON || info.type == ItemType.MWEAPON)
                 {
                     //Moving items into the weapon slot

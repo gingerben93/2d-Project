@@ -68,113 +68,156 @@ public class MapGenerator : MonoBehaviour
     void Start()
     {
         gameData = FindObjectOfType<GameData>();
-        numMaps = 6;
-        int startMap = 0;
-        int y = numMaps;
+        meshGen = GetComponent<MeshGenerator>();
+        MapAddOns = GetComponent<MapAddOns>();
 
-        mapSets = new List<Vector2>();
-        UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
-
-        while (y > 0)
+        if (GameLoader.GameLoaderSingle == null)
         {
-            //make size 2 or 3
-            int ranSizeSetMaps = UnityEngine.Random.Range(2, 4);
-            if (y >= ranSizeSetMaps)
-            {
-                //Debug.Log("ranSizeSetMaps = " + ranSizeSetMaps + "startMap = " + startMap);
-                mapSets.Add(new Vector2(ranSizeSetMaps, numMaps - y));
-                y -= ranSizeSetMaps;
-                startMap += y;
-            }
-            else
-            {
-                //Debug.Log("new Vector2(mapSets[mapSets.Count - 1].x + x = " + (mapSets[mapSets.Count - 1].x + x)  + " mapSets[mapSets.Count - 1].y) = " + mapSets[mapSets.Count - 1].y);
-                mapSets[mapSets.Count - 1] = new Vector2(mapSets[mapSets.Count - 1].x + y, mapSets[mapSets.Count - 1].y);
-                break;
-            }
-        }
+            numMaps = 6;
+            int startMap = 0;
+            int y = numMaps;
 
-        int x = 0;
-        for (x = 0; x < numMaps; x++)
-        {
+            mapSets = new List<Vector2>();
+            UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
+
+            while (y > 0)
+            {
+                //make size 2 or 3
+                int ranSizeSetMaps = UnityEngine.Random.Range(2, 4);
+                if (y >= ranSizeSetMaps)
+                {
+                    //Debug.Log("ranSizeSetMaps = " + ranSizeSetMaps + "startMap = " + startMap);
+                    mapSets.Add(new Vector2(ranSizeSetMaps, numMaps - y));
+                    y -= ranSizeSetMaps;
+                    startMap += y;
+                }
+                else
+                {
+                    //Debug.Log("new Vector2(mapSets[mapSets.Count - 1].x + x = " + (mapSets[mapSets.Count - 1].x + x)  + " mapSets[mapSets.Count - 1].y) = " + mapSets[mapSets.Count - 1].y);
+                    mapSets[mapSets.Count - 1] = new Vector2(mapSets[mapSets.Count - 1].x + y, mapSets[mapSets.Count - 1].y);
+                    break;
+                }
+            }
+
+            int x = 0;
+            for (x = 0; x < numMaps; x++)
+            {
+                seed = currentMap.ToString();
+                GenerateMap();
+                currentMap += 1;
+            }
+
+            width = 50; height = 100;
+            randomFillPercent = 0;
             seed = currentMap.ToString();
+            bossRooms.Add(seed);
             GenerateMap();
             currentMap += 1;
-        }
 
-        width = 50; height = 100;
-        randomFillPercent = 0;
-        seed = currentMap.ToString();
-        bossRooms.Add(seed);
-        GenerateMap();
-        currentMap += 1;
-
-        foreach (Vector2 num in mapSets)
-        {
-            //use: start map, end map, num doors, map1 seed, map2 seed
-            gameData.CreatDoorConnections((int)num.y, (int)num.x + (int)num.y - 1, 2);
-            gameData.EnsureConnectivityOfMaps((int)num.y, (int)num.x + (int)num.y - 1);
-            gameData.ConnectDoors();
-        }
-
-        foreach (Vector2 num in mapSets)
-        {
-            if (mapSets[mapSets.Count - 1] == num)
+            foreach (Vector2 num in mapSets)
             {
-                break;
+                //use: start map, end map, num doors, map1 seed, map2 seed
+                Debug.Log("(int)num.y = " + num.y + " (int)num.x + (int)num.y - 1 = " + (num.x + num.y - 1));
+                gameData.CreatDoorConnections((int)num.y, (int)num.x + (int)num.y - 1, 2);
+                gameData.EnsureConnectivityOfMaps((int)num.y, (int)num.x + (int)num.y - 1);
+                gameData.ConnectDoors();
             }
-            gameData.ConnectSetOfRooms((int)num.y, (int)num.x + (int)num.y);
-        }
 
-        //shoudl now erase the mapsets that is in mapGenerator
-        gameData.mapSets = mapSets;
 
-        gameData.CreatDoorConnections(6, 6, 0);
-        gameData.ConnectSetOfRooms(0, 6);
-
-        for (x = 0; x < numMaps; x++)
-        {
-            enemyLocations = new List<Vector2>();
-            map = new int[MapInfo[gameData.mapSeed[x]].width, MapInfo[gameData.mapSeed[x]].height];
-            enemyLocations = MapAddOns.SpawnEnemy(MapInfo[gameData.mapSeed[x]]);
-
-            //for storing data in not unity vectors
-            List<float> tempHolderX = new List<float>();
-            List<float> tempHolderY = new List<float>();
-            foreach (Vector2 XYCoord in enemyLocations)
+            foreach (Vector2 num in mapSets)
             {
-                tempHolderX.Add(XYCoord.x);
-                tempHolderY.Add(XYCoord.y);
+                if (mapSets[mapSets.Count - 1] == num)
+                {
+                    break;
+                }
+                gameData.ConnectSetOfRooms((int)num.y, (int)num.x + (int)num.y);
             }
-            MapInfo[gameData.mapSeed[x]].enemyLocationsX = tempHolderX;
-            MapInfo[gameData.mapSeed[x]].enemyLocationsY = tempHolderY;
-        }
-        
 
+            //shoudl now erase the mapsets that is in mapGenerator
+            gameData.mapSets = mapSets;
+
+            gameData.CreatDoorConnections(6, 6, 0);
+            gameData.ConnectSetOfRooms(1, 6);
+
+            for (x = 0; x < numMaps; x++)
+            {
+                enemyLocations = new List<Vector2>();
+                map = new int[MapInfo[gameData.mapSeed[x]].width, MapInfo[gameData.mapSeed[x]].height];
+                enemyLocations = MapAddOns.SpawnEnemy(MapInfo[gameData.mapSeed[x]]);
+
+                //for storing data in not unity vectors
+                List<float> tempHolderX = new List<float>();
+                List<float> tempHolderY = new List<float>();
+                foreach (Vector2 XYCoord in enemyLocations)
+                {
+                    tempHolderX.Add(XYCoord.x);
+                    tempHolderY.Add(XYCoord.y);
+                }
+                MapInfo[gameData.mapSeed[x]].enemyLocationsX = tempHolderX;
+                MapInfo[gameData.mapSeed[x]].enemyLocationsY = tempHolderY;
+
+                //Debug.Log("MapInfo[gameData.mapSeed[x]].doorLocationsX.Count = " + MapInfo[gameData.mapSeed[x]].doorLocationsX.Count + " x = " + x);
+
+            }
+
+            //make a new map
+            //DrawPlayerMap.DrawPlayerMapSingle.makeMap = true;
+        }
+        else
+        {
+            MapInfo = GameLoader.GameLoaderSingle.playerDat.MapInfo;
+            gameData.doorConnectionDictionary = GameLoader.GameLoaderSingle.playerDat.doorConnectionDictionary;
+            gameData.mapSeed = GameLoader.GameLoaderSingle.playerDat.mapSeed;
+            for (int tempCounter = 0; tempCounter < GameLoader.GameLoaderSingle.playerDat.mapSetsX.Count; tempCounter++)
+            {
+                gameData.mapSets.Add(new Vector2(GameLoader.GameLoaderSingle.playerDat.mapSetsX[tempCounter], GameLoader.GameLoaderSingle.playerDat.mapSetsY[tempCounter]));
+            }
+            PlayerStats.playerStatistics.health = GameLoader.GameLoaderSingle.playerDat.health;
+            PlayerStats.playerStatistics.experiencePoints = GameLoader.GameLoaderSingle.playerDat.experiencePoints;
+
+            //don't make a map
+            //DrawPlayerMap.DrawPlayerMapSingle.makeMap = false;
+
+            //Debug.Log("GameLoader.GameLoaderSingle.playerDat.MapInfo.Count = " + GameLoader.GameLoaderSingle.playerDat.MapInfo.Count);
+            //Debug.Log("GameLoader.GameLoaderSingle.playerDat.mapSetsX.Count = " + GameLoader.GameLoaderSingle.playerDat.mapSetsX.Count);
+            //Debug.Log("gameData.mapSeed.Count = " + gameData.mapSeed.Count);
+            //Debug.Log("GameLoader.GameLoaderSingle.playerDat.doorConnectionDictionary.Count = " + GameLoader.GameLoaderSingle.playerDat.doorConnectionDictionary.Count);
+        }
         PlayerStats.playerStatistics.MapInfo = MapInfo;
 
-        MapInfo = PlayerStats.playerStatistics.MapInfo;
 
         seed = gameData.mapSeed[0];
         LoadMap();
+        DrawPlayerMap.DrawPlayerMapSingle.currentMap = seed;
         GameController.GameControllerSingle.respawnLocation = new Vector3(PlayerStats.playerStatistics.MapInfo[seed].doorLocationsX[0],
                                                                           PlayerStats.playerStatistics.MapInfo[seed].doorLocationsY[0],0);
-        DrawPlayerMap.PlayerMapSingle.currentMap = seed;
+        LoadOnClick.LoadOnClickSingle.LoadScene(0);
     }
-    
+
+    void OnEnable()
+    {
+        //doesn't go on first load
+        if (seed != null)
+        {
+            StartCoroutine(WaitForGameToLoad());
+        }
+    }
+
+    IEnumerator WaitForGameToLoad()
+    {
+        yield return new WaitForSeconds(1);
+        LoadMap();
+    }
+
     //begining of map generation
     public void GenerateMap()
     {
         int squareSize = 1;
-        gameData = FindObjectOfType<GameData>();
-        meshGen = GetComponent<MeshGenerator>();
-        MapAddOns = GetComponent<MapAddOns>();
 
         //for getting map set number
         int currentSetMap = 0;
         foreach (Vector2 mapSet in mapSets)
         {
-
             if (currentMap >= (int)mapSet.y && currentMap < (int)mapSet.y + (int)mapSet.x)
             {
                 break;
@@ -278,12 +321,11 @@ public class MapGenerator : MonoBehaviour
             {
                 MapAddOns.DrawEnemys(enemyLocations);
             }
-            else
-            {
-                MapAddOns.RemoveAllEnemies();
-            }
         }
-
+        else
+        {
+            MapAddOns.RemoveAllEnemies();
+        }
     }
 
     //smooths the map with arbitrary process, change be changed and modified 

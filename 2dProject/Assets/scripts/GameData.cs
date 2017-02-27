@@ -4,16 +4,31 @@ using System.Collections.Generic;
 
 public class GameData : MonoBehaviour
 {
-    public Dictionary<string, string> doorConnectionDictionary = new Dictionary<string, string>();
-    public List<List<string>> doorDicRefs = new List<List<string>>();
-    List<int> numDoorCountPerMap = new List<int>();
+    //used only in gamedata class
+    private List<List<string>> doorDicRefs = new List<List<string>>();
+    private List<int> numDoorCountPerMap = new List<int>();
 
+    //used outside and inside of gamedata class
+    public Dictionary<string, string> doorConnectionDictionary = new Dictionary<string, string>();
     public List<string> mapSeed = new List<string>();
 
     //for the size of the map sets for making the world map
     public List<Vector2> mapSets = new List<Vector2>();
 
-    MapGenerator mapGen;
+    public static GameData GameDataSingle;
+
+    void Awake()
+    {
+        if (GameDataSingle == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            GameDataSingle = this;
+        }
+        else if (GameDataSingle != this)
+        {
+            Destroy(gameObject);
+        }
+    }
 
     //gets index of map
     public int FindMapIndex(string map)
@@ -65,11 +80,9 @@ public class GameData : MonoBehaviour
         mapSeed.Add(seed);
     }
 
-    public List<Vector2> createNumberOfDoors(int currentMap, int numDoors, MapInformation map1)
+    public List<Vector2> createNumberOfDoors(int numDoors, MapInformation map1, int listDoor)
     {
         List<Vector2> drawDoors = new List<Vector2>();
-
-        //Debug.Log("create doors for map = " + currentMap);
 
         for (int x = 0; x < numDoors; x++)
         {
@@ -81,21 +94,25 @@ public class GameData : MonoBehaviour
             float xPos = -map1.width / 2 + doorXY.x * map1.squareSize + map1.squareSize / 2;
             float yPos = -map1.height / 2 + doorXY.y * map1.squareSize + map1.squareSize;
 
+            //Debug.Log(map1.index + " BEFORE MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].Count = " + MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].possibleDoorLocationsX.Count + " tempDoorIndex = " + tempDoorIndex + " X = " + x);
+
             //Debug.Log("doorXY.x = " + xPos + " doorXY.y = " + yPos);
 
             //for removing doors left and right of current door
-            if (tempDoorIndex < map1.possibleDoorLocationsX.Count - 2)
+            if (tempDoorIndex < map1.possibleDoorLocationsX.Count - 1)
             {
                 tempDoor = new Vector2(map1.possibleDoorLocationsX[tempDoorIndex + 1], map1.possibleDoorLocationsY[tempDoorIndex + 1]);
                 if (Vector2.Distance(tempDoor, doorXY) <= 1)
                 {
-                    //Debug.Log("REMOVE1 Vector2.Distance(tempDoor, doorXY) = " + Vector2.Distance(tempDoor, doorXY) + "tempDoor.x = " + tempDoor.x + " tempDoor.y = " + tempDoor.y + "tempDoorIndex1 = " + tempDoorIndex);
+                    //Debug.Log(map1.index + "REMOVE1 Vector2.Distance(tempDoor, doorXY) = " + Vector2.Distance(tempDoor, doorXY) + "tempDoor.x = " + tempDoor.x + " tempDoor.y = " + tempDoor.y + "tempDoorIndex1 = " + tempDoorIndex + " X = " + x);
                     map1.possibleDoorLocationsX.RemoveAt(tempDoorIndex + 1);
                     map1.possibleDoorLocationsY.RemoveAt(tempDoorIndex + 1);
                     //takes care of edge case when strinking list
                     if (tempDoorIndex != 0)
                     {
-                        tempDoorIndex--;
+                        tempDoorIndex -= 1;
+                        map1.possibleDoorLocationsX.TrimExcess();
+                        map1.possibleDoorLocationsY.TrimExcess();
                     }
                 }
             }
@@ -104,23 +121,26 @@ public class GameData : MonoBehaviour
                 tempDoor = new Vector2(map1.possibleDoorLocationsX[tempDoorIndex - 1], map1.possibleDoorLocationsY[tempDoorIndex - 1]);
                 if (Vector2.Distance(tempDoor, doorXY) <= 1)
                 {
-                    //Debug.Log("REMOVE2 Vector2.Distance(tempDoor, doorXY) = " + Vector2.Distance(tempDoor, doorXY) + "tempDoor.x = " + tempDoor.x + " tempDoor.y = " + tempDoor.y + "tempDoorIndex2 = " + tempDoorIndex);
+                    //Debug.Log(map1.index + "REMOVE2 Vector2.Distance(tempDoor, doorXY) = " + Vector2.Distance(tempDoor, doorXY) + "tempDoor.x = " + tempDoor.x + " tempDoor.y = " + tempDoor.y + "tempDoorIndex2 = " + tempDoorIndex + " X = " + x);
                     map1.possibleDoorLocationsX.RemoveAt(tempDoorIndex - 1);
                     map1.possibleDoorLocationsY.RemoveAt(tempDoorIndex - 1);
-                    tempDoorIndex--;
+                    tempDoorIndex -= 1;
+                    map1.possibleDoorLocationsX.TrimExcess();
+                    map1.possibleDoorLocationsY.TrimExcess();
                 }
             }
 
             //Debug.Log("tempDoorIndex At end = " + tempDoorIndex);
             map1.possibleDoorLocationsX.RemoveAt(tempDoorIndex);
             map1.possibleDoorLocationsY.RemoveAt(tempDoorIndex);
+            map1.possibleDoorLocationsX.TrimExcess();
+            map1.possibleDoorLocationsY.TrimExcess();
 
             doorXY = new Vector2(xPos, yPos);
-            //Debug.Log("create door doorXY = " + doorXY + " on map" + currentMap);
             drawDoors.Add(doorXY);
 
+            //Debug.Log(map1.index + "After MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].Count = " + MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].possibleDoorLocationsX.Count + " tempDoorIndex = " + tempDoorIndex + " X = " + x);
         }
-
         return drawDoors;
     }
     
@@ -134,12 +154,17 @@ public class GameData : MonoBehaviour
         //create the number of doors
         doorDicRefs = new List<List<string>>();
 
-        mapGen = FindObjectOfType<MapGenerator>();
         for (int listDoor = startMap; listDoor < endMap + 1; listDoor++)
         {
             List<Vector2> ListOfDoors = new List<Vector2>();
-            MapInformation map1 = mapGen.MapInfo[mapSeed[listDoor]];
-            ListOfDoors = createNumberOfDoors(listDoor, numDoors, map1);
+            MapInformation map1 = MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]];
+
+            ListOfDoors = createNumberOfDoors(numDoors, map1 , listDoor);
+
+            //if ((MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]]).doorLocationsX != null)
+            //{
+            //    Debug.Log("BEFORE MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].Count = " + MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].doorLocationsX.Count);
+            //}
 
             List<float> tempHolderX = new List<float>();
             List<float> tempHolderY = new List<float>();
@@ -151,19 +176,20 @@ public class GameData : MonoBehaviour
             //all door locations
             map1.doorLocationsX = tempHolderX;
             map1.doorLocationsY = tempHolderY;
+
+            //Debug.Log("AFTER MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].Count = " + MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].doorLocationsX.Count);
+            //Debug.Log("map1.doorLocationsX.Count = " + map1.doorLocationsX.Count);
         }
     }
 
     public void EnsureConnectivityOfMaps(int startMap, int endMap)
     {
-        mapGen = FindObjectOfType<MapGenerator>();
-        
         // fills a dictionary with all with map seeds concatenated to door index;
         for (int listDoor = startMap; listDoor < endMap + 1; listDoor++)
         {
             //Debug.Log("Times Run 2 = " + listDoor);
             List<string> tempList = new List<string>();
-            MapInformation map1 = mapGen.MapInfo[mapSeed[startMap]];
+            MapInformation map1 = MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[startMap]];
             int doorNum;
             for (doorNum = 0; doorNum < map1.doorLocationsX.Count; doorNum++)
             {
@@ -199,12 +225,6 @@ public class GameData : MonoBehaviour
             doorDicRefs[listDoor + 1].TrimExcess();
 
         }
-
-        //foreach (KeyValuePair<string, string> kvp in doorConnectionDictionary)
-        //{
-        //    Debug.Log("Key =" + kvp.Key + "Value =" + kvp.Value);
-        //}
-
     }
 
     public void ConnectDoors()
@@ -313,15 +333,21 @@ public class GameData : MonoBehaviour
     //connects two maps with one door
     public void ConnectSetOfRooms(int mapOne, int mapTwo)
     {
-        MapInformation map1 = mapGen.MapInfo[mapSeed[mapOne]];
-        MapInformation map2 = mapGen.MapInfo[mapSeed[mapTwo]];
+        //Debug.Log("map1 = " + mapOne + " Map2 = " + mapTwo);
+        MapInformation map1 = MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[mapOne]];
+        MapInformation map2 = MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[mapTwo]];
 
         int tempDoorIndex1 = Random.Range(0, map1.possibleDoorLocationsX.Count - 1);
         Vector2 tempDoor;
         Vector2 door1 = new Vector2(map1.possibleDoorLocationsX[tempDoorIndex1], map1.possibleDoorLocationsY[tempDoorIndex1]);
 
+        float xPosMapOne = -map1.width / 2 + door1.x * map1.squareSize + map1.squareSize / 2;
+        float yPosMapOne = -map1.height / 2 + door1.y * map1.squareSize + map1.squareSize;
+
+
+
         //for removing doors left and right of current door
-        if (tempDoorIndex1 < map1.possibleDoorLocationsX.Count - 2)
+        if (tempDoorIndex1 < map1.possibleDoorLocationsX.Count - 1)
         {
             tempDoor = new Vector2(map1.possibleDoorLocationsX[tempDoorIndex1 + 1], map1.possibleDoorLocationsY[tempDoorIndex1 + 1]);
             if (Vector2.Distance(tempDoor, door1) <= 1)
@@ -349,8 +375,11 @@ public class GameData : MonoBehaviour
         int tempDoorIndex2 = Random.Range(0, map2.possibleDoorLocationsX.Count - 1);
         Vector2 door2 = new Vector2(map2.possibleDoorLocationsX[tempDoorIndex2], map2.possibleDoorLocationsY[tempDoorIndex2]);
 
+        float xPosMapTwo = -map2.width / 2 + door2.x * map2.squareSize + map2.squareSize / 2;
+        float yPosMapTwo = -map2.height / 2 + door2.y * map2.squareSize + map2.squareSize;
+
         //for removing doors left and right of current door
-        if (tempDoorIndex2 < map2.possibleDoorLocationsX.Count - 2)
+        if (tempDoorIndex2 < map2.possibleDoorLocationsX.Count - 1)
         {
             tempDoor = new Vector2(map2.possibleDoorLocationsX[tempDoorIndex2 + 1], map2.possibleDoorLocationsY[tempDoorIndex2 + 1]);
             if (Vector2.Distance(tempDoor, door2) <= 1)
@@ -360,7 +389,7 @@ public class GameData : MonoBehaviour
                 //takes care of edge case when strinking list
                 if (tempDoorIndex2 != 0)
                 {
-                    tempDoorIndex2--;
+                    tempDoorIndex2 -= 1;
                 }
             }
         }
@@ -371,7 +400,7 @@ public class GameData : MonoBehaviour
             {
                 map2.possibleDoorLocationsX.Remove(tempDoorIndex2 - 1);
                 map2.possibleDoorLocationsY.Remove(tempDoorIndex2 - 1);
-                tempDoorIndex2--;
+                tempDoorIndex2 -= 1;
             }
         }
 
@@ -379,12 +408,6 @@ public class GameData : MonoBehaviour
         map1.possibleDoorLocationsY.RemoveAt(tempDoorIndex1);
         map2.possibleDoorLocationsX.RemoveAt(tempDoorIndex2);
         map2.possibleDoorLocationsY.RemoveAt(tempDoorIndex2);
-
-        float xPosMapOne = -map1.width / 2 + door1.x * map1.squareSize + map1.squareSize / 2;
-        float yPosMapOne = -map1.height / 2 + door1.y * map1.squareSize + map1.squareSize;
-
-        float xPosMapTwo = -map2.width / 2 + door2.x * map2.squareSize + map2.squareSize / 2;
-        float yPosMapTwo = -map2.height / 2 + door2.y * map2.squareSize + map2.squareSize;
 
         door1 = new Vector2(xPosMapOne, yPosMapOne);
         door2 = new Vector2(xPosMapTwo, yPosMapTwo);

@@ -15,7 +15,7 @@ public class LoadOnClick : MonoBehaviour {
     private bool loadScene = false;
     public string loadMap = "StartArea";
 
-    public static LoadOnClick LoadClick;
+    public static LoadOnClick LoadOnClickSingle;
 
     // for getting scene name
     Scene scene;
@@ -30,12 +30,12 @@ public class LoadOnClick : MonoBehaviour {
         loadMap = scene.name;
         if (scene.name != "StartMenu")
         {
-            if (LoadClick == null)
+            if (LoadOnClickSingle == null)
             {
                 DontDestroyOnLoad(gameObject);
-                LoadClick = this;
+                LoadOnClickSingle = this;
             }
-            else if (LoadClick != this)
+            else if (LoadOnClickSingle != this)
             {
                 Destroy(gameObject);
             }
@@ -48,11 +48,13 @@ public class LoadOnClick : MonoBehaviour {
             {
                 loadMap = "MainGame";
                 mapGenerator.SetActive(true);
+                GameController.GameControllerSingle.transform.position = GameController.GameControllerSingle.respawnLocation;
             }
             else if (loadMap == "MainGame")
             {
                 loadMap = "StartArea";
                 mapGenerator.SetActive(false);
+                GameController.GameControllerSingle.transform.position = new Vector3(0, 1.2f, 0);
             }
             else
             {
@@ -62,7 +64,7 @@ public class LoadOnClick : MonoBehaviour {
             loadScene = true;
             loading = false;
             loadingText.text = "Loading...";
-            //GameController.GameControllerSingle.transform.position = new Vector3(0, 0, 0);
+            
             StartCoroutine(LoadNewScene());
 
         }
