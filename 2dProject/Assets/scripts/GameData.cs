@@ -88,7 +88,7 @@ public class GameData : MonoBehaviour
         {
             Vector2 doorXY;
             Vector2 tempDoor;
-            int tempDoorIndex = Random.Range(0, map1.possibleDoorLocationsX.Count - 1);
+            int tempDoorIndex = Random.Range(0, map1.possibleDoorLocationsX.Count);
             doorXY = new Vector2(map1.possibleDoorLocationsX[tempDoorIndex], map1.possibleDoorLocationsY[tempDoorIndex]);
 
             float xPos = -map1.width / 2 + doorXY.x * map1.squareSize + map1.squareSize / 2;
@@ -205,8 +205,8 @@ public class GameData : MonoBehaviour
         // connects a door in map 1 to map 2, map 2 to map 3, etc
         for (int listDoor = startMap - startMap; listDoor < endMap - startMap; listDoor++)
         {
-            int doorIndex1 = Random.Range(0, doorDicRefs[listDoor].Count - 1);
-            int doorIndex2 = Random.Range(0, doorDicRefs[listDoor + 1].Count - 1);
+            int doorIndex1 = Random.Range(0, doorDicRefs[listDoor].Count);
+            int doorIndex2 = Random.Range(0, doorDicRefs[listDoor + 1].Count);
 
             numDoorCountPerMap[listDoor] -= 1;
             numDoorCountPerMap[listDoor + 1] -= 1;
@@ -257,10 +257,10 @@ public class GameData : MonoBehaviour
             }
 
             //get right map; decrease door count; get random door; get dictionary key;
-            int mapIndex1 = possibleDoorChoices[Random.Range(0, possibleDoorChoices.Count - 1)];
+            int mapIndex1 = possibleDoorChoices[Random.Range(0, possibleDoorChoices.Count)];
 
             numDoorCountPerMap[mapIndex1] -= 1;
-            int doorIndex1 = Random.Range(0, doorDicRefs[mapIndex1].Count - 1);
+            int doorIndex1 = Random.Range(0, doorDicRefs[mapIndex1].Count);
             string doorRef1 = doorDicRefs[mapIndex1][doorIndex1];
 
             //begin second door info get and set
@@ -286,13 +286,13 @@ public class GameData : MonoBehaviour
             }
 
             //get right map; if map is sam as first get another; decrease door count; get random door; get dictionary key;
-            int mapIndex2 = possibleDoorChoices[Random.Range(0, possibleDoorChoices.Count - 1)];
+            int mapIndex2 = possibleDoorChoices[Random.Range(0, possibleDoorChoices.Count)];
             while (mapIndex2 == mapIndex1)
             {
-                mapIndex2 = possibleDoorChoices[Random.Range(0, possibleDoorChoices.Count - 1)];
+                mapIndex2 = possibleDoorChoices[Random.Range(0, possibleDoorChoices.Count)];
             }
             numDoorCountPerMap[mapIndex2] -= 1;
-            int doorIndex2 = Random.Range(0, doorDicRefs[mapIndex2].Count - 1);
+            int doorIndex2 = Random.Range(0, doorDicRefs[mapIndex2].Count);
             string doorRef2 = doorDicRefs[mapIndex2][doorIndex2];
 
 
@@ -337,7 +337,7 @@ public class GameData : MonoBehaviour
         MapInformation map1 = MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[mapOne]];
         MapInformation map2 = MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[mapTwo]];
 
-        int tempDoorIndex1 = Random.Range(0, map1.possibleDoorLocationsX.Count - 1);
+        int tempDoorIndex1 = Random.Range(0, map1.possibleDoorLocationsX.Count);
         Vector2 tempDoor;
         Vector2 door1 = new Vector2(map1.possibleDoorLocationsX[tempDoorIndex1], map1.possibleDoorLocationsY[tempDoorIndex1]);
 
@@ -372,7 +372,7 @@ public class GameData : MonoBehaviour
             }
         }
 
-        int tempDoorIndex2 = Random.Range(0, map2.possibleDoorLocationsX.Count - 1);
+        int tempDoorIndex2 = Random.Range(0, map2.possibleDoorLocationsX.Count);
         Vector2 door2 = new Vector2(map2.possibleDoorLocationsX[tempDoorIndex2], map2.possibleDoorLocationsY[tempDoorIndex2]);
 
         float xPosMapTwo = -map2.width / 2 + door2.x * map2.squareSize + map2.squareSize / 2;

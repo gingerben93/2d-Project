@@ -117,7 +117,7 @@ public class MapGenerator : MonoBehaviour
             foreach (Vector2 num in mapSets)
             {
                 //use: start map, end map, num doors, map1 seed, map2 seed
-                Debug.Log("(int)num.y = " + num.y + " (int)num.x + (int)num.y - 1 = " + (num.x + num.y - 1));
+                //Debug.Log("(int)num.y = " + num.y + " (int)num.x + (int)num.y - 1 = " + (num.x + num.y - 1));
                 gameData.CreatDoorConnections((int)num.y, (int)num.x + (int)num.y - 1, 2);
                 gameData.EnsureConnectivityOfMaps((int)num.y, (int)num.x + (int)num.y - 1);
                 gameData.ConnectDoors();

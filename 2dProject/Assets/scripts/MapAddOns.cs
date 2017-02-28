@@ -117,7 +117,7 @@ public class MapAddOns : MonoBehaviour
     public Vector2 CheckIfDoorLocations(List<Vector2> enemyPositions, List<float> doorLocationsX, List<float> doorLocationsY)
     {
         Vector2 tempEnemyPos;
-        tempEnemyPos = enemyPositions[Random.Range(0, enemyPositions.Count - 1)];
+        tempEnemyPos = enemyPositions[Random.Range(0, enemyPositions.Count)];
         //foreach (float door in doorLocationsX)
         for(int x = 0; x < doorLocationsX.Count; x++)
         {
