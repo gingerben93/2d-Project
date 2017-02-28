@@ -39,7 +39,6 @@ public class MapGenerator : MonoBehaviour
     public List<Vector2> doorLocations;
     public List<Vector2> enemyLocations;
 
-    public List<Vector2> mapSets;
     public List<string> bossRooms;
 
     // for storing game information
@@ -77,7 +76,7 @@ public class MapGenerator : MonoBehaviour
             int startMap = 0;
             int y = numMaps;
 
-            mapSets = new List<Vector2>();
+            List<Vector2> mapSets = new List<Vector2>();
             UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
 
             while (y > 0)
@@ -99,6 +98,8 @@ public class MapGenerator : MonoBehaviour
                 }
             }
 
+            gameData.mapSets = mapSets;
+
             int x = 0;
             for (x = 0; x < numMaps; x++)
             {
@@ -114,7 +115,7 @@ public class MapGenerator : MonoBehaviour
             GenerateMap();
             currentMap += 1;
 
-            foreach (Vector2 num in mapSets)
+            foreach (Vector2 num in gameData.mapSets)
             {
                 //use: start map, end map, num doors, map1 seed, map2 seed
                 //Debug.Log("(int)num.y = " + num.y + " (int)num.x + (int)num.y - 1 = " + (num.x + num.y - 1));
@@ -123,18 +124,14 @@ public class MapGenerator : MonoBehaviour
                 gameData.ConnectDoors();
             }
 
-
-            foreach (Vector2 num in mapSets)
+            foreach (Vector2 num in gameData.mapSets)
             {
-                if (mapSets[mapSets.Count - 1] == num)
+                if (gameData.mapSets[gameData.mapSets.Count - 1] == num)
                 {
                     break;
                 }
                 gameData.ConnectSetOfRooms((int)num.y, (int)num.x + (int)num.y);
             }
-
-            //shoudl now erase the mapsets that is in mapGenerator
-            gameData.mapSets = mapSets;
 
             gameData.CreatDoorConnections(6, 6, 0);
             gameData.ConnectSetOfRooms(1, 6);
@@ -159,7 +156,6 @@ public class MapGenerator : MonoBehaviour
                 //Debug.Log("MapInfo[gameData.mapSeed[x]].doorLocationsX.Count = " + MapInfo[gameData.mapSeed[x]].doorLocationsX.Count + " x = " + x);
 
             }
-
             //make a new map
             //DrawPlayerMap.DrawPlayerMapSingle.makeMap = true;
         }
@@ -216,7 +212,7 @@ public class MapGenerator : MonoBehaviour
 
         //for getting map set number
         int currentSetMap = 0;
-        foreach (Vector2 mapSet in mapSets)
+        foreach (Vector2 mapSet in gameData.mapSets)
         {
             if (currentMap >= (int)mapSet.y && currentMap < (int)mapSet.y + (int)mapSet.x)
             {

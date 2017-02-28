@@ -125,6 +125,7 @@ public class MapAddOns : MonoBehaviour
             {
                 enemyPositions.Remove(tempEnemyPos);
                 tempEnemyPos = CheckIfDoorLocations(enemyPositions, doorLocationsX, doorLocationsY);
+                return tempEnemyPos;
             }
         }
         return tempEnemyPos;
@@ -145,7 +146,7 @@ public class MapAddOns : MonoBehaviour
     {
         RemoveAllEnemies();
 
-        //drawing new doors
+        //drawing new enemies
         for (int x = 0; x < enemyLocations.Count; x++)
         {
             float xPos = enemyLocations[x].x;

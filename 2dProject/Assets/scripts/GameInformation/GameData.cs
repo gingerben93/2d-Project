@@ -94,10 +94,6 @@ public class GameData : MonoBehaviour
             float xPos = -map1.width / 2 + doorXY.x * map1.squareSize + map1.squareSize / 2;
             float yPos = -map1.height / 2 + doorXY.y * map1.squareSize + map1.squareSize;
 
-            //Debug.Log(map1.index + " BEFORE MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].Count = " + MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].possibleDoorLocationsX.Count + " tempDoorIndex = " + tempDoorIndex + " X = " + x);
-
-            //Debug.Log("doorXY.x = " + xPos + " doorXY.y = " + yPos);
-
             //for removing doors left and right of current door
             if (tempDoorIndex < map1.possibleDoorLocationsX.Count - 1)
             {
@@ -107,13 +103,6 @@ public class GameData : MonoBehaviour
                     //Debug.Log(map1.index + "REMOVE1 Vector2.Distance(tempDoor, doorXY) = " + Vector2.Distance(tempDoor, doorXY) + "tempDoor.x = " + tempDoor.x + " tempDoor.y = " + tempDoor.y + "tempDoorIndex1 = " + tempDoorIndex + " X = " + x);
                     map1.possibleDoorLocationsX.RemoveAt(tempDoorIndex + 1);
                     map1.possibleDoorLocationsY.RemoveAt(tempDoorIndex + 1);
-                    //takes care of edge case when strinking list
-                    if (tempDoorIndex != 0)
-                    {
-                        tempDoorIndex -= 1;
-                        map1.possibleDoorLocationsX.TrimExcess();
-                        map1.possibleDoorLocationsY.TrimExcess();
-                    }
                 }
             }
             if (tempDoorIndex > 0)
@@ -125,16 +114,12 @@ public class GameData : MonoBehaviour
                     map1.possibleDoorLocationsX.RemoveAt(tempDoorIndex - 1);
                     map1.possibleDoorLocationsY.RemoveAt(tempDoorIndex - 1);
                     tempDoorIndex -= 1;
-                    map1.possibleDoorLocationsX.TrimExcess();
-                    map1.possibleDoorLocationsY.TrimExcess();
                 }
             }
 
             //Debug.Log("tempDoorIndex At end = " + tempDoorIndex);
             map1.possibleDoorLocationsX.RemoveAt(tempDoorIndex);
             map1.possibleDoorLocationsY.RemoveAt(tempDoorIndex);
-            map1.possibleDoorLocationsX.TrimExcess();
-            map1.possibleDoorLocationsY.TrimExcess();
 
             doorXY = new Vector2(xPos, yPos);
             drawDoors.Add(doorXY);
@@ -354,11 +339,6 @@ public class GameData : MonoBehaviour
             {
                 map1.possibleDoorLocationsX.Remove(tempDoorIndex1 + 1);
                 map1.possibleDoorLocationsY.Remove(tempDoorIndex1 + 1);
-                //takes care of edge case when strinking list
-                if (tempDoorIndex1 != 0)
-                {
-                    tempDoorIndex1--;
-                }
             }
         }
         if (tempDoorIndex1 > 0)
@@ -368,6 +348,7 @@ public class GameData : MonoBehaviour
             {
                 map1.possibleDoorLocationsX.Remove(tempDoorIndex1 - 1);
                 map1.possibleDoorLocationsY.Remove(tempDoorIndex1 - 1);
+                //when remove left element you have to shrik the index location beacuse list resizes.
                 tempDoorIndex1--;
             }
         }
@@ -386,11 +367,6 @@ public class GameData : MonoBehaviour
             {
                 map2.possibleDoorLocationsX.Remove(tempDoorIndex2 + 1);
                 map2.possibleDoorLocationsY.Remove(tempDoorIndex2 + 1);
-                //takes care of edge case when strinking list
-                if (tempDoorIndex2 != 0)
-                {
-                    tempDoorIndex2 -= 1;
-                }
             }
         }
         if (tempDoorIndex2 > 0)
@@ -400,6 +376,7 @@ public class GameData : MonoBehaviour
             {
                 map2.possibleDoorLocationsX.Remove(tempDoorIndex2 - 1);
                 map2.possibleDoorLocationsY.Remove(tempDoorIndex2 - 1);
+                //when remove left element you have to shrik the index location beacuse list resizes.
                 tempDoorIndex2 -= 1;
             }
         }
