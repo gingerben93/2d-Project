@@ -9,6 +9,7 @@ public class EnemyStats : MonoBehaviour
     public Transform loot3;
 
     Shot shot;
+    ShotM shotM;
 
     /// Total hitpoints
     public int hp { get; set; }
@@ -34,6 +35,13 @@ public class EnemyStats : MonoBehaviour
             //set exp
             PlayerStats.playerStatistics.experiencePoints += experiencePoint;
 
+            //Increase Kill Counter
+            if (QuestController.QuestControllerSingle.IsKillQuestActive)
+            {
+                QuestController.QuestControllerSingle.KillQuestCounter += 1;
+                QuestController.QuestControllerSingle.UpdateKillQuest();
+            }
+
             Instantiate(loot, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
             Instantiate(loot2, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
             Instantiate(loot3, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
@@ -54,6 +62,7 @@ public class EnemyStats : MonoBehaviour
     {
         // Is this a shot?
         shot = otherCollider.gameObject.GetComponent<Shot>();
+        shotM = otherCollider.gameObject.GetComponent<ShotM>();
         if (shot != null)
         {
             // Avoid friendly fire
@@ -63,6 +72,17 @@ public class EnemyStats : MonoBehaviour
 
                 // Destroy the shot
                 Destroy(shot.gameObject); // Remember to always target the game object, otherwise you will just remove the script
+            }
+        }
+        else if (shotM != null)
+        {
+            // Avoid friendly fire
+            if (shotM.isEnemyShot != isEnemy)
+            {
+                Damage(shotM.damage);
+
+                // Destroy the shot
+                Destroy(shotM.gameObject); // Remember to always target the game object, otherwise you will just remove the script
             }
         }
     }

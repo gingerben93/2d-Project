@@ -29,12 +29,11 @@ public class ShotMove : MonoBehaviour
 
     void Shoot()
     {
-        player = GameObject.FindWithTag("Player");
         mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
 
-        heading = mousePos - player.transform.position;
+        heading = mousePos - GameController.GameControllerSingle.transform.position;
         distance = heading.magnitude;
         direction = heading / distance;
 

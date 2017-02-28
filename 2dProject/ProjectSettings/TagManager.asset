@@ -13,6 +13,7 @@ TagManager:
   - MapLines
   - MapDoor
   - Item
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -29,7 +30,7 @@ TagManager:
   - NotHitPLayer
   - Enemy
   - NotPlayerOrGrap
-  - 
+  - NPC
   - 
   - 
   - 
@@ -50,9 +51,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Map
-    uniqueID: 893249859
-    locked: 0
   - name: MapLines
     uniqueID: 1160316469
+    locked: 0
+  - name: Map
+    uniqueID: 893249859
     locked: 0

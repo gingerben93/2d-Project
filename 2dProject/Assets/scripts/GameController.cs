@@ -26,6 +26,7 @@ public class GameController : MonoBehaviour {
     private CanvasGroup InvMenu;
     private CanvasGroup StatsMenu;
     private CanvasGroup StartMenu;
+    private CanvasGroup QuestMenu;
 
     //is touching door
     public bool touchingDoor { get; set; }
@@ -64,6 +65,7 @@ public class GameController : MonoBehaviour {
         StatsMenu = GameObject.Find("StatsMenu").GetComponent<CanvasGroup>();
         StartMenu = GameObject.Find("StartMenu").GetComponent<CanvasGroup>();
         InvMenu = GameObject.Find("Inventory").GetComponent<CanvasGroup>();
+        QuestMenu = GameObject.Find("QuestPanel").GetComponent<CanvasGroup>();
 
         //for player
         //StatPageExperienceText = GameObject.Find("Experience");
@@ -118,6 +120,7 @@ public class GameController : MonoBehaviour {
 
             //stats menu is never interactable
             StatsMenu.alpha = (StatsMenu.alpha + 1) % 2;
+            QuestMenu.alpha = (QuestMenu.alpha + 1) % 2;
             //StatsMenu.interactable = !StatsMenu.interactable;
             //StatsMenu.blocksRaycasts = !StatsMenu.blocksRaycasts;
         }
