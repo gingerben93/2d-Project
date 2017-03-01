@@ -112,6 +112,8 @@ public class MapGenerator : MonoBehaviour
             randomFillPercent = 0;
             seed = currentMap.ToString();
             bossRooms.Add(seed);
+            Debug.Log("seed boos room = " + seed);
+            GameData.GameDataSingle.isBossRoomOpen.Add(seed, false);
             GenerateMap();
             currentMap += 1;
 

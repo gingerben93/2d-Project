@@ -14,6 +14,7 @@ public class GameData : MonoBehaviour
 
     //for the size of the map sets for making the world map
     public List<Vector2> mapSets = new List<Vector2>();
+    public Dictionary<string, bool> isBossRoomOpen = new Dictionary<string, bool>();
 
     public static GameData GameDataSingle;
 

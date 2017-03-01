@@ -8,14 +8,15 @@ public class QuestController : MonoBehaviour {
     public int quest;
     public Text QuestTxt;
 
-    //General Quest
-    public bool QuestTracker = false;
-
     //Kill Quest
-    public bool IsKillQuestActive = false;
     public int KillQuestCounter = 0;
     int amount;
     string target;
+
+    public Dictionary<string, bool> questList = new Dictionary<string, bool>();
+
+    //kill quest
+    public Dictionary<string, string> killQuestList = new Dictionary<string, string>();
 
     public static QuestController QuestControllerSingle;
     /*
@@ -43,13 +44,13 @@ public class QuestController : MonoBehaviour {
         }
     }
 
-    public void PickQuest()
+    public void PickQuest(string NPCName)
     {
         switch (quest)
         {
             case 1:
                 Debug.Log("Quest 1");
-                KillQuest();
+                KillQuest(NPCName);
                 break;
             case 2:
                 Debug.Log("Quest 2");
@@ -63,24 +64,32 @@ public class QuestController : MonoBehaviour {
         }
     }
 
-    public void UpdateKillQuest()
+    public void UpdateKillQuest(string EnemyName)
     {
         QuestTxt.text = "kill " + amount + " of " + target + "\n Current kills: " + KillQuestCounter;
         if (KillQuestCounter == amount)
         {
-            IsKillQuestActive = false;
+            questList[killQuestList[EnemyName]] = true;
+            killQuestList.Remove(EnemyName);
             QuestTxt.text = "Quest complete";
-            QuestTracker = true;
+
         }
     }
 
-    private void KillQuest()
+    private void KillQuest(string NPCName)
     {
-        IsKillQuestActive = true;
         amount = 2;
         KillQuestCounter = 0;
         target = "Enemy";
 
+        killQuestList.Add(target, NPCName);
+
         QuestTxt.text = "kill " + amount + " of " + target + "\n Current kills: " + KillQuestCounter;
+    }
+
+    //adding npc quest to list
+    public void AddQuestToList(string NPCName)
+    {
+        questList.Add(NPCName, false);
     }
 }

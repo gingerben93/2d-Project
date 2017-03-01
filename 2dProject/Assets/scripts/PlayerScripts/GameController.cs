@@ -89,14 +89,37 @@ public class GameController : MonoBehaviour {
         Resources.UnloadUnusedAssets();
         if (Input.GetKeyDown(KeyCode.R) && touchingDoor)
         {
-            MapGenerator.MapGeneratorSingle.seed = mapSeed;
-            MapGenerator.MapGeneratorSingle.LoadMap();
+            //Debug.Log("GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed) = " + GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed));
+            if (GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed))
+            {
+                //Debug.Log("GameData.GameDataSingle.isBossRoomOpen[mapSeed]" + GameData.GameDataSingle.isBossRoomOpen[mapSeed]);
+                if (GameData.GameDataSingle.isBossRoomOpen[mapSeed])
+                {
+                    MapGenerator.MapGeneratorSingle.seed = mapSeed;
+                    MapGenerator.MapGeneratorSingle.LoadMap();
 
-            Vector2 door;
-            door = MapGenerator.MapGeneratorSingle.doorLocations[doorInfo.numVal];
-            transform.position = new Vector3(door.x, door.y, 0);
+                    Vector2 door;
+                    door = MapGenerator.MapGeneratorSingle.doorLocations[doorInfo.numVal];
+                    transform.position = new Vector3(door.x, door.y, 0);
 
-            respawnLocation = door;
+                    respawnLocation = door;
+                }
+                else
+                {
+                    Debug.Log("Door Is Locked");
+                }
+            }
+            else
+            {
+                MapGenerator.MapGeneratorSingle.seed = mapSeed;
+                MapGenerator.MapGeneratorSingle.LoadMap();
+
+                Vector2 door;
+                door = MapGenerator.MapGeneratorSingle.doorLocations[doorInfo.numVal];
+                transform.position = new Vector3(door.x, door.y, 0);
+
+                respawnLocation = door;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && rb2d.velocity.y < maxSpeed /*&& grounded*/)

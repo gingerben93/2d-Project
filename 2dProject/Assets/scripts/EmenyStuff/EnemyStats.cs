@@ -36,10 +36,10 @@ public class EnemyStats : MonoBehaviour
             PlayerStats.playerStatistics.experiencePoints += experiencePoint;
 
             //Increase Kill Counter
-            if (QuestController.QuestControllerSingle.IsKillQuestActive)
+            if (QuestController.QuestControllerSingle.killQuestList.ContainsKey("Enemy"))
             {
                 QuestController.QuestControllerSingle.KillQuestCounter += 1;
-                QuestController.QuestControllerSingle.UpdateKillQuest();
+                QuestController.QuestControllerSingle.UpdateKillQuest("Enemy");
             }
 
             Instantiate(loot, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;

@@ -1069,7 +1069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ef2b7a033d2dcf45956f1da777ae633, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnLocation: {x: 25, y: 9, z: 0}
+  respawnLocation: {x: 0, y: 0, z: 0}
 --- !u!212 &645955101
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1786,7 +1786,6 @@ MonoBehaviour:
   possibleDoorLocations: []
   doorLocations: []
   enemyLocations: []
-  mapSets: []
   bossRooms: []
 --- !u!4 &1077971052
 Transform:
@@ -2227,8 +2226,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quest: 0
   QuestTxt: {fileID: 1432209995}
-  QuestTracker: 0
-  IsKillQuestActive: 0
   KillQuestCounter: 0
 --- !u!1 &1624953885
 GameObject:

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType {MANA, HEALTH, MWEAPON, RWEAPON}; //add more types here for items
+public enum ItemType {MANA, HEALTH, MWEAPON, RWEAPON, KEY}; //add more types here for items
 
 public class Item : MonoBehaviour {
 
@@ -28,6 +28,8 @@ public class Item : MonoBehaviour {
             case ItemType.MWEAPON:
                 break;
             case ItemType.RWEAPON:
+                break;
+            case ItemType.KEY:
                 break;
             default:
                 break;

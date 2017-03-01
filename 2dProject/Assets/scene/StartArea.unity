@@ -318,6 +318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 487f4d01b50d8d24998cdfc3df15b582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  reward: {fileID: 4496018836403414, guid: 93da176c43af7884db783f616f6280d1, type: 2}
   character: 0
   chat: 0
 --- !u!1 &934819196

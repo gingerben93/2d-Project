@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class BlitzCrank : MonoBehaviour {
 
+    //reward
+    public Transform reward;
 
     public bool character;
     public bool chat;
+
     // Use this for initialization
     void Start () {
         character = false;
@@ -15,12 +18,28 @@ public class BlitzCrank : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.Q) && character)
+        if (Input.GetKeyDown(KeyCode.Q) && character && !QuestController.QuestControllerSingle.questList.ContainsKey("Blitz"))
         {
             Debug.Log("Hey");
             chat = true;
+            QuestController.QuestControllerSingle.AddQuestToList("Blitz");
             QuestController.QuestControllerSingle.quest = 1;
-            QuestController.QuestControllerSingle.PickQuest();
+            QuestController.QuestControllerSingle.PickQuest("Blitz");
+        }
+        else if (Input.GetKeyDown(KeyCode.Q) && character && QuestController.QuestControllerSingle.questList.ContainsKey("Blitz"))
+        {
+            if (QuestController.QuestControllerSingle.questList["Blitz"] == false)
+            {
+                Debug.Log("Already got quest!");
+            }
+            else
+            {
+                Debug.Log("QUEST COMPLETE");
+                QuestController.QuestControllerSingle.questList.Remove("Blitz");
+                Transform savedGameData = Instantiate(reward, transform.position, Quaternion.identity);
+                GameData.GameDataSingle.isBossRoomOpen["6"] = true;
+                //savedGameData.name = savedGameData.name + GameData.GameDataSingle.isBossRoomOpen;
+            }
         }
     }
 
