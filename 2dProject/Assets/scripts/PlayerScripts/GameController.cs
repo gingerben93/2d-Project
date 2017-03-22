@@ -39,6 +39,9 @@ public class GameController : MonoBehaviour {
     //for loading
     public bool isGameLoading = false;
 
+    //For boss deaths
+    public bool Boss1 = false;
+
     public static GameController GameControllerSingle;
 
     void Awake()

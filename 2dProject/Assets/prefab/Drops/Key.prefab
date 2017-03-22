@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 50006098869646410}
   - component: {fileID: 114212654058327704}
   m_Layer: 0
-  m_Name: Key1
+  m_Name: Key
   m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,8 +102,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
-  spriteNeutral: {fileID: 21300000, guid: c5e184878200cf149915a2298470b92f, type: 3}
-  spriteHighlighted: {fileID: 21300000, guid: c5e184878200cf149915a2298470b92f, type: 3}
+  spriteNeutral: {fileID: 21300000, guid: eb56beb6e7c383b43a0152032cfeb10a, type: 3}
+  spriteHighlighted: {fileID: 21300000, guid: c136879273e50d440a98f3a459c5bf04, type: 3}
   maxSize: 3
 --- !u!212 &212086581557034018
 SpriteRenderer:

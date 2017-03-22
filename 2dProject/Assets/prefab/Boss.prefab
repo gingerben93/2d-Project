@@ -38,8 +38,8 @@ GameObject:
   - component: {fileID: 212998673176496726}
   - component: {fileID: 50134236025902302}
   - component: {fileID: 61459854683341114}
-  - component: {fileID: 114377441906098140}
   - component: {fileID: 114813470790907950}
+  - component: {fileID: 114814654616413574}
   m_Layer: 13
   m_Name: Boss
   m_TagString: Enemy
@@ -108,20 +108,6 @@ BoxCollider2D:
   m_Offset: {x: -0.0018059413, y: 0.016129335}
   serializedVersion: 2
   m_Size: {x: 0.25825348, y: 0.22784679}
---- !u!114 &114377441906098140
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1643893294140506}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f963711c28e4c342b90c88535fc0377, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loot: {fileID: 4714627539353674, guid: 6037edee721d36b45a3414f115fcf23e, type: 2}
-  loot2: {fileID: 4568709328624982, guid: b6fd51c9f95fc474b94f7579577cb2f8, type: 2}
-  loot3: {fileID: 4091342300454142, guid: ddda9a7bc282c24459e0044624ee7df9, type: 2}
 --- !u!114 &114640732315066188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -146,6 +132,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shotPrefab: {fileID: 0}
   shootingRate: 0.25
+--- !u!114 &114814654616413574
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1643893294140506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c41a2982a69f4b344bb93005d5336c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loot: {fileID: 0}
+  loot2: {fileID: 0}
+  loot3: {fileID: 0}
 --- !u!212 &212998673176496726
 SpriteRenderer:
   m_ObjectHideFlags: 1
