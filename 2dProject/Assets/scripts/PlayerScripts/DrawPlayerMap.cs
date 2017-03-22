@@ -23,7 +23,7 @@ public class DrawPlayerMap : MonoBehaviour {
     public bool makeMap { get; set; }
 
     //if change room bool
-    public bool touchingDoor { get; set; }
+    //public bool touchingDoor { get; set; }
 
     //for map marker
     GameObject MapMarkerTeemo;
@@ -184,7 +184,7 @@ public class DrawPlayerMap : MonoBehaviour {
                 }
             }
         }
-        if (touchingDoor == true && Input.GetKeyDown(KeyCode.R)) {
+        if (GameController.GameControllerSingle.touchingDoor == true && Input.GetKeyDown(KeyCode.R)) {
 
             if (localMapOn)
             {
@@ -511,7 +511,7 @@ public class DrawPlayerMap : MonoBehaviour {
         //transform.Rotate(Vector3.zero);
 
         //for mapdoors
-        if (touchingDoor == true && firstRun != false)
+        if (GameController.GameControllerSingle.touchingDoor == true && firstRun != false)
         {
             DrawDoorsLocalMap(nextMap);
         }

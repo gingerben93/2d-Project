@@ -15,15 +15,11 @@ public class DoorCollider : MonoBehaviour {
     private string[] values;
 
     GameData gameData;
-    DrawPlayerMap changeLocalMap;
-    GameController gameCon;
     DoorPrefabInfo info;
 
     void Start()
     {
         gameData = FindObjectOfType<GameData>();
-        changeLocalMap = FindObjectOfType<DrawPlayerMap>();
-        gameCon = FindObjectOfType<GameController>();
     }
 
     public void OnTriggerEnter2D(Collider2D node)
@@ -53,16 +49,15 @@ public class DoorCollider : MonoBehaviour {
             //numVal = gameData.FindMapIndex(newDoor);
 
             //for drawing lines
-            changeLocalMap.currentDoor = Int32.Parse(oldDoor);
-            changeLocalMap.nextDoor = Int32.Parse(newDoor);
-            changeLocalMap.currentMap = oldSeed;
-            changeLocalMap.nextMap = newSeed;
+            DrawPlayerMap.DrawPlayerMapSingle.currentDoor = Int32.Parse(oldDoor);
+            DrawPlayerMap.DrawPlayerMapSingle.nextDoor = Int32.Parse(newDoor);
+            DrawPlayerMap.DrawPlayerMapSingle.currentMap = oldSeed;
+            DrawPlayerMap.DrawPlayerMapSingle.nextMap = newSeed;
 
             //pass seed and door info to gameController.
-            gameCon.mapSeed = newSeed;
-            gameCon.doorRef = numVal;
-            gameCon.touchingDoor = true;
-            changeLocalMap.touchingDoor = true;
+            GameController.GameControllerSingle.mapSeed = newSeed;
+            GameController.GameControllerSingle.doorRef = numVal;
+            GameController.GameControllerSingle.touchingDoor = true;
         }
     }
 
@@ -79,14 +74,9 @@ public class DoorCollider : MonoBehaviour {
 
     public void OnTriggerExit2D(Collider2D node)
     {
-        //for door colliding in DrawPlayerMap
-        changeLocalMap = FindObjectOfType<DrawPlayerMap>();
-        gameCon = FindObjectOfType<GameController>();
-
         if (node.gameObject.tag == "Door")
         {
-            changeLocalMap.touchingDoor = false;
-            gameCon.touchingDoor = false;
+            GameController.GameControllerSingle.touchingDoor = false;
         }
     }
 

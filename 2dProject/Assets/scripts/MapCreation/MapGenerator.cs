@@ -50,6 +50,9 @@ public class MapGenerator : MonoBehaviour
 
     public static MapGenerator MapGeneratorSingle;
 
+    //for spawing boss
+    public Transform BossPrefab;
+
     void Awake()
     {
         if (MapGeneratorSingle == null)
@@ -319,6 +322,12 @@ public class MapGenerator : MonoBehaviour
             {
                 MapAddOns.DrawEnemys(enemyLocations);
             }
+        }
+        else if (bossRooms.Contains(seed))
+        {
+            MapAddOns.RemoveAllEnemies();
+            var temp = Instantiate(BossPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            temp.transform.SetParent(GameObject.Find("EnemyList").transform);
         }
         else
         {

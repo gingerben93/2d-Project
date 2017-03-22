@@ -36,6 +36,9 @@ public class GameController : MonoBehaviour {
     //for respawning
     public Vector3 respawnLocation;
 
+    //for loading
+    public bool isGameLoading = false;
+
     public static GameController GameControllerSingle;
 
     void Awake()
@@ -79,7 +82,13 @@ public class GameController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
+
+        if (isGameLoading)
+        {
+            return;
+        }
+
+
         if (PlayerStats.playerStatistics.health == 0)
         {
             transform.position = respawnLocation;
@@ -89,6 +98,9 @@ public class GameController : MonoBehaviour {
         Resources.UnloadUnusedAssets();
         if (Input.GetKeyDown(KeyCode.R) && touchingDoor)
         {
+            //def of parent for removing item
+            GameObject itemlist = GameObject.Find("WorldItems");
+
             //Debug.Log("GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed) = " + GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed));
             if (GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed))
             {
@@ -103,9 +115,16 @@ public class GameController : MonoBehaviour {
                     transform.position = new Vector3(door.x, door.y, 0);
 
                     respawnLocation = door;
+
+                    //remove items
+                    foreach (Transform child in itemlist.transform)
+                    {
+                        Destroy(child.gameObject);
+                    }
                 }
                 else
                 {
+                    touchingDoor = false;
                     Debug.Log("Door Is Locked");
                 }
             }
@@ -119,6 +138,12 @@ public class GameController : MonoBehaviour {
                 transform.position = new Vector3(door.x, door.y, 0);
 
                 respawnLocation = door;
+
+                //remove items
+                foreach (Transform child in itemlist.transform)
+                {
+                    Destroy(child.gameObject);
+                }
             }
         }
 

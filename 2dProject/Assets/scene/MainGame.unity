@@ -1070,6 +1070,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   respawnLocation: {x: 0, y: 0, z: 0}
+  isGameLoading: 0
 --- !u!212 &645955101
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1787,6 +1788,7 @@ MonoBehaviour:
   doorLocations: []
   enemyLocations: []
   bossRooms: []
+  BossPrefab: {fileID: 4984501454688958, guid: 804906908a3a92e4594e27e18550813f, type: 2}
 --- !u!4 &1077971052
 Transform:
   m_ObjectHideFlags: 0
