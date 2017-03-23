@@ -34,7 +34,7 @@ public class BlitzCrank : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Q) && character && GameController.GameControllerSingle.Boss1 == true)
         {
-            StartCoroutine(HeroDialog(NPCtext, "You beat the boss, game over faggot."));
+            StartCoroutine(NPCDialog(NPCtext, "You beat the boss, game over faggot."));
             StartCoroutine(HeroDialog(Herotext, "You aint shit as a boss. Easy mode faggot get gud."));
             canvas.alpha = 1;
             chat = true;

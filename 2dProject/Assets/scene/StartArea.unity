@@ -458,7 +458,6 @@ MonoBehaviour:
   reward: {fileID: 4496018836403414, guid: 93da176c43af7884db783f616f6280d1, type: 2}
   character: 0
   chat: 0
-  letterPause: 0.2
 --- !u!1 &760089279
 GameObject:
   m_ObjectHideFlags: 0
@@ -1260,7 +1259,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 0
   m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &1927037479
 MonoBehaviour:
