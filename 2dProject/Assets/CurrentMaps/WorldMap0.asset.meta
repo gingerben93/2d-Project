@@ -1,6 +1,10 @@
 fileFormatVersion: 2
 guid: cab5a3771cfcc9547bc44a0f8b22667a
+<<<<<<< HEAD
 timeCreated: 1491613560
+=======
+timeCreated: 1490179541
+>>>>>>> parent of 00fac2e... Minor bug fixes
 licenseType: Free
 NativeFormatImporter:
   userData: 
