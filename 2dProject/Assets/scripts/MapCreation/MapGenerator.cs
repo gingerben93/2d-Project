@@ -325,8 +325,9 @@ public class MapGenerator : MonoBehaviour
         }
         else if (bossRooms.Contains(seed))
         {
+
             MapAddOns.RemoveAllEnemies();
-            var temp = Instantiate(BossPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            var temp = Instantiate(BossPrefab, new Vector3(0, -currentData.height / 2 + 2, 0), Quaternion.identity);
             temp.transform.SetParent(GameObject.Find("EnemyList").transform);
         }
         else
