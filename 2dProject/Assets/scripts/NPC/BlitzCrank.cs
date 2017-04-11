@@ -24,8 +24,8 @@ public class BlitzCrank : MonoBehaviour {
     void Start () {
         character = false;
         chat = false;
-        NPCtext = GameObject.Find("StarAreaCanvas/Panel/NPC/NPCText/Text").GetComponent<Text>();
-        Herotext = GameObject.Find("StarAreaCanvas/Panel/Hero/HeroText/Text").GetComponent<Text>();
+        NPCtext = GameObject.Find("StarAreaCanvas/Panel/NPCText/Text").GetComponent<Text>();
+        Herotext = GameObject.Find("StarAreaCanvas/Panel/HeroText/Text").GetComponent<Text>();
         canvas = GameObject.Find("StarAreaCanvas").GetComponent<CanvasGroup>();
     }
 	
@@ -34,16 +34,16 @@ public class BlitzCrank : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Q) && character && GameController.GameControllerSingle.Boss1 == true)
         {
-            StartCoroutine(NPCDialog(NPCtext, "You beat the boss, game over faggot.\n"));
-            StartCoroutine(HeroDialog(Herotext, "You aint shit as a boss. Easy mode faggot get gud.\n"));
+            StartCoroutine(NPCDialog(NPCtext, "You beat the boss, game over faggot."));
+            StartCoroutine(HeroDialog(Herotext, "You aint shit as a boss. Easy mode faggot get gud."));
             canvas.alpha = 1;
             chat = true;
         }
         else if (Input.GetKeyDown(KeyCode.Q) && character && !QuestController.QuestControllerSingle.questList.ContainsKey("Blitz"))
         {
             chat = true;
-            StartCoroutine(HeroDialog(Herotext, "I'm bored af my dude. Give me something.\n"));
-            StartCoroutine(NPCDialog(NPCtext, "Here is ur quest.\n"));
+            StartCoroutine(HeroDialog(Herotext, "I'm bored af my dude. Give me something."));
+            StartCoroutine(NPCDialog(NPCtext, "Here is ur quest."));
             canvas.alpha = 1;
             QuestController.QuestControllerSingle.AddQuestToList("Blitz");
             QuestController.QuestControllerSingle.quest = 1;
@@ -53,15 +53,15 @@ public class BlitzCrank : MonoBehaviour {
         {
             if (QuestController.QuestControllerSingle.questList["Blitz"] == false)
             {
-                StartCoroutine(NPCDialog(NPCtext, "You already have ur quest.\n"));
-                StartCoroutine(HeroDialog(Herotext, "Didn't want to talk to you anyways.\n"));
+                StartCoroutine(NPCDialog(NPCtext, "You already have ur quest."));
+                StartCoroutine(HeroDialog(Herotext, "Didn't want to talk to you anyways."));
                 canvas.alpha = 1;
                 chat = true;
             }
             else
             {
-                StartCoroutine(NPCDialog(NPCtext, "You completed your quest, now defeat the boss.\n"));
-                StartCoroutine(HeroDialog(Herotext, "kool\n"));
+                StartCoroutine(NPCDialog(NPCtext, "You completed your quest, now defeat the boss."));
+                StartCoroutine(HeroDialog(Herotext, "kool"));
                 canvas.alpha = 1;
                 chat = true;
                 QuestController.QuestControllerSingle.questList.Remove("Blitz");
@@ -102,12 +102,10 @@ public class BlitzCrank : MonoBehaviour {
 
     IEnumerator HeroDialog(Text textComp, string message)
     {
-        
         while (NPCd)
         {
             yield return new WaitForSeconds(0.1f);
         }
-        textComp.text = "";
 
         Herod = true;
         foreach (char letter in message.ToCharArray())
@@ -120,12 +118,10 @@ public class BlitzCrank : MonoBehaviour {
 
     IEnumerator NPCDialog(Text textComp, string message)
     {
-       
         while (Herod)
         {
             yield return new WaitForSeconds(0.1f);
         }
-        textComp.text = "";
 
         NPCd = true;
         foreach (char letter in message.ToCharArray())
