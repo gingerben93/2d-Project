@@ -22,8 +22,16 @@ public class Item : MonoBehaviour {
         switch (type)
         {
             case ItemType.HEALTH:
-                PlayerStats.playerStatistics.health += 1;
-                Debug.Log("Health potion was used");
+                if(PlayerStats.playerStatistics.health <= PlayerStats.playerStatistics.maxHealth)
+                {
+                    PlayerStats.playerStatistics.health += 1;
+                    Debug.Log("Health potion was used");
+                }
+                else
+                {
+                    Debug.Log("Full health, fuking idiot, die potion");
+                }
+
                 break;
             case ItemType.MWEAPON:
                 break;

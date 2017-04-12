@@ -7,7 +7,9 @@ public class PlayerStats : MonoBehaviour {
     public static PlayerStats playerStatistics;
 
     public int health;
+    public int maxHealth;
     public int experiencePoints;
+    public int level;
 
     public Dictionary<string, MapInformation> MapInfo = new Dictionary<string, MapInformation>();
 

@@ -27,6 +27,9 @@ public class GameController : MonoBehaviour {
     private CanvasGroup StatsMenu;
     private CanvasGroup StartMenu;
     private CanvasGroup QuestMenu;
+    private CanvasGroup NotificationCanvasGroup;
+
+    public Text NotificationTxt;
 
     //is touching door
     public bool touchingDoor { get; set; }
@@ -41,6 +44,10 @@ public class GameController : MonoBehaviour {
 
     //For boss deaths
     public bool Boss1 = false;
+
+    //for falling
+    private bool falling = false;
+    private float timer = 0;
 
     public static GameController GameControllerSingle;
 
@@ -60,7 +67,7 @@ public class GameController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //variables on start
-        maxSpeed = 5f;
+        maxSpeed = 7f;
         moveForce = 5f;
         jumpForce = 500;
         touchingDoor = false;
@@ -68,6 +75,7 @@ public class GameController : MonoBehaviour {
         jump = false;
         attack = 2;
 
+        NotificationCanvasGroup = GameObject.Find("Notification").GetComponent<CanvasGroup>();
         StatsMenu = GameObject.Find("StatsMenu").GetComponent<CanvasGroup>();
         StartMenu = GameObject.Find("StartMenu").GetComponent<CanvasGroup>();
         InvMenu = GameObject.Find("Inventory").GetComponent<CanvasGroup>();
@@ -92,10 +100,10 @@ public class GameController : MonoBehaviour {
         }
 
 
-        if (PlayerStats.playerStatistics.health == 0)
+        if (PlayerStats.playerStatistics.health <= 0)
         {
             transform.position = respawnLocation;
-            PlayerStats.playerStatistics.health = 3;
+            PlayerStats.playerStatistics.health = PlayerStats.playerStatistics.maxHealth;
         }
         
         Resources.UnloadUnusedAssets();
@@ -247,6 +255,38 @@ public class GameController : MonoBehaviour {
         {
             rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * 0.995f, rb2d.velocity.y);
         }
+
+        if (PlayerStats.playerStatistics.experiencePoints >= PlayerStats.playerStatistics.level*15)
+        {
+            // text container
+            StartCoroutine(ShowMessage("LEVEL UP NERD!", 2));
+
+            //level character up
+            PlayerStats.playerStatistics.level += 1;
+            PlayerStats.playerStatistics.maxHealth += 2;
+            PlayerStats.playerStatistics.health = PlayerStats.playerStatistics.maxHealth;
+        }
+        if(Mathf.Abs(rb2d.velocity.y) >= maxSpeed)
+        {
+            //start timer for falling; take damage after 1 sec
+            //delta is is time sinece last frame.
+            timer += Time.deltaTime;
+            falling = true;
+        }
+        else
+        {
+            falling = false;
+            timer = 0;
+        }
+    }
+
+    //for quick message aboce character head
+    IEnumerator ShowMessage(string message, float delay)
+    {
+        NotificationTxt.text = message;
+        NotificationCanvasGroup.alpha = (NotificationCanvasGroup.alpha + 1) % 2;
+        yield return new WaitForSeconds(delay);
+        NotificationCanvasGroup.alpha = (NotificationCanvasGroup.alpha + 1) % 2;
     }
 
     void OnGUI()
@@ -277,6 +317,10 @@ public class GameController : MonoBehaviour {
             Inventory.InventorySingle.AddItem(collision.gameObject.GetComponent<Item>());
             Destroy(collision.gameObject);
         }
+        if (falling && timer >= 1f)
+        {
+            PlayerStats.playerStatistics.health -= 1;
+        }
     }
 
     public void Save()
@@ -287,6 +331,7 @@ public class GameController : MonoBehaviour {
         PlayerData playerDat = new PlayerData();
 
         playerDat.health = PlayerStats.playerStatistics.health;
+        playerDat.maxHealth = PlayerStats.playerStatistics.maxHealth;
         playerDat.experiencePoints = PlayerStats.playerStatistics.experiencePoints;
 
         playerDat.MapInfo = MapGenerator.MapGeneratorSingle.MapInfo;
@@ -322,6 +367,7 @@ public class GameController : MonoBehaviour {
             file.Close();
 
             PlayerStats.playerStatistics.health = playerDat.health;
+            PlayerStats.playerStatistics.maxHealth = playerDat.maxHealth;
             PlayerStats.playerStatistics.experiencePoints = playerDat.experiencePoints;
             MapGenerator.MapGeneratorSingle.MapInfo = playerDat.MapInfo;
 
@@ -335,7 +381,9 @@ public class PlayerData
 {
     //for PlayerStats
     public int health;
+    public int maxHealth;
     public int experiencePoints;
+    public int level;
 
     //for MapGenerator
     public Dictionary<string, MapInformation> MapInfo;

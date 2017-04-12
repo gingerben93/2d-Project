@@ -4,18 +4,20 @@ using UnityEngine.UI;
 
 public class StatsMenu : MonoBehaviour {
 
-    Text txt;
+    public Text experiencePointsTxt;
+    public Text levelTxt;
 
     // Use this for initialization
     void Start()
     {
-        txt = gameObject.GetComponent<Text>();
-        txt.text = "EXP: " + PlayerStats.playerStatistics.experiencePoints;
+        experiencePointsTxt.text = "EXP: " + PlayerStats.playerStatistics.experiencePoints;
+        levelTxt.text = "Level: " + PlayerStats.playerStatistics.level;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        txt.text = "EXP: " + PlayerStats.playerStatistics.experiencePoints;
+        experiencePointsTxt.text = "EXP: " + PlayerStats.playerStatistics.experiencePoints;
+        levelTxt.text = "Level: " + PlayerStats.playerStatistics.level;
     }
 }
