@@ -115,14 +115,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler
                     Inventory.EmptySlots++;
                 }
             }
-            else if (CurrentItem.type == ItemType.RWEAPON)
-            {
-                Debug.Log("range weapon");
-            }
-            else if (CurrentItem.type == ItemType.MWEAPON)
-            {
-                Debug.Log("melee weapon");
-            }
         }
     }
 

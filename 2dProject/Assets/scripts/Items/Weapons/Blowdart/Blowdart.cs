@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public class Blowdart : MonoBehaviour
 {
     public Transform shotPrefab;
     public float shootingRate = 0.25f;
@@ -23,7 +23,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public void Attack(bool isEnemy)
+    public void Attack(/*bool isEnemy*/)
     {
         if (CanAttack)
         {

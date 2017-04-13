@@ -487,6 +487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   info: {fileID: 0}
+  info2: {fileID: 0}
   slots: 128
   rows: 12
   slotPaddingLeft: 0
@@ -1139,6 +1140,7 @@ MonoBehaviour:
   respawnLocation: {x: 0, y: 0, z: 0}
   isGameLoading: 0
   Boss1: 0
+  atk: {fileID: 0}
 --- !u!212 &645955101
 SpriteRenderer:
   m_ObjectHideFlags: 0

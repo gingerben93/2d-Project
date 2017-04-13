@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEditor;
+using System;
+using System.Reflection;
 
 public class GameController : MonoBehaviour {
 
@@ -48,6 +50,11 @@ public class GameController : MonoBehaviour {
     //for falling
     private bool falling = false;
     private float timer = 0;
+
+    //for weapons
+    private static Slot weap;
+    private GameObject slot;
+    public Item atk;
 
     public static GameController GameControllerSingle;
 
@@ -197,24 +204,32 @@ public class GameController : MonoBehaviour {
         }
         else if (shoot)
         {
-            if (attack == 2)
+            //Find the slot named "Weapon"
+            slot = GameObject.Find("WEAPON");
+
+            //Looks at slot information in weapon slot to see if empty or not
+            Slot tmp = slot.GetComponent<Slot>();
+
+            if (tmp.IsEmpty)
             {
-                Weapon weapon = GetComponent<Weapon>();
-                if (weapon != null)
-                {
-                    // false because the player is not an enemy
-                    weapon.Attack(false);
-                }
+                //THERE IS NO WEAPON IN WEAPON SLOT DO NUFFIN
             }
-            else if (attack ==1)
+            //There is a weapon equipped
+            else
             {
-                WeaponMelee weaponM = GetComponent<WeaponMelee>();
-                if (weaponM != null)
-                {
-                    // false because the player is not an enemy
-                    weaponM.Attack(false);
-                }
+                //Obtain stack information of item in weapon
+                weap = slot.GetComponent<Slot>();
+                //Peek at stack information
+                atk = weap.Items.Peek();
+                //Access scripts of weapon
+                Debug.Log(atk.weaponName);
+                var weapon = gameObject.GetComponent(atk.weaponName) as MonoBehaviour;
+                //Invoke attack function (INVOKE CANT USE FUNCTIONS THAT HAVE PARAMETERS)
+                weapon.Invoke("Attack", 0.0001f);
             }
+
+
+
         }
 
         

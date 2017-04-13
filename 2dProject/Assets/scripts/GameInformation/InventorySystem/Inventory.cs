@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class Inventory : MonoBehaviour
 {
     //Used when moving around items to equipment slots.
-    public Item info;
+    public Item info, info2;
     //int alph; //For moving items when canvas is hidden
 
     private RectTransform invRect;
@@ -125,7 +125,7 @@ public class Inventory : MonoBehaviour
                 {
                     GameObject newSlot = (GameObject)Instantiate(slotPrefab);
                     RectTransform slotRect = newSlot.GetComponent<RectTransform>();
-                    newSlot.name = "Helm";
+                    newSlot.name = "HELM";
                     newSlot.transform.SetParent(this.transform.parent);
                     //Helm location
                     slotRect.localPosition = invRect.localPosition + new Vector3(-5 + (slotSize * 6), -10 - (slotSize * y));
@@ -139,7 +139,7 @@ public class Inventory : MonoBehaviour
                 {
                     GameObject newSlot = (GameObject)Instantiate(slotPrefab);
                     RectTransform slotRect = newSlot.GetComponent<RectTransform>();
-                    newSlot.name = "Amulet";
+                    newSlot.name = "AMULET";
                     newSlot.transform.SetParent(this.transform.parent);
                     //Amulet Location
                     slotRect.localPosition = invRect.localPosition + new Vector3(5 + (slotSize * 7), -20 - (slotSize * y));
@@ -153,7 +153,7 @@ public class Inventory : MonoBehaviour
                 {
                     GameObject newSlot = (GameObject)Instantiate(slotPrefab);
                     RectTransform slotRect = newSlot.GetComponent<RectTransform>();
-                    newSlot.name = "Weapon";
+                    newSlot.name = "WEAPON";
                     newSlot.transform.SetParent(this.transform.parent);
                     //Weapon Location
                     slotRect.localPosition = invRect.localPosition + new Vector3((slotSize * 4), -30 - (slotSize * y));
@@ -167,7 +167,7 @@ public class Inventory : MonoBehaviour
                 {
                     GameObject newSlot = (GameObject)Instantiate(slotPrefab);
                     RectTransform slotRect = newSlot.GetComponent<RectTransform>();
-                    newSlot.name = "Chest";
+                    newSlot.name = "CHEST";
                     newSlot.transform.SetParent(this.transform.parent);
                     //Body Location
                     slotRect.localPosition = invRect.localPosition + new Vector3(5 + (slotSize * 5), -40 - (slotSize * y));
@@ -181,7 +181,7 @@ public class Inventory : MonoBehaviour
                 {
                     GameObject newSlot = (GameObject)Instantiate(slotPrefab);
                     RectTransform slotRect = newSlot.GetComponent<RectTransform>();
-                    newSlot.name = "OffHand";
+                    newSlot.name = "SHIELD";
                     newSlot.transform.SetParent(this.transform.parent);
                     //Shield Location
                     slotRect.localPosition = invRect.localPosition + new Vector3(-5 + (slotSize * 8), -50 - (slotSize * y));
@@ -195,7 +195,7 @@ public class Inventory : MonoBehaviour
                 {
                     GameObject newSlot = (GameObject)Instantiate(slotPrefab);
                     RectTransform slotRect = newSlot.GetComponent<RectTransform>();
-                    newSlot.name = "Gloves";
+                    newSlot.name = "GLOVES";
                     newSlot.transform.SetParent(this.transform.parent);
                     //Gloves Location
                     slotRect.localPosition = invRect.localPosition + new Vector3((slotSize * 4), -95 - (slotSize * y));
@@ -209,7 +209,7 @@ public class Inventory : MonoBehaviour
                 {
                     GameObject newSlot = (GameObject)Instantiate(slotPrefab);
                     RectTransform slotRect = newSlot.GetComponent<RectTransform>();
-                    newSlot.name = "Waist";
+                    newSlot.name = "BELT";
                     newSlot.transform.SetParent(this.transform.parent);
                     //Waist Location
                     slotRect.localPosition = invRect.localPosition + new Vector3(5 + (slotSize * 5), -110 - (slotSize * y));
@@ -223,7 +223,7 @@ public class Inventory : MonoBehaviour
                 {
                     GameObject newSlot = (GameObject)Instantiate(slotPrefab);
                     RectTransform slotRect = newSlot.GetComponent<RectTransform>();
-                    newSlot.name = "Boots";
+                    newSlot.name = "BOOTS";
                     newSlot.transform.SetParent(this.transform.parent);
                     //Boots Location
                     slotRect.localPosition = invRect.localPosition + new Vector3(5 + (slotSize * 5), -135 - (slotSize * y));
@@ -237,7 +237,7 @@ public class Inventory : MonoBehaviour
                 {
                     GameObject newSlot = (GameObject)Instantiate(slotPrefab);
                     RectTransform slotRect = newSlot.GetComponent<RectTransform>();
-                    newSlot.name = "Ring1";
+                    newSlot.name = "RING";
                     newSlot.transform.SetParent(this.transform.parent);
                     //Ring1 Location
                     slotRect.localPosition = invRect.localPosition + new Vector3((slotSize * 8), -100 - (slotSize * y));
@@ -251,7 +251,7 @@ public class Inventory : MonoBehaviour
                 {
                     GameObject newSlot = (GameObject)Instantiate(slotPrefab);
                     RectTransform slotRect = newSlot.GetComponent<RectTransform>();
-                    newSlot.name = "Ring2";
+                    newSlot.name = "RING";
                     newSlot.transform.SetParent(this.transform.parent);
                     //Ring2 Location
                     slotRect.localPosition = invRect.localPosition + new Vector3((slotSize * 8), -125 - (slotSize * y));
@@ -364,70 +364,39 @@ public class Inventory : MonoBehaviour
         if (to != null && from != null)
         {
             Stack<Item> tmpTo = new Stack<Item>(to.Items);
-            to.AddItems(from.Items);
-
+            
             if (tmpTo.Count == 0)
             {
                 info = from.Items.Peek();
-                if (info.type == ItemType.RWEAPON || info.type == ItemType.MWEAPON)
-                {
-                    //Moving items into the weapon slot
-                    if (to.gameObject.name == "Weapon" && info.type == ItemType.MWEAPON) //melee weapon
-                    {
-                        Debug.Log("melee weapon");
-                        //GameController wep = GetComponent<GameController>();
-                        //wep.attack = 1;
-                        GameController.GameControllerSingle.attack = 1;
-                    }
-                    else if (to.gameObject.name == "Weapon" && info.type == ItemType.RWEAPON) //ranged weapon
-                    {
-                        Debug.Log("range weapon");
-                        //GameController wep = GetComponent<GameController>();
-                        //wep.attack = 2;
-                        GameController.GameControllerSingle.attack = 2;
-                    }
-                    /*else //no weapon
-                    {
-                        //GameController wep = GetComponent<GameController>();
-                        //wep.attack = 0;
-                        GameController.GameControllerSingle.attack = 0;
-                    }*/
+                //Debug.Log(info.type.ToString());
+                //Debug.Log(to.gameObject.name);
+
+                //Swapping items to an empty slot
+                if (info.type.ToString() == to.gameObject.name.ToString() || to.gameObject.name == "Slot") {
+                    to.AddItems(from.Items);
+                    from.ClearSlot();
                 }
-                from.ClearSlot();
             }
             else
             {
-                ////PEEK IS NOT THE RIGHT WAY TO GO, RETURNS NULL
                 info = from.Items.Peek();
-                if (info.type == ItemType.RWEAPON || info.type == ItemType.MWEAPON)
+                info2 = to.Items.Peek();
+                //Debug.Log(info.type.ToString());
+                //Debug.Log(info2.type.ToString());
+                //Debug.Log(from.gameObject.name);
+                //Debug.Log(to.gameObject.name);
+
+                //Swap items between each others slots. Check if the swap between two items will allow both items to switch into proper slots.
+                if (info.type.ToString() == to.gameObject.name || to.gameObject.name == "Slot" && info2.type.ToString() == from.gameObject.name)
                 {
-                    //Moving items into the weapon slot
-                    if (to.gameObject.name == "Weapon" && info.type == ItemType.MWEAPON) //melee weapon
-                    {
-                        Debug.Log("melee weapon");
-                        //GameController wep = GetComponent<GameController>();
-                        //wep.attack = 1;
-                        GameController.GameControllerSingle.attack = 1;
-                    }
-                    else if (to.gameObject.name == "Weapon" && info.type == ItemType.RWEAPON) //ranged weapon
-                    {
-                        Debug.Log("range weapon");
-                        //GameController wep = GetComponent<GameController>();
-                        //wep.attack = 2;
-                        GameController.GameControllerSingle.attack = 2;
-                    }
-                    /*else //no weapon
-                    {
-                        //GameController wep = GetComponent<GameController>();
-                        //wep.attack = 0;
-                        GameController.GameControllerSingle.attack = 0;
-                    }*/
+                    to.AddItems(from.Items);
+                    from.AddItems(tmpTo);
                 }
-                from.AddItems(tmpTo);
             }
 
             from.GetComponent<Image>().color = Color.white;
             info = null;
+            info2 = null;
             to = null;
             from = null;
             hoverObject = null;

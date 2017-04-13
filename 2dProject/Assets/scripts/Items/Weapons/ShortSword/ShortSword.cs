@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponMelee : MonoBehaviour {
+public class ShortSword : MonoBehaviour {
 
     public Transform shotPrefab;
     public float shootingRate = 0.25f;
@@ -25,7 +25,7 @@ public class WeaponMelee : MonoBehaviour {
         }
     }
 
-    public void Attack(bool isEnemy)
+    public void Attack(/*bool isEnemy*/)
     {
         if (CanAttack)
         {
