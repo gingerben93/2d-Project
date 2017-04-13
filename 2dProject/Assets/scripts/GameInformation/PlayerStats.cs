@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour {
 
-    public static PlayerStats playerStatistics;
+    public static PlayerStats PlayerStatsSingle;
 
     public int health;
     public int maxHealth;
@@ -17,11 +17,11 @@ public class PlayerStats : MonoBehaviour {
 
     void Awake()
     {
-        if (playerStatistics == null)
+        if (PlayerStatsSingle == null)
         {
-            playerStatistics = this;
+            PlayerStatsSingle = this;
         }
-        else if (playerStatistics != this)
+        else if (PlayerStatsSingle != this)
         {
             Destroy(gameObject);
         }

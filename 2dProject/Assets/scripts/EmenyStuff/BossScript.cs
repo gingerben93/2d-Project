@@ -33,7 +33,7 @@ public class BossScript : MonoBehaviour
         if (hp <= 0)
         {
             //set exp
-            PlayerStats.playerStatistics.experiencePoints += experiencePoint;
+            PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
 
             //Boss1 is now dead
             GameController.GameControllerSingle.Boss1 = true;
@@ -51,7 +51,7 @@ public class BossScript : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            PlayerStats.playerStatistics.health -= 1;
+            PlayerStats.PlayerStatsSingle.health -= 1;
         }
     }
 

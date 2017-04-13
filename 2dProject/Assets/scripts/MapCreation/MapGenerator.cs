@@ -173,8 +173,8 @@ public class MapGenerator : MonoBehaviour
             {
                 gameData.mapSets.Add(new Vector2(GameLoader.GameLoaderSingle.playerDat.mapSetsX[tempCounter], GameLoader.GameLoaderSingle.playerDat.mapSetsY[tempCounter]));
             }
-            PlayerStats.playerStatistics.health = GameLoader.GameLoaderSingle.playerDat.health;
-            PlayerStats.playerStatistics.experiencePoints = GameLoader.GameLoaderSingle.playerDat.experiencePoints;
+            PlayerStats.PlayerStatsSingle.health = GameLoader.GameLoaderSingle.playerDat.health;
+            PlayerStats.PlayerStatsSingle.experiencePoints = GameLoader.GameLoaderSingle.playerDat.experiencePoints;
 
             //don't make a map
             //DrawPlayerMap.DrawPlayerMapSingle.makeMap = false;
@@ -184,14 +184,14 @@ public class MapGenerator : MonoBehaviour
             //Debug.Log("gameData.mapSeed.Count = " + gameData.mapSeed.Count);
             //Debug.Log("GameLoader.GameLoaderSingle.playerDat.doorConnectionDictionary.Count = " + GameLoader.GameLoaderSingle.playerDat.doorConnectionDictionary.Count);
         }
-        PlayerStats.playerStatistics.MapInfo = MapInfo;
+        PlayerStats.PlayerStatsSingle.MapInfo = MapInfo;
 
 
         seed = gameData.mapSeed[0];
         LoadMap();
         DrawPlayerMap.DrawPlayerMapSingle.currentMap = seed;
-        GameController.GameControllerSingle.respawnLocation = new Vector3(PlayerStats.playerStatistics.MapInfo[seed].doorLocationsX[0],
-                                                                          PlayerStats.playerStatistics.MapInfo[seed].doorLocationsY[0],0);
+        GameController.GameControllerSingle.respawnLocation = new Vector3(PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsX[0],
+                                                                          PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsY[0],0);
         LoadOnClick.LoadOnClickSingle.LoadScene(0);
     }
 

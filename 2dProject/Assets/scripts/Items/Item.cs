@@ -32,9 +32,9 @@ public class Item : MonoBehaviour {
         switch (type)
         {
             case ItemType.HEALTH:
-                if(PlayerStats.playerStatistics.health <= PlayerStats.playerStatistics.maxHealth)
+                if(PlayerStats.PlayerStatsSingle.health <= PlayerStats.PlayerStatsSingle.maxHealth)
                 {
-                    PlayerStats.playerStatistics.health += 1;
+                    PlayerStats.PlayerStatsSingle.health += 1;
                     Debug.Log("Health potion was used");
                 }
                 else

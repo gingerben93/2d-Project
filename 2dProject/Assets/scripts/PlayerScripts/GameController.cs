@@ -107,10 +107,10 @@ public class GameController : MonoBehaviour {
         }
 
 
-        if (PlayerStats.playerStatistics.health <= 0)
+        if (PlayerStats.PlayerStatsSingle.health <= 0)
         {
             transform.position = respawnLocation;
-            PlayerStats.playerStatistics.health = PlayerStats.playerStatistics.maxHealth;
+            PlayerStats.PlayerStatsSingle.health = PlayerStats.PlayerStatsSingle.maxHealth;
         }
         
         Resources.UnloadUnusedAssets();
@@ -222,7 +222,6 @@ public class GameController : MonoBehaviour {
                 //Peek at stack information
                 atk = weap.Items.Peek();
                 //Access scripts of weapon
-                Debug.Log(atk.weaponName);
                 var weapon = gameObject.GetComponent(atk.weaponName) as MonoBehaviour;
                 //Invoke attack function (INVOKE CANT USE FUNCTIONS THAT HAVE PARAMETERS)
                 weapon.Invoke("Attack", 0.0001f);
@@ -271,15 +270,15 @@ public class GameController : MonoBehaviour {
             rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * 0.995f, rb2d.velocity.y);
         }
 
-        if (PlayerStats.playerStatistics.experiencePoints >= PlayerStats.playerStatistics.level*15)
+        if (PlayerStats.PlayerStatsSingle.experiencePoints >= PlayerStats.PlayerStatsSingle.level*15)
         {
             // text container
             StartCoroutine(ShowMessage("LEVEL UP NERD!", 2));
 
             //level character up
-            PlayerStats.playerStatistics.level += 1;
-            PlayerStats.playerStatistics.maxHealth += 2;
-            PlayerStats.playerStatistics.health = PlayerStats.playerStatistics.maxHealth;
+            PlayerStats.PlayerStatsSingle.level += 1;
+            PlayerStats.PlayerStatsSingle.maxHealth += 2;
+            PlayerStats.PlayerStatsSingle.health = PlayerStats.PlayerStatsSingle.maxHealth;
         }
         if(Mathf.Abs(rb2d.velocity.y) >= maxSpeed)
         {
@@ -306,7 +305,7 @@ public class GameController : MonoBehaviour {
 
     void OnGUI()
     {
-        GUI.Label(new Rect(30, -3, 100, 30), "Health: " + PlayerStats.playerStatistics.health);
+        GUI.Label(new Rect(30, -3, 100, 30), "Health: " + PlayerStats.PlayerStatsSingle.health);
         //if(GUI.Button(new Rect(Screen.width  / 2 + Screen.width / 4, Screen.height / 2, 100, 30), "Save"))
         //{
         //    Save();
@@ -334,7 +333,7 @@ public class GameController : MonoBehaviour {
         }
         if (falling && timer >= 1f)
         {
-            PlayerStats.playerStatistics.health -= 1;
+            PlayerStats.PlayerStatsSingle.health -= 1;
         }
     }
 
@@ -345,9 +344,9 @@ public class GameController : MonoBehaviour {
 
         PlayerData playerDat = new PlayerData();
 
-        playerDat.health = PlayerStats.playerStatistics.health;
-        playerDat.maxHealth = PlayerStats.playerStatistics.maxHealth;
-        playerDat.experiencePoints = PlayerStats.playerStatistics.experiencePoints;
+        playerDat.health = PlayerStats.PlayerStatsSingle.health;
+        playerDat.maxHealth = PlayerStats.PlayerStatsSingle.maxHealth;
+        playerDat.experiencePoints = PlayerStats.PlayerStatsSingle.experiencePoints;
 
         playerDat.MapInfo = MapGenerator.MapGeneratorSingle.MapInfo;
 
@@ -381,9 +380,9 @@ public class GameController : MonoBehaviour {
             PlayerData playerDat = (PlayerData)bf.Deserialize(file);
             file.Close();
 
-            PlayerStats.playerStatistics.health = playerDat.health;
-            PlayerStats.playerStatistics.maxHealth = playerDat.maxHealth;
-            PlayerStats.playerStatistics.experiencePoints = playerDat.experiencePoints;
+            PlayerStats.PlayerStatsSingle.health = playerDat.health;
+            PlayerStats.PlayerStatsSingle.maxHealth = playerDat.maxHealth;
+            PlayerStats.PlayerStatsSingle.experiencePoints = playerDat.experiencePoints;
             MapGenerator.MapGeneratorSingle.MapInfo = playerDat.MapInfo;
 
             MapGenerator.MapGeneratorSingle.LoadMap();

@@ -10,14 +10,14 @@ public class StatsMenu : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        experiencePointsTxt.text = "EXP: " + PlayerStats.playerStatistics.experiencePoints;
-        levelTxt.text = "Level: " + PlayerStats.playerStatistics.level;
+        experiencePointsTxt.text = "EXP: " + PlayerStats.PlayerStatsSingle.experiencePoints;
+        levelTxt.text = "Level: " + PlayerStats.PlayerStatsSingle.level;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        experiencePointsTxt.text = "EXP: " + PlayerStats.playerStatistics.experiencePoints;
-        levelTxt.text = "Level: " + PlayerStats.playerStatistics.level;
+        experiencePointsTxt.text = "EXP: " + PlayerStats.PlayerStatsSingle.experiencePoints;
+        levelTxt.text = "Level: " + PlayerStats.PlayerStatsSingle.level;
     }
 }

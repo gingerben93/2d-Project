@@ -66,12 +66,15 @@ public class QuestController : MonoBehaviour {
 
     public void UpdateKillQuest(string EnemyName)
     {
-        QuestTxt.text = "kill " + amount + " of " + target + "\n Current kills: " + KillQuestCounter;
+
+        Text updateQuest = GameObject.Find("Enemy").GetComponent<Text>();
+        updateQuest.text = "kill " + amount + " of " + target + "\n Current kills: " + KillQuestCounter;
+
         if (KillQuestCounter == amount)
         {
             questList[killQuestList[EnemyName]] = true;
             killQuestList.Remove(EnemyName);
-            QuestTxt.text = "Quest complete";
+            updateQuest.text = "Quest complete";
 
         }
     }
@@ -82,9 +85,14 @@ public class QuestController : MonoBehaviour {
         KillQuestCounter = 0;
         target = "Enemy";
 
+        GameObject parentQuest = GameObject.Find("QuestPanel");
+        Text tempText = Instantiate(QuestTxt, parentQuest.transform);
+
+
         killQuestList.Add(target, NPCName);
 
-        QuestTxt.text = "kill " + amount + " of " + target + "\n Current kills: " + KillQuestCounter;
+        tempText.text = "kill " + amount + " of " + target + "\nCurrent kills: " + KillQuestCounter;
+        tempText.name = target;
     }
 
     //adding npc quest to list

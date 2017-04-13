@@ -60,6 +60,10 @@ public class BlitzCrank : MonoBehaviour {
             }
             else
             {
+                //for removing quest
+                GameObject removeQuest = GameObject.Find("Enemy");
+                Destroy(removeQuest);
+
                 StartCoroutine(NPCDialog(NPCtext, "You completed your quest, now defeat the boss.\n"));
                 StartCoroutine(HeroDialog(Herotext, "kool\n"));
                 canvas.alpha = 1;

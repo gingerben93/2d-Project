@@ -33,7 +33,7 @@ public class EnemyStats : MonoBehaviour
         if (hp <= 0)
         {
             //set exp
-            PlayerStats.playerStatistics.experiencePoints += experiencePoint;
+            PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
 
             //Increase Kill Counter
             if (QuestController.QuestControllerSingle.killQuestList.ContainsKey("Enemy"))
@@ -54,7 +54,7 @@ public class EnemyStats : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            PlayerStats.playerStatistics.health -= 1;
+            PlayerStats.PlayerStatsSingle.health -= 1;
         }
     }
 

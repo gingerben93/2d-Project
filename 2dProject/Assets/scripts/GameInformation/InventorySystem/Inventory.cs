@@ -387,7 +387,7 @@ public class Inventory : MonoBehaviour
                 //Debug.Log(to.gameObject.name);
 
                 //Swap items between each others slots. Check if the swap between two items will allow both items to switch into proper slots.
-                if (info.type.ToString() == to.gameObject.name || to.gameObject.name == "Slot" && info2.type.ToString() == from.gameObject.name)
+                if (info.type.ToString() == to.gameObject.name || to.gameObject.name == "Slot" && info2.type.ToString() == from.gameObject.name || from.gameObject.name == "Slot" && to.gameObject.name == "Slot")
                 {
                     to.AddItems(from.Items);
                     from.AddItems(tmpTo);
