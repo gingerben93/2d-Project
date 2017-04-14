@@ -102,9 +102,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 8
+  quality: 0
   spriteNeutral: {fileID: 21300000, guid: bd2795fbdb32c054c98f008cf8f1fbe5, type: 3}
   spriteHighlighted: {fileID: 21300000, guid: c3fa61a42b633574f8f0ec0e457ce797, type: 3}
+  weaponName: 
   maxSize: 1
+  armorL: 0
+  armorH: 0
+  atkL: 0
+  atkH: 0
+  vitL: 0
+  vitH: 0
+  intelligenceL: 0
+  intelligenceH: 0
+  strengthL: 0
+  strengthH: 0
+  charismaL: 0
+  charismaH: 0
+  itemName: 
+  description: 
 --- !u!212 &212937337470890218
 SpriteRenderer:
   m_ObjectHideFlags: 1

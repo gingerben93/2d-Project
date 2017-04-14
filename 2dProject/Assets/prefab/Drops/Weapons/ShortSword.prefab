@@ -91,11 +91,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
+  quality: 0
   spriteNeutral: {fileID: 21300000, guid: 29e5644379d0589468d4193e91e9990c, type: 3}
   spriteHighlighted: {fileID: 21300000, guid: 2434c897b52ae334684d34fd635ef58b, type: 3}
-  weaponName: ShortSword
   maxSize: 1
-  atk: {fileID: 0}
+  armorL: 0
+  armorH: 0
+  armor: 0
+  damageL: 1
+  damageH: 4
+  damage: 0
+  vitL: 0
+  vitH: 0
+  vit: 0
+  intelligenceL: 0
+  intelligenceH: 0
+  intelligence: 0
+  strengthL: 0
+  strengthH: 0
+  strength: 0
+  charismaL: 0
+  charismaH: 0
+  charisma: 0
+  weaponName: ShortSword
+  description: 
 --- !u!114 &114286265964170222
 MonoBehaviour:
   m_ObjectHideFlags: 1

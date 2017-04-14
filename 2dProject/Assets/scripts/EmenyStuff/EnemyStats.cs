@@ -68,7 +68,7 @@ public class EnemyStats : MonoBehaviour
             // Avoid friendly fire
             if (shot.isEnemyShot != isEnemy)
             {
-                Damage(shot.damage);
+                Damage(GameController.GameControllerSingle.damage);
 
                 // Destroy the shot
                 Destroy(shot.gameObject); // Remember to always target the game object, otherwise you will just remove the script
@@ -79,7 +79,7 @@ public class EnemyStats : MonoBehaviour
             // Avoid friendly fire
             if (shotM.isEnemyShot != isEnemy)
             {
-                Damage(shotM.damage);
+                Damage(GameController.GameControllerSingle.damage);
 
                 // Destroy the shot
                 Destroy(shotM.gameObject); // Remember to always target the game object, otherwise you will just remove the script

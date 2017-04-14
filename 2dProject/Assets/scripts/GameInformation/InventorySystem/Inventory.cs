@@ -8,6 +8,7 @@ public class Inventory : MonoBehaviour
 {
     //Used when moving around items to equipment slots.
     public Item info, info2;
+
     //int alph; //For moving items when canvas is hidden
 
     private RectTransform invRect;
@@ -373,6 +374,14 @@ public class Inventory : MonoBehaviour
 
                 //Swapping items to an empty slot
                 if (info.type.ToString() == to.gameObject.name.ToString() || to.gameObject.name == "Slot") {
+                    if(info.type.ToString() == "WEAPON" && to.gameObject.name.ToString() == "WEAPON")
+                    {
+                        //Set weapon damage to projectile damage;
+                        GameController.GameControllerSingle.damage = info.damage;
+                        Debug.Log(info.damage);
+
+                    }
+                    Debug.Log(info.damage);
                     to.AddItems(from.Items);
                     from.ClearSlot();
                 }

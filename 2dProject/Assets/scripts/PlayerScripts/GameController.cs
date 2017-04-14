@@ -55,6 +55,7 @@ public class GameController : MonoBehaviour {
     private static Slot weap;
     private GameObject slot;
     public Item atk;
+    public int damage;
 
     public static GameController GameControllerSingle;
 

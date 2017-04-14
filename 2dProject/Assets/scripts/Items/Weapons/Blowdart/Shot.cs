@@ -3,8 +3,6 @@ using System.Collections;
 
 public class Shot : MonoBehaviour {
 
-    public int damage = 1;
-
     /// Projectile damage player or enemies?
     public bool isEnemyShot = false;
 

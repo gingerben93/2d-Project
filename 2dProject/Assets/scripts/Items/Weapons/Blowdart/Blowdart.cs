@@ -25,6 +25,7 @@ public class Blowdart : MonoBehaviour
 
     public void Attack(/*bool isEnemy*/)
     {
+        Debug.Log(GameController.GameControllerSingle.damage);
         if (CanAttack)
         {
             shootCooldown = shootingRate;

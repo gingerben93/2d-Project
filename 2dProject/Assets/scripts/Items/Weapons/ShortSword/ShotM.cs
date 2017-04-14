@@ -4,8 +4,6 @@ using System.Collections;
 public class ShotM : MonoBehaviour
 {
 
-    public int damage = 1;
-
     /// Projectile damage player or enemies?
     public bool isEnemyShot = false;
 
