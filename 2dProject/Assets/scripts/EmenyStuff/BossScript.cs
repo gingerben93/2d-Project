@@ -16,6 +16,8 @@ public class BossScript : MonoBehaviour
     public bool isEnemy { get; set; }
     private int experiencePoint;
 
+    
+
     void Start()
     {
         // set emeny information
@@ -23,6 +25,49 @@ public class BossScript : MonoBehaviour
 
         hp = 1;
         isEnemy = true;
+
+        //for boss attack
+        playerTransform = GameController.GameControllerSingle.transform;
+        bossAttack = GetComponentInChildren<GodHands>();
+
+}
+
+    GodHands bossAttack;
+
+    bool startTimer = false;
+
+    private float timer = 0;
+    private float distanceToPlayer;
+
+    private Vector3 playersLastLocations;
+
+    private Transform playerTransform;
+
+    
+
+    void Update()
+    {
+        //Debug.Log(BossLocation.position);
+        distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+
+        if (distanceToPlayer <= 10)
+        {
+            playersLastLocations = playerTransform.position;
+            startTimer = true;
+        }
+        if (startTimer)
+        {
+            timer += Time.deltaTime;
+        }
+        if (timer >= 5)
+        {
+            startTimer = false;
+            timer = 0;
+
+            playersLastLocations = playerTransform.position;
+            bossAttack.Attack(playersLastLocations);
+            
+        }
     }
 
     /// Inflicts damage and check if the object should be destroyed
