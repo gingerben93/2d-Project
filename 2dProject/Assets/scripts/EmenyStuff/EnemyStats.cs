@@ -1,12 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 /// Handle hitpoints and damages
 public class EnemyStats : MonoBehaviour
 {
-    public Transform loot;
-    public Transform loot2;
-    public Transform loot3;
+    public Transform loot; // 100% drop rate
+    public Transform loot2; // 5% drop rate
+    public Transform loot3; // 5% drop rate
+    public Transform loot4; // 5% drop rate
+    public Transform loot5; // 5% drop rate
+    public Transform loot6; // 5% drop rate
+    public Transform loot7; // 5% drop rate
+    public Transform loot8; // 5% drop rate
+    public Transform loot9; // 5% drop rate
+    public Transform loot10; // 5% drop rate
+    public Transform loot11; // 5% drop rate
+
+    //List of transforms to hold droppable items
+    public List<Transform> items = new List<Transform>();
+
+    //drop rate of an item
+    private float dropRate = .50f;
+
+    //drop chance for an item
+    private float dropChance;
+
+    //int to choose item from list
+    private int choice;
 
     Shot shot;
     ShotM shotM;
@@ -18,6 +39,20 @@ public class EnemyStats : MonoBehaviour
 
     void Start()
     {
+        //10 items
+        items.Add(loot2);
+        items.Add(loot3);
+        items.Add(loot4);
+        items.Add(loot5);
+        items.Add(loot6);
+        items.Add(loot7);
+        items.Add(loot8);
+        items.Add(loot9);
+        items.Add(loot10);
+        items.Add(loot11);
+
+
+
         // set emeny information
         experiencePoint = 5;
 
@@ -43,8 +78,17 @@ public class EnemyStats : MonoBehaviour
             }
 
             Instantiate(loot, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
-            Instantiate(loot2, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
-            Instantiate(loot3, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
+
+            dropChance = (float)Random.Range(0, 1.0f);
+
+            if(dropChance < dropRate)
+            {
+                choice = Random.Range(0, 10);
+                Instantiate(items[choice], transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
+            }
+
+            //Instantiate(loot2, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
+            //Instantiate(loot3, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
             // Dead!
             Destroy(gameObject);
         }

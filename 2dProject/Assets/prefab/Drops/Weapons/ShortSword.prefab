@@ -114,7 +114,7 @@ MonoBehaviour:
   charismaH: 0
   charisma: 0
   weaponName: ShortSword
-  description: 
+  description: A Short Sword. Not very good....
 --- !u!114 &114286265964170222
 MonoBehaviour:
   m_ObjectHideFlags: 1

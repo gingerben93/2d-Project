@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemType {MANA, HEALTH, WEAPON, SHIELD, HELM, CURIASS, BELT, GLOVES, BOOTS, RING, AMULET,  KEY}; //add more types here for items
+public enum ItemType {MANA, HEALTH, WEAPON, SHIELD, HELM, CHEST, BELT, GLOVES, BOOTS, RING, AMULET,  KEY}; //add more types here for items
 public enum Quality { COMMON, UNCOMMON, RARE, EPIC, LEGENDARY, ARTIFACT }
 
 public class Item : MonoBehaviour {
@@ -89,7 +89,7 @@ public class Item : MonoBehaviour {
                 break;
             case ItemType.HELM:
                 break;
-            case ItemType.CURIASS:
+            case ItemType.CHEST:
                 break;
             case ItemType.BELT:
                 break;
@@ -162,7 +162,7 @@ public class Item : MonoBehaviour {
             stats += "\n" + charisma.ToString() + " Charisma";
         }
 
-        return string.Format("<color=" + color + "><size=16>{0}</size></color><size=14><i><color=lime>" + newLine + "{1}</color><i/>{2}<s/ize>", weaponName, description, stats);
+        return string.Format("<color=" + color + "><size=16>{0}</size></color><size=14><i><color=lime>" + newLine + "{1}</color></i>{2}</size>", weaponName, description, stats);
     }
 
 

@@ -101,26 +101,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c8e5082f97f6074c9629700c56b604a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 7
+  type: 6
   quality: 0
   spriteNeutral: {fileID: 21300000, guid: e7cc0f1972ac2bd4f9f2f4ca50d3b43f, type: 3}
   spriteHighlighted: {fileID: 21300000, guid: 8a9be4b76b66f2c4dad2b44de634492a, type: 3}
-  weaponName: 
   maxSize: 1
   armorL: 0
-  armorH: 0
-  atkL: 0
-  atkH: 0
+  armorH: 3
+  armor: 0
+  damageL: 0
+  damageH: 0
+  damage: 0
   vitL: 0
   vitH: 0
+  vit: 0
   intelligenceL: 0
   intelligenceH: 0
+  intelligence: 0
   strengthL: 0
   strengthH: 0
+  strength: 0
   charismaL: 0
   charismaH: 0
-  itemName: 
-  description: 
+  charisma: 0
+  weaponName: Belt
+  description: Looks weak
 --- !u!212 &212834310984852580
 SpriteRenderer:
   m_ObjectHideFlags: 1

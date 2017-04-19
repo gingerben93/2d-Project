@@ -102,9 +102,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 4
+  quality: 0
   spriteNeutral: {fileID: 21300000, guid: eb56beb6e7c383b43a0152032cfeb10a, type: 3}
   spriteHighlighted: {fileID: 21300000, guid: c136879273e50d440a98f3a459c5bf04, type: 3}
   maxSize: 3
+  armorL: 0
+  armorH: 0
+  armor: 0
+  damageL: 0
+  damageH: 0
+  damage: 0
+  vitL: 0
+  vitH: 0
+  vit: 0
+  intelligenceL: 0
+  intelligenceH: 0
+  intelligence: 0
+  strengthL: 0
+  strengthH: 0
+  strength: 0
+  charismaL: 0
+  charismaH: 0
+  charisma: 0
+  weaponName: Key
+  description: Probably opens a door that was locked before
 --- !u!212 &212086581557034018
 SpriteRenderer:
   m_ObjectHideFlags: 1

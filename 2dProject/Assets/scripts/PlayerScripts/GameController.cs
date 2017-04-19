@@ -5,9 +5,9 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Reflection;
 using UnityEditor;
 using System;
-using System.Reflection;
 
 public class GameController : MonoBehaviour {
 
@@ -56,6 +56,7 @@ public class GameController : MonoBehaviour {
     private GameObject slot;
     public Item atk;
     public int damage;
+    //public GameObject currentWeapon;
 
     public static GameController GameControllerSingle;
 
@@ -223,9 +224,29 @@ public class GameController : MonoBehaviour {
                 //Peek at stack information
                 atk = weap.Items.Peek();
                 //Access scripts of weapon
-                var weapon = gameObject.GetComponent(atk.weaponName) as MonoBehaviour;
+                switch (atk.weaponName)
+                {
+                    case "Blowdart":
+                        Blowdart BlowdartWeapon = gameObject.GetComponentInChildren<Blowdart>();
+                        BlowdartWeapon.Attack();
+                        Debug.Log(atk.weaponName);
+                        break;
+                    case "ShortSword":
+                        ShortSword ShortSwordWeapon = gameObject.GetComponentInChildren<ShortSword>();
+                        ShortSwordWeapon.Attack();
+                        Debug.Log(atk.weaponName);
+                        break;
+                    case "GodHands":
+                        Debug.Log(atk.weaponName);
+                        break;
+
+                }
+
+               // var weapon = gameObject.GetComponent(atk.weaponName) as MonoBehaviour;
+               // Debug.Log(atk.weaponName);
+               // Debug.Log(weapon);
                 //Invoke attack function (INVOKE CANT USE FUNCTIONS THAT HAVE PARAMETERS)
-                weapon.Invoke("Attack", 0.0001f);
+               // weapon.Invoke("Attack", 0.0001f);
             }
 
 

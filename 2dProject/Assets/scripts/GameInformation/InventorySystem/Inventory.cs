@@ -61,9 +61,25 @@ public class Inventory : MonoBehaviour
         }
     }
 
+
+    //Tooltip for items
+    public GameObject tooltipObject;
+    private static GameObject tooltip;
+
+
+    public Text sizeTextObject;
+    private static Text sizeText;
+    public Text visualTextObject;
+    private static Text visualText;
+
+
     // Use this for initialization
     void Start()
     {
+        tooltip = tooltipObject;
+        sizeText = sizeTextObject;
+        visualText = visualTextObject;
+
         CreateLayout();
     }
 
@@ -410,5 +426,30 @@ public class Inventory : MonoBehaviour
             from = null;
             hoverObject = null;
         }
+    }
+
+    public void ShowToolTip(GameObject slot)
+    {
+        Slot tmpSlot = slot.GetComponent<Slot>();
+
+        //If item in a slot and hovering over item with mouse
+        if (!tmpSlot.IsEmpty && hoverObject == null)
+        {
+
+            visualText.text = tmpSlot.CurrentItem.GetToolTip();
+            sizeText.text = visualText.text;
+
+            tooltip.SetActive(true);
+
+            float xPos = slot.transform.position.x + slotPaddingLeft;
+            float yPos = slot.transform.position.y - slot.GetComponent<RectTransform>().sizeDelta.y - slotPaddingTop;
+
+            tooltip.transform.position = new Vector2(xPos, yPos);
+        }
+    }
+
+    public void HideToolTip()
+    {
+        tooltip.SetActive(false);
     }
 }

@@ -46,10 +46,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\scripts\EmenyStuff\BossAttack.cs" />
      <Compile Include="Assets\scripts\EmenyStuff\BossScript.cs" />
      <Compile Include="Assets\scripts\EmenyStuff\EnemyAttack.cs" />
      <Compile Include="Assets\scripts\EmenyStuff\EnemyStats.cs" />
+     <Compile Include="Assets\scripts\EmenyStuff\GodHands.cs" />
      <Compile Include="Assets\scripts\EmenyStuff\MoveTowardPlayer.cs" />
      <Compile Include="Assets\scripts\GameInformation\GameData.cs" />
      <Compile Include="Assets\scripts\GameInformation\GameLoader.cs" />
