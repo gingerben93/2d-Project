@@ -237,6 +237,8 @@ public class GameController : MonoBehaviour {
                         Debug.Log(atk.weaponName);
                         break;
                     case "GodHands":
+                        GodHands GodHandsWeapon = gameObject.GetComponentInChildren<GodHands>();
+                        GodHandsWeapon.Attack(Camera.main.ScreenToWorldPoint(Input.mousePosition));
                         Debug.Log(atk.weaponName);
                         break;
 

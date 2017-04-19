@@ -47,7 +47,7 @@ public class BossScript : MonoBehaviour
 
     void Update()
     {
-        //Debug.Log(BossLocation.position);
+        //for checking how far the player is
         distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
         if (distanceToPlayer <= 10)
@@ -55,11 +55,12 @@ public class BossScript : MonoBehaviour
             playersLastLocations = playerTransform.position;
             startTimer = true;
         }
+        //timer for time until attack
         if (startTimer)
         {
             timer += Time.deltaTime;
         }
-        if (timer >= 5)
+        if (timer >= 3)
         {
             startTimer = false;
             timer = 0;
