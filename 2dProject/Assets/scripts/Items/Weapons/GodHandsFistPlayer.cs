@@ -60,13 +60,17 @@ public class GodHandsFistPlayer : MonoBehaviour
             if (Vector3.Distance(userTransform.position, GameController.GameControllerSingle.transform.position) <= .5f)
             {
                 returnFist = false;
-                Destroy(gameObject);
+                //turn attack back on so you can fire godhands again
+                GameController.GameControllerSingle.GodhandsCanAttack = true;
+
                 //if hit target, knock it up
                 if (returnWithPlayer)
                 {
                     targetRB.AddForce(new Vector2(0, 500));
                     returnWithPlayer = false;
                 }
+
+                Destroy(gameObject);
             }
         }
     }

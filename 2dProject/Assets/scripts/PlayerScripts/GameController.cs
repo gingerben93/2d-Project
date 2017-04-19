@@ -58,6 +58,9 @@ public class GameController : MonoBehaviour {
     public int damage;
     //public GameObject currentWeapon;
 
+    //for godhands fire rate
+    public bool GodhandsCanAttack = true;
+
     public static GameController GameControllerSingle;
 
     void Awake()
@@ -149,6 +152,8 @@ public class GameController : MonoBehaviour {
                     //remove playerProjectiles
                     foreach (Transform child in playerProjectileList.transform)
                     {
+                        
+
                         Destroy(child.gameObject);
                     }
                 }
@@ -178,6 +183,9 @@ public class GameController : MonoBehaviour {
                 //remove playerProjectiles
                 foreach (Transform child in playerProjectileList.transform)
                 {
+                    //have to set attack bools back to true;
+                    GodhandsCanAttack = true;
+
                     Destroy(child.gameObject);
                 }
             }
@@ -253,9 +261,12 @@ public class GameController : MonoBehaviour {
                         Debug.Log(atk.weaponName);
                         break;
                     case "GodHands":
-                        GodHands GodHandsWeapon = gameObject.GetComponentInChildren<GodHands>();
-                        GodHandsWeapon.Attack(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                        Debug.Log(atk.weaponName);
+                        if (GodhandsCanAttack)
+                        {
+                            GodHands GodHandsWeapon = gameObject.GetComponentInChildren<GodHands>();
+                            GodHandsWeapon.Attack(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                            Debug.Log(atk.weaponName);
+                        }
                         break;
 
                 }

@@ -16,6 +16,7 @@ public class GodHands : MonoBehaviour {
 
     public void Attack(Vector3 targetLocation)
     {
+        GameController.GameControllerSingle.GodhandsCanAttack = false;
         PlayerFistLocation = GameObject.Find("PlayerProjectiles").transform;
 
         fist = Instantiate(fistPlayerPrefab, PlayerFistLocation);

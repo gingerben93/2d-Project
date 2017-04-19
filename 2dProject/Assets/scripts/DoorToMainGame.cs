@@ -4,84 +4,59 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class LoadOnClick : MonoBehaviour {
+public class DoorToMainGame : MonoBehaviour
+{
 
     //[SerializeField]
     //private int scene;
-    [SerializeField]
-    private Text loadingText;
+
 
     private bool loading = false;
     private bool loadScene = false;
-    public string loadMap = "StartArea";
-
-    public static LoadOnClick LoadOnClickSingle;
-
-    // for getting scene name
-    Scene scene;
+    public string loadMap = "MainGame";
 
     //for getting mapgenerator
-    public GameObject mapGenerator;
+    private GameObject mapGenerator;
 
     void Awake()
     {
-        Scene scene = SceneManager.GetActiveScene();
-        mapGenerator = GameObject.Find("MapGenerator");
-        loadMap = scene.name;
-        if (scene.name != "StartMenu")
-        {
-            if (LoadOnClickSingle == null)
-            {
-                DontDestroyOnLoad(gameObject);
-                LoadOnClickSingle = this;
-            }
-            else if (LoadOnClickSingle != this)
-            {
-                Destroy(gameObject);
-            }
-        }
+        mapGenerator = LoadOnClick.LoadOnClickSingle.mapGenerator;
+        DontDestroyOnLoad(this);
     }
 
-    void Update() {
-        if (loading) {
+    void Update()
+    {
+        if (loading)
+        {
 
-            loadMap = "StartArea";
-            mapGenerator.SetActive(false);
-            GameController.GameControllerSingle.transform.position = new Vector3(0, 1.2f, 0);
+            loadMap = "MainGame";
+            mapGenerator.SetActive(true);
+            GameController.GameControllerSingle.transform.position = GameController.GameControllerSingle.respawnLocation;
 
             loadScene = true;
             loading = false;
-            loadingText.text = "Loading...";
-            
+
             StartCoroutine(LoadNewScene());
 
         }
-        if (loadScene == true) {
-            loadingText.color = new Color(loadingText.color.r, loadingText.color.g, loadingText.color.b, Mathf.PingPong(Time.time, .1f));
-        }
-
     }
 
-    //load
-    public void LoadScene(int level)
+    IEnumerator LoadNewScene()
     {
-        loading = true;
-    }
-
-    IEnumerator LoadNewScene() {
-
         GameObject hero = GameObject.Find("Hero");
         //stops player from moving during loading
         hero.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
 
         //deactivates gamecon to stop player from doing anything while game is loading
         GameController.GameControllerSingle.isGameLoading = true;
-        
+
         //load functions
-        AsyncOperation async = SceneManager.LoadSceneAsync(loadMap);
+        AsyncOperation async = SceneManager.LoadSceneAsync("MainGame");
 
         // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
-        while (!async.isDone) {
+        Debug.Log("TEST PASSED");
+        while (!async.isDone)
+        {
             yield return null;
         }
 
@@ -91,8 +66,18 @@ public class LoadOnClick : MonoBehaviour {
         hero.transform.rotation = Quaternion.identity;
 
         //actives game controler for player actions
+        Debug.Log("TEST PASSED");
         GameController.GameControllerSingle.isGameLoading = false;
         GameController.GameControllerSingle.touchingDoor = false;
-        loadingText.text = "";
+        Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            loading = true;
+        }
+        //character = true;
     }
 }

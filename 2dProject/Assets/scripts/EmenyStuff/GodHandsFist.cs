@@ -59,13 +59,15 @@ public class GodHandsFist : MonoBehaviour {
             if (Vector3.Distance(userTransform.position, transform.parent.position) == 0)
             {
                 returnFist = false;
-                Destroy(gameObject);
-                //if hit target, knock it up
+
                 if (returnWithPlayer)
                 {
                     targetRB.AddForce(new Vector2(0, 500));
                     returnWithPlayer = false;
                 }
+
+                Destroy(gameObject);
+                //if hit target, knock it up
             }
         }
     }
