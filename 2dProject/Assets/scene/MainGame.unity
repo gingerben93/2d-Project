@@ -2004,7 +2004,7 @@ MonoBehaviour:
   doorLocations: []
   enemyLocations: []
   bossRooms: []
-  BossPrefab: {fileID: 4984501454688958, guid: 804906908a3a92e4594e27e18550813f, type: 2}
+  BossPrefab: {fileID: 4519130607354134, guid: 804906908a3a92e4594e27e18550813f, type: 2}
 --- !u!4 &1077971052
 Transform:
   m_ObjectHideFlags: 0
@@ -2571,6 +2571,7 @@ MonoBehaviour:
   quest: 0
   QuestTxt: {fileID: 114839751707010450, guid: 0381fbe47e2f21d45803ed1028ea760b, type: 2}
   KillQuestCounter: 0
+  GatherQuestCounter: 0
 --- !u!1 &1624953885
 GameObject:
   m_ObjectHideFlags: 0

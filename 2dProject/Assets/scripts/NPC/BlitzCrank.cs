@@ -19,6 +19,7 @@ public class BlitzCrank : MonoBehaviour {
     private Text NPCtext;
     private Text Herotext;
     private CanvasGroup canvas;
+    public Sprite newSprite;
 
     // Use this for initialization
     void Start () {
@@ -26,6 +27,7 @@ public class BlitzCrank : MonoBehaviour {
         chat = false;
         NPCtext = GameObject.Find("StarAreaCanvas/Panel/NPC/NPCText/Text").GetComponent<Text>();
         Herotext = GameObject.Find("StarAreaCanvas/Panel/Hero/HeroText/Text").GetComponent<Text>();
+        //GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
         canvas = GameObject.Find("StarAreaCanvas").GetComponent<CanvasGroup>();
     }
 	
@@ -34,16 +36,18 @@ public class BlitzCrank : MonoBehaviour {
 
         if (Input.GetKeyDown(KeyCode.Q) && character && GameController.GameControllerSingle.Boss1 == true)
         {
-            StartCoroutine(NPCDialog(NPCtext, "You beat the boss, game over faggot.\n"));
-            StartCoroutine(HeroDialog(Herotext, "You aint shit as a boss. Easy mode faggot get gud.\n"));
+            GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
+            StartCoroutine(NPCDialog(NPCtext, "You beat the boss, game over faggot."));
+            StartCoroutine(HeroDialog(Herotext, "You aint shit as a boss. Easy mode faggot get gud."));
             canvas.alpha = 1;
             chat = true;
         }
         else if (Input.GetKeyDown(KeyCode.Q) && character && !QuestController.QuestControllerSingle.questList.ContainsKey("Blitz"))
         {
+            GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
             chat = true;
-            StartCoroutine(HeroDialog(Herotext, "I'm bored af my dude. Give me something.\n"));
-            StartCoroutine(NPCDialog(NPCtext, "Here is ur quest.\n"));
+            StartCoroutine(HeroDialog(Herotext, "I'm bored af my dude. Give me something."));
+            StartCoroutine(NPCDialog(NPCtext, "Here is ur quest."));
             canvas.alpha = 1;
             QuestController.QuestControllerSingle.AddQuestToList("Blitz");
             QuestController.QuestControllerSingle.quest = 1;
@@ -53,8 +57,9 @@ public class BlitzCrank : MonoBehaviour {
         {
             if (QuestController.QuestControllerSingle.questList["Blitz"] == false)
             {
-                StartCoroutine(NPCDialog(NPCtext, "You already have ur quest.\n"));
-                StartCoroutine(HeroDialog(Herotext, "Didn't want to talk to you anyways.\n"));
+                GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
+                StartCoroutine(NPCDialog(NPCtext, "You already have ur quest."));
+                StartCoroutine(HeroDialog(Herotext, "Didn't want to talk to you anyways."));
                 canvas.alpha = 1;
                 chat = true;
             }
@@ -64,8 +69,9 @@ public class BlitzCrank : MonoBehaviour {
                 GameObject removeQuest = GameObject.Find("Enemy");
                 Destroy(removeQuest);
 
-                StartCoroutine(NPCDialog(NPCtext, "You completed your quest, now defeat the boss.\n"));
-                StartCoroutine(HeroDialog(Herotext, "kool\n"));
+                GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
+                StartCoroutine(NPCDialog(NPCtext, "You completed your quest, now defeat the boss."));
+                StartCoroutine(HeroDialog(Herotext, "kool"));
                 canvas.alpha = 1;
                 chat = true;
                 QuestController.QuestControllerSingle.questList.Remove("Blitz");

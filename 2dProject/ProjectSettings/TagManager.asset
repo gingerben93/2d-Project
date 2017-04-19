@@ -15,6 +15,7 @@ TagManager:
   - Item
   - NPC
   - WepAttacks
+  - GatherQuestItem
   layers:
   - Default
   - TransparentFX

@@ -8,15 +8,23 @@ public class QuestController : MonoBehaviour {
     public int quest;
     public Text QuestTxt;
 
-    //Kill Quest
-    public int KillQuestCounter = 0;
+    //Generic quest variables
     int amount;
     string target;
 
-    public Dictionary<string, bool> questList = new Dictionary<string, bool>();
-
-    //kill quest
+    //Kill Quest
+    public int KillQuestCounter = 0;
+    int killamount;
+    string killtarget;
     public Dictionary<string, string> killQuestList = new Dictionary<string, string>();
+
+    //Gather Quest
+    public int GatherQuestCounter = 0;
+    int gatheramount;
+    string gathertarget;
+    public Dictionary<string, string> gatherQuestList = new Dictionary<string, string>();
+
+    public Dictionary<string, bool> questList = new Dictionary<string, bool>(); 
 
     public static QuestController QuestControllerSingle;
     /*
@@ -54,6 +62,7 @@ public class QuestController : MonoBehaviour {
                 break;
             case 2:
                 Debug.Log("Quest 2");
+                GatherQuest(NPCName);
                 break;
             case 3:
                 Debug.Log("Quest 3");
@@ -67,10 +76,10 @@ public class QuestController : MonoBehaviour {
     public void UpdateKillQuest(string EnemyName)
     {
 
-        Text updateQuest = GameObject.Find("Enemy").GetComponent<Text>();
-        updateQuest.text = "kill " + amount + " of " + target + "\n Current kills: " + KillQuestCounter;
+        Text updateQuest = GameObject.Find("QuestPanel/Enemy").GetComponent<Text>();
+        updateQuest.text = "kill " + killamount + " of " + killtarget + "\n Current kills: " + KillQuestCounter;
 
-        if (KillQuestCounter == amount)
+        if (KillQuestCounter == killamount)
         {
             questList[killQuestList[EnemyName]] = true;
             killQuestList.Remove(EnemyName);
@@ -81,18 +90,50 @@ public class QuestController : MonoBehaviour {
 
     private void KillQuest(string NPCName)
     {
-        amount = 2;
+        killamount = 2;
         KillQuestCounter = 0;
-        target = "Enemy";
+        killtarget = "Enemy";
 
         GameObject parentQuest = GameObject.Find("QuestPanel");
         Text tempText = Instantiate(QuestTxt, parentQuest.transform);
 
 
-        killQuestList.Add(target, NPCName);
+        killQuestList.Add(killtarget, NPCName);
 
-        tempText.text = "kill " + amount + " of " + target + "\nCurrent kills: " + KillQuestCounter;
-        tempText.name = target;
+        tempText.text = "kill " + killamount + " of " + killtarget + "\nCurrent kills: " + KillQuestCounter;
+        tempText.name = killtarget;
+    }
+
+    public void UpdateGatherQuest(string gather)
+    {
+
+        Text updateQuest2 = GameObject.Find("QuestPanel/ManaPotion").GetComponent<Text>();
+        updateQuest2.text = "Gather " + gatheramount + " of " + gathertarget + "\nCurrent gathers: " + GatherQuestCounter;
+
+        if (GatherQuestCounter == gatheramount)
+        {
+            questList[gatherQuestList[gather]] = true;
+            gatherQuestList.Remove(gather);
+            updateQuest2.text = "Quest complete";
+
+        }
+    }
+
+    private void GatherQuest(string NPCName)
+    {
+        gatheramount = 2;
+        GatherQuestCounter = 0;
+        gathertarget = "ManaPotion";
+
+        GameObject parentQuest = GameObject.Find("QuestPanel");
+        Text tempText = Instantiate(QuestTxt, parentQuest.transform);
+
+
+        gatherQuestList.Add(gathertarget, NPCName);
+
+        tempText.text = "Gather " + gatheramount + " of " + gathertarget + "\nCurrent gathers: " + GatherQuestCounter;
+        tempText.name = gathertarget;
+
     }
 
     //adding npc quest to list
