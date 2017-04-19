@@ -6,13 +6,10 @@ public class Blowdart : MonoBehaviour
     public float shootingRate = 0.25f;
 
     private float shootCooldown;
-    private Transform holdForBullets;
 
     void Start()
     {
         shootCooldown = 0f;
-        //rotation = transform.rotation;
-        holdForBullets = GameObject.Find("PlayerProjectiles").transform;
     }
 
     void LateUpdate()
@@ -31,8 +28,7 @@ public class Blowdart : MonoBehaviour
             shootCooldown = shootingRate;
 
             // Create a new shot
-            var shotTransform = Instantiate(shotPrefab) as Transform;
-            shotTransform.transform.SetParent(holdForBullets);
+            var shotTransform = Instantiate(shotPrefab, GameObject.Find("PlayerProjectiles").transform) as Transform;
             // Assign position
             shotTransform.position = transform.position;
 

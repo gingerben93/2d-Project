@@ -121,6 +121,10 @@ public class GameController : MonoBehaviour {
             //def of parent for removing item
             GameObject itemlist = GameObject.Find("WorldItems");
 
+            //remove player projectiles
+            GameObject playerProjectileList = GameObject.Find("PlayerProjectiles");
+
+
             //Debug.Log("GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed) = " + GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed));
             if (GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed))
             {
@@ -138,6 +142,12 @@ public class GameController : MonoBehaviour {
 
                     //remove items
                     foreach (Transform child in itemlist.transform)
+                    {
+                        Destroy(child.gameObject);
+                    }
+
+                    //remove playerProjectiles
+                    foreach (Transform child in playerProjectileList.transform)
                     {
                         Destroy(child.gameObject);
                     }
@@ -161,6 +171,12 @@ public class GameController : MonoBehaviour {
 
                 //remove items
                 foreach (Transform child in itemlist.transform)
+                {
+                    Destroy(child.gameObject);
+                }
+
+                //remove playerProjectiles
+                foreach (Transform child in playerProjectileList.transform)
                 {
                     Destroy(child.gameObject);
                 }

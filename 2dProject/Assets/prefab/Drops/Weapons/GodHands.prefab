@@ -91,6 +91,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fistPrefab: {fileID: 4195534146403830, guid: ec90601d54c6a534bbf6947689b8c600, type: 2}
+  fistPlayerPrefab: {fileID: 4034824083276066, guid: 2ab10c90eb1ccef4787717df559fd8de,
+    type: 2}
+  PlayerFistLocation: {fileID: 0}
 --- !u!114 &114525074312020108
 MonoBehaviour:
   m_ObjectHideFlags: 1

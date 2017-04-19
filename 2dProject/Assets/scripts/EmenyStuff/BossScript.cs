@@ -66,7 +66,7 @@ public class BossScript : MonoBehaviour
             timer = 0;
 
             playersLastLocations = playerTransform.position;
-            bossAttack.Attack(playersLastLocations);
+            bossAttack.AttackBoss(playersLastLocations);
             
         }
     }

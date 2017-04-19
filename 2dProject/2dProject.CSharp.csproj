@@ -90,10 +90,12 @@
     <Compile Include="Assets\scripts\GameInformation\QuestController.cs" />
     <Compile Include="Assets\scripts\GameInformation\StartGame.cs" />
     <Compile Include="Assets\scripts\GameInformation\StatsMenu.cs" />
+    <Compile Include="Assets\scripts\Items\GatherQuest\Gather.cs" />
     <Compile Include="Assets\scripts\Items\Item.cs" />
     <Compile Include="Assets\scripts\Items\Magnet.cs" />
     <Compile Include="Assets\scripts\Items\Weapons\Blowdart\Blowdart.cs" />
     <Compile Include="Assets\scripts\Items\Weapons\Blowdart\Shot.cs" />
+    <Compile Include="Assets\scripts\Items\Weapons\GodHandsFistPlayer.cs" />
     <Compile Include="Assets\scripts\Items\Weapons\ShortSword\ShortSword.cs" />
     <Compile Include="Assets\scripts\Items\Weapons\ShortSword\ShotM.cs" />
     <Compile Include="Assets\scripts\Items\Weapons\ShotMove.cs" />
@@ -102,6 +104,7 @@
     <Compile Include="Assets\scripts\MapCreation\MapGenerator.cs" />
     <Compile Include="Assets\scripts\MapCreation\MeshGenerator.cs" />
     <Compile Include="Assets\scripts\NPC\BlitzCrank.cs" />
+    <Compile Include="Assets\scripts\NPC\Morgana.cs" />
     <Compile Include="Assets\scripts\PlayerScripts\CamraController.cs" />
     <Compile Include="Assets\scripts\PlayerScripts\DoorCollider.cs" />
     <Compile Include="Assets\scripts\PlayerScripts\DrawGrapHook.cs" />

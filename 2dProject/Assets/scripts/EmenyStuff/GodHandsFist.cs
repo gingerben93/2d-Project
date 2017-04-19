@@ -25,8 +25,13 @@ public class GodHandsFist : MonoBehaviour {
 
     public Transform fistPrefab;
 
-    void Update()
+    //speed of fist
+    //float fistSpeed = 100;
+    //float step;
+
+    void FixedUpdate()
     {
+        //step = fistSpeed * Time.deltaTime;
         if (pullAttackOn)
         {
             userTransform.position = Vector3.MoveTowards(userTransform.position, newTargetLocation, .5f);
@@ -72,13 +77,12 @@ public class GodHandsFist : MonoBehaviour {
             targetRB = other.GetComponent<Rigidbody2D>();
             hitObject = true;
             targetTransform = other.transform;
-            Debug.Log("hit player");
         }
     }
 
-    void OnTriggerExit2D(Collider2D other)
-    {
-        Debug.Log("leaving player");
-        hitObject = false;
-    }
+    //void OnTriggerExit2D(Collider2D other)
+    //{
+    //    Debug.Log("leaving player");
+    //    hitObject = false;
+    //}
 }
