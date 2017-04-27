@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-//generic is for using lists
 using System.Collections.Generic;
 using System;
 
@@ -52,6 +51,11 @@ public class MapGenerator : MonoBehaviour
 
     //for spawing boss
     public Transform BossPrefab;
+
+    //for drawplayermap
+    public List<Vector3> MapPosWorldMaps;
+    public List<Vector3> LinePos;
+    public Dictionary<string, Transform> WorlMapDictionary = new Dictionary<string, Transform>();
 
     void Awake()
     {
@@ -115,7 +119,7 @@ public class MapGenerator : MonoBehaviour
             randomFillPercent = 0;
             seed = currentMap.ToString();
             bossRooms.Add(seed);
-            Debug.Log("seed boos room = " + seed);
+            //Debug.Log("seed boos room = " + seed);
             GameData.GameDataSingle.isBossRoomOpen.Add(seed, false);
             GenerateMap();
             currentMap += 1;
@@ -138,6 +142,7 @@ public class MapGenerator : MonoBehaviour
                 gameData.ConnectSetOfRooms((int)num.y, (int)num.x + (int)num.y);
             }
 
+            //connect room with index 6 ->for boss room that is apart of procedural generation
             gameData.CreatDoorConnections(6, 6, 0);
             gameData.ConnectSetOfRooms(1, 6);
 
@@ -157,12 +162,7 @@ public class MapGenerator : MonoBehaviour
                 }
                 MapInfo[gameData.mapSeed[x]].enemyLocationsX = tempHolderX;
                 MapInfo[gameData.mapSeed[x]].enemyLocationsY = tempHolderY;
-
-                //Debug.Log("MapInfo[gameData.mapSeed[x]].doorLocationsX.Count = " + MapInfo[gameData.mapSeed[x]].doorLocationsX.Count + " x = " + x);
-
             }
-            //make a new map
-            //DrawPlayerMap.DrawPlayerMapSingle.makeMap = true;
         }
         else
         {
@@ -176,28 +176,49 @@ public class MapGenerator : MonoBehaviour
             PlayerStats.PlayerStatsSingle.health = GameLoader.GameLoaderSingle.playerDat.health;
             PlayerStats.PlayerStatsSingle.experiencePoints = GameLoader.GameLoaderSingle.playerDat.experiencePoints;
 
-            //don't make a map
-            //DrawPlayerMap.DrawPlayerMapSingle.makeMap = false;
-
-            //Debug.Log("GameLoader.GameLoaderSingle.playerDat.MapInfo.Count = " + GameLoader.GameLoaderSingle.playerDat.MapInfo.Count);
-            //Debug.Log("GameLoader.GameLoaderSingle.playerDat.mapSetsX.Count = " + GameLoader.GameLoaderSingle.playerDat.mapSetsX.Count);
-            //Debug.Log("gameData.mapSeed.Count = " + gameData.mapSeed.Count);
-            //Debug.Log("GameLoader.GameLoaderSingle.playerDat.doorConnectionDictionary.Count = " + GameLoader.GameLoaderSingle.playerDat.doorConnectionDictionary.Count);
-        }
+            }
         PlayerStats.PlayerStatsSingle.MapInfo = MapInfo;
-
 
         seed = gameData.mapSeed[0];
         LoadMap();
         DrawPlayerMap.DrawPlayerMapSingle.currentMap = seed;
         GameController.GameControllerSingle.respawnLocation = new Vector3(PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsX[0],
                                                                           PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsY[0],0);
+
+        //have to create set some variables in drawplayermap
+        MapPosWorldMaps = new List<Vector3>();
+        foreach (Vector2 mapSet in GameData.GameDataSingle.mapSets)
+        {
+            for (int x = 0; x < (int)mapSet.x; x++)
+            {
+                MapPosWorldMaps.Add(new Vector2(Mathf.Cos(2 * Mathf.PI * x / (int)mapSet.x), Mathf.Sin(2 * Mathf.PI * x / (int)mapSet.x)));
+            }
+        }
+
+        LinePos = new List<Vector3>();
+
+        //create world map sections before cave meshes are turned off
+        DrawPlayerMap.DrawPlayerMapSingle.CreateWorldMap();
+
+        //remove doors before going to main area
+        var oldDoors = GameObject.FindGameObjectsWithTag("Door");
+        foreach (var door in oldDoors)
+        {
+            Destroy(door);
+        }
+
+        //for turing off all cave objects. need to wait for this beacuse haven't build world map yet
+        foreach (Transform child in transform.FindChild("MapHolder"))
+        {
+            child.gameObject.SetActive(false);
+        }
+
         LoadOnClick.LoadOnClickSingle.LoadScene(0);
     }
 
+    //have to wait 1 sec beacuse enemylist isn't created right away
     void OnEnable()
     {
-        //doesn't go on first load
         if (seed != null)
         {
             StartCoroutine(WaitForGameToLoad());

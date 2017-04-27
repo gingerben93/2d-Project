@@ -5,9 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
-using System.Reflection;
-using UnityEditor;
-using System;
 
 public class GameController : MonoBehaviour {
 
@@ -152,8 +149,6 @@ public class GameController : MonoBehaviour {
                     //remove playerProjectiles
                     foreach (Transform child in playerProjectileList.transform)
                     {
-                        
-
                         Destroy(child.gameObject);
                     }
                 }

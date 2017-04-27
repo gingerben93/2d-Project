@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEditor;
 using System.Collections.Generic;
 using System;
 using System.IO;
@@ -8,8 +7,7 @@ using System.IO;
 public class DrawPlayerMap : MonoBehaviour {
 
     public MeshFilter playerLocalMap;
-    public MeshFilter playerWorldMap;
-    private Transform player;
+    public GameObject playerWorldMap;
 
     //for drawing doors on map
     public Transform doorPrefab;
@@ -20,7 +18,6 @@ public class DrawPlayerMap : MonoBehaviour {
     //map bools
     private bool localMapOn = false;
     private bool worldMapOn = false;
-    public bool makeMap { get; set; }
 
     //if change room bool
     //public bool touchingDoor { get; set; }
@@ -33,8 +30,7 @@ public class DrawPlayerMap : MonoBehaviour {
     public List<Vector3> MapPosWorldMaps;
     private int mapSeed;
 
-    //for combine map and draw lines
-    GameData gameData;
+
     private int totalMaps;
 
     //for drawing door connections
@@ -44,9 +40,7 @@ public class DrawPlayerMap : MonoBehaviour {
     public string nextMap { get; set; }
     public int currentDoor { get; set; }
     public int nextDoor { get; set; }
-    private Vector3 linePos1;
-    private Vector3 linePos2;
-    private List<Vector3> LinePos;
+    //private List<Vector3> LinePos;
 
     //for line color
     Color firstColor;
@@ -58,12 +52,12 @@ public class DrawPlayerMap : MonoBehaviour {
     //for door map
     private bool firstRun = false;
 
-    //map gen look
-    MapGenerator mapGen;
-
     //for leading lines
     private string currentMapSet = "";
     private int currentMapSetIndex = 0;
+
+    //for keeping worldmap locked on player
+    GameObject currentWorldMap;
 
     public static DrawPlayerMap DrawPlayerMapSingle;
 
@@ -82,16 +76,8 @@ public class DrawPlayerMap : MonoBehaviour {
 
     void Start()
     {
-        makeMap = true;
-        //get reference to player transform
-        player = GameController.GameControllerSingle.transform;
-
-        //map gen
-        mapGen = MapGenerator.MapGeneratorSingle;
-
         //for drawing map
-        gameData = FindObjectOfType<GameData>();
-        totalMaps = gameData.mapSeed.Count;
+        totalMaps = GameData.GameDataSingle.mapSeed.Count;
 
         //map opacity
         transform.GetComponent<MeshRenderer>().material.color = new Vector4(1, 1, 1, .5f);
@@ -104,9 +90,8 @@ public class DrawPlayerMap : MonoBehaviour {
         }
 
         //for correct position on small world maps
-
         MapPosWorldMaps = new List<Vector3>();
-        foreach (Vector2 mapSet in gameData.mapSets)
+        foreach (Vector2 mapSet in GameData.GameDataSingle.mapSets)
         {
             for (int x = 0; x < (int)mapSet.x; x++)
             {
@@ -118,13 +103,13 @@ public class DrawPlayerMap : MonoBehaviour {
         MapMarkerTeemo = GameObject.Find("MapMarker");
         MapMarkerTeemoSprite = MapMarkerTeemo.GetComponent<SpriteRenderer>();
         MapMarkerTeemoPos = MapMarkerTeemo.GetComponent<Transform>();
-        
+
 
         //for line between doors map marker
-        LinePos = new List<Vector3>();
+        //LinePos = MapGenerator.MapGeneratorSingle.LinePos;
 
         //for making world map
-        DrawWorldMap();
+        //DrawWorldMap();
         //removes all the children of map object
         foreach (Transform child in transform)
         {
@@ -134,17 +119,22 @@ public class DrawPlayerMap : MonoBehaviour {
                 GameObject.Destroy(child.gameObject);
             }
         }
-        makeMap = false;
-        playerWorldMap.mesh = null;
-
     }
 
     // Update is called once per frame
-    void LateUpdate () {
+    void Update () {
 
         // local map
         if (Input.GetKeyDown(KeyCode.M))
         {
+            //turn off worldmap if on
+            if (worldMapOn)
+            {
+                foreach (Transform child in transform.parent.FindChild("WorldMaps"))
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
             if (localMapOn)
             {
                 //turn map doors off
@@ -166,7 +156,7 @@ public class DrawPlayerMap : MonoBehaviour {
                 MapMarkerTeemoSprite.enabled = true;
                 //turn map on and draw it
                 worldMapOn = false;
-                playerWorldMap.mesh = null;
+
                 localMapOn = true;
                 DrawLocalMap();
 
@@ -197,7 +187,7 @@ public class DrawPlayerMap : MonoBehaviour {
             {
                 //for door maps
                 transform.localScale = new Vector3(.175f, .175f, .175f);
-                transform.position = player.transform.position;
+                transform.position = GameController.GameControllerSingle.transform.position;
                 drawDoors = false;
                 DrawDoorsLocalMap(nextMap);
                 var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
@@ -208,14 +198,14 @@ public class DrawPlayerMap : MonoBehaviour {
                 transform.localScale = new Vector3(.075f, .075f, .075f);
                 //for door lines
                 LoadCorrectDoorLines(nextMap);
-                DrawWorldMap();
+                LoadWorldMap();
             }
             else if (!localMapOn && !worldMapOn)
             {
 
                 //for door maps
                 transform.localScale = new Vector3(.175f, .175f, .175f);
-                transform.position = player.transform.position;
+                transform.position = GameController.GameControllerSingle.transform.position;
                 drawDoors = false;
                 DrawDoorsLocalMap(nextMap);
                 var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
@@ -232,7 +222,7 @@ public class DrawPlayerMap : MonoBehaviour {
         if (localMapOn)
         {
             //keep map locked on character
-            MapMarkerTeemoPos.position = player.transform.position + (player.transform.position * .175f);
+            MapMarkerTeemoPos.position = GameController.GameControllerSingle.transform.position + (GameController.GameControllerSingle.transform.position * .175f);
             //keep map locked on character
             UpdatePosition();
         }
@@ -246,12 +236,17 @@ public class DrawPlayerMap : MonoBehaviour {
                 MapMarkerTeemoSprite.enabled = false;
                 //turn map off and erase it
                 worldMapOn = false;
-                playerWorldMap.mesh = null;
 
                 //turn off lines
                 foreach (Transform child in GameObject.Find("MapDoorLines").transform)
                 {
                     child.GetComponent<LineRenderer>().enabled = false;
+                }
+
+                //turn off
+                if (transform.parent.FindChild("WorldMaps").GetComponent<Transform>())
+                {
+                    currentWorldMap.SetActive(false);
                 }
             }
             else
@@ -275,27 +270,27 @@ public class DrawPlayerMap : MonoBehaviour {
                 worldMapOn = true;
                 playerLocalMap.mesh = null;
                 localMapOn = false;
-                DrawWorldMap();
+                LoadWorldMap();
             }
         }
         if (worldMapOn)
         {
             //keep map locked on character
-            if (currentMapSetIndex < gameData.mapSets.Count)
+            if (currentMapSetIndex < GameData.GameDataSingle.mapSets.Count)
             {
-                MapMarkerTeemoPos.position = player.transform.position + GetCurrentMapLocation(currentMap) + (player.transform.position * .075f);
+                MapMarkerTeemoPos.position = GameController.GameControllerSingle.transform.position + GetCurrentMapLocation(currentMap) + (GameController.GameControllerSingle.transform.position * .075f);
             }
             else
             {
-                MapMarkerTeemoPos.position = player.transform.position + (player.transform.position * .075f);
+                MapMarkerTeemoPos.position = GameController.GameControllerSingle.transform.position + (GameController.GameControllerSingle.transform.position * .075f);
             }
             //update door lines pos
             int x = 0;
             foreach (Transform child in GameObject.Find("MapDoorLines").transform)
             {
                 //can ig et the current line 0 position? i want that to currrent plus player pos
-                child.GetComponent<LineRenderer>().SetPosition(0, player.transform.position + LinePos[x * 2]);
-                child.GetComponent<LineRenderer>().SetPosition(1, player.transform.position + LinePos[x * 2 + 1]);
+                child.GetComponent<LineRenderer>().SetPosition(0, GameController.GameControllerSingle.transform.position + MapGenerator.MapGeneratorSingle.LinePos[x * 2]);
+                child.GetComponent<LineRenderer>().SetPosition(1, GameController.GameControllerSingle.transform.position + MapGenerator.MapGeneratorSingle.LinePos[x * 2 + 1]);
                 x++;
             }
 
@@ -306,6 +301,8 @@ public class DrawPlayerMap : MonoBehaviour {
 
     void CreateLines(string seed1, string seed2, int door1, int door2, int set1, int set2)
     {
+        Vector3 linePos1;
+        Vector3 linePos2;
         // check if already a line is there.
         if (set1 == set2)
         {
@@ -318,20 +315,21 @@ public class DrawPlayerMap : MonoBehaviour {
                 }
             }
             
-            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(mapGen.MapInfo[seed1].doorLocationsX[door1] * .075f, mapGen.MapInfo[seed1].doorLocationsY[door1] * .075f, 0);
-            linePos2 = GetCurrentMapLocation(seed2) + new Vector3(mapGen.MapInfo[seed2].doorLocationsX[door2] * .075f, mapGen.MapInfo[seed2].doorLocationsY[door2] * .075f, 0);
+            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(MapGenerator.MapGeneratorSingle.MapInfo[seed1].doorLocationsX[door1] * .075f, MapGenerator.MapGeneratorSingle.MapInfo[seed1].doorLocationsY[door1] * .075f, 0);
+            linePos2 = GetCurrentMapLocation(seed2) + new Vector3(MapGenerator.MapGeneratorSingle.MapInfo[seed2].doorLocationsX[door2] * .075f, MapGenerator.MapGeneratorSingle.MapInfo[seed2].doorLocationsY[door2] * .075f, 0);
 
         }
         else
         {
-
+            linePos1 = Vector3.zero;
+            linePos2 = Vector3.zero;
         }
         //save line position
 
 
         //save pos for moving with player
-        LinePos.Add(linePos1);
-        LinePos.Add(linePos2);
+        MapGenerator.MapGeneratorSingle.LinePos.Add(linePos1);
+        MapGenerator.MapGeneratorSingle.LinePos.Add(linePos2);
 
         //Instantiate line
         var tempMapLine = Instantiate(mapLine) as Transform;
@@ -339,8 +337,8 @@ public class DrawPlayerMap : MonoBehaviour {
         //tempMapLine.GetComponent<LineRenderer>().SetWidth(.1f, .1f); old version now outdated
         tempMapLine.GetComponent<LineRenderer>().startWidth = .1f;
         tempMapLine.GetComponent<LineRenderer>().endWidth = .1f;
-        tempMapLine.GetComponent<LineRenderer>().SetPosition(0, player.transform.position + linePos1);
-        tempMapLine.GetComponent<LineRenderer>().SetPosition(1, player.transform.position + linePos2);
+        tempMapLine.GetComponent<LineRenderer>().SetPosition(0, GameController.GameControllerSingle.transform.position + linePos1);
+        tempMapLine.GetComponent<LineRenderer>().SetPosition(1, GameController.GameControllerSingle.transform.position + linePos2);
         tempMapLine.name = seed1.ToString() + door1.ToString() + seed2.ToString() + door2.ToString() + "," + set1 + "," + set2;
 
         if (!worldMapOn)
@@ -349,8 +347,8 @@ public class DrawPlayerMap : MonoBehaviour {
         }
 
         //for color; try to enum the colors for each map i.e. map 0 is red, map 1 is blue ...
-        firstColor = PickLineColor(gameData.FindMapIndex(seed1));
-        secondColor = PickLineColor(gameData.FindMapIndex(seed2));
+        firstColor = PickLineColor(GameData.GameDataSingle.FindMapIndex(seed1));
+        secondColor = PickLineColor(GameData.GameDataSingle.FindMapIndex(seed2));
 
         tempMapLine.GetComponent<LineRenderer>().material = new Material(Shader.Find("Particles/Additive"));
         //tempMapLine.GetComponent<LineRenderer>().SetColors(firstColor, secondColor); old version, now outdated
@@ -360,25 +358,26 @@ public class DrawPlayerMap : MonoBehaviour {
 
     void CreateLinesNotInSet(string seed1, string seed2, int door1, int door2, int set1, int set2)
     {
-
-        if(set1 < gameData.mapSets.Count)
+        Vector3 linePos1;
+        Vector3 linePos2;
+        if(set1 < GameData.GameDataSingle.mapSets.Count)
         {
-            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(mapGen.MapInfo[seed1].doorLocationsX[door1] * .075f, mapGen.MapInfo[seed1].doorLocationsY[door1] * .075f, 0);
+            linePos1 = GetCurrentMapLocation(seed1) + new Vector3(MapGenerator.MapGeneratorSingle.MapInfo[seed1].doorLocationsX[door1] * .075f, MapGenerator.MapGeneratorSingle.MapInfo[seed1].doorLocationsY[door1] * .075f, 0);
             linePos2 = GetCurrentMapLocation(seed1)*2;
         }
         else
         {
             //Debug.Log("linePos1: RAN");
-            linePos1 = new Vector3(mapGen.MapInfo[seed1].doorLocationsX[door1] * .075f, mapGen.MapInfo[seed1].doorLocationsY[door1] * .075f, 0);
+            linePos1 = new Vector3(MapGenerator.MapGeneratorSingle.MapInfo[seed1].doorLocationsX[door1] * .075f, MapGenerator.MapGeneratorSingle.MapInfo[seed1].doorLocationsY[door1] * .075f, 0);
             linePos2 = new Vector3(0, -10f, 0);
         }
-        
+
         //save line position
 
 
         //save pos for moving with player
-        LinePos.Add(linePos1);
-        LinePos.Add(linePos2);
+        MapGenerator.MapGeneratorSingle.LinePos.Add(linePos1);
+        MapGenerator.MapGeneratorSingle.LinePos.Add(linePos2);
 
         //Instantiate line
         var tempMapLine = Instantiate(mapLine) as Transform;
@@ -386,8 +385,8 @@ public class DrawPlayerMap : MonoBehaviour {
         //tempMapLine.GetComponent<LineRenderer>().SetWidth(.1f, .1f); old version now outdated
         tempMapLine.GetComponent<LineRenderer>().startWidth = .1f;
         tempMapLine.GetComponent<LineRenderer>().endWidth = .1f;
-        tempMapLine.GetComponent<LineRenderer>().SetPosition(0, player.transform.position + linePos1);
-        tempMapLine.GetComponent<LineRenderer>().SetPosition(1, player.transform.position + linePos2);
+        tempMapLine.GetComponent<LineRenderer>().SetPosition(0, GameController.GameControllerSingle.transform.position + linePos1);
+        tempMapLine.GetComponent<LineRenderer>().SetPosition(1, GameController.GameControllerSingle.transform.position + linePos2);
         tempMapLine.name = seed1.ToString() + door1.ToString() + seed2.ToString() + door2.ToString() + "," + set1 + "," + set2;
 
         if (!worldMapOn)
@@ -396,8 +395,8 @@ public class DrawPlayerMap : MonoBehaviour {
         }
 
         //for color; try to enum the colors for each map i.e. map 0 is red, map 1 is blue ...
-        firstColor = PickLineColor(gameData.FindMapIndex(seed1));
-        secondColor = PickLineColor(gameData.FindMapIndex(seed2));
+        firstColor = PickLineColor(GameData.GameDataSingle.FindMapIndex(seed1));
+        secondColor = PickLineColor(GameData.GameDataSingle.FindMapIndex(seed2));
 
         tempMapLine.GetComponent<LineRenderer>().material = new Material(Shader.Find("Particles/Additive"));
         //tempMapLine.GetComponent<LineRenderer>().SetColors(firstColor, secondColor); old version, now outdated
@@ -440,7 +439,7 @@ public class DrawPlayerMap : MonoBehaviour {
     //for the world map; gets shift of x and y; used for setting map marker line pos
     Vector3 GetCurrentMapLocation(string pickMap)
     {
-        return new Vector3(MapPosWorldMaps[gameData.FindMapIndex(pickMap)].x * .075f * 150, MapPosWorldMaps[gameData.FindMapIndex(pickMap)].y * .075f * 100, 0);
+        return new Vector3(MapGenerator.MapGeneratorSingle.MapPosWorldMaps[GameData.GameDataSingle.FindMapIndex(pickMap)].x * .075f * 150, MapGenerator.MapGeneratorSingle.MapPosWorldMaps[GameData.GameDataSingle.FindMapIndex(pickMap)].y * .075f * 100, 0);
     }
 
     void DrawDoorsLocalMap(string curMap)
@@ -457,12 +456,12 @@ public class DrawPlayerMap : MonoBehaviour {
 
             drawDoors = true;
             //foreach (Vector3 door in mapGen.MapInfo[curMap].doorLocations)
-            for(int tempCounter = 0; tempCounter < mapGen.MapInfo[curMap].doorLocationsX.Count; tempCounter++)
+            for(int tempCounter = 0; tempCounter < MapGenerator.MapGeneratorSingle.MapInfo[curMap].doorLocationsX.Count; tempCounter++)
             {
                 var doorTransform = Instantiate(doorPrefab);
                 doorTransform.transform.SetParent(transform);
-                doorTransform.position = player.transform.position + new Vector3(mapGen.MapInfo[curMap].doorLocationsX[tempCounter] * .175f, 
-                                                                                 mapGen.MapInfo[curMap].doorLocationsY[tempCounter] * .175f, 0);
+                doorTransform.position = GameController.GameControllerSingle.transform.position + new Vector3(MapGenerator.MapGeneratorSingle.MapInfo[curMap].doorLocationsX[tempCounter] * .175f,
+                                                                                 MapGenerator.MapGeneratorSingle.MapInfo[curMap].doorLocationsY[tempCounter] * .175f, 0);
                 doorTransform.localScale = new Vector3(.7f, .7f, .7f);
             }
         }
@@ -486,7 +485,7 @@ public class DrawPlayerMap : MonoBehaviour {
         {
             var objectTransform = Instantiate(PrefabObject);
             objectTransform.transform.SetParent(transform);
-            objectTransform.position = player.transform.position + new Vector3(single.x * .175f, single.y * .175f, 0);
+            objectTransform.position = GameController.GameControllerSingle.transform.position + new Vector3(single.x * .175f, single.y * .175f, 0);
             objectTransform.localScale = new Vector3(.7f, .7f, .7f);
         }
     }
@@ -497,16 +496,16 @@ public class DrawPlayerMap : MonoBehaviour {
 
         //use this to get all maps
 
-        string mapSeed = mapGen.seed;
+        string mapSeed = MapGenerator.MapGeneratorSingle.seed;
 
         //load map in
-        var loadPath = "Assets/CurrentMaps/" + mapSeed + ".asset";
-        Mesh mesh = (Mesh)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Mesh));
-        playerLocalMap.mesh = mesh;
+        //var loadPath = "Assets/CurrentMaps/" + mapSeed + ".asset";
+        //Mesh mesh = (Mesh)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Mesh));
+        playerLocalMap.mesh = MapGenerator.MapGeneratorSingle.GetComponentInChildren<MeshFilter>().mesh;
 
         //scale size down and set position
         transform.localScale = new Vector3(.175f, .175f, .175f);
-        transform.position = player.transform.position;
+        transform.position = GameController.GameControllerSingle.transform.position;
         transform.eulerAngles = new Vector3(270, 0, 0);
         //transform.Rotate(Vector3.zero);
 
@@ -526,140 +525,107 @@ public class DrawPlayerMap : MonoBehaviour {
     {
         if (localMapOn)
         {
-            transform.position = player.transform.position;
+            transform.position = GameController.GameControllerSingle.transform.position;
         }
         else
         {
-            transform.position = player.transform.position;
+            currentWorldMap.transform.position = GameController.GameControllerSingle.transform.position;
         }
     }
 
-    void DrawWorldMap()
+    public void CreateWorldMap()
     {
-        if (makeMap)
+        MeshFilter[] meshFilters = new MeshFilter[GameData.GameDataSingle.mapSeed.Count];
+
+        //create prefabs for all maps then add them to a list of filters, then remove all prefabs later
+        for (int x = 0; x < GameData.GameDataSingle.mapSeed.Count; x++)
         {
-            makeMap = false;
+            string mapSeed = GameData.GameDataSingle.mapSeed[x];
 
-            MeshFilter[] meshFilters = new MeshFilter[totalMaps];
+            //get cave name
+            string caveName = "Cave" + mapSeed;
+            Mesh mesh = GameObject.Find(caveName).GetComponent<MeshFilter>().mesh;
 
-            //create prefabs for all maps then add them to a list of filters, then remove all prefabs later
-            for (int x = 0; x < totalMaps; x++)
+            mesh.name = caveName;
+
+            // create prefab
+            var tempMapPrefab = Instantiate(tempMap) as Transform;
+            tempMapPrefab.transform.SetParent(transform);
+            tempMapPrefab.name = mapSeed;
+            tempMapPrefab.GetComponent<MeshFilter>().mesh = mesh;
+            meshFilters[x] = tempMapPrefab.GetComponent<MeshFilter>();
+        }
+
+        int currentSetMaps = 0;
+        string worldMapName;
+        foreach (Vector2 mapSet in GameData.GameDataSingle.mapSets)
+        {
+            //(int)num.y, (int)num.x + (int)num.y - 1;
+            CombineInstance[] combineTest = new CombineInstance[(int)mapSet.x];
+
+            for (int x = 0; x < (int)mapSet.x; x++)
             {
-                string mapSeed = gameData.mapSeed[x];
-                var loadPath = "Assets/CurrentMaps/" + mapSeed + ".asset";
-                Mesh mesh = (Mesh)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Mesh));
-               
-                // create prefab
-                var tempMapPrefab = Instantiate(tempMap) as Transform;
-                tempMapPrefab.transform.SetParent(transform);
-                tempMapPrefab.name = mapSeed;
-                tempMapPrefab.GetComponent<MeshFilter>().mesh = mesh;
-                meshFilters[x] = tempMapPrefab.GetComponent<MeshFilter>();
-            }
-
-            int currentSetMaps = 0;
-            string worldMapName;
-            string savePathForMaps;
-            foreach (Vector2 mapSet in gameData.mapSets)
-            {
-                //(int)num.y, (int)num.x + (int)num.y - 1;
-                CombineInstance[] combineTest = new CombineInstance[(int)mapSet.x];
-
-                for (int x = 0; x < (int)mapSet.x; x++)
-                {
-                    // (int)mapSet.x so start on correct map
-                    combineTest[x].mesh = meshFilters[x + (int)mapSet.y].sharedMesh;
-                    //draw maps in a polygon shape based on how many there are 
-                    //numbers are map dimentions Ex: 150 in x and 100 in y;
-                    combineTest[x].transform = Matrix4x4.TRS(new Vector3(Mathf.Cos(2 * Mathf.PI * x / (int)mapSet.x) * 150, 0, Mathf.Sin(2 * Mathf.PI * x / (int)mapSet.x) * 100), Quaternion.identity, new Vector3(1, 1, 1));
-                }
-                //65k max vertices or won't work
-                playerWorldMap.mesh.CombineMeshes(combineTest);
-
-                //set scale
-                transform.localScale = new Vector3(.075f, .075f, .075f);
-                transform.position = player.transform.position;
-
-                //save fullmap to assests
-                //Debug.Log("currentSetMaps = " + currentSetMaps + " (int)mapSet.x = " + (int)mapSet.x);
-                worldMapName = "WorldMap" + currentSetMaps;
-                savePathForMaps = "Assets/CurrentMaps/" + worldMapName + ".asset";
-                //Debug.Log("Saved Mesh to:" + savePathForMaps);
-                AssetDatabase.CreateAsset(playerWorldMap.mesh, savePathForMaps);
-                playerWorldMap.mesh = null;
-
-                currentSetMaps += 1;
-            }
-
-            CombineInstance[] combine = new CombineInstance[totalMaps];
-
-            //put all mesh filters into the combiner object
-            for (int x = 0; x < totalMaps; x++)
-            {
-                combine[x].mesh = meshFilters[x].sharedMesh;
+                // (int)mapSet.x so start on correct map
+                combineTest[x].mesh = meshFilters[x + (int)mapSet.y].sharedMesh;
                 //draw maps in a polygon shape based on how many there are 
-                //numbers are map dimensions Ex: 150 in x and 100 in y;
-                combine[x].transform = Matrix4x4.TRS(new Vector3(Mathf.Cos(2 * Mathf.PI * x / totalMaps) * 150, 0, Mathf.Sin(2 * Mathf.PI * x / totalMaps) * 100), Quaternion.identity, new Vector3(1, 1, 1));
+                //numbers are map dimentions Ex: 150 in x and 100 in y;
+                combineTest[x].transform = Matrix4x4.TRS(new Vector3(Mathf.Cos(2 * Mathf.PI * x / (int)mapSet.x) * 150, 0, Mathf.Sin(2 * Mathf.PI * x / (int)mapSet.x) * 100), Quaternion.identity, new Vector3(1, 1, 1));
             }
-            //65k max vertices or won't work
-            playerWorldMap.mesh.CombineMeshes(combine);
+
+            //create a worldmap object for this set of maps
+            GameObject tempWorldMap = Instantiate(playerWorldMap, transform.parent.FindChild("WorldMaps").transform);
+            tempWorldMap.name = "WorldMap" + currentSetMaps;
+            tempWorldMap.GetComponent<MeshFilter>().mesh.CombineMeshes(combineTest);
 
             //set scale
-            transform.localScale = new Vector3(.075f, .075f, .075f);
-            transform.position = player.transform.position;
+            tempWorldMap.transform.localScale = new Vector3(.075f, .075f, .075f);
 
-            //this remove all objects in playmap; problem beacuse it was removing mapdoors. only want to remove maps
-            /*
-            //removes all the children of map object
-            foreach (Transform child in transform)
-            {
-                //currently does nothngn beacuse map marker is not a child
-                if (child.name != "MapMarker")
-                {
-                    GameObject.Destroy(child.gameObject);
-                }
-            }
-            */
-            //save fullmap to assests
-            string worldMap = "WorldMap";
-            var savePath = "Assets/CurrentMaps/" + worldMap + ".asset";
-            AssetDatabase.CreateAsset(playerWorldMap.mesh, savePath);
+            worldMapName = "WorldMap" + currentSetMaps;
+            MapGenerator.MapGeneratorSingle.WorlMapDictionary.Add(worldMapName, tempWorldMap.transform);
 
-            CreateDoorConnections();
+            //turn off world map until needed
+            tempWorldMap.SetActive(false);
+
+            currentSetMaps += 1;
+        }
+        CreateDoorConnections();
+    }
+
+    void LoadWorldMap()
+    {
+        string worldMap = "WorldMap";
+        int currentSetMaps = 0;
+
+        string mapSeed = MapGenerator.MapGeneratorSingle.seed;
+
+        MapInformation newData = MapGenerator.MapGeneratorSingle.MapInfo[mapSeed];
+        currentSetMaps = newData.mapSet;
+
+        if (currentSetMaps < GameData.GameDataSingle.mapSets.Count)
+        {
+            worldMap = "WorldMap" + currentSetMaps;
         }
         else
         {
-            string worldMap = "WorldMap";
-            int currentSetMaps = 0;
-            string mapSeed = mapGen.seed;
-
-            MapInformation newData = mapGen.MapInfo[mapSeed];
-            currentSetMaps = newData.mapSet;
-            if (currentSetMaps < gameData.mapSets.Count)
-            {
-                worldMap = "WorldMap" + currentSetMaps;
-            }
-            else
-            {
-                worldMap = mapSeed;
-            }
-
-            //load map in
-            var loadPath = "Assets/CurrentMaps/" + worldMap + ".asset";
-            Mesh mesh = (Mesh)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Mesh));
-            transform.localScale = new Vector3(.075f, .075f, .075f);
-            transform.position = player.transform.position;
-            playerWorldMap.mesh = mesh;
+            worldMap = mapSeed;
         }
+
+        //bad try at active world map
+        foreach (Transform child in transform.parent.FindChild("WorldMaps"))
+        {
+            child.gameObject.SetActive(false);
+        }
+
+        //turn on correct world map
+        currentWorldMap = MapGenerator.MapGeneratorSingle.WorlMapDictionary[worldMap].gameObject;
+        currentWorldMap.SetActive(true);
     }
 
     void CreateDoorConnections()
     {
-        //get copy of door dic
+        //get reference of door dic
         Dictionary<string, string> tempDoorConnectionDictionary = new Dictionary<string, string>();
-        tempDoorConnectionDictionary = gameData.doorConnectionDictionary;
-
-        MapGenerator mapGen = FindObjectOfType<MapGenerator>();
+        tempDoorConnectionDictionary = GameData.GameDataSingle.doorConnectionDictionary;
 
         //for breaking door dic into maps and doors
         string[] values;
@@ -681,7 +647,7 @@ public class DrawPlayerMap : MonoBehaviour {
             oldSeed = values[0];
             oldDoor = values[1];
 
-            MapInformation oldData = mapGen.MapInfo[oldSeed];
+            MapInformation oldData = MapGenerator.MapGeneratorSingle.MapInfo[oldSeed];
             oldCurrentSetMaps = oldData.mapSet;
             //for the connecting map and door
             values = tempDoorConnectionDictionary[oldDicRef].Split(',');
@@ -689,13 +655,11 @@ public class DrawPlayerMap : MonoBehaviour {
             newSeed = values[0];
             newDoor = values[1];
 
-            MapInformation newData = mapGen.MapInfo[newSeed];
+            MapInformation newData = MapGenerator.MapGeneratorSingle.MapInfo[newSeed];
             newCurrentSetMaps = newData.mapSet;
 
-            //Debug.Log("newSeed = " + oldSeed + "newDoor = " + oldDoor + " oldCurrentSetMaps = " + newCurrentSetMaps);
-
             //need fix for the special add maps
-            if (oldCurrentSetMaps < gameData.mapSets.Count && newCurrentSetMaps < gameData.mapSets.Count && oldCurrentSetMaps == newCurrentSetMaps)
+            if (oldCurrentSetMaps < GameData.GameDataSingle.mapSets.Count && newCurrentSetMaps < GameData.GameDataSingle.mapSets.Count && oldCurrentSetMaps == newCurrentSetMaps)
             {
                 CreateLines(oldSeed, newSeed, Int32.Parse(oldDoor), Int32.Parse(newDoor), oldCurrentSetMaps, newCurrentSetMaps);
             }
@@ -708,7 +672,7 @@ public class DrawPlayerMap : MonoBehaviour {
 
     void LoadCorrectDoorLines(string map)
     {
-        MapInformation oldData = mapGen.MapInfo[map];
+        MapInformation oldData = MapGenerator.MapGeneratorSingle.MapInfo[map];
         currentMapSet = oldData.mapSet.ToString();
         currentMapSetIndex = oldData.mapSet;
 

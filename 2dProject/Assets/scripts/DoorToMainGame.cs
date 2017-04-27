@@ -12,7 +12,6 @@ public class DoorToMainGame : MonoBehaviour
 
 
     private bool loading = false;
-    private bool loadScene = false;
     public string loadMap = "MainGame";
 
     //for getting mapgenerator
@@ -28,12 +27,10 @@ public class DoorToMainGame : MonoBehaviour
     {
         if (loading)
         {
-
             loadMap = "MainGame";
             mapGenerator.SetActive(true);
-            GameController.GameControllerSingle.transform.position = GameController.GameControllerSingle.respawnLocation;
 
-            loadScene = true;
+            GameController.GameControllerSingle.transform.position = GameController.GameControllerSingle.respawnLocation;
             loading = false;
 
             StartCoroutine(LoadNewScene());
@@ -54,7 +51,6 @@ public class DoorToMainGame : MonoBehaviour
         AsyncOperation async = SceneManager.LoadSceneAsync("MainGame");
 
         // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
-        Debug.Log("TEST PASSED");
         while (!async.isDone)
         {
             yield return null;
@@ -66,7 +62,6 @@ public class DoorToMainGame : MonoBehaviour
         hero.transform.rotation = Quaternion.identity;
 
         //actives game controler for player actions
-        Debug.Log("TEST PASSED");
         GameController.GameControllerSingle.isGameLoading = false;
         GameController.GameControllerSingle.touchingDoor = false;
         Destroy(gameObject);

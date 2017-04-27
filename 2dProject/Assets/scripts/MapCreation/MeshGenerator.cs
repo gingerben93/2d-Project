@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 
 public class MeshGenerator : MonoBehaviour
 {
 
     public SquareGrid squareGrid;
-    public MeshFilter cave;
+    public GameObject cavePrefab;
 
     List<Vector3> vertices;
     List<int> triangles;
@@ -20,6 +19,9 @@ public class MeshGenerator : MonoBehaviour
     int groundPieceIndex;
 
     public Transform groundPiece;
+
+    //dictionary of Cave mesh objects
+    public Dictionary<string, GameObject> CaveMeshDictionary = new Dictionary<string, GameObject>();
 
     // need to save the mesh for the map
     public void GenerateMesh(int[,] map, float squareSize)
@@ -42,8 +44,15 @@ public class MeshGenerator : MonoBehaviour
             }
         }
 
+        GameObject Cave = Instantiate(cavePrefab, transform.FindChild("MapHolder"));
+
+        Cave.name = "Cave" + MapGenerator.MapGeneratorSingle.seed;
+
+        CaveMeshDictionary.Add(MapGenerator.MapGeneratorSingle.seed, Cave);
+
         Mesh mesh = new Mesh();
-        cave.mesh = mesh;
+        Cave.GetComponent<MeshFilter>().mesh = mesh;
+        mesh.name = Cave.name;
 
         mesh.vertices = vertices.ToArray();
         mesh.triangles = triangles.ToArray();
@@ -60,25 +69,26 @@ public class MeshGenerator : MonoBehaviour
         mesh.uv = uvs;
 
         Generate2DColliders();
-
-        //save mesh
-        MapGenerator mapInfo = GameObject.FindObjectOfType<MapGenerator>();
-        string mapSeed = mapInfo.seed;
-        var savePath = "Assets/CurrentMaps/" + mapSeed + ".asset";
-        //Debug.Log("Saved Mesh to:" + savePath);
-        AssetDatabase.CreateAsset(cave.mesh, savePath);
     }
     
     //doesn't recreate mesh; load it from data; need to find a way to save 2d edge collider as well
     public void LoadMeshFromAssests(int[,] map, float squareSize)
     {
-        MapGenerator mapInfo = GameObject.FindObjectOfType<MapGenerator>();
-        string mapSeed = mapInfo.seed;
-        var loadPath = "Assets/CurrentMaps/" + mapSeed + ".asset";
 
-        //Debug.Log("Load Mesh from:" + loadPath);
-        Mesh mesh = (Mesh)AssetDatabase.LoadAssetAtPath(loadPath, typeof(Mesh));
-        cave.mesh = mesh;
+        //get current cave object
+        GameObject caveCurrent = CaveMeshDictionary[MapGenerator.MapGeneratorSingle.seed];
+
+        //get old cave object for turing off
+        if (DrawPlayerMap.DrawPlayerMapSingle.currentMap != null)
+        {
+            GameObject caveOld = CaveMeshDictionary[DrawPlayerMap.DrawPlayerMapSingle.currentMap];
+            //turn off old cave object
+            caveOld.SetActive(false);
+        }
+        
+        //turn on current cave object
+        caveCurrent.SetActive(true);
+
 
         triangleDictionary.Clear();
         outlines.Clear();

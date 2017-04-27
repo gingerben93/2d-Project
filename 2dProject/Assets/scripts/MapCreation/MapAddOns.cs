@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 
@@ -56,6 +55,7 @@ public class MapAddOns : MonoBehaviour
             float yPos = doorLocations[x].y;
 
             var doorTransform = Instantiate(doorPrefab) as Transform;
+            doorTransform.name = "Door";
             doorTransform.transform.SetParent(transform);
             doorTransform.position = new Vector3(xPos, yPos, 0);
 
