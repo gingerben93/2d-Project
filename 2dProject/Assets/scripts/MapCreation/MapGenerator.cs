@@ -77,8 +77,13 @@ public class MapGenerator : MonoBehaviour
         meshGen = GetComponent<MeshGenerator>();
         MapAddOns = GetComponent<MapAddOns>();
 
-        if (GameLoader.GameLoaderSingle == null)
-        {
+        if (GameLoader.GameLoaderSingle == null) 
+            Debug.Log("GameLoader.GameLoaderSingle IS NULL" + GameLoader.GameLoaderSingle);
+        else
+            Debug.Log("GameLoader.GameLoaderSingle NOT NULL" + GameLoader.GameLoaderSingle);
+
+        //if (GameLoader.GameLoaderSingle == null)
+        //{
             numMaps = 6;
             int startMap = 0;
             int y = numMaps;
@@ -163,42 +168,49 @@ public class MapGenerator : MonoBehaviour
                 MapInfo[gameData.mapSeed[x]].enemyLocationsX = tempHolderX;
                 MapInfo[gameData.mapSeed[x]].enemyLocationsY = tempHolderY;
             }
-        }
-        else
-        {
-            MapInfo = GameLoader.GameLoaderSingle.playerDat.MapInfo;
-            gameData.doorConnectionDictionary = GameLoader.GameLoaderSingle.playerDat.doorConnectionDictionary;
-            gameData.mapSeed = GameLoader.GameLoaderSingle.playerDat.mapSeed;
-            for (int tempCounter = 0; tempCounter < GameLoader.GameLoaderSingle.playerDat.mapSetsX.Count; tempCounter++)
-            {
-                gameData.mapSets.Add(new Vector2(GameLoader.GameLoaderSingle.playerDat.mapSetsX[tempCounter], GameLoader.GameLoaderSingle.playerDat.mapSetsY[tempCounter]));
-            }
-            PlayerStats.PlayerStatsSingle.health = GameLoader.GameLoaderSingle.playerDat.health;
-            PlayerStats.PlayerStatsSingle.experiencePoints = GameLoader.GameLoaderSingle.playerDat.experiencePoints;
+        //}
+        //else
+        //{
+        //    MapInfo = GameLoader.GameLoaderSingle.playerDat.MapInfo;
+        //    gameData.doorConnectionDictionary = GameLoader.GameLoaderSingle.playerDat.doorConnectionDictionary;
+        //    gameData.mapSeed = GameLoader.GameLoaderSingle.playerDat.mapSeed;
+        //    for (int tempCounter = 0; tempCounter < GameLoader.GameLoaderSingle.playerDat.mapSetsX.Count; tempCounter++)
+        //    {
+        //        gameData.mapSets.Add(new Vector2(GameLoader.GameLoaderSingle.playerDat.mapSetsX[tempCounter], GameLoader.GameLoaderSingle.playerDat.mapSetsY[tempCounter]));
+        //    }
+        //    PlayerStats.PlayerStatsSingle.health = GameLoader.GameLoaderSingle.playerDat.health;
+        //    PlayerStats.PlayerStatsSingle.experiencePoints = GameLoader.GameLoaderSingle.playerDat.experiencePoints;
 
-            }
+        //}
+
+        //Destroy(gameObject);
+
         PlayerStats.PlayerStatsSingle.MapInfo = MapInfo;
-
         seed = gameData.mapSeed[0];
         LoadMap();
+
+        //Destroy(gameObject);
         DrawPlayerMap.DrawPlayerMapSingle.currentMap = seed;
         GameController.GameControllerSingle.respawnLocation = new Vector3(PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsX[0],
                                                                           PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsY[0],0);
+        //Destroy(gameObject);
 
         //have to create set some variables in drawplayermap
         MapPosWorldMaps = new List<Vector3>();
         foreach (Vector2 mapSet in GameData.GameDataSingle.mapSets)
         {
-            for (int x = 0; x < (int)mapSet.x; x++)
+            for (int j = 0; j < (int)mapSet.x; j++)
             {
-                MapPosWorldMaps.Add(new Vector2(Mathf.Cos(2 * Mathf.PI * x / (int)mapSet.x), Mathf.Sin(2 * Mathf.PI * x / (int)mapSet.x)));
+                MapPosWorldMaps.Add(new Vector2(Mathf.Cos(2 * Mathf.PI * j / (int)mapSet.x), Mathf.Sin(2 * Mathf.PI * j / (int)mapSet.x)));
             }
         }
 
         LinePos = new List<Vector3>();
-
+        
         //create world map sections before cave meshes are turned off
         DrawPlayerMap.DrawPlayerMapSingle.CreateWorldMap();
+
+        //Destroy(gameObject);
 
         //remove doors before going to main area
         var oldDoors = GameObject.FindGameObjectsWithTag("Door");
@@ -210,9 +222,9 @@ public class MapGenerator : MonoBehaviour
         //for turing off all cave objects. need to wait for this beacuse haven't build world map yet
         foreach (Transform child in transform.FindChild("MapHolder"))
         {
+            
             child.gameObject.SetActive(false);
         }
-
         LoadOnClick.LoadOnClickSingle.LoadScene(0);
     }
 
@@ -227,7 +239,7 @@ public class MapGenerator : MonoBehaviour
 
     IEnumerator WaitForGameToLoad()
     {
-        yield return new WaitForSeconds(1);
+        yield return null;
         LoadMap();
     }
 

@@ -44,7 +44,10 @@ public class LoadOnClick : MonoBehaviour {
 
     void Update() {
         if (loading) {
-
+            foreach (Transform child in EnemyList.EnemyListSingle.transform)
+            {
+                Destroy(child.gameObject);
+            }
             loadMap = "StartArea";
             mapGenerator.SetActive(false);
             GameController.GameControllerSingle.transform.position = new Vector3(0, 1.2f, 0);

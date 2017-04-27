@@ -350,8 +350,8 @@ public class DrawPlayerMap : MonoBehaviour {
         firstColor = PickLineColor(GameData.GameDataSingle.FindMapIndex(seed1));
         secondColor = PickLineColor(GameData.GameDataSingle.FindMapIndex(seed2));
 
-        tempMapLine.GetComponent<LineRenderer>().material = new Material(Shader.Find("Particles/Additive"));
-        //tempMapLine.GetComponent<LineRenderer>().SetColors(firstColor, secondColor); old version, now outdated
+        //load material for line
+        tempMapLine.GetComponent<LineRenderer>().material = Resources.Load("LineMat", typeof(Material)) as Material;
         tempMapLine.GetComponent<LineRenderer>().startColor = firstColor;
         tempMapLine.GetComponent<LineRenderer>().endColor = secondColor;
     }
@@ -588,6 +588,8 @@ public class DrawPlayerMap : MonoBehaviour {
 
             currentSetMaps += 1;
         }
+
+        //Destroy(MapGenerator.MapGeneratorSingle.gameObject);
         CreateDoorConnections();
     }
 
@@ -624,8 +626,8 @@ public class DrawPlayerMap : MonoBehaviour {
     void CreateDoorConnections()
     {
         //get reference of door dic
-        Dictionary<string, string> tempDoorConnectionDictionary = new Dictionary<string, string>();
-        tempDoorConnectionDictionary = GameData.GameDataSingle.doorConnectionDictionary;
+        Dictionary<string, string> tempDoorConnectionDictionary = new Dictionary<string, string>(GameData.GameDataSingle.doorConnectionDictionary);
+        //tempDoorConnectionDictionary = GameData.GameDataSingle.doorConnectionDictionary;
 
         //for breaking door dic into maps and doors
         string[] values;
