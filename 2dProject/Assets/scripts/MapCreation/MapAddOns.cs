@@ -12,9 +12,7 @@ public class MapAddOns : MonoBehaviour
     {
         //for pos doors
         List<Vector2> doorPositions;
-
-        MapGenerator mapInfo = FindObjectOfType<MapGenerator>();
-        MapInformation data = mapInfo.MapInfo[mapInfo.seed];
+        MapInformation data = MapGenerator.MapGeneratorSingle.MapInfo[MapGenerator.MapGeneratorSingle.seed];
 
         doorPositions = new List<Vector2>();
 
@@ -38,9 +36,8 @@ public class MapAddOns : MonoBehaviour
     public void DrawOldDoors(List<Vector2> doorLocations)
     {
         var oldDoors = GameObject.FindGameObjectsWithTag("Door");
-        MapGenerator map = FindObjectOfType<MapGenerator>();
 
-        string curSeed = map.seed;
+        string curSeed = MapGenerator.MapGeneratorSingle.seed;
 
         //this is for removing the old doors
         foreach (var door in oldDoors)

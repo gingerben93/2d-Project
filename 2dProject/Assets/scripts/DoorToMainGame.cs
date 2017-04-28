@@ -6,11 +6,8 @@ using UnityEngine.UI;
 
 public class DoorToMainGame : MonoBehaviour
 {
-
     //[SerializeField]
     //private int scene;
-
-
     private bool loading = false;
     public string loadMap = "MainGame";
 

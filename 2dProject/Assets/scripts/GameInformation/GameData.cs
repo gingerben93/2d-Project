@@ -161,9 +161,6 @@ public class GameData : MonoBehaviour
             //all door locations
             map1.doorLocationsX = tempHolderX;
             map1.doorLocationsY = tempHolderY;
-
-            //Debug.Log("AFTER MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].Count = " + MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[listDoor]].doorLocationsX.Count);
-            //Debug.Log("map1.doorLocationsX.Count = " + map1.doorLocationsX.Count);
         }
     }
 
