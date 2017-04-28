@@ -178,9 +178,6 @@ public class GameController : MonoBehaviour {
                 //remove playerProjectiles
                 foreach (Transform child in playerProjectileList.transform)
                 {
-                    //have to set attack bools back to true;
-                    GodhandsCanAttack = true;
-
                     Destroy(child.gameObject);
                 }
             }

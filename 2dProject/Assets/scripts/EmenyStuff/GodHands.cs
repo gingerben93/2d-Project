@@ -16,7 +16,6 @@ public class GodHands : MonoBehaviour {
 
     public void Attack(Vector3 targetLocation)
     {
-        GameController.GameControllerSingle.GodhandsCanAttack = false;
         PlayerFistLocation = GameObject.Find("PlayerProjectiles").transform;
 
         fist = Instantiate(fistPlayerPrefab, PlayerFistLocation);
@@ -24,7 +23,7 @@ public class GodHands : MonoBehaviour {
 
         godHandsFistPlayer = GameObject.Find("PlayerProjectiles").transform.GetComponentInChildren<GodHandsFistPlayer>();
 
-        godHandsFistPlayer.tag = "Player";
+        //godHandsFistPlayer.tag = "Player";
 
         godHandsFistPlayer.pullAttackOn = true;
         godHandsFistPlayer.newTargetLocation = targetLocation;

@@ -30,6 +30,12 @@ public class GodHandsFistPlayer : MonoBehaviour
     float fistSpeed = 500;
     float step;
 
+    void Start()
+    {
+        //turn attack off
+        GameController.GameControllerSingle.GodhandsCanAttack = false;
+    }
+
     void FixedUpdate()
     {
         step = fistSpeed * Time.deltaTime;
@@ -60,8 +66,6 @@ public class GodHandsFistPlayer : MonoBehaviour
             if (Vector3.Distance(userTransform.position, GameController.GameControllerSingle.transform.position) <= .5f)
             {
                 returnFist = false;
-                //turn attack back on so you can fire godhands again
-                GameController.GameControllerSingle.GodhandsCanAttack = true;
 
                 //if hit target, knock it up
                 if (returnWithPlayer)
@@ -85,6 +89,12 @@ public class GodHandsFistPlayer : MonoBehaviour
             targetTransform = other.transform;
         }
         
+    }
+
+    void OnDestroy()
+    {
+        //turn attack back on so you can fire godhands again
+        GameController.GameControllerSingle.GodhandsCanAttack = true;
     }
 
     //void OnTriggerExit2D(Collider2D other)
