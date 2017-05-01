@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class MapAddOns : MonoBehaviour
 {
     public Transform doorPrefab;
+    public Transform bossDoorPrefab;
 
     public Transform EnenyPreFab;
 
@@ -33,16 +34,14 @@ public class MapAddOns : MonoBehaviour
         return doorPositions;
     }
 
-    public void DrawOldDoors(List<Vector2> doorLocations)
+    public void DrawOldDoors(List<Vector2> doorLocations, List<int> doorType)
     {
-        var oldDoors = GameObject.FindGameObjectsWithTag("Door");
-
         string curSeed = MapGenerator.MapGeneratorSingle.seed;
 
         //this is for removing the old doors
-        foreach (var door in oldDoors)
+        foreach (Transform door in transform.FindChild("DoorHolder"))
         {
-            Destroy(door);
+            Destroy(door.gameObject);
         }
 
         //drawing new doors
@@ -51,19 +50,27 @@ public class MapAddOns : MonoBehaviour
             float xPos = doorLocations[x].x;
             float yPos = doorLocations[x].y;
 
-            var doorTransform = Instantiate(doorPrefab) as Transform;
-            doorTransform.name = "Door";
-            doorTransform.transform.SetParent(transform);
-            doorTransform.position = new Vector3(xPos, yPos, 0);
+            //Debug.Log("Door Type = " + doorType[x]);
+            switch (doorType[x])
+            {
+                case 0:
+                    Transform doorTransform = Instantiate(doorPrefab, transform.FindChild("DoorHolder")) as Transform;
+                    doorTransform.name = "Door";
+                    doorTransform.position = new Vector3(xPos, yPos, 0);
 
-            //want yo use find vs get here to set door info
-            //DoorPrefabInfo info = doorPrefab.GetComponent<DoorPrefabInfo>();
-            DoorPrefabInfo mapInfo = FindObjectOfType<DoorPrefabInfo>();
-
-            mapInfo.doorReference = x;
-            mapInfo.seedReference = curSeed;
-
-            //Debug.Log("curSeed =" + curSeed + "x =" + x);
+                    //for setting the map and door ref of each door
+                    DoorPrefabInfo mapInfo = FindObjectOfType<DoorPrefabInfo>();
+                    //Debug.Log("curSeed = " + curSeed + " currentDoor = " + x);
+                    mapInfo.doorReference = x;
+                    mapInfo.seedReference = curSeed;
+                    break;
+                case 1:
+                    Transform BossDoor = Instantiate(bossDoorPrefab, transform.FindChild("DoorHolder")) as Transform;
+                    BossDoor.GetComponent<DoorToNewScene>().sceneToLoad = "Boss1";
+                    BossDoor.name = "BossDoor1";
+                    BossDoor.position = new Vector3(xPos, yPos, 0);
+                    break;
+            }
         }
     }
 

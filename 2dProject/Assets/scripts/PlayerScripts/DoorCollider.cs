@@ -29,6 +29,7 @@ public class DoorCollider : MonoBehaviour {
 
         if (node.gameObject.tag == "Door")
         {
+            //Debug.Log("oldSeed = " + info.seedReference + " oldDoor = " + info.doorReference.ToString());
             oldSeed = info.seedReference;
             oldDoor = info.doorReference.ToString();
             dicRef = oldSeed + "," + oldDoor;
@@ -41,7 +42,7 @@ public class DoorCollider : MonoBehaviour {
             //splits the dic ref apart into the map seed and the door index value
             values = newDicRef.Split(',');
 
-            //Debug.Log("newSeed = " + values[0] + "newDoor = " + values[1]);
+            //Debug.Log("newSeed = " + values[0] + " newDoor = " + values[1]);
             newSeed = values[0];
             newDoor = values[1];
 

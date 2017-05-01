@@ -62,7 +62,6 @@ public class LoadOnClick : MonoBehaviour {
         if (loadScene == true) {
             loadingText.color = new Color(loadingText.color.r, loadingText.color.g, loadingText.color.b, Mathf.PingPong(Time.time, .1f));
         }
-
     }
 
     //load

@@ -88,8 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 250993869ffd4514b847381fda80556e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingText: {fileID: 0}
-  loadMap: StartArea
+  loadMap: 
 --- !u!212 &212718791048228328
 SpriteRenderer:
   m_ObjectHideFlags: 1

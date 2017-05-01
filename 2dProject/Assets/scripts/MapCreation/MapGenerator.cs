@@ -116,19 +116,23 @@ public class MapGenerator : MonoBehaviour
             //seed = currentMap.ToString();
             //bossRooms.Add(seed);
             ////Debug.Log("seed boos room = " + seed);
-            GameData.GameDataSingle.isBossRoomOpen.Add(seed, false);
+            //GameData.GameDataSingle.isBossRoomOpen.Add(seed, false);
             //GenerateMap();
             //currentMap += 1;
 
             foreach (Vector2 num in GameData.GameDataSingle.mapSets)
             {
-                //use: start map, end map, num doors, map1 seed, map2 seed
-                //Debug.Log("(int)num.y = " + num.y + " (int)num.x + (int)num.y - 1 = " + (num.x + num.y - 1));
+                //use: start map, end map, num doors; \n map1 seed, map2 seed
                 GameData.GameDataSingle.CreatDoorConnections((int)num.y, (int)num.x + (int)num.y - 1, 2);
                 GameData.GameDataSingle.EnsureConnectivityOfMaps((int)num.y, (int)num.x + (int)num.y - 1);
                 GameData.GameDataSingle.ConnectDoors();
             }
 
+        //add boss door; usage -> give mapinfo of a map
+        //might need to change usage to give it the map seed.
+        GameData.GameDataSingle.AddUniqueDoorToMap(MapInfo["1"]);
+       
+        ////////
             foreach (Vector2 num in GameData.GameDataSingle.mapSets)
             {
                 if (GameData.GameDataSingle.mapSets[GameData.GameDataSingle.mapSets.Count - 1] == num)
@@ -325,7 +329,7 @@ public class MapGenerator : MonoBehaviour
             doorLocations.Add(new Vector2(MapInfo[seed].doorLocationsX[tempCounter], MapInfo[seed].doorLocationsY[tempCounter]));
         }
         //doorLocations = MapInfo[seed].doorLocations;
-        MapAddOns.DrawOldDoors(doorLocations);
+        MapAddOns.DrawOldDoors(doorLocations, currentData.doorType);
 
         //for enemy spawns
         enemyLocations = new List<Vector2>();

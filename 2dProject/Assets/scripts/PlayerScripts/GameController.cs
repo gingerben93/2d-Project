@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
@@ -18,7 +19,7 @@ public class GameController : MonoBehaviour {
 
     //private bool grounded = false;
     private Animator anim;
-    private Rigidbody2D rb2d;
+    public Rigidbody2D rb2d;
     DoorCollider doorInfo;
 
     //Inventory
@@ -431,6 +432,42 @@ public class GameController : MonoBehaviour {
             MapGenerator.MapGeneratorSingle.LoadMap();
         }
     }
+
+    public void loadScence(string sceneName)
+    {
+        foreach (Transform child in EnemyList.EnemyListSingle.transform)
+        {
+            Destroy(child.gameObject);
+        }
+        StartCoroutine(LoadNewScene(sceneName));
+    }
+
+    IEnumerator LoadNewScene(string sceneName)
+    {
+        //stops player from moving during loading
+        rb2d.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+
+        //deactivates gamecon to stop player from doing anything while game is loading
+        GameController.GameControllerSingle.isGameLoading = true;
+
+        //load functions
+        AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
+
+        // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
+        while (!async.isDone)
+        {
+            yield return null;
+        }
+
+        //lets player move after loading
+        rb2d.constraints = RigidbodyConstraints2D.None;
+        rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
+        rb2d.transform.rotation = Quaternion.identity;
+
+        //actives game controler for player actions
+        isGameLoading = false;
+        touchingDoor = false;
+    }
 }
 
 [System.Serializable]
@@ -471,6 +508,7 @@ public class MapInformation
 
     public List<float> doorLocationsX;
     public List<float> doorLocationsY;
+    public List<int> doorType;
 
     public List<float> enemyLocationsX;
     public List<float> enemyLocationsY;

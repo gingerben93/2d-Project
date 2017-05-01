@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class DoorToMainGame : MonoBehaviour
 {
@@ -70,6 +68,5 @@ public class DoorToMainGame : MonoBehaviour
         {
             loading = true;
         }
-        //character = true;
     }
 }

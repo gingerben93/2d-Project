@@ -367,7 +367,6 @@ public class DrawPlayerMap : MonoBehaviour {
         }
         else
         {
-            //Debug.Log("linePos1: RAN");
             linePos1 = new Vector3(MapGenerator.MapGeneratorSingle.MapInfo[seed1].doorLocationsX[door1] * .075f, MapGenerator.MapGeneratorSingle.MapInfo[seed1].doorLocationsY[door1] * .075f, 0);
             linePos2 = new Vector3(0, -10f, 0);
         }
@@ -627,7 +626,6 @@ public class DrawPlayerMap : MonoBehaviour {
     {
         //get reference of door dic
         Dictionary<string, string> tempDoorConnectionDictionary = new Dictionary<string, string>(GameData.GameDataSingle.doorConnectionDictionary);
-        //tempDoorConnectionDictionary = GameData.GameDataSingle.doorConnectionDictionary;
 
         //for breaking door dic into maps and doors
         string[] values;
@@ -649,25 +647,48 @@ public class DrawPlayerMap : MonoBehaviour {
             oldSeed = values[0];
             oldDoor = values[1];
 
-            MapInformation oldData = MapGenerator.MapGeneratorSingle.MapInfo[oldSeed];
-            oldCurrentSetMaps = oldData.mapSet;
-            //for the connecting map and door
-            values = tempDoorConnectionDictionary[oldDicRef].Split(',');
-            newDicRef = tempDoorConnectionDictionary[oldDicRef];
-            newSeed = values[0];
-            newDoor = values[1];
+            values = entry.Key.Split(',');
 
-            MapInformation newData = MapGenerator.MapGeneratorSingle.MapInfo[newSeed];
-            newCurrentSetMaps = newData.mapSet;
-
-            //need fix for the special add maps
-            if (oldCurrentSetMaps < GameData.GameDataSingle.mapSets.Count && newCurrentSetMaps < GameData.GameDataSingle.mapSets.Count && oldCurrentSetMaps == newCurrentSetMaps)
+            //check if it's a boss room
+            if (oldSeed != "BossKey1")
             {
-                CreateLines(oldSeed, newSeed, Int32.Parse(oldDoor), Int32.Parse(newDoor), oldCurrentSetMaps, newCurrentSetMaps);
+                MapInformation oldData = MapGenerator.MapGeneratorSingle.MapInfo[oldSeed];
+                oldCurrentSetMaps = oldData.mapSet;
+            
+                values = tempDoorConnectionDictionary[oldDicRef].Split(',');
+                newDicRef = tempDoorConnectionDictionary[oldDicRef];
+                newSeed = values[0];
+                newDoor = values[1];
+
+                //Debug.Log("newDicRef = " + newDicRef + " newSeed = " + newSeed + " newDoor = " + newDoor);
+
+                MapInformation newData = MapGenerator.MapGeneratorSingle.MapInfo[newSeed];
+                newCurrentSetMaps = newData.mapSet;
+
+                //need fix for the special add maps
+                if (oldCurrentSetMaps < GameData.GameDataSingle.mapSets.Count && newCurrentSetMaps < GameData.GameDataSingle.mapSets.Count && oldCurrentSetMaps == newCurrentSetMaps)
+                {
+                    CreateLines(oldSeed, newSeed, Int32.Parse(oldDoor), Int32.Parse(newDoor), oldCurrentSetMaps, newCurrentSetMaps);
+                }
+                else
+                {
+                    CreateLinesNotInSet(oldSeed, newSeed, Int32.Parse(oldDoor), Int32.Parse(newDoor), oldCurrentSetMaps, newCurrentSetMaps);
+                }
             }
             else
             {
-                CreateLinesNotInSet(oldSeed, newSeed, Int32.Parse(oldDoor), Int32.Parse(newDoor), oldCurrentSetMaps, newCurrentSetMaps);
+                values = entry.Key.Split(',');
+                newDicRef = entry.Value;
+                newSeed = values[0];
+                newDoor = values[1];
+
+                MapInformation newData = MapGenerator.MapGeneratorSingle.MapInfo[newSeed];
+                newCurrentSetMaps = newData.mapSet;
+                //Debug.Log("oldDicRef = " + oldDicRef + " oldSeed = " + oldSeed + " oldDoor = " + oldDoor + " oldCurrentSetMaps = " + oldCurrentSetMaps);
+                //Debug.Log("newDicRef = " + newDicRef + " newSeed = " + newSeed + " newDoor = " + newDoor + " newCurrentSetMaps = " + newCurrentSetMaps);
+
+                //boss rooms load new seed first not old seed
+                CreateLinesNotInSet(newSeed, oldSeed, Int32.Parse(newDoor), Int32.Parse(newDoor), newCurrentSetMaps, newCurrentSetMaps);
             }
         }
     }
