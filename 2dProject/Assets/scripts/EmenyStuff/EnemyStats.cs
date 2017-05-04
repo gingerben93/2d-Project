@@ -104,30 +104,11 @@ public class EnemyStats : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
-        // Is this a shot?
-        shot = otherCollider.gameObject.GetComponent<Shot>();
-        shotM = otherCollider.gameObject.GetComponent<ShotM>();
-        if (shot != null)
+        //if bullet, do bullet stuff
+        if (otherCollider.tag == "Bullet")
         {
-            // Avoid friendly fire
-            if (shot.isEnemyShot != isEnemy)
-            {
-                Damage(GameController.GameControllerSingle.damage);
-
-                // Destroy the shot
-                Destroy(shot.gameObject); // Remember to always target the game object, otherwise you will just remove the script
-            }
-        }
-        else if (shotM != null)
-        {
-            // Avoid friendly fire
-            if (shotM.isEnemyShot != isEnemy)
-            {
-                Damage(GameController.GameControllerSingle.damage);
-
-                // Destroy the shot
-                Destroy(shotM.gameObject); // Remember to always target the game object, otherwise you will just remove the script
-            }
+            Destroy(otherCollider.gameObject);
+            Damage(GameController.GameControllerSingle.damage);
         }
     }
 }

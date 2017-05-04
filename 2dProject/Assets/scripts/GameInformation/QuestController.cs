@@ -24,7 +24,12 @@ public class QuestController : MonoBehaviour {
     string gathertarget;
     public Dictionary<string, string> gatherQuestList = new Dictionary<string, string>();
 
-    public Dictionary<string, bool> questList = new Dictionary<string, bool>(); 
+    public Dictionary<string, bool> questList = new Dictionary<string, bool>();
+
+    //for opening quest doors
+    public bool[] questDoorOpen;
+    //public List<bool> QuestDoorOpen = new List<bool>();
+    public int currentQuest{ get; set; }
 
     public static QuestController QuestControllerSingle;
     /*
@@ -50,6 +55,9 @@ public class QuestController : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+
+        currentQuest = 0;
+        questDoorOpen = new bool[10];
     }
 
     public void PickQuest(string NPCName)

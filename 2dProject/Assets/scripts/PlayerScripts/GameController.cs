@@ -33,6 +33,8 @@ public class GameController : MonoBehaviour {
 
     //is touching door
     public bool touchingDoor { get; set; }
+    public bool touchingQuestDoor { get; set; }
+    public bool questTravel { get; set; }
     public string mapSeed { get; set; }
     public int doorRef { get; set; }
 
@@ -60,6 +62,10 @@ public class GameController : MonoBehaviour {
     public bool GodhandsCanAttack = true;
 
     public static GameController GameControllerSingle;
+
+    //for removing the current items other things on map
+    Transform itemlist;
+    GameObject playerProjectileList;
 
     void Awake()
     {
@@ -117,49 +123,10 @@ public class GameController : MonoBehaviour {
         }
         
         Resources.UnloadUnusedAssets();
-        if (Input.GetKeyDown(KeyCode.R) && touchingDoor)
+        if (Input.GetKeyDown(KeyCode.R))
         {
-            //def of parent for removing item
-            GameObject itemlist = GameObject.Find("WorldItems");
-
-            //remove player projectiles
-            GameObject playerProjectileList = GameObject.Find("PlayerProjectiles");
-
-
             //Debug.Log("GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed) = " + GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed));
-            if (GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed))
-            {
-                //Debug.Log("GameData.GameDataSingle.isBossRoomOpen[mapSeed]" + GameData.GameDataSingle.isBossRoomOpen[mapSeed]);
-                if (GameData.GameDataSingle.isBossRoomOpen[mapSeed])
-                {
-                    MapGenerator.MapGeneratorSingle.seed = mapSeed;
-                    MapGenerator.MapGeneratorSingle.LoadMap();
-
-                    Vector2 door;
-                    door = MapGenerator.MapGeneratorSingle.doorLocations[doorInfo.numVal];
-                    transform.position = new Vector3(door.x, door.y, 0);
-
-                    respawnLocation = door;
-
-                    //remove items
-                    foreach (Transform child in itemlist.transform)
-                    {
-                        Destroy(child.gameObject);
-                    }
-
-                    //remove playerProjectiles
-                    foreach (Transform child in playerProjectileList.transform)
-                    {
-                        Destroy(child.gameObject);
-                    }
-                }
-                else
-                {
-                    touchingDoor = false;
-                    Debug.Log("Door Is Locked");
-                }
-            }
-            else
+            if (touchingDoor)
             {
                 MapGenerator.MapGeneratorSingle.seed = mapSeed;
                 MapGenerator.MapGeneratorSingle.LoadMap();
@@ -170,20 +137,27 @@ public class GameController : MonoBehaviour {
 
                 respawnLocation = door;
 
-                //remove items
-                foreach (Transform child in itemlist.transform)
-                {
-                    Destroy(child.gameObject);
-                }
+                RemoveCurrentMapObjects();
+            }
 
-                //remove playerProjectiles
-                foreach (Transform child in playerProjectileList.transform)
+            if (touchingQuestDoor)
+            {
+                //Debug.Log("GameData.GameDataSingle.isBossRoomOpen[mapSeed]" + GameData.GameDataSingle.isBossRoomOpen[mapSeed]);
+                if (QuestController.QuestControllerSingle.questDoorOpen[QuestController.QuestControllerSingle.currentQuest])
                 {
-                    Destroy(child.gameObject);
+                    Debug.Log("Go to boss room");
+                    touchingQuestDoor = false;
+                    RemoveCurrentMapObjects();
+                    questTravel = true;
+                }
+                else
+                {
+                    touchingQuestDoor = false;
+                    Debug.Log("Door Is Locked");
                 }
             }
         }
-
+        
         if (Input.GetKeyDown(KeyCode.Space) && rb2d.velocity.y < maxSpeed /*&& grounded*/)
         {
             jump = true;
@@ -246,19 +220,19 @@ public class GameController : MonoBehaviour {
                     case "Blowdart":
                         Blowdart BlowdartWeapon = gameObject.GetComponentInChildren<Blowdart>();
                         BlowdartWeapon.Attack();
-                        Debug.Log(atk.weaponName);
+                        //Debug.Log(atk.weaponName);
                         break;
                     case "ShortSword":
                         ShortSword ShortSwordWeapon = gameObject.GetComponentInChildren<ShortSword>();
                         ShortSwordWeapon.Attack();
-                        Debug.Log(atk.weaponName);
+                        //Debug.Log(atk.weaponName);
                         break;
                     case "GodHands":
                         if (GodhandsCanAttack)
                         {
                             GodHands GodHandsWeapon = gameObject.GetComponentInChildren<GodHands>();
                             GodHandsWeapon.Attack(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                            Debug.Log(atk.weaponName);
+                            //Debug.Log(atk.weaponName);
                         }
                         break;
 
@@ -270,12 +244,7 @@ public class GameController : MonoBehaviour {
                 //Invoke attack function (INVOKE CANT USE FUNCTIONS THAT HAVE PARAMETERS)
                // weapon.Invoke("Attack", 0.0001f);
             }
-
-
-
         }
-
-        
     }
 
     void FixedUpdate()
@@ -335,6 +304,28 @@ public class GameController : MonoBehaviour {
         {
             falling = false;
             timer = 0;
+        }
+    }
+
+    private void RemoveCurrentMapObjects()
+    {
+        //def of parent for removing item
+        itemlist = WorldObjects.WorldObjectsSingle.transform.FindChild("WorldItems");
+        //itemlist = GameObject.Find("WorldItems");
+
+        //remove player projectiles
+        playerProjectileList = GameObject.Find("PlayerProjectiles");
+
+        //remove items
+        foreach (Transform child in itemlist)
+        {
+            Destroy(child.gameObject);
+        }
+
+        //remove playerProjectiles
+        foreach (Transform child in playerProjectileList.transform)
+        {
+            Destroy(child.gameObject);
         }
     }
 
@@ -435,9 +426,12 @@ public class GameController : MonoBehaviour {
 
     public void loadScence(string sceneName)
     {
-        foreach (Transform child in EnemyList.EnemyListSingle.transform)
+        foreach (Transform child in WorldObjects.WorldObjectsSingle.transform)
         {
-            Destroy(child.gameObject);
+            foreach (Transform child2 in child)
+            {
+                Destroy(child2.gameObject);
+            }
         }
         StartCoroutine(LoadNewScene(sceneName));
     }

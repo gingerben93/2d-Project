@@ -74,66 +74,76 @@ public class MapGenerator : MonoBehaviour
 
         //if (GameLoader.GameLoaderSingle == null)
         //{
-            numMaps = 6;
-            int startMap = 0;
-            int y = numMaps;
+        numMaps = 6;
+        int startMap = 0;
+        int y = numMaps;
 
-            List<Vector2> mapSets = new List<Vector2>();
-            UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
+        List<Vector2> mapSets = new List<Vector2>();
+        UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
 
-            while (y > 0)
+        while (y > 0)
+        {
+            //make size 2 or 3
+            int ranSizeSetMaps = UnityEngine.Random.Range(2, 4);
+            if (y >= ranSizeSetMaps)
             {
-                //make size 2 or 3
-                int ranSizeSetMaps = UnityEngine.Random.Range(2, 4);
-                if (y >= ranSizeSetMaps)
-                {
-                    //Debug.Log("ranSizeSetMaps = " + ranSizeSetMaps + "startMap = " + startMap);
-                    mapSets.Add(new Vector2(ranSizeSetMaps, numMaps - y));
-                    y -= ranSizeSetMaps;
-                    startMap += y;
-                }
-                else
-                {
-                    //Debug.Log("new Vector2(mapSets[mapSets.Count - 1].x + x = " + (mapSets[mapSets.Count - 1].x + x)  + " mapSets[mapSets.Count - 1].y) = " + mapSets[mapSets.Count - 1].y);
-                    mapSets[mapSets.Count - 1] = new Vector2(mapSets[mapSets.Count - 1].x + y, mapSets[mapSets.Count - 1].y);
-                    break;
-                }
+                //Debug.Log("ranSizeSetMaps = " + ranSizeSetMaps + "startMap = " + startMap);
+                mapSets.Add(new Vector2(ranSizeSetMaps, numMaps - y));
+                y -= ranSizeSetMaps;
+                startMap += y;
             }
-
-            GameData.GameDataSingle.mapSets = mapSets;
-
-            int x = 0;
-            for (x = 0; x < numMaps; x++)
+            else
             {
-                seed = currentMap.ToString();
-                GenerateMap();
-                currentMap += 1;
+                //Debug.Log("new Vector2(mapSets[mapSets.Count - 1].x + x = " + (mapSets[mapSets.Count - 1].x + x)  + " mapSets[mapSets.Count - 1].y) = " + mapSets[mapSets.Count - 1].y);
+                mapSets[mapSets.Count - 1] = new Vector2(mapSets[mapSets.Count - 1].x + y, mapSets[mapSets.Count - 1].y);
+                break;
             }
+        }
 
-            //custom room generation stuff -> for temp boss room currently
-            //width = 50; height = 100;
-            //randomFillPercent = 0;
-            //seed = currentMap.ToString();
-            //bossRooms.Add(seed);
-            ////Debug.Log("seed boos room = " + seed);
-            //GameData.GameDataSingle.isBossRoomOpen.Add(seed, false);
-            //GenerateMap();
-            //currentMap += 1;
+        GameData.GameDataSingle.mapSets = mapSets;
 
-            foreach (Vector2 num in GameData.GameDataSingle.mapSets)
-            {
-                //use: start map, end map, num doors; \n map1 seed, map2 seed
-                GameData.GameDataSingle.CreatDoorConnections((int)num.y, (int)num.x + (int)num.y - 1, 2);
-                GameData.GameDataSingle.EnsureConnectivityOfMaps((int)num.y, (int)num.x + (int)num.y - 1);
-                GameData.GameDataSingle.ConnectDoors();
-            }
+        int x = 0;
+        for (x = 0; x < numMaps; x++)
+        {
+            //not in random mode
+            //width = UnityEngine.Random.Range(50, 150);
+            //height = UnityEngine.Random.Range(50, 150);
+            //randomFillPercent = UnityEngine.Random.Range(15, 50);
+            //seed = UnityEngine.Random.Range(0, 10000).ToString();
+            seed = currentMap.ToString();
+            GenerateMap();
+            currentMap += 1;
+        }
 
+        //custom room generation stuff -> for temp boss room currently
+        //width = 50; height = 100;
+        //randomFillPercent = 0;
+        //seed = currentMap.ToString();
+        //bossRooms.Add(seed);
+        ////Debug.Log("seed boos room = " + seed);
+        //GameData.GameDataSingle.isBossRoomOpen.Add(seed, false);
+        //GenerateMap();
+        //currentMap += 1;
+
+        foreach (Vector2 num in GameData.GameDataSingle.mapSets)
+        {
+            //use: start map, end map, num doors; \n map1 seed, map2 seed
+            GameData.GameDataSingle.CreatDoorConnections((int)num.y, (int)num.x + (int)num.y - 1, 2);
+            GameData.GameDataSingle.EnsureConnectivityOfMaps((int)num.y, (int)num.x + (int)num.y - 1);
+            GameData.GameDataSingle.ConnectDoors();
+        }
+
+        //currently not in random mode
         //add boss door; usage -> give mapinfo of a map
         //might need to change usage to give it the map seed.
         GameData.GameDataSingle.AddUniqueDoorToMap(MapInfo["1"]);
-       
+        
+        //to set to random mode
+        //GameData.GameDataSingle.AddUniqueDoorToMap(MapInfo[GameData.GameDataSingle.mapSeed[UnityEngine.Random.Range(0, GameData.GameDataSingle.mapSeed.Count)]]);
+
+
         ////////
-            foreach (Vector2 num in GameData.GameDataSingle.mapSets)
+        foreach (Vector2 num in GameData.GameDataSingle.mapSets)
             {
                 if (GameData.GameDataSingle.mapSets[GameData.GameDataSingle.mapSets.Count - 1] == num)
                 {

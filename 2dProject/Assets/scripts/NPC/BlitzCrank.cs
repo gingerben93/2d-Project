@@ -8,7 +8,7 @@ public class BlitzCrank : MonoBehaviour {
     //reward
     public Transform reward;
 
-    public bool character;
+    public bool touchingCharacter;
     public bool chat;
 
     //Coroutine
@@ -23,7 +23,7 @@ public class BlitzCrank : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        character = false;
+        touchingCharacter = false;
         chat = false;
         NPCtext = GameObject.Find("StarAreaCanvas/Panel/NPC/NPCText/Text").GetComponent<Text>();
         Herotext = GameObject.Find("StarAreaCanvas/Panel/Hero/HeroText/Text").GetComponent<Text>();
@@ -34,7 +34,7 @@ public class BlitzCrank : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        if (Input.GetKeyDown(KeyCode.Q) && character && GameController.GameControllerSingle.Boss1 == true)
+        if (Input.GetKeyDown(KeyCode.Q) && touchingCharacter && GameController.GameControllerSingle.Boss1 == true)
         {
             GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
             StartCoroutine(NPCDialog(NPCtext, "You beat the boss, game over faggot."));
@@ -42,7 +42,7 @@ public class BlitzCrank : MonoBehaviour {
             canvas.alpha = 1;
             chat = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Q) && character && !QuestController.QuestControllerSingle.questList.ContainsKey("Blitz"))
+        else if (Input.GetKeyDown(KeyCode.Q) && touchingCharacter && !QuestController.QuestControllerSingle.questList.ContainsKey("Blitz"))
         {
             GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
             chat = true;
@@ -53,7 +53,7 @@ public class BlitzCrank : MonoBehaviour {
             QuestController.QuestControllerSingle.quest = 1;
             QuestController.QuestControllerSingle.PickQuest("Blitz");
         }
-        else if (Input.GetKeyDown(KeyCode.Q) && character && QuestController.QuestControllerSingle.questList.ContainsKey("Blitz"))
+        else if (Input.GetKeyDown(KeyCode.Q) && touchingCharacter && QuestController.QuestControllerSingle.questList.ContainsKey("Blitz"))
         {
             if (QuestController.QuestControllerSingle.questList["Blitz"] == false)
             {
@@ -75,9 +75,10 @@ public class BlitzCrank : MonoBehaviour {
                 canvas.alpha = 1;
                 chat = true;
                 QuestController.QuestControllerSingle.questList.Remove("Blitz");
-                Transform savedGameData = Instantiate(reward, transform.position, Quaternion.identity);
-                GameData.GameDataSingle.isBossRoomOpen["6"] = true;
-                //savedGameData.name = savedGameData.name + GameData.GameDataSingle.isBossRoomOpen;
+                Instantiate(reward, transform.position, Quaternion.identity);
+                //Transform savedGameData = Instantiate(reward, transform.position, Quaternion.identity);
+
+                QuestController.QuestControllerSingle.questDoorOpen[QuestController.QuestControllerSingle.currentQuest] = true;
             }
         }
     }
@@ -87,16 +88,15 @@ public class BlitzCrank : MonoBehaviour {
 
         if (collision.gameObject.tag == "Player")
         {
-            character = true;
+            touchingCharacter = true;
         }
-        //character = true;
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            character = false;
+            touchingCharacter = false;
             chat = false;
             canvas.alpha = 0;
 

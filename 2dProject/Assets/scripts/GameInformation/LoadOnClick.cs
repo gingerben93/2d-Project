@@ -44,9 +44,12 @@ public class LoadOnClick : MonoBehaviour {
 
     void Update() {
         if (loading) {
-            foreach (Transform child in EnemyList.EnemyListSingle.transform)
+            foreach (Transform child in WorldObjects.WorldObjectsSingle.transform)
             {
-                Destroy(child.gameObject);
+                foreach (Transform child2 in child)
+                {
+                    Destroy(child2.gameObject);
+                }
             }
             loadMap = "StartArea";
             mapGenerator.SetActive(false);
@@ -95,6 +98,7 @@ public class LoadOnClick : MonoBehaviour {
         //actives game controler for player actions
         GameController.GameControllerSingle.isGameLoading = false;
         GameController.GameControllerSingle.touchingDoor = false;
+        GameController.GameControllerSingle.questTravel = false;
         loadingText.text = "";
     }
 }

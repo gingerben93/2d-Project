@@ -20,6 +20,9 @@ public class MeshGenerator : MonoBehaviour
 
     public Transform groundPiece;
 
+    //parent for tiles
+    public Transform TileHolder;
+
     //dictionary of Cave mesh objects
     public Dictionary<string, GameObject> CaveMeshDictionary = new Dictionary<string, GameObject>();
 
@@ -127,7 +130,7 @@ public class MeshGenerator : MonoBehaviour
             EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
             Vector2[] edgePoints = new Vector2[outline.Count];
 
-            foreach (Transform child in transform)
+            foreach (Transform child in TileHolder)
             {
                 if (child.tag == "Ground")
                 {
@@ -151,7 +154,6 @@ public class MeshGenerator : MonoBehaviour
                 edgePoints[i] = new Vector2(vertices[outline[i]].x, vertices[outline[i]].z);
 
                 //for loading sprites in
-
                 // consider replacing with Vector3.Distance(a,b)
                 vertX = vertices[outline[i]].x;
                 vertXPLus1 = vertices[outline[(i + 1) % count]].x;
@@ -193,8 +195,7 @@ public class MeshGenerator : MonoBehaviour
 
     void DrawSprites(float vertX, float vertXPLus1,  float vertXMinus1 ,float vertZ , float vertZPLus1 ,float vertZMinus1 , int count, int i)
     {
-        var groundSprite = Instantiate(groundPiece) as Transform;
-        groundSprite.transform.SetParent(transform);
+        var groundSprite = Instantiate(groundPiece, TileHolder) as Transform;
         groundSprite.name = i.ToString();
 
         //horizontal and vetical sprites
