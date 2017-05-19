@@ -46,8 +46,17 @@ public class BlitzCrank : MonoBehaviour {
         {
             GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
             chat = true;
+
+            //TextAsset TextObject = Resources.Load("Dialog/Con1") as TextAsset;
+            //string fullConversation = TextObject.text;
+            //string[] perline = fullConversation.Split('\n');
+
+            //StartCoroutine(HeroDialog(Herotext, perline[0]));
+            //StartCoroutine(NPCDialog(NPCtext, perline[1]));
+
             StartCoroutine(HeroDialog(Herotext, "I'm bored af my dude. Give me something."));
             StartCoroutine(NPCDialog(NPCtext, "Here is ur quest."));
+
             canvas.alpha = 1;
             QuestController.QuestControllerSingle.AddQuestToList("Blitz");
             QuestController.QuestControllerSingle.quest = 1;

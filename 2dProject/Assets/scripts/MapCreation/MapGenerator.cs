@@ -108,7 +108,7 @@ public class MapGenerator : MonoBehaviour
             //not in random mode
             //width = UnityEngine.Random.Range(50, 150);
             //height = UnityEngine.Random.Range(50, 150);
-            //randomFillPercent = UnityEngine.Random.Range(15, 50);
+            //randomFillPercent = UnityEngine.Random.Range(30, 50);
             //seed = UnityEngine.Random.Range(0, 10000).ToString();
             seed = currentMap.ToString();
             GenerateMap();
