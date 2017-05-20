@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/scene/MainGame.unity
+- path: Assets/scene/CutSceneManager.unity
   isLoaded: 1
   isActive: 1
