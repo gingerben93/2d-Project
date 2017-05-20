@@ -61,11 +61,11 @@ public class GameController : MonoBehaviour {
     //for godhands fire rate
     public bool GodhandsCanAttack = true;
 
-    public static GameController GameControllerSingle;
-
     //for removing the current items other things on map
     Transform itemlist;
     GameObject playerProjectileList;
+
+    public static GameController GameControllerSingle;
 
     void Awake()
     {

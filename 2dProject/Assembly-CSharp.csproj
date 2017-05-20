@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\scripts\CutSceneScripts\CutScene1.cs" />
+     <Compile Include="Assets\scripts\CutSceneScripts\CutSceneLoader.cs" />
      <Compile Include="Assets\scripts\DamagePlayerOnCollision.cs" />
      <Compile Include="Assets\scripts\DoorToMainGame.cs" />
      <Compile Include="Assets\scripts\DoorToNewScene.cs" />
