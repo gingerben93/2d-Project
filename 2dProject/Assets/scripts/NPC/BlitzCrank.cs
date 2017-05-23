@@ -59,8 +59,7 @@ public class BlitzCrank : MonoBehaviour {
 
             canvas.alpha = 1;
             QuestController.QuestControllerSingle.AddQuestToList("Blitz");
-            QuestController.QuestControllerSingle.quest = 1;
-            QuestController.QuestControllerSingle.PickQuest("Blitz");
+            QuestController.QuestControllerSingle.PickQuest("Blitz", 1);
         }
         else if (Input.GetKeyDown(KeyCode.Q) && touchingCharacter && QuestController.QuestControllerSingle.questList.ContainsKey("Blitz"))
         {

@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class QuestController : MonoBehaviour {
-
-    public int quest;
+    
     public Text QuestTxt;
 
     //Generic quest variables
@@ -31,19 +30,14 @@ public class QuestController : MonoBehaviour {
     //public List<bool> QuestDoorOpen = new List<bool>();
     public int currentQuest{ get; set; }
 
+    //for tracking conversations
+    public string currentConversation;
+
+    //quest up to date
+    public bool isQuestCurrent = false;
+
     public static QuestController QuestControllerSingle;
-    /*
-     * NPC chooses a rand quest
-     * Kill/Collection
-     * Kill/Collection quests - rand between objective names
-     * Rand amount on how many to kill/collect (5-10)
-     * Amount of kill/collect will affect reward (reward x count)
-     * 
-     * 
-     * 
-     * 
-     * 
-     * */
+
     void Awake()
     {
         if (QuestControllerSingle == null)
@@ -60,9 +54,9 @@ public class QuestController : MonoBehaviour {
         questDoorOpen = new bool[10];
     }
 
-    public void PickQuest(string NPCName)
+    public void PickQuest(string NPCName, int questType)
     {
-        switch (quest)
+        switch (questType)
         {
             case 1:
                 Debug.Log("Quest 1");
@@ -148,5 +142,36 @@ public class QuestController : MonoBehaviour {
     public void AddQuestToList(string NPCName)
     {
         questList.Add(NPCName, false);
+    }
+
+    //for moving main quest elements along; Instantiating, value chaning , etc.
+    public void NextMainQuest(int curQuest)
+    {
+        switch (curQuest)
+        {
+            case 0:
+                Debug.Log("Main Quest 0");
+                currentConversation = "Con1";
+                //update quest counter
+                GameObject.Find("Doctor").AddComponent<TalkOnApproach>();
+                break;
+            case 1:
+                Debug.Log("Main Quest 1");
+                currentConversation = "Con2";
+                //update quest counter
+                GameObject.Find("Character1").AddComponent<TalkOnApproach>();
+                break;
+            case 2:
+                Debug.Log("Main Quest 2");
+                break;
+            default:
+                Debug.Log("Default case hit");
+                break;
+        }
+    }
+
+    public void DialogScript(string ConversationName)
+    {
+
     }
 }

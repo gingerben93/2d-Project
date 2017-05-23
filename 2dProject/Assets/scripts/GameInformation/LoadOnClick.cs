@@ -53,7 +53,7 @@ public class LoadOnClick : MonoBehaviour {
             }
             loadMap = "StartArea";
             mapGenerator.SetActive(false);
-            GameController.GameControllerSingle.transform.position = new Vector3(0, 1.2f, 0);
+            GameController.GameControllerSingle.transform.position = new Vector3(-56f, 1.2f, 0);
 
             loadScene = true;
             loading = false;
@@ -74,6 +74,9 @@ public class LoadOnClick : MonoBehaviour {
     }
 
     IEnumerator LoadNewScene() {
+
+        //set quest not current when changing scenes
+        QuestController.QuestControllerSingle.isQuestCurrent = false;
 
         GameObject hero = GameObject.Find("Hero");
         //stops player from moving during loading
@@ -100,5 +103,7 @@ public class LoadOnClick : MonoBehaviour {
         GameController.GameControllerSingle.touchingDoor = false;
         GameController.GameControllerSingle.questTravel = false;
         loadingText.text = "";
+
+        
     }
 }

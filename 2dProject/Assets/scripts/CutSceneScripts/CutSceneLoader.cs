@@ -8,7 +8,7 @@ public class CutSceneLoader : MonoBehaviour
     //private int scene;
     public bool loadCutScene = false;
     public bool loadBackToGame = false;
-    public string loadMap = "MainGame";
+    public string loadMap = "NameOfCutSceneToLoad";
 
     //for getting mapgenerator
     private GameObject mapGenerator;
@@ -36,14 +36,14 @@ public class CutSceneLoader : MonoBehaviour
     {
         if (loadCutScene)
         {
-            loadMap = "MainGame";
+            loadMap = "CutSceneManager";
             allCurrentGameObjects = FindObjectsOfType<GameObject>();
             foreach (GameObject ob in allCurrentGameObjects)
             {
                 if (ob.name != gameObject.name)
                 {
                     ob.SetActive(false);
-                    Debug.Log(ob.name);
+                    //Debug.Log(ob.name);
                 }
             }
             loadCutScene = false;
@@ -58,7 +58,7 @@ public class CutSceneLoader : MonoBehaviour
                 {
                     if (ob.name != "CutScene")
                     {
-                        Debug.Log(ob.name);
+                        //Debug.Log(ob.name);
                         ob.SetActive(true);
 
                     }

@@ -45,8 +45,7 @@ public class Morgana : MonoBehaviour
             StartCoroutine(NPCDialog(NPCtext, "Fucking faggot."));
             canvas.alpha = 1;
             QuestController.QuestControllerSingle.AddQuestToList("Morgana");
-            QuestController.QuestControllerSingle.quest = 2;
-            QuestController.QuestControllerSingle.PickQuest("Morgana");
+            QuestController.QuestControllerSingle.PickQuest("Morgana", 2);
         }
         else if (Input.GetKeyDown(KeyCode.Q) && character && QuestController.QuestControllerSingle.questList.ContainsKey("Morgana"))
         {
@@ -65,8 +64,8 @@ public class Morgana : MonoBehaviour
                 Destroy(removeQuest);
 
                 GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
-                StartCoroutine(NPCDialog(NPCtext, "You completed your quest, now defeat the boss."));
-                StartCoroutine(HeroDialog(Herotext, "kool"));
+                StartCoroutine(NPCDialog(NPCtext, "You completed your quest, now go away."));
+                StartCoroutine(HeroDialog(Herotext, "... whatever"));
                 canvas.alpha = 1;
                 chat = true;
                 QuestController.QuestControllerSingle.questList.Remove("Morgana");
