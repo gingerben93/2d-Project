@@ -35,9 +35,6 @@ public class DoorToMainGame : MonoBehaviour
 
     IEnumerator LoadNewScene()
     {
-        //for checking quest when loading scenes
-        QuestController.QuestControllerSingle.isQuestCurrent = false;
-
         GameObject hero = GameObject.Find("Hero");
         //stops player from moving during loading
         hero.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;

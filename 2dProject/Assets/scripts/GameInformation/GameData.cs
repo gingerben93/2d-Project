@@ -303,12 +303,16 @@ public class GameData : MonoBehaviour
     //connects two maps with one door
     public void ConnectSetOfRooms(int mapOne, int mapTwo)
     {
-        //Debug.Log("map1 = " + mapOne + " Map2 = " + mapTwo);
+        
         MapInformation map1 = MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[mapOne]];
         MapInformation map2 = MapGenerator.MapGeneratorSingle.MapInfo[mapSeed[mapTwo]];
 
         int tempDoorIndex1 = Random.Range(0, map1.possibleDoorLocationsX.Count);
         Vector2 tempDoor;
+        Debug.Log("map1 = " + mapOne + " Map2 = " + mapTwo);
+        Debug.Log("map1.possibleDoorLocationsX.Count = " + map1.possibleDoorLocationsX.Count + " tempDoorIndex1 = " + tempDoorIndex1);
+        Debug.Log("map1.possibleDoorLocationsY.Count = " + map1.possibleDoorLocationsY.Count);
+
         Vector2 door1 = new Vector2(map1.possibleDoorLocationsX[tempDoorIndex1], map1.possibleDoorLocationsY[tempDoorIndex1]);
 
         float xPosMapOne = -map1.width / 2 + door1.x * map1.squareSize + map1.squareSize / 2;
@@ -322,6 +326,9 @@ public class GameData : MonoBehaviour
             {
                 map1.possibleDoorLocationsX.Remove(tempDoorIndex1 + 1);
                 map1.possibleDoorLocationsY.Remove(tempDoorIndex1 + 1);
+                map1.possibleDoorLocationsX.TrimExcess();
+                map1.possibleDoorLocationsY.TrimExcess();
+
             }
         }
         if (tempDoorIndex1 > 0)
@@ -331,6 +338,8 @@ public class GameData : MonoBehaviour
             {
                 map1.possibleDoorLocationsX.Remove(tempDoorIndex1 - 1);
                 map1.possibleDoorLocationsY.Remove(tempDoorIndex1 - 1);
+                map1.possibleDoorLocationsX.TrimExcess();
+                map1.possibleDoorLocationsY.TrimExcess();
                 //when remove left element you have to shrik the index location beacuse list resizes.
                 tempDoorIndex1--;
             }
@@ -350,6 +359,8 @@ public class GameData : MonoBehaviour
             {
                 map2.possibleDoorLocationsX.Remove(tempDoorIndex2 + 1);
                 map2.possibleDoorLocationsY.Remove(tempDoorIndex2 + 1);
+                map2.possibleDoorLocationsX.TrimExcess();
+                map2.possibleDoorLocationsY.TrimExcess();
             }
         }
         if (tempDoorIndex2 > 0)
@@ -359,6 +370,8 @@ public class GameData : MonoBehaviour
             {
                 map2.possibleDoorLocationsX.Remove(tempDoorIndex2 - 1);
                 map2.possibleDoorLocationsY.Remove(tempDoorIndex2 - 1);
+                map2.possibleDoorLocationsX.TrimExcess();
+                map2.possibleDoorLocationsY.TrimExcess();
                 //when remove left element you have to shrik the index location beacuse list resizes.
                 tempDoorIndex2 -= 1;
             }
@@ -368,6 +381,11 @@ public class GameData : MonoBehaviour
         map1.possibleDoorLocationsY.RemoveAt(tempDoorIndex1);
         map2.possibleDoorLocationsX.RemoveAt(tempDoorIndex2);
         map2.possibleDoorLocationsY.RemoveAt(tempDoorIndex2);
+
+        map1.possibleDoorLocationsX.TrimExcess();
+        map1.possibleDoorLocationsY.TrimExcess();
+        map2.possibleDoorLocationsX.TrimExcess();
+        map2.possibleDoorLocationsY.TrimExcess();
 
         door1 = new Vector2(xPosMapOne, yPosMapOne);
         door2 = new Vector2(xPosMapTwo, yPosMapTwo);

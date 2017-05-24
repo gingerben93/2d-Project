@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class CutScene1 : MonoBehaviour {
@@ -62,7 +63,18 @@ public class CutScene1 : MonoBehaviour {
         speed = 0.1f;
         targetLocation = new Vector3(11.70f, -14.40f, -1.0f);
 
-
+        yield return new WaitForSeconds(3);
+        CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
     }
 
+    IEnumerator LoadNewScene()
+    {
+        AsyncOperation async = SceneManager.LoadSceneAsync("MainGame");
+
+        // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
+        while (!async.isDone)
+        {
+            yield return null;
+        }
+    }
 }

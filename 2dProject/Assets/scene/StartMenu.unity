@@ -814,4 +814,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingText: {fileID: 1739245202}
-  loadMap: MainGame
+  loadMap: CutSceneManager

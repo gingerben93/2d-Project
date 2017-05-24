@@ -63,6 +63,12 @@ public class Morgana : MonoBehaviour
                 GameObject removeQuest = GameObject.Find("ManaPotion");
                 Destroy(removeQuest);
 
+                //for side counter
+                if (GameController.GameControllerSingle.sideQuestBool == true)
+                {
+                    GameController.GameControllerSingle.sideQuestCounter += 1;
+                }
+
                 GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
                 StartCoroutine(NPCDialog(NPCtext, "You completed your quest, now go away."));
                 StartCoroutine(HeroDialog(Herotext, "... whatever"));

@@ -8,9 +8,6 @@ public class DoorToNewScene : MonoBehaviour
     {
         if (GameController.GameControllerSingle.questTravel)
         {
-            //for checking quest when loading scenes
-            QuestController.QuestControllerSingle.isQuestCurrent = false;
-
             GameController.GameControllerSingle.questTravel = false;
             GameController.GameControllerSingle.loadScence(sceneToLoad);
             GameController.GameControllerSingle.transform.position = Vector3.zero;

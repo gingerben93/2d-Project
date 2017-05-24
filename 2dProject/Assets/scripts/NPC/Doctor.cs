@@ -30,21 +30,19 @@ public class Doctor : MonoBehaviour
         Herotext = GameObject.Find("StarAreaCanvas/Panel/Hero/HeroText/Text").GetComponent<Text>();
         canvas = GameObject.Find("StarAreaCanvas").GetComponent<CanvasGroup>();
 
+        if (QuestController.QuestControllerSingle.currentQuest == 0f)
+        {
+            //QuestController.QuestControllerSingle.isQuestCurrent = true;
+            Debug.Log("quest is 0");
+            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            //QuestController.QuestControllerSingle.NextMainQuest(QuestController.QuestControllerSingle.currentQuest);
+            GameObject.Find("Doctor").AddComponent<MainQuest0_0>();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!QuestController.QuestControllerSingle.isQuestCurrent)
-        {
-            if (QuestController.QuestControllerSingle.currentQuest == 0)
-            {
-                QuestController.QuestControllerSingle.isQuestCurrent = true;
-                Debug.Log("quest is 0");
-                Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-                QuestController.QuestControllerSingle.NextMainQuest(QuestController.QuestControllerSingle.currentQuest);
-            }
-        }
 
         if (Input.GetKeyDown(KeyCode.Q) && character)
         {

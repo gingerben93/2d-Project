@@ -28,13 +28,9 @@ public class QuestController : MonoBehaviour {
     //for opening quest doors
     public bool[] questDoorOpen;
     //public List<bool> QuestDoorOpen = new List<bool>();
-    public int currentQuest{ get; set; }
 
-    //for tracking conversations
-    public string currentConversation;
-
-    //quest up to date
-    public bool isQuestCurrent = false;
+    //main story quest counter
+    public float currentQuest{ get; set; }
 
     public static QuestController QuestControllerSingle;
 
@@ -50,8 +46,8 @@ public class QuestController : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        currentQuest = 0;
-        questDoorOpen = new bool[10];
+        currentQuest = 0f;
+        //questDoorOpen = new bool[10];
     }
 
     public void PickQuest(string NPCName, int questType)
@@ -142,32 +138,6 @@ public class QuestController : MonoBehaviour {
     public void AddQuestToList(string NPCName)
     {
         questList.Add(NPCName, false);
-    }
-
-    //for moving main quest elements along; Instantiating, value chaning , etc.
-    public void NextMainQuest(int curQuest)
-    {
-        switch (curQuest)
-        {
-            case 0:
-                Debug.Log("Main Quest 0");
-                currentConversation = "Con1";
-                //update quest counter
-                GameObject.Find("Doctor").AddComponent<TalkOnApproach>();
-                break;
-            case 1:
-                Debug.Log("Main Quest 1");
-                currentConversation = "Con2";
-                //update quest counter
-                GameObject.Find("Character1").AddComponent<TalkOnApproach>();
-                break;
-            case 2:
-                Debug.Log("Main Quest 2");
-                break;
-            default:
-                Debug.Log("Default case hit");
-                break;
-        }
     }
 
     public void DialogScript(string ConversationName)

@@ -27,21 +27,28 @@ public class Character1 : MonoBehaviour
         NPCtext = GameObject.Find("StarAreaCanvas/Panel/NPC/NPCText/Text").GetComponent<Text>();
         Herotext = GameObject.Find("StarAreaCanvas/Panel/Hero/HeroText/Text").GetComponent<Text>();
         canvas = GameObject.Find("StarAreaCanvas").GetComponent<CanvasGroup>();
+
+        if (QuestController.QuestControllerSingle.currentQuest == 1f)
+        {
+            //QuestController.QuestControllerSingle.isQuestCurrent = true;
+            Debug.Log("quest is 1");
+            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            //QuestController.QuestControllerSingle.NextMainQuest(QuestController.QuestControllerSingle.currentQuest);
+            GameObject.Find("Character1").AddComponent<MainQuest1_0>();
+        }
+        else if (QuestController.QuestControllerSingle.currentQuest == 3f)
+        {
+            //QuestController.QuestControllerSingle.isQuestCurrent = true;
+            Debug.Log("quest is 3");
+            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            //QuestController.QuestControllerSingle.NextMainQuest(QuestController.QuestControllerSingle.currentQuest);
+            GameObject.Find("Character1").AddComponent<MainQuest3_0>();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!QuestController.QuestControllerSingle.isQuestCurrent)
-        {
-            if (QuestController.QuestControllerSingle.currentQuest == 1)
-            {
-                QuestController.QuestControllerSingle.isQuestCurrent = true;
-                Debug.Log("quest is 1");
-                Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-                QuestController.QuestControllerSingle.NextMainQuest(QuestController.QuestControllerSingle.currentQuest);
-            }
-        }
 
         if (Input.GetKeyDown(KeyCode.Q) && character)
         {

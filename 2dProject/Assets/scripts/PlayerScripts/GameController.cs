@@ -9,6 +9,11 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
 
+    public string playerName { get; set; }
+
+    public int sideQuestCounter { get; set; }
+    public bool sideQuestBool { get; set; }
+
     public bool facingRight { get; set; }
     public bool jump { get; set; }
 
@@ -82,6 +87,10 @@ public class GameController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+
+        //if side quest counter is on
+        sideQuestBool = false;
+
         //variables on start
         maxSpeed = 7f;
         moveForce = 5f;
@@ -104,6 +113,9 @@ public class GameController : MonoBehaviour {
         doorInfo = FindObjectOfType<DoorCollider>();
         rb2d = GetComponent<Rigidbody2D>();
         transform.position = respawnLocation;
+
+        //start player name
+        playerName = "fukin nerd";
     }
 
 	
@@ -143,18 +155,18 @@ public class GameController : MonoBehaviour {
             if (touchingQuestDoor)
             {
                 //Debug.Log("GameData.GameDataSingle.isBossRoomOpen[mapSeed]" + GameData.GameDataSingle.isBossRoomOpen[mapSeed]);
-                if (QuestController.QuestControllerSingle.questDoorOpen[QuestController.QuestControllerSingle.currentQuest])
-                {
-                    Debug.Log("Go to boss room");
-                    touchingQuestDoor = false;
-                    RemoveCurrentMapObjects();
-                    questTravel = true;
-                }
-                else
-                {
+                //if (QuestController.QuestControllerSingle.questDoorOpen[QuestController.QuestControllerSingle.currentQuest])
+                //{
+                //    Debug.Log("Go to boss room");
+                //    touchingQuestDoor = false;
+                //    RemoveCurrentMapObjects();
+                //    questTravel = true;
+                //}
+                //else
+                //{
                     touchingQuestDoor = false;
                     Debug.Log("Door Is Locked");
-                }
+                //}
             }
         }
         

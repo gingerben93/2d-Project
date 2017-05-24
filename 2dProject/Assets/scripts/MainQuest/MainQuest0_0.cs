@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TalkOnApproach : MonoBehaviour {
+public class MainQuest0_0 : MonoBehaviour {
 
     private Text NPCtext;
     private Text Herotext;
@@ -37,18 +37,33 @@ public class TalkOnApproach : MonoBehaviour {
                 GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
 
                 canvas.alpha = 1;
-                StartCoroutine(Dialog());
+                StartCoroutine(Dialog("Con1"));
             }
         }
     }
 
-    IEnumerator Dialog()
+    public bool promptName = false;
+    void OnGUI()
+    {
+        if (promptName)
+        {
+            GameController.GameControllerSingle.playerName = GUI.TextField(new Rect(Screen.width / 2, Screen.height / 2, 200, 20), GameController.GameControllerSingle.playerName, 25);
+        }
+        if (Event.current.isKey && Event.current.keyCode == KeyCode.Return && promptName == true)
+        {
+            Debug.Log("enter is pressed.");
+            promptName = false;
+        }
+    }
+
+    IEnumerator Dialog(string Conversation)
     {
         Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
 
-        TextAsset TextObject = Resources.Load("Dialog/" + QuestController.QuestControllerSingle.currentConversation) as TextAsset;
+        TextAsset TextObject = Resources.Load("Dialog/" + Conversation) as TextAsset;
         string fullConversation = TextObject.text;
         string[] perline = fullConversation.Split('\n');
+        
         for (int x = 0; x < perline.Length; x += 2)
         {
 
@@ -57,6 +72,15 @@ public class TalkOnApproach : MonoBehaviour {
             {
                 Herotext.text += letter;
                 yield return new WaitForSeconds(0.05f);
+            }
+
+            if (x == 2)
+            {
+                promptName = true;
+                while (promptName == true)
+                { 
+                    yield return new WaitForSeconds(0.1f);
+                }
             }
 
             NPCtext.text = "";
@@ -80,9 +104,19 @@ public class TalkOnApproach : MonoBehaviour {
         NPCtext.text = "";
         Herotext.text = "";
 
+        QuestController.QuestControllerSingle.currentQuest = 1f;
+
+        if (QuestController.QuestControllerSingle.currentQuest == 1f)
+        {
+            //QuestController.QuestControllerSingle.isQuestCurrent = true;
+            Debug.Log("quest is 1");
+            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            //QuestController.QuestControllerSingle.NextMainQuest(QuestController.QuestControllerSingle.currentQuest);
+            GameObject.Find("Character1").AddComponent<MainQuest1_0>();
+        }
         //update main quest
-        QuestController.QuestControllerSingle.currentQuest += 1;
-        QuestController.QuestControllerSingle.isQuestCurrent = false;
+        
+        //QuestController.QuestControllerSingle.isQuestCurrent = false;
         Destroy(this);
     }
 }

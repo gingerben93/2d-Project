@@ -77,6 +77,12 @@ public class BlitzCrank : MonoBehaviour {
                 GameObject removeQuest = GameObject.Find("Enemy");
                 Destroy(removeQuest);
 
+                //side quest counter
+                if (GameController.GameControllerSingle.sideQuestBool == true)
+                {
+                    GameController.GameControllerSingle.sideQuestCounter += 1;
+                }
+
                 GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
                 StartCoroutine(NPCDialog(NPCtext, "You completed your quest, now defeat the boss."));
                 StartCoroutine(HeroDialog(Herotext, "kool"));
@@ -86,7 +92,7 @@ public class BlitzCrank : MonoBehaviour {
                 Instantiate(reward, transform.position, Quaternion.identity);
                 //Transform savedGameData = Instantiate(reward, transform.position, Quaternion.identity);
 
-                QuestController.QuestControllerSingle.questDoorOpen[QuestController.QuestControllerSingle.currentQuest] = true;
+                //QuestController.QuestControllerSingle.questDoorOpen[QuestController.QuestControllerSingle.currentQuest] = true;
             }
         }
     }
