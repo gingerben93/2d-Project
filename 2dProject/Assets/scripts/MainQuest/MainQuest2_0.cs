@@ -26,7 +26,7 @@ public class MainQuest2_0 : MonoBehaviour {
                 GameController.GameControllerSingle.sideQuestBool = false;
                 Debug.Log("Complete, go to main quest 3");
                 QuestController.QuestControllerSingle.currentQuest = 3f;
-                CutSceneLoader.CutSceneLoaderSingle.loadCutScene = true;
+                CutSceneLoader.CutSceneLoaderSingle.loadScene("CutScene2");
                 GameObject.Find("Character1").AddComponent<MainQuest3_0>();
                 Destroy(this);
 

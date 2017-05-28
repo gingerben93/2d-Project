@@ -25,7 +25,5 @@ public class PlayerStats : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-        //GameObject temp = (GameObject)Resources.Load("player/GameData1", typeof(GameObject));
-        //MapInfo = temp.GetComponent<PlayerStats>().MapInfo;
     }
 }

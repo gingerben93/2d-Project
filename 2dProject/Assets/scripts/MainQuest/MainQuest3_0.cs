@@ -57,6 +57,7 @@ public class MainQuest3_0 : MonoBehaviour {
             Herotext.text = "";
             foreach (char letter in perline[x].ToCharArray())
             {
+                //this is a garbage collection nightmare (string concatenation in general is)
                 Herotext.text += letter;
                 yield return new WaitForSeconds(0.05f);
             }
@@ -82,12 +83,12 @@ public class MainQuest3_0 : MonoBehaviour {
         NPCtext.text = "";
         Herotext.text = "";
 
-        QuestController.QuestControllerSingle.currentQuest = 2f;
+        QuestController.QuestControllerSingle.currentQuest = 4f;
 
-        if (QuestController.QuestControllerSingle.currentQuest == 2f)
+        if (QuestController.QuestControllerSingle.currentQuest == 4f)
         {
             //QuestController.QuestControllerSingle.isQuestCurrent = true;
-            Debug.Log("quest is 2");
+            Debug.Log("quest is 3");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
             //QuestController.QuestControllerSingle.NextMainQuest(QuestController.QuestControllerSingle.currentQuest);
             GameObject.Find("Hero").AddComponent<MainQuest2_0>();

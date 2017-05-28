@@ -22,6 +22,10 @@ public class GameController : MonoBehaviour {
     public float maxSpeed{ get; set; }
     public float jumpForce{ get; set; }
 
+
+    //for if game needs to load test
+    public bool dontLoadTheGame;
+
     //private bool grounded = false;
     private Animator anim;
     public Rigidbody2D rb2d;
@@ -112,6 +116,8 @@ public class GameController : MonoBehaviour {
         //other start stuff
         doorInfo = FindObjectOfType<DoorCollider>();
         rb2d = GetComponent<Rigidbody2D>();
+
+        //for where player is at start of scene
         transform.position = respawnLocation;
 
         //start player name
@@ -353,14 +359,15 @@ public class GameController : MonoBehaviour {
     void OnGUI()
     {
         GUI.Label(new Rect(30, -3, 100, 30), "Health: " + PlayerStats.PlayerStatsSingle.health);
-        //if(GUI.Button(new Rect(Screen.width  / 2 + Screen.width / 4, Screen.height / 2, 100, 30), "Save"))
-        //{
-        //    Save();
-        //}
-        //if (GUI.Button(new Rect(Screen.width / 2 + Screen.width/ 4, Screen.height / 2 - 40, 100, 30), "Load"))
-        //{
-        //    Load();
-        //}
+        if (GUI.Button(new Rect(Screen.width / 2 + Screen.width / 4, Screen.height / 2, 100, 30), "Save"))
+        {
+            SavePlayerData();
+        }
+        if (GUI.Button(new Rect(Screen.width / 2 + Screen.width / 4, Screen.height / 2 - 40, 100, 30), "Load"))
+        {
+            LoadPlayerData();
+            //MapGenerator.MapGeneratorSingle.LoadMap();
+        }
     }
 
     void Flip()
@@ -384,55 +391,113 @@ public class GameController : MonoBehaviour {
         }
     }
 
-    public void Save()
+    //have to put in my hand for load on click field in canvas
+    public void SavePlayerData()
     {
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/playerInfo.dat");
 
         PlayerData playerDat = new PlayerData();
 
+        //Player info
         playerDat.health = PlayerStats.PlayerStatsSingle.health;
         playerDat.maxHealth = PlayerStats.PlayerStatsSingle.maxHealth;
         playerDat.experiencePoints = PlayerStats.PlayerStatsSingle.experiencePoints;
-
-        playerDat.MapInfo = MapGenerator.MapGeneratorSingle.MapInfo;
-
-        GameData gameData = FindObjectOfType<GameData>();
-        playerDat.doorConnectionDictionary = gameData.doorConnectionDictionary;
-        playerDat.mapSeed = gameData.mapSeed;
-        for (int x = 0; x < gameData.mapSets.Count; x++)
-        {
-            playerDat.mapSetsX.Add(gameData.mapSets[x].x);
-            playerDat.mapSetsY.Add(gameData.mapSets[x].y);
-        }
-
-        //Debug.Log("gameData.mapSets.Count = " + gameData.mapSets.Count);
-        //Debug.Log("gameData.mapSeed.Count = " + gameData.mapSeed.Count);
-        //Debug.Log("gameData.doorConnectionDictionary.Count = " + gameData.doorConnectionDictionary.Count);
-
-        //Debug.Log("playerDat.mapSetsX.Count = " + playerDat.mapSetsX.Count);
-        //Debug.Log("playerDat.mapSeed.Count = " + playerDat.mapSeed.Count);
-        //Debug.Log("playerDat.doorConnectionDictionary.Count = " + playerDat.doorConnectionDictionary.Count);
+        playerDat.level = PlayerStats.PlayerStatsSingle.level;
 
         bf.Serialize(file, playerDat);
         file.Close();
     }
 
-    public void Load()
+    public void SaveMapData()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+
+        BinaryFormatter bf = new BinaryFormatter();
+        FileStream file = File.Create(Application.persistentDataPath + "/"+ scene.name + ".dat");
+
+        levelInformation mapData = new levelInformation();
+
+        //map info
+        mapData.numMaps = MapGenerator.MapGeneratorSingle.numMaps;
+        mapData.MapInfo = MapGenerator.MapGeneratorSingle.MapInfo;
+        mapData.doorConnectionDictionary = GameData.GameDataSingle.doorConnectionDictionary;
+        mapData.mapSeed = GameData.GameDataSingle.mapSeed;
+
+        for (int x = 0; x < GameData.GameDataSingle.mapSets.Count; x++)
+        {
+            mapData.mapSetsX.Add(GameData.GameDataSingle.mapSets[x].x);
+            mapData.mapSetsY.Add(GameData.GameDataSingle.mapSets[x].y);
+        }
+
+        bf.Serialize(file, mapData);
+        file.Close();
+    }
+
+    public void LoadPlayerData()
     {
         if (File.Exists(Application.persistentDataPath + "/playerInfo.dat"))
         {
+            Debug.Log("load called");
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/playerInfo.dat", FileMode.Open);
             PlayerData playerDat = (PlayerData)bf.Deserialize(file);
             file.Close();
 
+            //player info
             PlayerStats.PlayerStatsSingle.health = playerDat.health;
             PlayerStats.PlayerStatsSingle.maxHealth = playerDat.maxHealth;
             PlayerStats.PlayerStatsSingle.experiencePoints = playerDat.experiencePoints;
-            MapGenerator.MapGeneratorSingle.MapInfo = playerDat.MapInfo;
+            PlayerStats.PlayerStatsSingle.level = playerDat.level;
 
-            MapGenerator.MapGeneratorSingle.LoadMap();
+            ////map info
+            //MapGenerator.MapGeneratorSingle.numMaps = playerDat.numMaps;
+            //MapGenerator.MapGeneratorSingle.MapInfo = playerDat.MapInfo;
+            //PlayerStats.PlayerStatsSingle.MapInfo = playerDat.MapInfo;
+            //GameData.GameDataSingle.doorConnectionDictionary = playerDat.doorConnectionDictionary;
+            //GameData.GameDataSingle.mapSeed = playerDat.mapSeed;
+
+            ////load map
+            //for (int x = 0; x < playerDat.mapSetsX.Count; x++)
+            //{
+                
+            //    GameData.GameDataSingle.mapSets.Add(new Vector2(playerDat.mapSetsX[x], playerDat.mapSetsY[x]));
+            //}
+        }
+        else
+        {
+            Debug.Log("Error with player data load");
+        }
+    }
+
+    public void LoadMapData()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        if (File.Exists(Application.persistentDataPath + "/" + scene.name + ".dat"))
+        {
+            Debug.Log("load called");
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file = File.Open(Application.persistentDataPath + "/" + scene.name + ".dat", FileMode.Open);
+            levelInformation mapData = (levelInformation)bf.Deserialize(file);
+            file.Close();
+
+            //map info
+            MapGenerator.MapGeneratorSingle.numMaps = mapData.numMaps;
+            MapGenerator.MapGeneratorSingle.MapInfo = mapData.MapInfo;
+            PlayerStats.PlayerStatsSingle.MapInfo = mapData.MapInfo;
+            GameData.GameDataSingle.doorConnectionDictionary = mapData.doorConnectionDictionary;
+            GameData.GameDataSingle.mapSeed = mapData.mapSeed;
+
+            //load map
+            for (int x = 0; x < mapData.mapSetsX.Count; x++)
+            {
+
+                GameData.GameDataSingle.mapSets.Add(new Vector2(mapData.mapSetsX[x], mapData.mapSetsY[x]));
+            }
+        }
+        else
+        {
+            Debug.Log("Error with map data load");
         }
     }
 
@@ -485,10 +550,25 @@ public class PlayerData
     public int experiencePoints;
     public int level;
 
+    ////for MapGenerator
+    //public int numMaps { get; set; }
+    //public Dictionary<string, MapInformation> MapInfo;
+
+    ////for GameData
+    //public Dictionary<string, string> doorConnectionDictionary;
+    //public List<string> mapSeed = new List<string>();
+    //public List<float> mapSetsX = new List<float>();
+    //public List<float> mapSetsY = new List<float>();
+}
+
+[System.Serializable]
+public class levelInformation
+{
     //for MapGenerator
+    public int numMaps { get; set; }
     public Dictionary<string, MapInformation> MapInfo;
 
-    //for DameData
+    //for GameData
     public Dictionary<string, string> doorConnectionDictionary;
     public List<string> mapSeed = new List<string>();
     public List<float> mapSetsX = new List<float>();

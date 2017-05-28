@@ -8,7 +8,7 @@ public class SaveMapAsSingleton : MonoBehaviour {
     {
         if (SaveTheMap == null)
         {
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
             SaveTheMap = this;
         }
         else if (SaveTheMap != this)

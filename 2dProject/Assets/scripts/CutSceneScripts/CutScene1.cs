@@ -12,6 +12,9 @@ public class CutScene1 : MonoBehaviour {
     Vector3 targetLocation;
     float speed;
     float start, end;
+
+    //public static CutSceneLoader CutSceneLoaderSingle;
+
     void Start () {
         cam.transform.position = new Vector3(5.5f, -6.7f, -1);
         cam.orthographicSize = 13f;
@@ -64,13 +67,14 @@ public class CutScene1 : MonoBehaviour {
         targetLocation = new Vector3(11.70f, -14.40f, -1.0f);
 
         yield return new WaitForSeconds(3);
-        CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
+
+        //for loading to main game
+        StartCoroutine(LoadNewScene());
     }
 
     IEnumerator LoadNewScene()
     {
-        AsyncOperation async = SceneManager.LoadSceneAsync("MainGame");
-
+        AsyncOperation async = SceneManager.LoadSceneAsync("StartArea");
         // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
         while (!async.isDone)
         {

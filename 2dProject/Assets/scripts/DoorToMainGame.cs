@@ -7,14 +7,13 @@ public class DoorToMainGame : MonoBehaviour
     //[SerializeField]
     //private int scene;
     private bool loading = false;
-    public string loadMap = "MainGame";
+    public string loadMap;
 
     //for getting mapgenerator
     private GameObject mapGenerator;
 
     void Awake()
     {
-        mapGenerator = LoadOnClick.LoadOnClickSingle.mapGenerator;
         DontDestroyOnLoad(this);
     }
 
@@ -22,14 +21,8 @@ public class DoorToMainGame : MonoBehaviour
     {
         if (loading)
         {
-            loadMap = "MainGame";
-            mapGenerator.SetActive(true);
-
-            GameController.GameControllerSingle.transform.position = GameController.GameControllerSingle.respawnLocation;
             loading = false;
-
             StartCoroutine(LoadNewScene());
-
         }
     }
 
@@ -43,7 +36,7 @@ public class DoorToMainGame : MonoBehaviour
         GameController.GameControllerSingle.isGameLoading = true;
 
         //load functions
-        AsyncOperation async = SceneManager.LoadSceneAsync("MainGame");
+        AsyncOperation async = SceneManager.LoadSceneAsync("Area1");
 
         // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
         while (!async.isDone)

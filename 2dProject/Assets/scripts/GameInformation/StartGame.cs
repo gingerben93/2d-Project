@@ -14,7 +14,7 @@ public class StartGame : MonoBehaviour
     private bool loadNew = false;
     private bool loadGame = false;
     private bool isSceneLoading = false;
-    public string loadMap = "MainGame";
+    public string loadMap = "";
 
     void Update()
     {

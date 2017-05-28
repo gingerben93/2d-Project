@@ -11,7 +11,6 @@ public class DoorToNewScene : MonoBehaviour
             GameController.GameControllerSingle.questTravel = false;
             GameController.GameControllerSingle.loadScence(sceneToLoad);
             GameController.GameControllerSingle.transform.position = Vector3.zero;
-            LoadOnClick.LoadOnClickSingle.mapGenerator.SetActive(false);
         }
     }
 

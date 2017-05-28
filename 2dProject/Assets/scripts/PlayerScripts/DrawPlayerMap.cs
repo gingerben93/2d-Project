@@ -543,6 +543,7 @@ public class DrawPlayerMap : MonoBehaviour {
 
             //get cave name
             string caveName = "Cave" + mapSeed;
+            //Debug.Log("Cave + mapSeed = " + caveName);
             Mesh mesh = GameObject.Find(caveName).GetComponent<MeshFilter>().mesh;
 
             mesh.name = caveName;
@@ -559,6 +560,7 @@ public class DrawPlayerMap : MonoBehaviour {
         string worldMapName;
         foreach (Vector2 mapSet in GameData.GameDataSingle.mapSets)
         {
+
             //(int)num.y, (int)num.x + (int)num.y - 1;
             CombineInstance[] combineTest = new CombineInstance[(int)mapSet.x];
 
@@ -605,10 +607,12 @@ public class DrawPlayerMap : MonoBehaviour {
         if (currentSetMaps < GameData.GameDataSingle.mapSets.Count)
         {
             worldMap = "WorldMap" + currentSetMaps;
+            Debug.Log("worldMap1 = " + worldMap);
         }
         else
         {
             worldMap = mapSeed;
+            Debug.Log("worldMap2 = " + worldMap);
         }
 
         //bad try at active world map

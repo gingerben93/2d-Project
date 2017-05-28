@@ -29,6 +29,7 @@ public class CamraController : MonoBehaviour
         player = GameController.GameControllerSingle.transform;
         offset = transform.position - player.transform.position;
         transform.Rotate(Vector3.zero);
+        transform.position = GameController.GameControllerSingle.transform.position;
     }
 
     // Update is called once per frame

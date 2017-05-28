@@ -20,13 +20,9 @@ public class LoadOnClick : MonoBehaviour {
     // for getting scene name
     Scene scene;
 
-    //for getting mapgenerator
-    public GameObject mapGenerator;
-
     void Awake()
     {
         Scene scene = SceneManager.GetActiveScene();
-        mapGenerator = GameObject.Find("MapGenerator");
         loadMap = scene.name;
         if (scene.name != "StartMenu")
         {
@@ -52,7 +48,6 @@ public class LoadOnClick : MonoBehaviour {
                 }
             }
             loadMap = "StartArea";
-            mapGenerator.SetActive(false);
             GameController.GameControllerSingle.transform.position = new Vector3(-56f, 1.2f, 0);
 
             loadScene = true;

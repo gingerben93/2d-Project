@@ -30,18 +30,14 @@ public class Character1 : MonoBehaviour
 
         if (QuestController.QuestControllerSingle.currentQuest == 1f)
         {
-            //QuestController.QuestControllerSingle.isQuestCurrent = true;
             Debug.Log("quest is 1");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-            //QuestController.QuestControllerSingle.NextMainQuest(QuestController.QuestControllerSingle.currentQuest);
             GameObject.Find("Character1").AddComponent<MainQuest1_0>();
         }
         else if (QuestController.QuestControllerSingle.currentQuest == 3f)
         {
-            //QuestController.QuestControllerSingle.isQuestCurrent = true;
             Debug.Log("quest is 3");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-            //QuestController.QuestControllerSingle.NextMainQuest(QuestController.QuestControllerSingle.currentQuest);
             GameObject.Find("Character1").AddComponent<MainQuest3_0>();
         }
     }
@@ -49,7 +45,6 @@ public class Character1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (Input.GetKeyDown(KeyCode.Q) && character)
         {
             GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
@@ -62,7 +57,6 @@ public class Character1 : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
         if (collision.gameObject.tag == "Player")
         {
             character = true;
@@ -88,7 +82,6 @@ public class Character1 : MonoBehaviour
 
     IEnumerator HeroDialog(Text textComp, string message)
     {
-
         while (NPCd)
         {
             yield return new WaitForSeconds(0.1f);
@@ -106,7 +99,6 @@ public class Character1 : MonoBehaviour
 
     IEnumerator NPCDialog(Text textComp, string message)
     {
-
         while (Herod)
         {
             yield return new WaitForSeconds(0.1f);

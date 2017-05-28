@@ -20,10 +20,8 @@ public class GameLoader : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-        //GameObject HeroObject = Instantiate((GameObject)Resources.Load("player/Hero", typeof(GameObject)));
-        //HeroObject.name = "Hero1";
-        //GameObject savedGameData = Instantiate((GameObject)Resources.Load("player/GameData", typeof(GameObject)));
-        //savedGameData.name = "GameData1";
+
+        //loads player information, doesn't currently do anyting
         if (File.Exists(Application.persistentDataPath + "/playerInfo.dat"))
         {
             BinaryFormatter bf = new BinaryFormatter();

@@ -51,6 +51,9 @@ public class MeshGenerator : MonoBehaviour
 
         Cave.name = "Cave" + MapGenerator.MapGeneratorSingle.seed;
 
+        //setting layer of maps
+        Cave.transform.position = new Vector3(0, 0, 1);
+
         CaveMeshDictionary.Add(MapGenerator.MapGeneratorSingle.seed, Cave);
 
         Mesh mesh = new Mesh();
@@ -61,13 +64,13 @@ public class MeshGenerator : MonoBehaviour
         mesh.triangles = triangles.ToArray();
         mesh.RecalculateNormals();
 
-        int tileAmount = 10;
+        //int tileAmount = 10;
         Vector2[] uvs = new Vector2[vertices.Count];
         for (int i = 0; i < vertices.Count; i++)
         {
-            float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x) * tileAmount;
-            float percentY = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].z) * tileAmount;
-            uvs[i] = new Vector2(percentX, percentY);
+            //float percentX = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].x) * tileAmount;
+            //float percentY = Mathf.InverseLerp(-map.GetLength(0) / 2 * squareSize, map.GetLength(0) / 2 * squareSize, vertices[i].z) * tileAmount;
+            uvs[i] = new Vector2(vertices[i].x, vertices[i].z);
         }
         mesh.uv = uvs;
 
@@ -116,7 +119,6 @@ public class MeshGenerator : MonoBehaviour
 
     void Generate2DColliders()
     {
-
         EdgeCollider2D[] currentColliders = gameObject.GetComponents<EdgeCollider2D>();
         for (int i = 0; i < currentColliders.Length; i++)
         {
@@ -125,18 +127,21 @@ public class MeshGenerator : MonoBehaviour
 
         CalculateMeshOutlines();
 
+        //remove old sprites
+        foreach (Transform child in TileHolder)
+        {
+            if (child.tag == "Ground")
+            {
+                GameObject.Destroy(child.gameObject);
+            }
+        }
+
         foreach (List<int> outline in outlines)
         {
             EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
             Vector2[] edgePoints = new Vector2[outline.Count];
 
-            foreach (Transform child in TileHolder)
-            {
-                if (child.tag == "Ground")
-                {
-                    GameObject.Destroy(child.gameObject);
-                }
-            }
+            
             float vertX;
             float vertXPLus1;
             float vertXMinus1;
@@ -149,7 +154,7 @@ public class MeshGenerator : MonoBehaviour
             groundPieceName.Add("UPSlope_To_Ground");
             groundPieceName.Add("Groud_To_UPSlope");
 
-            for (int i = 0; i <  outline.Count; i++)
+            for (int i = 0; i < outline.Count; i++)
             {
                 edgePoints[i] = new Vector2(vertices[outline[i]].x, vertices[outline[i]].z);
 
@@ -165,8 +170,9 @@ public class MeshGenerator : MonoBehaviour
 
                 if (i == (outline.Count - 1))
                 {
-                    vertXPLus1 = vertices[outline[0]].x;
-                    vertZPLus1 = vertices[outline[0]].z;
+                    //point 0 and max are at same spot
+                    vertXPLus1 = vertices[outline[1]].x;
+                    vertZPLus1 = vertices[outline[1]].z;
                 }
 
                 if (i != 0)
@@ -175,8 +181,6 @@ public class MeshGenerator : MonoBehaviour
                 }
             }
             edgeCollider.points = edgePoints;
-
-
 
             //makes walls not sticky
             /*
@@ -197,6 +201,7 @@ public class MeshGenerator : MonoBehaviour
     {
         var groundSprite = Instantiate(groundPiece, TileHolder) as Transform;
         groundSprite.name = i.ToString();
+        //groundSprite.transform = 0;
 
         //horizontal and vetical sprites
         //does not work when change between - and minus fix that problem
@@ -336,7 +341,9 @@ public class MeshGenerator : MonoBehaviour
                             groundPieceIndex = 2;
                         }
                         else
+                        {
                             groundPieceIndex = 2;
+                        }
                     }
                 }
                 else
