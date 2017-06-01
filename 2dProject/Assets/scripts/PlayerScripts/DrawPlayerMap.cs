@@ -607,12 +607,12 @@ public class DrawPlayerMap : MonoBehaviour {
         if (currentSetMaps < GameData.GameDataSingle.mapSets.Count)
         {
             worldMap = "WorldMap" + currentSetMaps;
-            Debug.Log("worldMap1 = " + worldMap);
+            //Debug.Log("worldMap1 = " + worldMap);
         }
         else
         {
             worldMap = mapSeed;
-            Debug.Log("worldMap2 = " + worldMap);
+            //Debug.Log("worldMap2 = " + worldMap);
         }
 
         //bad try at active world map

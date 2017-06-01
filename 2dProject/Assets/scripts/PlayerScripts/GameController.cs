@@ -42,7 +42,6 @@ public class GameController : MonoBehaviour {
 
     //is touching door
     public bool touchingDoor { get; set; }
-    public bool touchingQuestDoor { get; set; }
     public bool questTravel { get; set; }
     public string mapSeed { get; set; }
     public int doorRef { get; set; }
@@ -87,11 +86,16 @@ public class GameController : MonoBehaviour {
         {
             Destroy(gameObject);
         }
+
+        if (GameLoader.GameLoaderSingle)
+        {
+            dontLoadTheGame = false;
+            Destroy(GameLoader.GameLoaderSingle.gameObject);
+        }
     }
 
     // Use this for initialization
     void Start () {
-
         //if side quest counter is on
         sideQuestBool = false;
 
@@ -156,23 +160,6 @@ public class GameController : MonoBehaviour {
                 respawnLocation = door;
 
                 RemoveCurrentMapObjects();
-            }
-
-            if (touchingQuestDoor)
-            {
-                //Debug.Log("GameData.GameDataSingle.isBossRoomOpen[mapSeed]" + GameData.GameDataSingle.isBossRoomOpen[mapSeed]);
-                //if (QuestController.QuestControllerSingle.questDoorOpen[QuestController.QuestControllerSingle.currentQuest])
-                //{
-                //    Debug.Log("Go to boss room");
-                //    touchingQuestDoor = false;
-                //    RemoveCurrentMapObjects();
-                //    questTravel = true;
-                //}
-                //else
-                //{
-                    touchingQuestDoor = false;
-                    Debug.Log("Door Is Locked");
-                //}
             }
         }
         
@@ -550,15 +537,6 @@ public class PlayerData
     public int experiencePoints;
     public int level;
 
-    ////for MapGenerator
-    //public int numMaps { get; set; }
-    //public Dictionary<string, MapInformation> MapInfo;
-
-    ////for GameData
-    //public Dictionary<string, string> doorConnectionDictionary;
-    //public List<string> mapSeed = new List<string>();
-    //public List<float> mapSetsX = new List<float>();
-    //public List<float> mapSetsY = new List<float>();
 }
 
 [System.Serializable]

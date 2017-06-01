@@ -16,9 +16,9 @@ public class MainQuest1_0 : MonoBehaviour {
     void Start()
     {
         Debug.Log("TalkOnApproach");
-        NPCtext = GameObject.Find("StarAreaCanvas/Panel/NPC/NPCText/Text").GetComponent<Text>();
-        Herotext = GameObject.Find("StarAreaCanvas/Panel/Hero/HeroText/Text").GetComponent<Text>();
-        canvas = GameObject.Find("StarAreaCanvas").GetComponent<CanvasGroup>();
+        NPCtext = DialogManager.DialogManagerSingle.NPCtext;
+        Herotext = DialogManager.DialogManagerSingle.Herotext;
+        canvas = DialogManager.DialogManagerSingle.canvas;
 
     }
 
@@ -29,7 +29,7 @@ public class MainQuest1_0 : MonoBehaviour {
         {
             if (Vector3.Distance(GameController.GameControllerSingle.transform.position, transform.position) <= 5f)
             {
-                GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = transform.GetComponent<SpriteRenderer>().sprite;
+                DialogManager.DialogManagerSingle.TalkingCharacter.sprite = transform.GetComponent<SpriteRenderer>().sprite;
                 inRange = true;
                 Debug.Log("TalkOnApproach is in range");
 
@@ -40,8 +40,6 @@ public class MainQuest1_0 : MonoBehaviour {
                 StartCoroutine(Dialog("Con2"));
             }
         }
-
-        
     }
 
     IEnumerator Dialog(string Conversation)
@@ -76,8 +74,6 @@ public class MainQuest1_0 : MonoBehaviour {
         GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         GameController.GameControllerSingle.transform.transform.rotation = Quaternion.identity;
 
-        //set quest not current
-
         //Text reset
         NPCtext.text = "";
         Herotext.text = "";
@@ -86,10 +82,8 @@ public class MainQuest1_0 : MonoBehaviour {
 
         if (QuestController.QuestControllerSingle.currentQuest == 2f)
         {
-            //QuestController.QuestControllerSingle.isQuestCurrent = true;
             Debug.Log("quest is 2");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-            //QuestController.QuestControllerSingle.NextMainQuest(QuestController.QuestControllerSingle.currentQuest);
             GameObject.Find("Hero").AddComponent<MainQuest2_0>();
         }
 

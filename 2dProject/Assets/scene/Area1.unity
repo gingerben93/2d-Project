@@ -636,7 +636,6 @@ MonoBehaviour:
   BossPrefab: {fileID: 4519130607354134, guid: 804906908a3a92e4594e27e18550813f, type: 2}
   MapPosWorldMaps: []
   LinePos: []
-  loadTheGame: 1
 --- !u!4 &1077971052
 Transform:
   m_ObjectHideFlags: 0

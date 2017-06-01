@@ -27,6 +27,20 @@ public class CutScene2 : MonoBehaviour
     {
         cam.transform.position = Vector3.MoveTowards(cam.transform.position, targetLocation, speed);
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, end, .10f);
+
+        //up time scale to scroll to next panel quicker
+        if (Input.GetMouseButtonDown(0))
+        {
+            Time.timeScale = 5;
+            Debug.Log("left click");
+        }
+        //for skipping scene
+        if (Input.GetMouseButtonDown(1))
+        {
+            CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
+            Debug.Log("right click");
+        }
+
     }
 
     IEnumerator WaitForScene()
@@ -37,38 +51,46 @@ public class CutScene2 : MonoBehaviour
         speed = 2.0f;
         end = 3.5f;
 
+        Time.timeScale = 1;
         cutSceneText.text = "Panel 1";
         targetLocation = new Vector3(0.06f, 1.51f, -1.0f);
         yield return new WaitForSeconds(2);
 
+        Time.timeScale = 1;
         cutSceneText.text = "Panel 2";
         targetLocation = new Vector3(9.02f, 1.78f, -1.0f);
         end = 3.3f;
         yield return new WaitForSeconds(2);
 
+        Time.timeScale = 1;
         cutSceneText.text = "Panel 3";
         targetLocation = new Vector3(0.00f, -6.50f, -1.0f);
         end = 4f;
         yield return new WaitForSeconds(2);
 
+        Time.timeScale = 1;
         cutSceneText.text = "Panel 4";
         targetLocation = new Vector3(5.80f, -6.50f, -1.0f);
         yield return new WaitForSeconds(2);
 
+        Time.timeScale = 1;
         cutSceneText.text = "Panel 5";
         targetLocation = new Vector3(12.60f, -6.00f, -1.0f);
         yield return new WaitForSeconds(2);
 
+        Time.timeScale = 1;
         cutSceneText.text = "Panel 6";
         targetLocation = new Vector3(0.70f, -14.40f, -1.0f);
         end = 3.2f;
         yield return new WaitForSeconds(2);
 
+        Time.timeScale = 1;
         cutSceneText.text = "Panel 6-8";
         speed = 0.1f;
         targetLocation = new Vector3(11.70f, -14.40f, -1.0f);
-        
-        //for loading back to where you can from
+        yield return new WaitForSeconds(3);
+
+        //load back to game
         CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
     }
 }

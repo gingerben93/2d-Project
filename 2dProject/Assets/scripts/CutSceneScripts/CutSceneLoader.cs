@@ -36,6 +36,7 @@ public class CutSceneLoader : MonoBehaviour
     {
         if (loadCutScene)
         {
+            Time.timeScale = 1;
             //CutSceneName = "CutSceneManager";
             allCurrentGameObjects = FindObjectsOfType<GameObject>();
             foreach (GameObject ob in allCurrentGameObjects)
@@ -52,6 +53,7 @@ public class CutSceneLoader : MonoBehaviour
 
         if (loadBackToGame)
         {
+            Time.timeScale = 1;
             foreach (GameObject ob in allCurrentGameObjects)
             {
                 if (ob)

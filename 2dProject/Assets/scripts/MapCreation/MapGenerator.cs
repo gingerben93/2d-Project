@@ -66,8 +66,6 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    public bool loadTheGame;
-
     //where program stars
     void Start()
     {

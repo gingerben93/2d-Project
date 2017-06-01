@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class Doctor : MonoBehaviour
 {
     public bool character;
-    public bool chat;
 
     //Coroutine
     bool Herod = false;
@@ -24,11 +23,10 @@ public class Doctor : MonoBehaviour
     void Start()
     {
         character = false;
-        chat = false;
         //assign text boxes for dialog
-        NPCtext = GameObject.Find("StarAreaCanvas/Panel/NPC/NPCText/Text").GetComponent<Text>();
-        Herotext = GameObject.Find("StarAreaCanvas/Panel/Hero/HeroText/Text").GetComponent<Text>();
-        canvas = GameObject.Find("StarAreaCanvas").GetComponent<CanvasGroup>();
+        NPCtext = DialogManager.DialogManagerSingle.NPCtext;
+        Herotext = DialogManager.DialogManagerSingle.Herotext;
+        canvas = DialogManager.DialogManagerSingle.canvas;
 
         if (QuestController.QuestControllerSingle.currentQuest == 0f)
         {
@@ -46,8 +44,7 @@ public class Doctor : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Q) && character)
         {
-            GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
-            chat = true;
+            DialogManager.DialogManagerSingle.TalkingCharacter.sprite = newSprite;
             StartCoroutine(HeroDialog(Herotext, "Who are you?"));
             StartCoroutine(NPCDialog(NPCtext, "I'm the doctor"));
             canvas.alpha = 1;
@@ -68,7 +65,6 @@ public class Doctor : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             character = false;
-            chat = false;
             canvas.alpha = 0;
 
             //Text reset and stopping Coroutine
@@ -115,12 +111,4 @@ public class Doctor : MonoBehaviour
         }
         NPCd = false;
     }
-
-    //void OnGUI()
-    //{
-    //    if (chat)
-    //    {
-    //        GUI.Label(new Rect(Screen.width/2, Screen.height/2 - 50, 1000f, 200f), text);
-    //    }
-    //}
 }

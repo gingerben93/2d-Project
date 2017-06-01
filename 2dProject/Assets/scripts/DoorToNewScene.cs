@@ -13,19 +13,4 @@ public class DoorToNewScene : MonoBehaviour
             GameController.GameControllerSingle.transform.position = Vector3.zero;
         }
     }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            GameController.GameControllerSingle.touchingQuestDoor = true;
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            GameController.GameControllerSingle.touchingQuestDoor = false;
-        }
-    }
 }

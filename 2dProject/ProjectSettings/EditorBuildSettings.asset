@@ -8,11 +8,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/scene/startMenu.unity
   - enabled: 1
-    path: Assets/scene/MainGame.unity
-  - enabled: 1
     path: Assets/scene/StartArea.unity
   - enabled: 1
     path: Assets/scene/Boss1.unity
+  - enabled: 1
+    path: Assets/scene/Area1.unity
   - enabled: 1
     path: Assets/scene/CutScenes/CutScene1.unity
   - enabled: 1

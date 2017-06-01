@@ -14,6 +14,7 @@ public class GameLoader : MonoBehaviour {
     {
         if (GameLoaderSingle == null)
         {
+            DontDestroyOnLoad(gameObject);
             GameLoaderSingle = this;
         }
         else if (GameLoaderSingle != this)

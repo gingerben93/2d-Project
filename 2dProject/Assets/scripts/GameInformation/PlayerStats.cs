@@ -26,4 +26,16 @@ public class PlayerStats : MonoBehaviour {
             Destroy(gameObject);
         }
     }
+
+    void Start()
+    {
+        if (GameController.GameControllerSingle.dontLoadTheGame)
+        {
+            //Don't do anything
+        }
+        else
+        {
+            GameController.GameControllerSingle.LoadPlayerData();
+        }
+    }
 }

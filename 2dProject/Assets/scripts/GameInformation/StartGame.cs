@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -48,10 +49,17 @@ public class StartGame : MonoBehaviour
 
     public void ContinueGame(int level)
     {
-        loadGame = true;
-        GameObject GameLoaderObject = Instantiate((GameObject)Resources.Load("player/GameLoader", typeof(GameObject)));
-        GameLoaderObject.name = "GameLoader";
-        DontDestroyOnLoad(GameLoaderObject);
+        if (File.Exists(Application.persistentDataPath + "/playerInfo.dat"))
+        {
+            loadGame = true;
+            GameObject GameLoaderObject = Instantiate((GameObject)Resources.Load("player/GameLoader", typeof(GameObject)));
+            GameLoaderObject.name = "GameLoader";
+            DontDestroyOnLoad(GameLoaderObject);
+        }
+        else
+        {
+            Debug.Log("no data to load for player");
+        }
     }
 
     IEnumerator LoadNewScene()

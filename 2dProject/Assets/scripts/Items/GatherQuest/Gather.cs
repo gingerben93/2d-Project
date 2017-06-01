@@ -18,8 +18,13 @@ public class Gather : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Player")
         {
-            QuestController.QuestControllerSingle.GatherQuestCounter += 1;
-            QuestController.QuestControllerSingle.UpdateGatherQuest("ManaPotion");
+            GatherQuest temp;
+            if (temp = QuestController.QuestControllerSingle.transform.GetComponent<GatherQuest>())
+            {
+                temp.GatherQuestCounter += 1;
+                temp.UpdateGatherQuest("ManaPotion");
+            }
+            
             Destroy(gameObject);
         }
     }

@@ -9,7 +9,6 @@ public class BlitzCrank : MonoBehaviour {
     public Transform reward;
 
     public bool touchingCharacter;
-    public bool chat;
 
     //Coroutine
     bool Herod = false;
@@ -21,85 +20,99 @@ public class BlitzCrank : MonoBehaviour {
     private CanvasGroup canvas;
     public Sprite newSprite;
 
-    // Use this for initialization
-    void Start () {
+    //has a quest
+    public bool hasQuest { get; set; }
+
+    public static BlitzCrank BlitzCrankSingle;
+
+    void Awake()
+    {
+        if (BlitzCrankSingle == null)
+        {
+            BlitzCrankSingle = this;
+        }
+        else if (BlitzCrankSingle != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
+        // Use this for initialization
+    void Start ()
+    {
+        //put quest to false
+        hasQuest = false;
+
         touchingCharacter = false;
-        chat = false;
-        NPCtext = GameObject.Find("StarAreaCanvas/Panel/NPC/NPCText/Text").GetComponent<Text>();
-        Herotext = GameObject.Find("StarAreaCanvas/Panel/Hero/HeroText/Text").GetComponent<Text>();
-        //GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
-        canvas = GameObject.Find("StarAreaCanvas").GetComponent<CanvasGroup>();
+        NPCtext = DialogManager.DialogManagerSingle.NPCtext;
+        Herotext = DialogManager.DialogManagerSingle.Herotext;
+        canvas = DialogManager.DialogManagerSingle.canvas;
+
+        if (QuestController.QuestControllerSingle.currentQuest == 4f)
+        {
+            Debug.Log("quest is 4");
+            hasQuest = true;
+            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            GameObject.Find("Blitz").AddComponent<MainQuest4_0>();
+        }
+        else if (QuestController.QuestControllerSingle.currentQuest == 5f)
+        {
+            hasQuest = true;
+            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            GameObject.Find("Blitz").AddComponent<MainQuest5_0>();
+            Debug.Log("quest is 5");
+        }
     }
 	
 	// Update is called once per frame
-	void Update () {
-
-        if (Input.GetKeyDown(KeyCode.Q) && touchingCharacter && GameController.GameControllerSingle.Boss1 == true)
+	void Update ()
+    {
+        if (hasQuest)
         {
-            GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
-            StartCoroutine(NPCDialog(NPCtext, "You beat the boss, game over faggot."));
-            StartCoroutine(HeroDialog(Herotext, "You aint shit as a boss. Easy mode faggot get gud."));
-            canvas.alpha = 1;
-            chat = true;
+            //do nothing let quest do stuff
         }
-        else if (Input.GetKeyDown(KeyCode.Q) && touchingCharacter && !QuestController.QuestControllerSingle.questList.ContainsKey("Blitz"))
+        else if (Input.GetKeyDown(KeyCode.Q) && touchingCharacter)
         {
-            GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
-            chat = true;
-
-            //TextAsset TextObject = Resources.Load("Dialog/Con1") as TextAsset;
-            //string fullConversation = TextObject.text;
-            //string[] perline = fullConversation.Split('\n');
-
-            //StartCoroutine(HeroDialog(Herotext, perline[0]));
-            //StartCoroutine(NPCDialog(NPCtext, perline[1]));
-
-            StartCoroutine(HeroDialog(Herotext, "I'm bored af my dude. Give me something."));
-            StartCoroutine(NPCDialog(NPCtext, "Here is ur quest."));
-
-            canvas.alpha = 1;
-            QuestController.QuestControllerSingle.AddQuestToList("Blitz");
-            QuestController.QuestControllerSingle.PickQuest("Blitz", 1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Q) && touchingCharacter && QuestController.QuestControllerSingle.questList.ContainsKey("Blitz"))
-        {
-            if (QuestController.QuestControllerSingle.questList["Blitz"] == false)
+            DialogManager.DialogManagerSingle.TalkingCharacter.sprite = newSprite;
+            KillQuest kill = QuestController.QuestControllerSingle.transform.GetComponent<KillQuest>();
+            //remove sidequest and text object
+            if (kill)
             {
-                GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
-                StartCoroutine(NPCDialog(NPCtext, "You already have ur quest."));
-                StartCoroutine(HeroDialog(Herotext, "Didn't want to talk to you anyways."));
-                canvas.alpha = 1;
-                chat = true;
+                if (kill.KillQuestCounter >= kill.killamount)
+                {
+                    Destroy(kill.QuestTxt.gameObject);
+                    Destroy(kill);
+
+                    StartCoroutine(HeroDialog(Herotext, "Did your quest"));
+                    StartCoroutine(NPCDialog(NPCtext, "Thanks, want to do it again?"));
+                    canvas.alpha = 1;
+                }
+                else
+                {
+                    StartCoroutine(HeroDialog(Herotext, "I killed a few guys"));
+                    StartCoroutine(NPCDialog(NPCtext, "Well go kill the rest"));
+                    canvas.alpha = 1;
+                }
             }
             else
             {
-                //for removing quest
-                GameObject removeQuest = GameObject.Find("Enemy");
-                Destroy(removeQuest);
+                //TextAsset TextObject = Resources.Load("Dialog/Con1") as TextAsset;
+                //string fullConversation = TextObject.text;
+                //string[] perline = fullConversation.Split('\n');
 
-                //side quest counter
-                if (GameController.GameControllerSingle.sideQuestBool == true)
-                {
-                    GameController.GameControllerSingle.sideQuestCounter += 1;
-                }
+                //StartCoroutine(HeroDialog(Herotext, perline[0]));
+                //StartCoroutine(NPCDialog(NPCtext, perline[1]));
 
-                GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = newSprite;
-                StartCoroutine(NPCDialog(NPCtext, "You completed your quest, now defeat the boss."));
-                StartCoroutine(HeroDialog(Herotext, "kool"));
+                StartCoroutine(HeroDialog(Herotext, "I'm bored af my dude. Give me something."));
+                StartCoroutine(NPCDialog(NPCtext, "Here is ur quest."));
                 canvas.alpha = 1;
-                chat = true;
-                QuestController.QuestControllerSingle.questList.Remove("Blitz");
-                Instantiate(reward, transform.position, Quaternion.identity);
-                //Transform savedGameData = Instantiate(reward, transform.position, Quaternion.identity);
-
-                //QuestController.QuestControllerSingle.questDoorOpen[QuestController.QuestControllerSingle.currentQuest] = true;
+                QuestController.QuestControllerSingle.PickQuest("Blitz", 1);
             }
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
         if (collision.gameObject.tag == "Player")
         {
             touchingCharacter = true;
@@ -111,9 +124,7 @@ public class BlitzCrank : MonoBehaviour {
         if (collision.gameObject.tag == "Player")
         {
             touchingCharacter = false;
-            chat = false;
             canvas.alpha = 0;
-
 
             //Text reset and stopping Coroutine
             NPCtext.text = "";
@@ -126,7 +137,6 @@ public class BlitzCrank : MonoBehaviour {
 
     IEnumerator HeroDialog(Text textComp, string message)
     {
-        
         while (NPCd)
         {
             yield return new WaitForSeconds(0.1f);
@@ -144,7 +154,6 @@ public class BlitzCrank : MonoBehaviour {
 
     IEnumerator NPCDialog(Text textComp, string message)
     {
-       
         while (Herod)
         {
             yield return new WaitForSeconds(0.1f);
@@ -159,12 +168,4 @@ public class BlitzCrank : MonoBehaviour {
         }
         NPCd = false;
     }
-
-    //void OnGUI()
-    //{
-    //    if (chat)
-    //    {
-    //        GUI.Label(new Rect(Screen.width/2, Screen.height/2 - 50, 1000f, 200f), text);
-    //    }
-    //}
 }

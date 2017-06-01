@@ -84,11 +84,6 @@ public class BossScript : MonoBehaviour
             //Boss1 is now dead
             GameController.GameControllerSingle.Boss1 = true;
 
-
-            //Instantiate(loot, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
-            //Instantiate(loot2, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
-            //Instantiate(loot3, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
-            // Dead!
             Destroy(gameObject);
         }
     }

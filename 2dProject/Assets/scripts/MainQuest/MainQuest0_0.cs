@@ -9,6 +9,10 @@ public class MainQuest0_0 : MonoBehaviour {
     private Text Herotext;
     private CanvasGroup canvas;
 
+    //skip dialogue
+    bool leftClick = false;
+    bool rightClick = false;
+
     //Coroutine
     bool inRange = false;
 
@@ -16,10 +20,10 @@ public class MainQuest0_0 : MonoBehaviour {
     void Start()
     {
         Debug.Log("TalkOnApproach");
-        NPCtext = GameObject.Find("StarAreaCanvas/Panel/NPC/NPCText/Text").GetComponent<Text>();
-        Herotext = GameObject.Find("StarAreaCanvas/Panel/Hero/HeroText/Text").GetComponent<Text>();
-        canvas = GameObject.Find("StarAreaCanvas").GetComponent<CanvasGroup>();
-        
+        NPCtext = DialogManager.DialogManagerSingle.NPCtext;
+        Herotext = DialogManager.DialogManagerSingle.Herotext;
+        canvas = DialogManager.DialogManagerSingle.canvas;
+
     }
 
     // Update is called once per frame
@@ -29,7 +33,7 @@ public class MainQuest0_0 : MonoBehaviour {
         {
             if (Vector3.Distance(GameController.GameControllerSingle.transform.position, transform.position) <= 5f)
             {
-                GameObject.Find("StarAreaCanvas/Panel/NPC").GetComponent<Image>().sprite = transform.GetComponent<SpriteRenderer>().sprite;
+                DialogManager.DialogManagerSingle.TalkingCharacter.sprite = transform.GetComponent<SpriteRenderer>().sprite;
                 inRange = true;
                 Debug.Log("TalkOnApproach is in range");
 
@@ -38,6 +42,25 @@ public class MainQuest0_0 : MonoBehaviour {
 
                 canvas.alpha = 1;
                 StartCoroutine(Dialog("Con1"));
+            }
+        }
+
+        //left mouse
+        else if (Input.GetMouseButtonDown(0))
+        {
+            leftClick = true;
+        }
+
+        //right mouse
+        else if (Input.GetMouseButtonDown(1))
+        {
+            if(rightClick)
+            {
+                rightClick = false;
+            }
+            else
+            {
+                rightClick = true;
             }
         }
     }
@@ -58,6 +81,9 @@ public class MainQuest0_0 : MonoBehaviour {
 
     IEnumerator Dialog(string Conversation)
     {
+        leftClick = false;
+        rightClick = false;
+
         Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
 
         TextAsset TextObject = Resources.Load("Dialog/" + Conversation) as TextAsset;
@@ -66,14 +92,32 @@ public class MainQuest0_0 : MonoBehaviour {
         
         for (int x = 0; x < perline.Length; x += 2)
         {
-
             Herotext.text = "";
             foreach (char letter in perline[x].ToCharArray())
             {
+                //skip dialogue
+                if (leftClick == true)
+                {
+                    Herotext.text = perline[x];
+                    leftClick = false;
+                    break;
+                }
+
                 Herotext.text += letter;
                 yield return new WaitForSeconds(0.05f);
             }
 
+            //for pause while talking if left click to continue
+            while (rightClick == true)
+            {
+                if(leftClick == true)
+                {
+                    break;
+                }
+                yield return new WaitForSeconds(0.1f);
+            }
+
+            //stop to promt player for name
             if (x == 2)
             {
                 promptName = true;
@@ -86,10 +130,30 @@ public class MainQuest0_0 : MonoBehaviour {
             NPCtext.text = "";
             foreach (char letter in perline[x+1].ToCharArray())
             {
+                //skip dialogue
+                if (leftClick == true)
+                {
+                    NPCtext.text = perline[x + 1];
+                    leftClick = false;
+                    break;
+                }
+
                 NPCtext.text += letter;
                 yield return new WaitForSeconds(0.05f);
             }
+
+            //for pause while talking
+            while (rightClick == true)
+            {
+                if (leftClick == true)
+                {
+                    break;
+                }
+                yield return new WaitForSeconds(0.1f);
+            }
+
         }
+
         yield return new WaitForSeconds(1f);
         canvas.alpha = 0;
 

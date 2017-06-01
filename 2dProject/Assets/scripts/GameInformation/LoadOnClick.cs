@@ -95,7 +95,5 @@ public class LoadOnClick : MonoBehaviour {
         GameController.GameControllerSingle.touchingDoor = false;
         GameController.GameControllerSingle.questTravel = false;
         loadingText.text = "";
-
-        
     }
 }
