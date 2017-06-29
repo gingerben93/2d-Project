@@ -11,10 +11,6 @@ public class Morgana : MonoBehaviour
 
     public bool character;
 
-    //Coroutine
-    bool Herod = false;
-    bool NPCd = false;
-
     //Canvas text and image
     private Text NPCtext;
     private Text Herotext;
@@ -44,24 +40,27 @@ public class Morgana : MonoBehaviour
                     Destroy(gather.QuestTxt.gameObject);
                     Destroy(gather);
 
-                    StartCoroutine(HeroDialog(Herotext, "I got those potions."));
-                    StartCoroutine(NPCDialog(NPCtext, "Thanks now get lost loser."));
                     canvas.alpha = 1;
 
+                    //start conversavtion
+                    StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Morgana/QuestComplete"));
                 }
                 else
                 {
-                    StartCoroutine(HeroDialog(Herotext, "Hi"));
-                    StartCoroutine(NPCDialog(NPCtext, "Complete my quest already"));
                     canvas.alpha = 1;
+
+                    //start conversavtion
+                    StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Morgana/QuestIncomplete"));
                 }
             }
             else
             {
-                StartCoroutine(HeroDialog(Herotext, "Wow Queen. Ur sooo beautiful.Wow Queen. "));
-                StartCoroutine(NPCDialog(NPCtext, "I know, would you get me some potions?"));
                 canvas.alpha = 1;
-                //QuestController.QuestControllerSingle.AddQuestToList("Morgana");
+
+                //start conversavtion
+                StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Morgana/AcceptQuest"));
+                
+                //will be random quest later
                 QuestController.QuestControllerSingle.PickQuest("Morgana", 2);
             }
         }
@@ -86,51 +85,6 @@ public class Morgana : MonoBehaviour
             NPCtext.text = "";
             Herotext.text = "";
             StopAllCoroutines();
-            NPCd = false;
-            Herod = false;
         }
-    }
-
-    //nested IEnumerator
-    //IEnumerator testNest()
-    //{
-    //    StartCoroutine(HeroDialog(Herotext, "I got those potions."));
-    //    yield return new WaitForSeconds(5.0f);
-    //    StartCoroutine(NPCDialog(NPCtext, "Thanks now get lost loser."));
-    //}
-
-    IEnumerator HeroDialog(Text textComp, string message)
-    {
-        while (NPCd)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        textComp.text = "";
-
-        Herod = true;
-        foreach (char letter in message.ToCharArray())
-        {
-            textComp.text += letter;
-            yield return new WaitForSeconds(0.05f);
-        }
-        Herod = false;
-    }
-
-    IEnumerator NPCDialog(Text textComp, string message)
-    {
-
-        while (Herod)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        textComp.text = "";
-
-        NPCd = true;
-        foreach (char letter in message.ToCharArray())
-        {
-            textComp.text += letter;
-            yield return new WaitForSeconds(0.05f);
-        }
-        NPCd = false;
     }
 }

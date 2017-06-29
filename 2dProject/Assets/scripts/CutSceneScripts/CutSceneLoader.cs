@@ -36,15 +36,14 @@ public class CutSceneLoader : MonoBehaviour
     {
         if (loadCutScene)
         {
+            //sets all gameobjects that are not part of the cut scene to false
             Time.timeScale = 1;
-            //CutSceneName = "CutSceneManager";
             allCurrentGameObjects = FindObjectsOfType<GameObject>();
             foreach (GameObject ob in allCurrentGameObjects)
             {
                 if (ob.name != gameObject.name)
                 {
                     ob.SetActive(false);
-                    //Debug.Log(ob.name);
                 }
             }
             loadCutScene = false;
@@ -60,9 +59,7 @@ public class CutSceneLoader : MonoBehaviour
                 {
                     if (ob.name != "CutScene")
                     {
-                        //Debug.Log(ob.name);
                         ob.SetActive(true);
-
                     }
                 }
             }

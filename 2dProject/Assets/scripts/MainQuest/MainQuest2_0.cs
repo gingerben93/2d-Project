@@ -18,6 +18,9 @@ public class MainQuest2_0 : MonoBehaviour {
             Debug.Log(GameController.GameControllerSingle.sideQuestBool);
             if (GameController.GameControllerSingle.sideQuestCounter >= 1 && GameController.GameControllerSingle.sideQuestBool == true)
             {
+                //change main quest text
+                QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
+
                 GameController.GameControllerSingle.sideQuestBool = false;
                 Debug.Log("Complete, go to main quest 3");
                 QuestController.QuestControllerSingle.currentQuest = 3f;

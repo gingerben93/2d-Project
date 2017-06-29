@@ -11,8 +11,8 @@ public class BlitzCrank : MonoBehaviour {
     public bool touchingCharacter;
 
     //Coroutine
-    bool Herod = false;
-    bool NPCd = false;
+    //bool Herod = false;
+    //bool NPCd = false;
 
     //Canvas text and image
     private Text NPCtext;
@@ -82,30 +82,24 @@ public class BlitzCrank : MonoBehaviour {
                 {
                     Destroy(kill.QuestTxt.gameObject);
                     Destroy(kill);
-
-                    StartCoroutine(HeroDialog(Herotext, "Did your quest"));
-                    StartCoroutine(NPCDialog(NPCtext, "Thanks, want to do it again?"));
+                    
                     canvas.alpha = 1;
+                    StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Blitz/QuestComplete"));
+
                 }
                 else
                 {
-                    StartCoroutine(HeroDialog(Herotext, "I killed a few guys"));
-                    StartCoroutine(NPCDialog(NPCtext, "Well go kill the rest"));
                     canvas.alpha = 1;
+                    StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Blitz/QuestIncomplete"));
                 }
             }
             else
             {
-                //TextAsset TextObject = Resources.Load("Dialog/Con1") as TextAsset;
-                //string fullConversation = TextObject.text;
-                //string[] perline = fullConversation.Split('\n');
-
-                //StartCoroutine(HeroDialog(Herotext, perline[0]));
-                //StartCoroutine(NPCDialog(NPCtext, perline[1]));
-
-                StartCoroutine(HeroDialog(Herotext, "I'm bored af my dude. Give me something."));
-                StartCoroutine(NPCDialog(NPCtext, "Here is ur quest."));
                 canvas.alpha = 1;
+
+                //start conversavtion
+                StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Blitz/AcceptQuest"));
+
                 QuestController.QuestControllerSingle.PickQuest("Blitz", 1);
             }
         }
@@ -130,42 +124,42 @@ public class BlitzCrank : MonoBehaviour {
             NPCtext.text = "";
             Herotext.text = "";
             StopAllCoroutines();
-            NPCd = false;
-            Herod = false;
+            //NPCd = false;
+            //Herod = false;
         }
     }
 
-    IEnumerator HeroDialog(Text textComp, string message)
-    {
-        while (NPCd)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        textComp.text = "";
+    //IEnumerator HeroDialog(Text textComp, string message)
+    //{
+    //    while (NPCd)
+    //    {
+    //        yield return new WaitForSeconds(0.1f);
+    //    }
+    //    textComp.text = "";
 
-        Herod = true;
-        foreach (char letter in message.ToCharArray())
-        {
-            textComp.text += letter;
-            yield return new WaitForSeconds(0.05f);
-        }
-        Herod = false;
-    }
+    //    Herod = true;
+    //    foreach (char letter in message.ToCharArray())
+    //    {
+    //        textComp.text += letter;
+    //        yield return new WaitForSeconds(0.05f);
+    //    }
+    //    Herod = false;
+    //}
 
-    IEnumerator NPCDialog(Text textComp, string message)
-    {
-        while (Herod)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        textComp.text = "";
+    //IEnumerator NPCDialog(Text textComp, string message)
+    //{
+    //    while (Herod)
+    //    {
+    //        yield return new WaitForSeconds(0.1f);
+    //    }
+    //    textComp.text = "";
 
-        NPCd = true;
-        foreach (char letter in message.ToCharArray())
-        {
-            textComp.text += letter;
-            yield return new WaitForSeconds(0.05f);
-        }
-        NPCd = false;
-    }
+    //    NPCd = true;
+    //    foreach (char letter in message.ToCharArray())
+    //    {
+    //        textComp.text += letter;
+    //        yield return new WaitForSeconds(0.05f);
+    //    }
+    //    NPCd = false;
+    //}
 }

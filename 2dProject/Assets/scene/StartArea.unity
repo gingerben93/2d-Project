@@ -816,7 +816,7 @@ Prefab:
     - target: {fileID: 114035882920638064, guid: e244b515c71179b4cba1ce42034df8fe,
         type: 2}
       propertyPath: respawnLocation.x
-      value: 16
+      value: -30
       objectReference: {fileID: 0}
     - target: {fileID: 114035882920638064, guid: e244b515c71179b4cba1ce42034df8fe,
         type: 2}
@@ -2840,6 +2840,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8b8feb1ce19aaa41bde8dc718ceaaa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dialogOn: 0
+  leftClick: 0
+  rightClick: 0
 --- !u!1001 &1929467404
 Prefab:
   m_ObjectHideFlags: 0
@@ -3032,7 +3035,7 @@ Prefab:
     - target: {fileID: 224791992130505512, guid: 7fceb710bfa9b44419cebfbb766ee953,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224791992130505512, guid: 7fceb710bfa9b44419cebfbb766ee953,
         type: 2}
@@ -3042,7 +3045,7 @@ Prefab:
     - target: {fileID: 224791992130505512, guid: 7fceb710bfa9b44419cebfbb766ee953,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7fceb710bfa9b44419cebfbb766ee953, type: 2}

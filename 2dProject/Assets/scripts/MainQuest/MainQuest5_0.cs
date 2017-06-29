@@ -35,11 +35,8 @@ public class MainQuest5_0 : MonoBehaviour {
                 BlitzCrank.BlitzCrankSingle.hasQuest = false;
                 QuestController.QuestControllerSingle.currentQuest = 6f;
 
-                //freeze player
-                GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-
                 canvas.alpha = 1;
-                StartCoroutine(Dialog("Con5"));
+                StartCoroutine(Dialog());
             }
             else
             {
@@ -48,31 +45,25 @@ public class MainQuest5_0 : MonoBehaviour {
         }
     }
 
-    public IEnumerator Dialog(string Conversation)
+    public IEnumerator Dialog()
     {
+        //set blitz sprite
         DialogManager.DialogManagerSingle.TalkingCharacter.sprite = BlitzSprite;
-        Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
 
-        TextAsset TextObject = Resources.Load("Dialog/" + Conversation) as TextAsset;
-        string fullConversation = TextObject.text;
-        string[] perline = fullConversation.Split('\n');
-        for (int x = 0; x < perline.Length; x += 2)
+        string Conversation1 = DialogManager.DialogManagerSingle.MainQuestDialogueLoadPath + "MainQuest5_0.0";
+
+        //freeze player
+        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+
+        StartCoroutine(DialogManager.DialogManagerSingle.Dialog(Conversation1));
+
+        //waits for conversation to finish
+        while ((DialogManager.DialogManagerSingle.dialogOn == true))
         {
-
-            Herotext.text = "";
-            foreach (char letter in perline[x].ToCharArray())
-            {
-                Herotext.text += letter;
-                yield return new WaitForSeconds(0.05f);
-            }
-
-            NPCtext.text = "";
-            foreach (char letter in perline[x + 1].ToCharArray())
-            {
-                NPCtext.text += letter;
-                yield return new WaitForSeconds(0.05f);
-            }
+            yield return new WaitForSeconds(0.1f);
         }
+
+        //wait 1 sec before continuing
         yield return new WaitForSeconds(1f);
         canvas.alpha = 0;
 
@@ -89,6 +80,9 @@ public class MainQuest5_0 : MonoBehaviour {
 
         if (QuestController.QuestControllerSingle.currentQuest == 6f)
         {
+            //change main quest text
+            QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
+
             GameController.GameControllerSingle.sideQuestCounter = 0;
             GameController.GameControllerSingle.sideQuestBool = true;
 

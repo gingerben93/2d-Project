@@ -17,6 +17,8 @@ public class QuestController : MonoBehaviour {
     public int gatheramount { get; private set; }
     public string gathertarget { get; private set; }
 
+    public Text MainQuestText; 
+
     public static QuestController QuestControllerSingle;
 
     void Awake()
@@ -32,7 +34,14 @@ public class QuestController : MonoBehaviour {
         }
 
         currentQuest = 0f;
-        //questDoorOpen = new bool[10];
+    }
+
+    void Start()
+    {
+        GameObject parentQuest = GameObject.Find("QuestPanel");
+        MainQuestText = Instantiate(QuestTxt, parentQuest.transform);
+        MainQuestText.name = "MainQuest";
+        MainQuestText.text = "Complete Quest " + currentQuest;
     }
 
     public void PickQuest(string NPCName, int questType)

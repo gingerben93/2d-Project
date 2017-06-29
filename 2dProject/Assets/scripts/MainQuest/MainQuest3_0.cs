@@ -31,39 +31,28 @@ public class MainQuest3_0 : MonoBehaviour {
                 inRange = true;
                 Debug.Log("TalkOnApproach is in range");
 
-                //freeze player
-                GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-
                 canvas.alpha = 1;
-                StartCoroutine(Dialog("Con3"));
+                StartCoroutine(Dialog());
             }
         }
     }
 
-    IEnumerator Dialog(string Conversation)
+    IEnumerator Dialog()
     {
-        Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+        string Conversation1 = DialogManager.DialogManagerSingle.MainQuestDialogueLoadPath + "MainQuest3_0.0";
 
-        TextAsset TextObject = Resources.Load("Dialog/" + Conversation) as TextAsset;
-        string fullConversation = TextObject.text;
-        string[] perline = fullConversation.Split('\n');
-        for (int x = 0; x < perline.Length; x += 2)
+        //freeze player
+        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+
+        StartCoroutine(DialogManager.DialogManagerSingle.Dialog(Conversation1));
+
+        //waits for conversation to finish
+        while ((DialogManager.DialogManagerSingle.dialogOn == true))
         {
-            Herotext.text = "";
-            foreach (char letter in perline[x].ToCharArray())
-            {
-                //this is a garbage collection nightmare (string concatenation in general is)
-                Herotext.text += letter;
-                yield return new WaitForSeconds(0.05f);
-            }
-
-            NPCtext.text = "";
-            foreach (char letter in perline[x + 1].ToCharArray())
-            {
-                NPCtext.text += letter;
-                yield return new WaitForSeconds(0.05f);
-            }
+            yield return new WaitForSeconds(0.1f);
         }
+
+        //wait 1 sec before continuing
         yield return new WaitForSeconds(1f);
         canvas.alpha = 0;
 
@@ -80,7 +69,10 @@ public class MainQuest3_0 : MonoBehaviour {
 
         if (QuestController.QuestControllerSingle.currentQuest == 4f)
         {
-            Debug.Log("quest is 3");
+            //change main quest text
+            QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
+
+            Debug.Log("quest is 4");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Blitz").AddComponent<MainQuest4_0>();
             BlitzCrank.BlitzCrankSingle.hasQuest = true;

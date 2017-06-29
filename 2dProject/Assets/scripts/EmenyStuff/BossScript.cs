@@ -83,6 +83,11 @@ public class BossScript : MonoBehaviour
 
             //Boss1 is now dead
             GameController.GameControllerSingle.Boss1 = true;
+            MainQuest8_0 mainQuest = GameController.GameControllerSingle.transform.GetComponent<MainQuest8_0>();
+            mainQuest.bossDead = true;
+
+            mainQuest.BossSprite = GameObject.Find("Boss").GetComponent<SpriteRenderer>().sprite;
+            DialogManager.DialogManagerSingle.TalkingCharacter.sprite = mainQuest.BossSprite;
 
             Destroy(gameObject);
         }

@@ -7,10 +7,6 @@ public class Character1 : MonoBehaviour
 {
     public bool character;
 
-    //Coroutine
-    bool Herod = false;
-    bool NPCd = false;
-
     //Canvas text and image
     private Text NPCtext;
     private Text Herotext;
@@ -45,10 +41,14 @@ public class Character1 : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Q) && character)
         {
+            //set sprite
             DialogManager.DialogManagerSingle.TalkingCharacter.sprite = newSprite;
-            StartCoroutine(HeroDialog(Herotext, "Who are you?"));
-            StartCoroutine(NPCDialog(NPCtext, "I'm the Magic Mike Man"));
+
             canvas.alpha = 1;
+
+            //start conversation
+            StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Character1/AcceptQuest"));
+
         }
     }
 
@@ -71,50 +71,6 @@ public class Character1 : MonoBehaviour
             NPCtext.text = "";
             Herotext.text = "";
             StopAllCoroutines();
-            NPCd = false;
-            Herod = false;
         }
     }
-
-    IEnumerator HeroDialog(Text textComp, string message)
-    {
-        while (NPCd)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        textComp.text = "";
-
-        Herod = true;
-        foreach (char letter in message.ToCharArray())
-        {
-            textComp.text += letter;
-            yield return new WaitForSeconds(0.05f);
-        }
-        Herod = false;
-    }
-
-    IEnumerator NPCDialog(Text textComp, string message)
-    {
-        while (Herod)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        textComp.text = "";
-
-        NPCd = true;
-        foreach (char letter in message.ToCharArray())
-        {
-            textComp.text += letter;
-            yield return new WaitForSeconds(0.05f);
-        }
-        NPCd = false;
-    }
-
-    //void OnGUI()
-    //{
-    //    if (chat)
-    //    {
-    //        GUI.Label(new Rect(Screen.width/2, Screen.height/2 - 50, 1000f, 200f), text);
-    //    }
-    //}
 }

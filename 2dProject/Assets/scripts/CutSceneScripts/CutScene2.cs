@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class CutScene2 : MonoBehaviour
 {
-
     public Camera cam;
     public Text cutSceneText;
 
@@ -28,6 +27,22 @@ public class CutScene2 : MonoBehaviour
         cam.transform.position = Vector3.MoveTowards(cam.transform.position, targetLocation, speed);
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, end, .10f);
 
+        //for pausing cut scene
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Space");
+            if (Time.timeScale >= 0)
+            {
+                Debug.Log("> 0");
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Debug.Log("= 0");
+                Time.timeScale = 1;
+            }
+        }
+
         //up time scale to scroll to next panel quicker
         if (Input.GetMouseButtonDown(0))
         {
@@ -37,10 +52,9 @@ public class CutScene2 : MonoBehaviour
         //for skipping scene
         if (Input.GetMouseButtonDown(1))
         {
-            CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
+            StartCoroutine(LoadNewScene());
             Debug.Log("right click");
         }
-
     }
 
     IEnumerator WaitForScene()
@@ -52,12 +66,12 @@ public class CutScene2 : MonoBehaviour
         end = 3.5f;
 
         Time.timeScale = 1;
-        cutSceneText.text = "Panel 1";
+        cutSceneText.text = "NEED a cut scene TWO panel";
         targetLocation = new Vector3(0.06f, 1.51f, -1.0f);
         yield return new WaitForSeconds(2);
 
         Time.timeScale = 1;
-        cutSceneText.text = "Panel 2";
+        cutSceneText.text = "NEED a cut scene TWO panel";
         targetLocation = new Vector3(9.02f, 1.78f, -1.0f);
         end = 3.3f;
         yield return new WaitForSeconds(2);
@@ -93,4 +107,15 @@ public class CutScene2 : MonoBehaviour
         //load back to game
         CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
     }
+
+    IEnumerator LoadNewScene()
+    {
+        AsyncOperation async = SceneManager.LoadSceneAsync("StartArea");
+        // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
+        while (!async.isDone)
+        {
+            yield return null;
+        }
+    }
+
 }

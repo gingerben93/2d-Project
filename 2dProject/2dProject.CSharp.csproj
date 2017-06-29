@@ -78,6 +78,7 @@
     <Compile Include="Assets\scripts\BossRoom\DamagePlayerOnCollision.cs" />
     <Compile Include="Assets\scripts\CutSceneScripts\CutScene1.cs" />
     <Compile Include="Assets\scripts\CutSceneScripts\CutScene2.cs" />
+    <Compile Include="Assets\scripts\CutSceneScripts\CutScene3.cs" />
     <Compile Include="Assets\scripts\CutSceneScripts\CutSceneLoader.cs" />
     <Compile Include="Assets\scripts\DialogManager.cs" />
     <Compile Include="Assets\scripts\DoorToMainGame.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Assets\scripts\MainQuest\MainQuest5_0.cs" />
     <Compile Include="Assets\scripts\MainQuest\MainQuest6_0.cs" />
     <Compile Include="Assets\scripts\MainQuest\MainQuest7_0.cs" />
+    <Compile Include="Assets\scripts\MainQuest\MainQuest8_0.cs" />
     <Compile Include="Assets\scripts\MapCreation\DoorPrefabInfo.cs" />
     <Compile Include="Assets\scripts\MapCreation\MapAddOns.cs" />
     <Compile Include="Assets\scripts\MapCreation\MapGenerator.cs" />
@@ -136,12 +138,26 @@
     <Compile Include="Assets\scripts\WorldObjects.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\resources\Dialog\Con1.txt" />
-    <None Include="Assets\resources\Dialog\Con2.txt" />
-    <None Include="Assets\resources\Dialog\Con3.txt" />
-    <None Include="Assets\resources\Dialog\Con4.txt" />
-    <None Include="Assets\resources\Dialog\Con5.txt" />
-    <None Include="Assets\resources\Dialog\MainQuest7_0.txt" />
+    <None Include="Assets\resources\Dialog\MainQuest\MainQuest0_0.0.txt" />
+    <None Include="Assets\resources\Dialog\MainQuest\MainQuest0_0.1.txt" />
+    <None Include="Assets\resources\Dialog\MainQuest\MainQuest1_0.0.txt" />
+    <None Include="Assets\resources\Dialog\MainQuest\MainQuest3_0.0.txt" />
+    <None Include="Assets\resources\Dialog\MainQuest\MainQuest4_0.0.txt" />
+    <None Include="Assets\resources\Dialog\MainQuest\MainQuest5_0.0.txt" />
+    <None Include="Assets\resources\Dialog\MainQuest\MainQuest7_0.0.txt" />
+    <None Include="Assets\resources\Dialog\MainQuest\MainQuest8_0.0.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Blitz\AcceptQuest.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Blitz\QuestComplete.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Blitz\QuestIncomplete.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Character1\AcceptQuest.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Character1\QuestComplete.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Character1\QuestIncomplete.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Doctor\AcceptQuest.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Doctor\QuestComplete.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Doctor\QuestIncomplete.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Morgana\AcceptQuest.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Morgana\QuestComplete.txt" />
+    <None Include="Assets\resources\Dialog\NPC\Morgana\QuestIncomplete.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

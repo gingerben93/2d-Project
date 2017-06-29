@@ -9,13 +9,11 @@ public class MainQuest0_0 : MonoBehaviour {
     private Text Herotext;
     private CanvasGroup canvas;
 
-    //skip dialogue
-    bool leftClick = false;
-    bool rightClick = false;
-
     //Coroutine
     bool inRange = false;
 
+    //for name
+    public bool promptName = false;
 
     void Start()
     {
@@ -27,7 +25,7 @@ public class MainQuest0_0 : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update ()
+    void Update()
     {
         if (!inRange)
         {
@@ -37,35 +35,14 @@ public class MainQuest0_0 : MonoBehaviour {
                 inRange = true;
                 Debug.Log("TalkOnApproach is in range");
 
-                //freeze player
-                GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-
                 canvas.alpha = 1;
-                StartCoroutine(Dialog("Con1"));
-            }
-        }
-
-        //left mouse
-        else if (Input.GetMouseButtonDown(0))
-        {
-            leftClick = true;
-        }
-
-        //right mouse
-        else if (Input.GetMouseButtonDown(1))
-        {
-            if(rightClick)
-            {
-                rightClick = false;
-            }
-            else
-            {
-                rightClick = true;
+                //start quest sequence
+                StartCoroutine(Dialog());
             }
         }
     }
 
-    public bool promptName = false;
+    //for getting name
     void OnGUI()
     {
         if (promptName)
@@ -79,81 +56,41 @@ public class MainQuest0_0 : MonoBehaviour {
         }
     }
 
-    IEnumerator Dialog(string Conversation)
+    IEnumerator Dialog()
     {
-        leftClick = false;
-        rightClick = false;
+        //list all conversation that will be had
+        string Conversation1 = DialogManager.DialogManagerSingle.MainQuestDialogueLoadPath + "MainQuest0_0.0";
+        string Conversation2 = DialogManager.DialogManagerSingle.MainQuestDialogueLoadPath + "MainQuest0_0.1";
 
-        Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+        //freeze player
+        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
 
-        TextAsset TextObject = Resources.Load("Dialog/" + Conversation) as TextAsset;
-        string fullConversation = TextObject.text;
-        string[] perline = fullConversation.Split('\n');
-        
-        for (int x = 0; x < perline.Length; x += 2)
+        //start conversavtion
+        StartCoroutine(DialogManager.DialogManagerSingle.Dialog(Conversation1));      
+
+        //waits for conversation to finish
+        while((DialogManager.DialogManagerSingle.dialogOn == true))
         {
-            Herotext.text = "";
-            foreach (char letter in perline[x].ToCharArray())
-            {
-                //skip dialogue
-                if (leftClick == true)
-                {
-                    Herotext.text = perline[x];
-                    leftClick = false;
-                    break;
-                }
-
-                Herotext.text += letter;
-                yield return new WaitForSeconds(0.05f);
-            }
-
-            //for pause while talking if left click to continue
-            while (rightClick == true)
-            {
-                if(leftClick == true)
-                {
-                    break;
-                }
-                yield return new WaitForSeconds(0.1f);
-            }
-
-            //stop to promt player for name
-            if (x == 2)
-            {
-                promptName = true;
-                while (promptName == true)
-                { 
-                    yield return new WaitForSeconds(0.1f);
-                }
-            }
-
-            NPCtext.text = "";
-            foreach (char letter in perline[x+1].ToCharArray())
-            {
-                //skip dialogue
-                if (leftClick == true)
-                {
-                    NPCtext.text = perline[x + 1];
-                    leftClick = false;
-                    break;
-                }
-
-                NPCtext.text += letter;
-                yield return new WaitForSeconds(0.05f);
-            }
-
-            //for pause while talking
-            while (rightClick == true)
-            {
-                if (leftClick == true)
-                {
-                    break;
-                }
-                yield return new WaitForSeconds(0.1f);
-            }
-
+            yield return new WaitForSeconds(0.1f);
         }
 
+        //pauses and gets name
+        promptName = true;
+        while (promptName == true)
+        { 
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        //start conversavtion 2
+        StartCoroutine(DialogManager.DialogManagerSingle.Dialog(Conversation2));
+
+        //waits for conversation to finish
+        while ((DialogManager.DialogManagerSingle.dialogOn == true))
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        //wait 1 sec before continuing
         yield return new WaitForSeconds(1f);
         canvas.alpha = 0;
 
@@ -162,23 +99,24 @@ public class MainQuest0_0 : MonoBehaviour {
         GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
         GameController.GameControllerSingle.transform.transform.rotation = Quaternion.identity;
 
-        //set quest not current
-
         //Text reset
         NPCtext.text = "";
         Herotext.text = "";
 
+        //set quest number
         QuestController.QuestControllerSingle.currentQuest = 1f;
 
+        //add next quest component where it needs to go
         if (QuestController.QuestControllerSingle.currentQuest == 1f)
         {
-            //QuestController.QuestControllerSingle.isQuestCurrent = true;
+            //change main quest text
+            QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
+
             Debug.Log("quest is 1");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-            //QuestController.QuestControllerSingle.NextMainQuest(QuestController.QuestControllerSingle.currentQuest);
+
             GameObject.Find("Character1").AddComponent<MainQuest1_0>();
         }
-        //update main quest
         
         //QuestController.QuestControllerSingle.isQuestCurrent = false;
         Destroy(this);

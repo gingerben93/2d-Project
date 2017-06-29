@@ -24,6 +24,9 @@ public class MainQuest6_0 : MonoBehaviour {
 
             if (QuestController.QuestControllerSingle.currentQuest == 7f)
             {
+                //change main quest text
+                QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
+
                 Debug.Log("quest is 6");
                 Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
                 GameObject.Find("Hero").AddComponent<MainQuest7_0>();

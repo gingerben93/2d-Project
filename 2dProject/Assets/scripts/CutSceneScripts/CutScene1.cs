@@ -25,7 +25,23 @@ public class CutScene1 : MonoBehaviour {
     {
         cam.transform.position = Vector3.MoveTowards(cam.transform.position, targetLocation, speed);
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, end, .10f);
-        
+
+        //for pausing cut scene
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("Space");
+            if (Time.timeScale >= 0)
+            {
+                Debug.Log("> 0");
+                Time.timeScale = 0;
+            }
+            else
+            {
+                Debug.Log("= 0");
+                Time.timeScale = 1;
+            }
+        }
+
         //up time scale to scroll to next panel quicker
         if (Input.GetMouseButtonDown(0))
         {
@@ -42,7 +58,6 @@ public class CutScene1 : MonoBehaviour {
 
     IEnumerator WaitForScene()
     {
-
         end = 13f;
         cutSceneText.text = "Full Strip";
         yield return new WaitForSeconds(2);
@@ -50,40 +65,40 @@ public class CutScene1 : MonoBehaviour {
         end = 3.5f;
 
         Time.timeScale = 1;
-        cutSceneText.text = "Panel 1";
+        cutSceneText.text = "Panel 1: No Dialogue. Close up of a few dead bodies in a trail / wood area";
         targetLocation = new Vector3(0.06f, 1.51f, -1.0f);
         yield return new WaitForSeconds(2);
 
         Time.timeScale = 1;
-        cutSceneText.text = "Panel 2";
+        cutSceneText.text = "Panel 2 : No Dialogue. Panel of full scene with Dead bodies and a group of people approaching";
         targetLocation = new Vector3(9.02f, 1.78f, -1.0f);
         end = 3.3f;
         yield return new WaitForSeconds(2);
 
         Time.timeScale = 1;
-        cutSceneText.text = "Panel 3";
+        cutSceneText.text = "Panel 3 : Dialogue by random civilains person1-'Divine Spirits help us more bodies' person2-'this has been happening too often lately.' ";
         targetLocation = new Vector3(0.00f, -6.50f, -1.0f);
         end = 4f;
         yield return new WaitForSeconds(2);
 
         Time.timeScale = 1;
-        cutSceneText.text = "Panel 4";
+        cutSceneText.text = "Panel 4: close up of PT while people still talk. person1-'How many times does this make in the past year?' person2;-'I've lost count.' PT coughs.";
         targetLocation = new Vector3(5.80f, -6.50f, -1.0f);
         yield return new WaitForSeconds(2);
 
         Time.timeScale = 1;
-        cutSceneText.text = "Panel 5";
+        cutSceneText.text = "Panel 5: civilians ruhing to PT. person1- 'Merciful lords and ladies someone's alive.";
         targetLocation = new Vector3(12.60f, -6.00f, -1.0f);
         yield return new WaitForSeconds(2);
 
         Time.timeScale = 1;
-        cutSceneText.text = "Panel 6";
+        cutSceneText.text = "Panel 6: Civilians picking him up. person1- 'Lets get this lucky basdard back to town.'  Person2-'Has there ever been a surviour from one of these atrocities?'";
         targetLocation = new Vector3(0.70f, -14.40f, -1.0f);
         end = 3.2f;
         yield return new WaitForSeconds(2);
 
         Time.timeScale = 1;
-        cutSceneText.text = "Panel 6-8";
+        cutSceneText.text = "Panel 6-8 PT geting taken away. person1-'No, Never'";
         speed = 0.1f;
         targetLocation = new Vector3(11.70f, -14.40f, -1.0f);
 
