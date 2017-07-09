@@ -62,7 +62,7 @@ public class GodHandsFist : MonoBehaviour {
 
                 if (returnWithPlayer)
                 {
-                    targetRB.AddForce(new Vector2(0, 500));
+                    targetRB.AddForce(new Vector2(0, 1000));
                     returnWithPlayer = false;
                 }
 
