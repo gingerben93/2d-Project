@@ -29,7 +29,7 @@ public class Morgana : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && character)
+        if (Input.GetKeyDown(KeyCode.Q) && character && DialogManager.DialogManagerSingle.dialogOn == false)
         {
             DialogManager.DialogManagerSingle.TalkingCharacter.sprite = newSprite;
             GatherQuest gather = QuestController.QuestControllerSingle.transform.GetComponent<GatherQuest>();
@@ -78,8 +78,12 @@ public class Morgana : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            character = false;
+            // set dialog manager variables to false and off, must to to retalk to anyone
+            DialogManager.DialogManagerSingle.dialogOn = false;
             canvas.alpha = 0;
+
+            //set locals to false
+            character = false;
 
             //Text reset and stopping Coroutine
             NPCtext.text = "";

@@ -9,7 +9,7 @@ public class QuestController : MonoBehaviour {
     public Text QuestTxt;
 
     //main story quest counter
-    public float currentQuest{ get; set; }
+    public float currentQuest;
 
     //for on start of gatherquest
     //quest giver

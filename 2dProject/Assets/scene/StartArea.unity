@@ -925,6 +925,11 @@ Prefab:
       value: 
       objectReference: {fileID: 114071781001252008, guid: b7aa543049fbbde4c815b63ea5d770cb,
         type: 2}
+    - target: {fileID: 114716739729211596, guid: b3d65b003e0a1144f872cbc200f510ed,
+        type: 2}
+      propertyPath: currentQuest
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b3d65b003e0a1144f872cbc200f510ed, type: 2}
   m_IsPrefabParent: 0

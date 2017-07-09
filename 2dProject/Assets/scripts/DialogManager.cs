@@ -74,70 +74,73 @@ public class DialogManager : MonoBehaviour {
 
     public IEnumerator Dialog(string Conversation)
     {
-        dialogOn = true;
-        leftClick = false;
-        rightClick = false;
-
-        Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-
-        TextAsset TextObject = Resources.Load(Conversation) as TextAsset;
-        string fullConversation = TextObject.text;
-        string[] perline = fullConversation.Split('\n');
-
-        for (int x = 0; x < perline.Length; x += 2)
+        if (dialogOn == false)
         {
-            Herotext.text = "";
-            foreach (char letter in perline[x].ToCharArray())
+            dialogOn = true;
+            leftClick = false;
+            rightClick = false;
+
+            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+
+            TextAsset TextObject = Resources.Load(Conversation) as TextAsset;
+            string fullConversation = TextObject.text;
+            string[] perline = fullConversation.Split('\n');
+
+            for (int x = 0; x < perline.Length; x += 2)
             {
-                //skip dialogue
-                if (leftClick == true)
+                Herotext.text = "";
+                foreach (char letter in perline[x].ToCharArray())
                 {
-                    Herotext.text = perline[x];
-                    leftClick = false;
-                    break;
+                    //skip dialogue
+                    if (leftClick == true)
+                    {
+                        Herotext.text = perline[x];
+                        leftClick = false;
+                        break;
+                    }
+
+                    Herotext.text += letter;
+                    yield return new WaitForSeconds(0.05f);
                 }
 
-                Herotext.text += letter;
-                yield return new WaitForSeconds(0.05f);
-            }
-
-            //for pause while talking if left click to continue
-            while (rightClick == true)
-            {
-                if (leftClick == true)
+                //for pause while talking if left click to continue
+                while (rightClick == true)
                 {
-                    break;
-                }
-                yield return new WaitForSeconds(0.1f);
-            }
-
-            NPCtext.text = "";
-            foreach (char letter in perline[x + 1].ToCharArray())
-            {
-                //skip dialogue
-                if (leftClick == true)
-                {
-                    NPCtext.text = perline[x + 1];
-                    leftClick = false;
-                    break;
+                    if (leftClick == true)
+                    {
+                        break;
+                    }
+                    yield return new WaitForSeconds(0.1f);
                 }
 
-                NPCtext.text += letter;
-                yield return new WaitForSeconds(0.05f);
+                NPCtext.text = "";
+                foreach (char letter in perline[x + 1].ToCharArray())
+                {
+                    //skip dialogue
+                    if (leftClick == true)
+                    {
+                        NPCtext.text = perline[x + 1];
+                        leftClick = false;
+                        break;
+                    }
+
+                    NPCtext.text += letter;
+                    yield return new WaitForSeconds(0.05f);
+                }
+
+                //for pause while talking
+                while (rightClick == true)
+                {
+                    if (leftClick == true)
+                    {
+                        break;
+                    }
+                    yield return new WaitForSeconds(0.1f);
+                }
             }
 
-            //for pause while talking
-            while (rightClick == true)
-            {
-                if (leftClick == true)
-                {
-                    break;
-                }
-                yield return new WaitForSeconds(0.1f);
-            }
+            //stop checking for mouse inputs
+            dialogOn = false;
         }
-
-        //stop checking for mouse inputs
-        dialogOn = false;
     }
 }

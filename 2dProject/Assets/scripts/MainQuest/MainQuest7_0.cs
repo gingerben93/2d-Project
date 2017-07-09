@@ -77,7 +77,7 @@ public class MainQuest7_0 : MonoBehaviour {
 
             Debug.Log("quest is 8");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-            //GameObject.Find("Hero").AddComponent<MainQuest8_0>();
+            GameObject.Find("Hero").AddComponent<MainQuest8_0>();
         }
         Destroy(this);
     }

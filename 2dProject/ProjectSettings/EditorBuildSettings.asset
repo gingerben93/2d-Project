@@ -17,3 +17,5 @@ EditorBuildSettings:
     path: Assets/scene/CutScenes/CutScene1.unity
   - enabled: 1
     path: Assets/scene/CutScenes/CutScene2.unity
+  - enabled: 1
+    path: Assets/scene/CutScenes/CutScene3.unity

@@ -71,7 +71,7 @@ public class BlitzCrank : MonoBehaviour {
         {
             //do nothing let quest do stuff
         }
-        else if (Input.GetKeyDown(KeyCode.Q) && touchingCharacter)
+        else if (Input.GetKeyDown(KeyCode.Q) && touchingCharacter && DialogManager.DialogManagerSingle.dialogOn == false)
         {
             DialogManager.DialogManagerSingle.TalkingCharacter.sprite = newSprite;
             KillQuest kill = QuestController.QuestControllerSingle.transform.GetComponent<KillQuest>();
@@ -117,8 +117,12 @@ public class BlitzCrank : MonoBehaviour {
     {
         if (collision.gameObject.tag == "Player")
         {
-            touchingCharacter = false;
+            // set dialog manager variables to false and off, must to to retalk to anyone
+            DialogManager.DialogManagerSingle.dialogOn = false;
             canvas.alpha = 0;
+
+            //set locals to false
+            touchingCharacter = false;
 
             //Text reset and stopping Coroutine
             NPCtext.text = "";

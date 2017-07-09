@@ -51,8 +51,9 @@ public class CutScene1 : MonoBehaviour {
         //for skipping scene
         if (Input.GetMouseButtonDown(1))
         {
-            StartCoroutine(LoadNewScene());
+            //StartCoroutine(LoadNewScene());
             Debug.Log("right click");
+            CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
         }
     }
 
@@ -106,7 +107,7 @@ public class CutScene1 : MonoBehaviour {
         yield return new WaitForSeconds(3);
 
         //for loading to main game
-        StartCoroutine(LoadNewScene());
+        CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
     }
 
     IEnumerator LoadNewScene()

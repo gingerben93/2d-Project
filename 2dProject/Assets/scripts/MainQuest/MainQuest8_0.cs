@@ -67,9 +67,9 @@ public class MainQuest8_0 : MonoBehaviour {
         NPCtext.text = "";
         Herotext.text = "";
 
-        QuestController.QuestControllerSingle.currentQuest = 8f;
+        QuestController.QuestControllerSingle.currentQuest = 9f;
 
-        if (QuestController.QuestControllerSingle.currentQuest == 8f)
+        if (QuestController.QuestControllerSingle.currentQuest == 9f)
         {
             //change main quest text
             QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
@@ -77,7 +77,7 @@ public class MainQuest8_0 : MonoBehaviour {
             GameController.GameControllerSingle.sideQuestCounter = 0;
             GameController.GameControllerSingle.sideQuestBool = true;
 
-            Debug.Log("quest is 8");
+            Debug.Log("quest is 9");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
             //GameObject.Find("Hero").AddComponent<MainQuest9_0>();
         }

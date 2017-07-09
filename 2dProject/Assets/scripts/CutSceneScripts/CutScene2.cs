@@ -52,8 +52,8 @@ public class CutScene2 : MonoBehaviour
         //for skipping scene
         if (Input.GetMouseButtonDown(1))
         {
-            StartCoroutine(LoadNewScene());
             Debug.Log("right click");
+            CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
         }
     }
 
