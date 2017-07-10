@@ -16,6 +16,10 @@ TagManager:
   - NPC
   - WepAttacks
   - GatherQuestItem
+  - EnemyProjectile
+  - ManaPotion
+  - BossRoomItem
+  - Shield
   layers:
   - Default
   - TransparentFX

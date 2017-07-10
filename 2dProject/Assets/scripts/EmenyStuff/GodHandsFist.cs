@@ -76,15 +76,26 @@ public class GodHandsFist : MonoBehaviour {
     {
         if (other.tag == "Player")
         {
+            //Pulls PLayer and make it so player doesnt interact with the shield
+            Shield.ShieldSingle.notGrabbed = false;
+            targetRB = other.GetComponent<Rigidbody2D>();
+            hitObject = true;
+            targetTransform = other.transform;
+            
+        }
+
+        if (other.tag == "BossRoomItem")
+        {
             targetRB = other.GetComponent<Rigidbody2D>();
             hitObject = true;
             targetTransform = other.transform;
         }
+
+        if (other.tag == "Bullet")
+        {
+            Debug.Log("HIT by Bullet fist");
+            Debug.Log(GetComponent<Collider2D>().name);
+        }
     }
 
-    //void OnTriggerExit2D(Collider2D other)
-    //{
-    //    Debug.Log("leaving player");
-    //    hitObject = false;
-    //}
 }

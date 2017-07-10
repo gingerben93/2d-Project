@@ -7,7 +7,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using UnityEngine.SceneManagement;
 
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour
+{
 
     public string playerName { get; set; }
 
@@ -19,9 +20,18 @@ public class GameController : MonoBehaviour {
 
     public float attack { get; set; }
     public float moveForce { get; set; }
-    public float maxSpeed{ get; set; }
-    public float jumpForce{ get; set; }
+    public float maxSpeed { get; set; }
+    public float jumpForce { get; set; }
 
+    //dash force
+    float dashForce = 1000f;
+
+    //rotate with dash
+    public float smooth = 1f;
+    private Quaternion targetRotation;
+
+    //touching anything
+    public bool IsColliding = true;
 
     //for if game needs to load test
     public bool dontLoadTheGame;
@@ -52,6 +62,8 @@ public class GameController : MonoBehaviour {
     //for loading
     public bool isGameLoading = false;
 
+    //for stunned
+    public bool stun = false;
     //For boss deaths
     public bool Boss1 = false;
 
@@ -72,6 +84,11 @@ public class GameController : MonoBehaviour {
     //for removing the current items other things on map
     Transform itemlist;
     GameObject playerProjectileList;
+
+    //double tap click event
+    private float ButtonCooler = 0.5f; // Half a second before reset
+    private int ButtonCount = 0;
+    private float dashCoolDown = 0.0f;
 
     public static GameController GameControllerSingle;
 
@@ -95,7 +112,8 @@ public class GameController : MonoBehaviour {
     }
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         //if side quest counter is on
         sideQuestBool = false;
 
@@ -107,6 +125,9 @@ public class GameController : MonoBehaviour {
         facingRight = true;
         jump = false;
         attack = 2;
+
+        //for rotating teemo
+        targetRotation = transform.rotation;
 
         NotificationCanvasGroup = GameObject.Find("Notification").GetComponent<CanvasGroup>();
         StatsMenu = GameObject.Find("StatsMenu").GetComponent<CanvasGroup>();
@@ -128,22 +149,27 @@ public class GameController : MonoBehaviour {
         playerName = "fukin nerd";
     }
 
-	
-	// Update is called once per frame
-	void Update () {
 
+    // Update is called once per frame
+    void Update()
+    {
         if (isGameLoading)
         {
             return;
         }
-
 
         if (PlayerStats.PlayerStatsSingle.health <= 0)
         {
             transform.position = respawnLocation;
             PlayerStats.PlayerStatsSingle.health = PlayerStats.PlayerStatsSingle.maxHealth;
         }
-        
+
+
+        if (stun)
+        {
+            return;
+        }
+
         Resources.UnloadUnusedAssets();
         if (Input.GetKeyDown(KeyCode.R))
         {
@@ -162,7 +188,7 @@ public class GameController : MonoBehaviour {
                 RemoveCurrentMapObjects();
             }
         }
-        
+
         if (Input.GetKeyDown(KeyCode.Space) && rb2d.velocity.y < maxSpeed /*&& grounded*/)
         {
             jump = true;
@@ -243,52 +269,159 @@ public class GameController : MonoBehaviour {
 
                 }
 
-               // var weapon = gameObject.GetComponent(atk.weaponName) as MonoBehaviour;
-               // Debug.Log(atk.weaponName);
-               // Debug.Log(weapon);
+                // var weapon = gameObject.GetComponent(atk.weaponName) as MonoBehaviour;
+                // Debug.Log(atk.weaponName);
+                // Debug.Log(weapon);
                 //Invoke attack function (INVOKE CANT USE FUNCTIONS THAT HAVE PARAMETERS)
-               // weapon.Invoke("Attack", 0.0001f);
+                // weapon.Invoke("Attack", 0.0001f);
             }
+        }
+
+        //for rotating
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 10 * smooth * Time.deltaTime);
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            //Number of Taps you want Minus One
+            if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
+            {
+                Debug.Log("double tap right");
+                dashCoolDown = 1f;
+                rb2d.velocity = new Vector2(7f, rb2d.velocity.y);
+                rb2d.AddForce(new Vector2(dashForce, 0f));
+
+                //for rotating teemo
+                targetRotation *= Quaternion.AngleAxis(180, new Vector3(0, 0, 1));
+            }
+            else
+            {
+                ButtonCooler = 0.2f;
+                ButtonCount += 1;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            //Number of Taps you want Minus One
+            if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
+            {
+                Debug.Log("double tap left");
+                dashCoolDown = 1f;
+                rb2d.velocity = new Vector2(-7f, rb2d.velocity.y);
+                rb2d.AddForce(new Vector2(-dashForce, 0f));
+
+                //for rotating teemo
+                targetRotation *= Quaternion.AngleAxis(-180, new Vector3(0, 0, 1));
+            }
+            else
+            {
+                ButtonCooler = 0.2f;
+                ButtonCount += 1;
+            }
+        }
+
+        if (ButtonCooler > 0.0f)
+        {
+            ButtonCooler -= 1.0f * Time.deltaTime;
+        }
+        else
+        {
+            ButtonCount = 0;
+        }
+
+        if (dashCoolDown > 0.0f)
+        {
+            dashCoolDown -= Time.deltaTime;
         }
     }
 
     void FixedUpdate()
     {
-        float h = Input.GetAxis("Horizontal");
+
+        if (stun)
+        {
+            return;
+        }
+
         //anim.SetFloat("Speed", Mathf.Abs(h));
-        
+
         //for changing exp on page
         //StatPageExperienceText.GetComponent<Text>().text = "EXP: " + PlayerStats.playerStatistics.experiencePoints;
 
-        if (h * rb2d.velocity.x < maxSpeed)
-            rb2d.velocity = new Vector2(h * maxSpeed, rb2d.velocity.y);
+        if (Input.GetKey(KeyCode.D))
+        {
+            //flip character sprite
+            if (!facingRight)
+            {
+                Flip();
+            }
+            //if going other direction, stop
+            if (rb2d.velocity.x < 0)
+            {
+                rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+            }
+            //speed up by 1 to the right
+            if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
+            {
+                rb2d.velocity = new Vector2(rb2d.velocity.x + 1, rb2d.velocity.y);
+            }
+        }
+        else if (Input.GetKey(KeyCode.A))
+        {
+            //flip character sprite
+            if (facingRight)
+            {
+                Flip();
+            }
+            //if going other direction, stop
+            if (rb2d.velocity.x > 0)
+            {
+                rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+            }
+            //speed up by 1 to the left
+            if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
+            {
+                rb2d.velocity = new Vector2(rb2d.velocity.x - 1, rb2d.velocity.y);
+            }
+        }
+        //if colliding then slow down (don't slow doing in air)
+        else if (IsColliding == true)
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x * .5f, rb2d.velocity.y);
+        }
 
-        if (h > 0 && !facingRight)
-            Flip();
-
-        if (h < 0 && facingRight)
-            Flip();
+        if (Mathf.Abs(rb2d.velocity.y) >= maxSpeed)
+        {
+            //start timer for falling; take damage after 1 sec
+            //deltatime is time sinece last frame.
+            timer += Time.deltaTime;
+            falling = true;
+        }
+        else
+        {
+            falling = false;
+            timer = 0;
+        }
 
         if (jump)
         {
             rb2d.gravityScale = 1;
             if (rb2d.velocity.y < 0)
             {
-                rb2d.velocity = new Vector3(0, 0, 0);
+                rb2d.velocity = new Vector3(rb2d.velocity.x, 0, 0);
             }
             if (Mathf.Sign(rb2d.velocity.y) < 1.2f)
+            {
                 rb2d.AddForce(new Vector2(0f, jumpForce));
+            }
             if (Mathf.Sign(rb2d.velocity.y) > 1.2f)
-                rb2d.velocity = new Vector2(0, Mathf.Sign(rb2d.velocity.y) * 0.2f);
+            {
+                rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Sign(rb2d.velocity.y) * 0.2f);
+            }
             jump = false;
         }
 
-        if (Mathf.Sign(rb2d.velocity.x) > 15f)
-        {
-            rb2d.velocity = new Vector2(Mathf.Sign(rb2d.velocity.x) * 0.995f, rb2d.velocity.y);
-        }
-
-        if (PlayerStats.PlayerStatsSingle.experiencePoints >= PlayerStats.PlayerStatsSingle.level*15)
+        if (PlayerStats.PlayerStatsSingle.experiencePoints >= PlayerStats.PlayerStatsSingle.level * 15)
         {
             // text container
             StartCoroutine(ShowMessage("LEVEL UP NERD!", 2));
@@ -297,18 +430,6 @@ public class GameController : MonoBehaviour {
             PlayerStats.PlayerStatsSingle.level += 1;
             PlayerStats.PlayerStatsSingle.maxHealth += 2;
             PlayerStats.PlayerStatsSingle.health = PlayerStats.PlayerStatsSingle.maxHealth;
-        }
-        if(Mathf.Abs(rb2d.velocity.y) >= maxSpeed)
-        {
-            //start timer for falling; take damage after 1 sec
-            //delta is is time sinece last frame.
-            timer += Time.deltaTime;
-            falling = true;
-        }
-        else
-        {
-            falling = false;
-            timer = 0;
         }
     }
 
@@ -367,6 +488,21 @@ public class GameController : MonoBehaviour {
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        IsColliding = true;
+        if (collision.gameObject.tag == "Item")
+        {
+            Inventory.InventorySingle.AddItem(collision.gameObject.GetComponent<Item>());
+            Destroy(collision.gameObject);
+        }
+        if (falling && timer >= 1f)
+        {
+            PlayerStats.PlayerStatsSingle.health -= 1;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        IsColliding = false;
         if (collision.gameObject.tag == "Item")
         {
             Inventory.InventorySingle.AddItem(collision.gameObject.GetComponent<Item>());
@@ -401,7 +537,7 @@ public class GameController : MonoBehaviour {
         Scene scene = SceneManager.GetActiveScene();
 
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream file = File.Create(Application.persistentDataPath + "/"+ scene.name + ".dat");
+        FileStream file = File.Create(Application.persistentDataPath + "/" + scene.name + ".dat");
 
         levelInformation mapData = new levelInformation();
 
@@ -447,7 +583,7 @@ public class GameController : MonoBehaviour {
             ////load map
             //for (int x = 0; x < playerDat.mapSetsX.Count; x++)
             //{
-                
+
             //    GameData.GameDataSingle.mapSets.Add(new Vector2(playerDat.mapSetsX[x], playerDat.mapSetsY[x]));
             //}
         }

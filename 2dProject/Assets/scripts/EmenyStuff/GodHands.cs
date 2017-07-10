@@ -40,7 +40,7 @@ public class GodHands : MonoBehaviour {
 
         godHandsFist = transform.GetComponentInChildren<GodHandsFist>();
 
-        godHandsFist.tag = "Enemy";
+        godHandsFist.tag = "EnemyProjectile";
 
         godHandsFist.pullAttackOn = true;
         godHandsFist.newTargetLocation = targetLocation;

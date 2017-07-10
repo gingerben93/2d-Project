@@ -46,8 +46,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\scripts\BossRoom\Bomb.cs" />
      <Compile Include="Assets\scripts\BossRoom\BossScript.cs" />
      <Compile Include="Assets\scripts\BossRoom\DamagePlayerOnCollision.cs" />
+     <Compile Include="Assets\scripts\BossRoom\Shield.cs" />
      <Compile Include="Assets\scripts\CutSceneScripts\CutScene1.cs" />
      <Compile Include="Assets\scripts\CutSceneScripts\CutScene2.cs" />
      <Compile Include="Assets\scripts\CutSceneScripts\CutScene3.cs" />

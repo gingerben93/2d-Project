@@ -16,7 +16,22 @@ public class BossScript : MonoBehaviour
     public bool isEnemy { get; set; }
     private int experiencePoint;
 
-    
+
+    public static BossScript BossScriptSingle;
+
+    void Awake()
+    {
+        if (BossScriptSingle == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            BossScriptSingle = this;
+        }
+        else if (BossScriptSingle != this)
+        {
+            Destroy(gameObject);
+        }
+    }
+
 
     void Start()
     {
@@ -43,7 +58,10 @@ public class BossScript : MonoBehaviour
 
     private Transform playerTransform;
 
-    
+    public bool shieldOn = false;
+
+
+
 
     void Update()
     {
@@ -74,22 +92,30 @@ public class BossScript : MonoBehaviour
     /// Inflicts damage and check if the object should be destroyed
     public void Damage(int damageCount)
     {
-        hp -= damageCount;
-
-        if (hp <= 0)
+        //Cant be damage when shield is up
+        if (shieldOn)
         {
-            //set exp
-            PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
 
-            //Boss1 is now dead
-            GameController.GameControllerSingle.Boss1 = true;
-            MainQuest8_0 mainQuest = GameController.GameControllerSingle.transform.GetComponent<MainQuest8_0>();
-            mainQuest.bossDead = true;
+        }
+        else
+        {
+            hp -= damageCount;
 
-            mainQuest.BossSprite = GameObject.Find("Boss").GetComponent<SpriteRenderer>().sprite;
-            DialogManager.DialogManagerSingle.TalkingCharacter.sprite = mainQuest.BossSprite;
+            if (hp <= 0)
+            {
+                //set exp
+                PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
 
-            Destroy(gameObject);
+                //Boss1 is now dead
+                GameController.GameControllerSingle.Boss1 = true;
+                MainQuest8_0 mainQuest = GameController.GameControllerSingle.transform.GetComponent<MainQuest8_0>();
+                mainQuest.bossDead = true;
+
+                mainQuest.BossSprite = GameObject.Find("Boss").GetComponent<SpriteRenderer>().sprite;
+                DialogManager.DialogManagerSingle.TalkingCharacter.sprite = mainQuest.BossSprite;
+
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -104,10 +130,14 @@ public class BossScript : MonoBehaviour
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
         //if bullet, do bullet stuff
-        if (otherCollider.tag == "Bullet")
+        if (otherCollider.tag == "Bullet" && transform.tag == "Enemy")
         {
+            Debug.Log("HIT by Bullet");
             Destroy(otherCollider.gameObject);
             Damage(GameController.GameControllerSingle.damage);
         }
     }
+
+
+
 }
