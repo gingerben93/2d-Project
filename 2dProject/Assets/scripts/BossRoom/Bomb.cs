@@ -15,6 +15,7 @@ public class Bomb : MonoBehaviour {
             Destroy(gameObject);
             shield.SetActive(false);
             BossScript.BossScriptSingle.shieldOn = false;
+            GameController.GameControllerSingle.stun = false;
             if (GameObject.FindGameObjectWithTag("EnemyProjectile") != null)
             {
                 Destroy(GameObject.FindGameObjectWithTag("EnemyProjectile"));

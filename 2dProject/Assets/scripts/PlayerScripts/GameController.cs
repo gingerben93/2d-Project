@@ -27,8 +27,10 @@ public class GameController : MonoBehaviour
     float dashForce = 1000f;
 
     //rotate with dash
-    public float smooth = 1f;
-    private Quaternion targetRotation;
+    private bool rotateRight = false;
+    private bool rotateleft = false;
+    float rotateSpeed = 20f;
+    float lastRotationAngle = 0f;
 
     //touching anything
     public bool IsColliding = true;
@@ -125,9 +127,6 @@ public class GameController : MonoBehaviour
         facingRight = true;
         jump = false;
         attack = 2;
-
-        //for rotating teemo
-        targetRotation = transform.rotation;
 
         NotificationCanvasGroup = GameObject.Find("Notification").GetComponent<CanvasGroup>();
         StatsMenu = GameObject.Find("StatsMenu").GetComponent<CanvasGroup>();
@@ -266,19 +265,34 @@ public class GameController : MonoBehaviour
                             //Debug.Log(atk.weaponName);
                         }
                         break;
-
                 }
-
-                // var weapon = gameObject.GetComponent(atk.weaponName) as MonoBehaviour;
-                // Debug.Log(atk.weaponName);
-                // Debug.Log(weapon);
-                //Invoke attack function (INVOKE CANT USE FUNCTIONS THAT HAVE PARAMETERS)
-                // weapon.Invoke("Attack", 0.0001f);
             }
         }
 
         //for rotating
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, 10 * smooth * Time.deltaTime);
+        if (rotateRight)
+        {
+            //euler angle start at 360 when going right
+            transform.Rotate(Vector3.back, rotateSpeed);
+            if (lastRotationAngle < transform.eulerAngles.z)
+            {
+                transform.eulerAngles = new Vector3(0, 0, 0);
+                rotateRight = false;
+            }
+            lastRotationAngle = transform.eulerAngles.z;
+        }
+
+        if (rotateleft)
+        {
+            //euler angle start at 0 when going left
+            transform.Rotate(Vector3.forward, rotateSpeed);
+            if (lastRotationAngle > transform.eulerAngles.z)
+            {
+                transform.eulerAngles = new Vector3(0, 0, 0);
+                rotateleft = false;
+            }
+            lastRotationAngle = transform.eulerAngles.z;
+        }
 
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -291,7 +305,9 @@ public class GameController : MonoBehaviour
                 rb2d.AddForce(new Vector2(dashForce, 0f));
 
                 //for rotating teemo
-                targetRotation *= Quaternion.AngleAxis(180, new Vector3(0, 0, 1));
+                rotateleft = false;
+                rotateRight = true;
+                lastRotationAngle = 360f;
             }
             else
             {
@@ -311,7 +327,9 @@ public class GameController : MonoBehaviour
                 rb2d.AddForce(new Vector2(-dashForce, 0f));
 
                 //for rotating teemo
-                targetRotation *= Quaternion.AngleAxis(-180, new Vector3(0, 0, 1));
+                rotateRight = false;
+                rotateleft = true;
+                lastRotationAngle = 0f;
             }
             else
             {

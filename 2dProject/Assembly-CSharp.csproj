@@ -71,6 +71,7 @@
      <Compile Include="Assets\scripts\GameInformation\QuestController.cs" />
      <Compile Include="Assets\scripts\GameInformation\StartGame.cs" />
      <Compile Include="Assets\scripts\GameInformation\StatsMenu.cs" />
+     <Compile Include="Assets\scripts\Healthbar.cs" />
      <Compile Include="Assets\scripts\Items\GatherQuest\Gather.cs" />
      <Compile Include="Assets\scripts\Items\Item.cs" />
      <Compile Include="Assets\scripts\Items\Magnet.cs" />

@@ -12,10 +12,11 @@ public class BossScript : MonoBehaviour
     ShotM shotM;
 
     /// Total hitpoints
-    public int hp { get; set; }
     public bool isEnemy { get; set; }
     private int experiencePoint;
 
+    //Accessing Healthbar Script on boss
+    public Healthbar bossHealth;
 
     public static BossScript BossScriptSingle;
 
@@ -38,7 +39,12 @@ public class BossScript : MonoBehaviour
         // set emeny information
         experiencePoint = 5;
 
-        hp = 4;
+        bossHealth = GetComponent<Healthbar>();
+
+        bossHealth.maxHealth = 20;
+        bossHealth.currentHealth = 20;
+
+
         isEnemy = true;
 
         //for boss attack
@@ -99,9 +105,9 @@ public class BossScript : MonoBehaviour
         }
         else
         {
-            hp -= damageCount;
+            bossHealth.currentHealth -= damageCount;
 
-            if (hp <= 0)
+            if (bossHealth.currentHealth <= 0)
             {
                 //set exp
                 PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
