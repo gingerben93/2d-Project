@@ -49,6 +49,7 @@ public class GameController : MonoBehaviour
     private CanvasGroup StartMenu;
     private CanvasGroup QuestMenu;
     private CanvasGroup NotificationCanvasGroup;
+    private CanvasGroup SkillMenu;
 
     public Text NotificationTxt;
 
@@ -92,6 +93,10 @@ public class GameController : MonoBehaviour
     private int ButtonCount = 0;
     private float dashCoolDown = 0.0f;
 
+    //skillBoolCheck
+    private bool dashSkill = false;
+    private bool dashSkill2 = false;
+
     public static GameController GameControllerSingle;
 
     void Awake()
@@ -133,6 +138,7 @@ public class GameController : MonoBehaviour
         StartMenu = GameObject.Find("StartMenu").GetComponent<CanvasGroup>();
         InvMenu = GameObject.Find("Inventory").GetComponent<CanvasGroup>();
         QuestMenu = GameObject.Find("QuestPanel").GetComponent<CanvasGroup>();
+        SkillMenu = GameObject.Find("SkillMenu").GetComponent<CanvasGroup>();
 
         //for player
         //StatPageExperienceText = GameObject.Find("Experience");
@@ -162,7 +168,6 @@ public class GameController : MonoBehaviour
             transform.position = respawnLocation;
             PlayerStats.PlayerStatsSingle.health = PlayerStats.PlayerStatsSingle.maxHealth;
         }
-
 
         if (stun)
         {
@@ -218,6 +223,13 @@ public class GameController : MonoBehaviour
             StartMenu.alpha = (StartMenu.alpha + 1) % 2;
             StartMenu.interactable = !StartMenu.interactable;
             StartMenu.blocksRaycasts = !StartMenu.blocksRaycasts;
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            SkillMenu.alpha = (SkillMenu.alpha + 1) % 2;
+            SkillMenu.interactable = !SkillMenu.interactable;
+            SkillMenu.blocksRaycasts = !SkillMenu.blocksRaycasts;
         }
 
         EventSystem eventSystem = EventSystem.current;
@@ -294,62 +306,66 @@ public class GameController : MonoBehaviour
             lastRotationAngle = transform.eulerAngles.z;
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
+        //have to learn dash skill to start using it
+        if (dashSkill && dashSkill2)
         {
-            //Number of Taps you want Minus One
-            if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
+            if (Input.GetKeyDown(KeyCode.D))
             {
-                Debug.Log("double tap right");
-                dashCoolDown = 1f;
-                rb2d.velocity = new Vector2(7f, rb2d.velocity.y);
-                rb2d.AddForce(new Vector2(dashForce, 0f));
+                //Number of Taps you want Minus One
+                if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
+                {
+                    Debug.Log("double tap right");
+                    dashCoolDown = 1f;
+                    rb2d.velocity = new Vector2(7f, rb2d.velocity.y);
+                    rb2d.AddForce(new Vector2(dashForce, 0f));
 
-                //for rotating teemo
-                rotateleft = false;
-                rotateRight = true;
-                lastRotationAngle = 360f;
+                    //for rotating teemo
+                    rotateleft = false;
+                    rotateRight = true;
+                    lastRotationAngle = 360f;
+                }
+                else
+                {
+                    ButtonCooler = 0.2f;
+                    ButtonCount += 1;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                //Number of Taps you want Minus One
+                if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
+                {
+                    Debug.Log("double tap left");
+                    dashCoolDown = 1f;
+                    rb2d.velocity = new Vector2(-7f, rb2d.velocity.y);
+                    rb2d.AddForce(new Vector2(-dashForce, 0f));
+
+                    //for rotating teemo
+                    rotateRight = false;
+                    rotateleft = true;
+                    lastRotationAngle = 0f;
+                }
+                else
+                {
+                    ButtonCooler = 0.2f;
+                    ButtonCount += 1;
+                }
+            }
+
+            if (ButtonCooler > 0.0f)
+            {
+                ButtonCooler -= 1.0f * Time.deltaTime;
             }
             else
             {
-                ButtonCooler = 0.2f;
-                ButtonCount += 1;
+                ButtonCount = 0;
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            //Number of Taps you want Minus One
-            if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
+            if (dashCoolDown > 0.0f)
             {
-                Debug.Log("double tap left");
-                dashCoolDown = 1f;
-                rb2d.velocity = new Vector2(-7f, rb2d.velocity.y);
-                rb2d.AddForce(new Vector2(-dashForce, 0f));
-
-                //for rotating teemo
-                rotateRight = false;
-                rotateleft = true;
-                lastRotationAngle = 0f;
+                dashCoolDown -= Time.deltaTime;
             }
-            else
-            {
-                ButtonCooler = 0.2f;
-                ButtonCount += 1;
-            }
-        }
-
-        if (ButtonCooler > 0.0f)
-        {
-            ButtonCooler -= 1.0f * Time.deltaTime;
-        }
-        else
-        {
-            ButtonCount = 0;
-        }
-
-        if (dashCoolDown > 0.0f)
-        {
-            dashCoolDown -= Time.deltaTime;
         }
     }
 
@@ -451,6 +467,21 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public void LearnDashSkill()
+    {
+        dashSkill = true;
+        GameObject.Find("DashSkill").GetComponent<Button>().image.color = Color.yellow;
+        GameObject.Find("DashSkill").GetComponent<Button>().interactable = false;
+        GameObject.Find("DashSkill2").GetComponent<Button>().interactable = true;
+    }
+
+    public void LearnDashSkill2()
+    {
+        GameObject.Find("DashSkill2").GetComponent<Button>().image.color = Color.yellow;
+        GameObject.Find("DashSkill2").GetComponent<Button>().interactable = false;
+        dashSkill2 = true;
+    }
+
     private void RemoveCurrentMapObjects()
     {
         //def of parent for removing item
@@ -516,6 +547,11 @@ public class GameController : MonoBehaviour
         {
             PlayerStats.PlayerStatsSingle.health -= 1;
         }
+    }
+
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        IsColliding = true;
     }
 
     private void OnCollisionExit2D(Collision2D collision)

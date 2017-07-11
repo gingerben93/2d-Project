@@ -529,6 +529,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4450243366827984, guid: 11311f4d43256764f96090a80c115a74,
     type: 2}
   m_PrefabInternal: {fileID: 218936564}
+--- !u!114 &246546781 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114035882920638064, guid: e244b515c71179b4cba1ce42034df8fe,
+    type: 2}
+  m_PrefabInternal: {fileID: 667684669}
+  m_Script: {fileID: 11500000, guid: 5ef2b7a033d2dcf45956f1da777ae633, type: 3}
 --- !u!1 &277981039
 GameObject:
   m_ObjectHideFlags: 0
@@ -2277,9 +2283,51 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1094675102579144, guid: fa972e9d7632fb347beaa72a4926e5c8, type: 2}
+    - target: {fileID: 114638885257820258, guid: fa972e9d7632fb347beaa72a4926e5c8,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 246546781}
+    - target: {fileID: 114155633317004160, guid: fa972e9d7632fb347beaa72a4926e5c8,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 246546781}
+    - target: {fileID: 114304007158609512, guid: fa972e9d7632fb347beaa72a4926e5c8,
+        type: 2}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 246546781}
+    - target: {fileID: 1740805364792978, guid: fa972e9d7632fb347beaa72a4926e5c8, type: 2}
       propertyPath: m_Name
-      value: Canvas
+      value: ControlMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 114060262516858840, guid: fa972e9d7632fb347beaa72a4926e5c8,
+        type: 2}
+      propertyPath: m_Text
+      value: 'Controls:
+
+        Skill Tree: K
+
+        Left Click: Grappling hook (W shortens, S extends and Space breaks)
+
+        Right Click: Shoot
+
+        Move: WASD
+
+        Jump: Space
+
+        Door: R
+
+        Talk: Q
+
+        Inventory: I
+
+        Map: N and M
+
+        Controls Menu and Return Home: ESC
+
+        Roll: double Tap direction'
       objectReference: {fileID: 0}
     - target: {fileID: 224196907485933116, guid: fa972e9d7632fb347beaa72a4926e5c8,
         type: 2}
@@ -2299,7 +2347,7 @@ Prefab:
     - target: {fileID: 224196907485933116, guid: fa972e9d7632fb347beaa72a4926e5c8,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224196907485933116, guid: fa972e9d7632fb347beaa72a4926e5c8,
         type: 2}
@@ -2309,7 +2357,7 @@ Prefab:
     - target: {fileID: 224196907485933116, guid: fa972e9d7632fb347beaa72a4926e5c8,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: fa972e9d7632fb347beaa72a4926e5c8, type: 2}
