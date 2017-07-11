@@ -48,20 +48,20 @@ public class BossPowerShield : MonoBehaviour {
                 // And finally we add force in the direction of dir and multiply it by force. 
                 // This will push back the player
                 Debug.Log(dir.x);
-                if (dir.x < 0.0f && dir.y >= 0.0f)
+                if(dir.x < 0.01f && dir.y >= 0.0f)
                 {
                     collision.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
                     collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(-300f, 300f));
                 }
-                else if (dir.x < 0.0f && dir.y < 0.0f)
+                else if (dir.x < 0.01f && dir.y < 0.0f)
                 {
                     collision.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
-                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(-300f, 0f));
+                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(-500f, 0f));
                 }
                 else
                 {
                     collision.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
-                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(dir.x * 5000f, 0f));
+                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(dir.x * 2000f, 0f));
 
                 }
                 StartCoroutine(StopPlayerControls());
