@@ -8,12 +8,21 @@ public class BossScript : MonoBehaviour
     public Transform loot2;
     public Transform loot3;
 
+    //Drop bomb when shield is activate
+    public Transform bomb;
+
     Shot shot;
     ShotM shotM;
 
     /// Total hitpoints
     public bool isEnemy { get; set; }
     private int experiencePoint;
+
+    //shield bools
+    public GameObject shield;
+    private bool shield1 = true;
+    private bool shield2 = true;
+    private bool shield3 = true;
 
     //Accessing Healthbar Script on boss
     public Healthbar bossHealth;
@@ -107,7 +116,36 @@ public class BossScript : MonoBehaviour
         {
             bossHealth.currentHealth -= damageCount;
 
-            if (bossHealth.currentHealth <= 0)
+
+            //For multiple similar phases of an enemy fight (aka same thing happens multiple times)
+            //if (bossHealth.currentHealth / bossHealth.maxHealth <= HEALTHTHREASHHOLD && shield1)
+            //{
+            //    HEALTHTHREASHHOLD -= .25F
+            //}
+
+            //Activate shields when certain thresholds are met.
+            if (bossHealth.currentHealth / bossHealth.maxHealth <= .75f && shield1)
+            {
+                shield1 = false;
+                shield.SetActive(true);
+                bossHealth.currentHealth = bossHealth.maxHealth * .75f;
+                Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
+            }
+            else if(bossHealth.currentHealth / bossHealth.maxHealth <= .5f && shield2)
+            {
+                shield2 = false;
+                shield.SetActive(true);
+                bossHealth.currentHealth = bossHealth.maxHealth * .50f;
+                Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
+            }
+            else if(bossHealth.currentHealth / bossHealth.maxHealth <= .25f && shield3)
+            {
+                shield3 = false;
+                shield.SetActive(true);
+                bossHealth.currentHealth = bossHealth.maxHealth * .25f;
+                Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
+            }
+            else if (bossHealth.currentHealth <= 0)
             {
                 //set exp
                 PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;

@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shield : MonoBehaviour {
+public class BossPowerShield : MonoBehaviour {
 
-
-    public Rigidbody2D rb2d;
     public bool notGrabbed = true;
 
 
-    public static Shield ShieldSingle;
+    public static BossPowerShield BossPowerShieldSingle;
 
     void Awake()
     {
-        if (ShieldSingle == null)
+        if (BossPowerShieldSingle == null)
         {
-            ShieldSingle = this;
+            BossPowerShieldSingle = this;
         }
-        else if (ShieldSingle != this)
+        else if (BossPowerShieldSingle != this)
         {
             Destroy(gameObject);
         }
@@ -49,13 +47,22 @@ public class Shield : MonoBehaviour {
                 dir.Normalize();
                 // And finally we add force in the direction of dir and multiply it by force. 
                 // This will push back the player
-                if (dir.x < 0.1)
+                Debug.Log(dir.x);
+                if (dir.x < 0.0f && dir.y >= 0.0f)
                 {
-                    rb2d.AddForce(new Vector2(-500f, 0));
+                    collision.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
+                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(-300f, 300f));
+                }
+                else if (dir.x < 0.0f && dir.y < 0.0f)
+                {
+                    collision.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
+                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(-300f, 0f));
                 }
                 else
                 {
-                    rb2d.AddForce(new Vector2(dir.x * 500f, 0));
+                    collision.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
+                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(dir.x * 5000f, 0f));
+
                 }
                 StartCoroutine(StopPlayerControls());
             }

@@ -7,6 +7,13 @@ public class Bomb : MonoBehaviour {
     public Rigidbody2D rb2d;
     public GameObject shield;
 
+    void Start()
+    {
+        rb2d = GameObject.Find("Boss").GetComponent<Rigidbody2D>();
+        shield = BossScript.BossScriptSingle.shield;
+    }
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Enemy")

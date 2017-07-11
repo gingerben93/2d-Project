@@ -368,7 +368,7 @@ Prefab:
     - target: {fileID: 224791992130505512, guid: 7fceb710bfa9b44419cebfbb766ee953,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224791992130505512, guid: 7fceb710bfa9b44419cebfbb766ee953,
         type: 2}
@@ -378,7 +378,7 @@ Prefab:
     - target: {fileID: 224791992130505512, guid: 7fceb710bfa9b44419cebfbb766ee953,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 7fceb710bfa9b44419cebfbb766ee953, type: 2}
@@ -728,120 +728,6 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
---- !u!1 &290921531
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 290921535}
-  - component: {fileID: 290921534}
-  - component: {fileID: 290921533}
-  - component: {fileID: 290921532}
-  - component: {fileID: 290921536}
-  m_Layer: 0
-  m_Name: Bomb
-  m_TagString: BossRoomItem
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &290921532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 290921531}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac5b67aa40abf3640ac9863cce7645a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rb2d: {fileID: 500225703}
-  shield: {fileID: 579760136}
---- !u!50 &290921533
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 290921531}
-  m_BodyType: 0
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 4
---- !u!212 &290921534
-SpriteRenderer:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 290921531}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: b0e1c39d20f62234f891ffb0cacf4b38, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
---- !u!4 &290921535
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 290921531}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.4145406, y: 5.188849, z: 3.666}
-  m_LocalScale: {x: 3, y: 3, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &290921536
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 290921531}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Size: {x: 0.32, y: 0.32}
 --- !u!1 &291191925
 GameObject:
   m_ObjectHideFlags: 0
@@ -1329,11 +1215,6 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: dfd93d9dc40ad084a8383104b3807f07, type: 2}
   m_IsPrefabParent: 0
---- !u!50 &500225703 stripped
-Rigidbody2D:
-  m_PrefabParentObject: {fileID: 50912095675253136, guid: 804906908a3a92e4594e27e18550813f,
-    type: 2}
-  m_PrefabInternal: {fileID: 799520309}
 --- !u!1 &568740112
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,7 +1372,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7cf7595956cc394b906b4bcbd9dd736, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rb2d: {fileID: 70984024}
   notGrabbed: 1
 --- !u!60 &579760140
 PolygonCollider2D:
@@ -1978,6 +1858,17 @@ Prefab:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114270350826806370, guid: 804906908a3a92e4594e27e18550813f,
+        type: 2}
+      propertyPath: shield
+      value: 
+      objectReference: {fileID: 579760136}
+    - target: {fileID: 114270350826806370, guid: 804906908a3a92e4594e27e18550813f,
+        type: 2}
+      propertyPath: bomb
+      value: 
+      objectReference: {fileID: 4155126641972550, guid: 3b47732bdc63ef342a31ae5af456f75e,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 804906908a3a92e4594e27e18550813f, type: 2}
   m_IsPrefabParent: 0
