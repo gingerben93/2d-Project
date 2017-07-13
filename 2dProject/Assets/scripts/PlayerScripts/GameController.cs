@@ -129,8 +129,8 @@ public class GameController : MonoBehaviour
         GameObject.Find("DashSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill(); });
         GameObject.Find("DashSkill2").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill2(); });
 
-        GameObject.Find("Inventory").GetComponent<Button>().onClick.AddListener(delegate { InventoryOnButton(); });
-        GameObject.Find("Skills").GetComponent<Button>().onClick.AddListener(delegate { SkillMenuOnButton(); });
+        GameObject.Find("InventoryButton").GetComponent<Button>().onClick.AddListener(delegate { InventoryOnButton(); });
+        GameObject.Find("SkillsButton").GetComponent<Button>().onClick.AddListener(delegate { SkillMenuOnButton(); });
 
         //if side quest counter is on
         sideQuestBool = false;

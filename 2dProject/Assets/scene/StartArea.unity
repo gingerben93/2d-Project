@@ -426,6 +426,48 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 56861395}
+--- !u!1001 &82205643
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4289445302858516, guid: 0a27aaeb673e4d04687666b448a7cc23, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 8.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289445302858516, guid: 0a27aaeb673e4d04687666b448a7cc23, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289445302858516, guid: 0a27aaeb673e4d04687666b448a7cc23, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289445302858516, guid: 0a27aaeb673e4d04687666b448a7cc23, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289445302858516, guid: 0a27aaeb673e4d04687666b448a7cc23, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289445302858516, guid: 0a27aaeb673e4d04687666b448a7cc23, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289445302858516, guid: 0a27aaeb673e4d04687666b448a7cc23, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4289445302858516, guid: 0a27aaeb673e4d04687666b448a7cc23, type: 2}
+      propertyPath: m_RootOrder
+      value: 13
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 0a27aaeb673e4d04687666b448a7cc23, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &95919817
 Prefab:
   m_ObjectHideFlags: 0
@@ -3056,7 +3098,7 @@ Canvas:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 898193980}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -3906,7 +3948,7 @@ Canvas:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1099101901}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -4744,7 +4786,7 @@ GameObject:
   - component: {fileID: 1451889695}
   - component: {fileID: 1451889694}
   m_Layer: 5
-  m_Name: Skills
+  m_Name: SkillsButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5331,7 +5373,7 @@ GameObject:
   - component: {fileID: 1651048428}
   - component: {fileID: 1651048427}
   m_Layer: 5
-  m_Name: Inventory
+  m_Name: InventoryButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
