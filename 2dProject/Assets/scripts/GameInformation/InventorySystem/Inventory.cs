@@ -369,7 +369,7 @@ public class Inventory : MonoBehaviour
                 hoverTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, clickedTransform.sizeDelta.x);
                 hoverTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, clickedTransform.sizeDelta.y);
 
-                hoverObject.transform.SetParent(GameObject.Find("Canvas").transform, true);
+                hoverObject.transform.SetParent(GameObject.Find("InvMenuCanvas").transform, true);
                 hoverObject.transform.localScale = from.gameObject.transform.localScale;
             }
         }

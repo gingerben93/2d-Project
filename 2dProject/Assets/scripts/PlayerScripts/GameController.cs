@@ -44,12 +44,13 @@ public class GameController : MonoBehaviour
     DoorCollider doorInfo;
 
     //Inventory
-    private CanvasGroup InvMenu;
-    private CanvasGroup StatsMenu;
-    private CanvasGroup StartMenu;
-    private CanvasGroup QuestMenu;
-    private CanvasGroup NotificationCanvasGroup;
-    private CanvasGroup SkillMenu;
+    private Canvas InvMenuCanvas;
+    //private GameObject StatsMenuCanvas;
+    private Canvas StartMenuCanvas;
+    //private GameObject QuestMenuCanvas;
+    private Canvas NotificationCanvas;
+    private Canvas SkillMenuCanvas;
+    private Canvas SelectBarCanvas;
 
     public Text NotificationTxt;
 
@@ -121,9 +122,15 @@ public class GameController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //don't destroy on load objects
+        DontDestroyOnLoad(GameObject.Find("Canvases"));
+
         //assign skill functions
         GameObject.Find("DashSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill(); });
         GameObject.Find("DashSkill2").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill2(); });
+
+        GameObject.Find("Inventory").GetComponent<Button>().onClick.AddListener(delegate { InventoryOnButton(); });
+        GameObject.Find("Skills").GetComponent<Button>().onClick.AddListener(delegate { SkillMenuOnButton(); });
 
         //if side quest counter is on
         sideQuestBool = false;
@@ -137,12 +144,13 @@ public class GameController : MonoBehaviour
         jump = false;
         attack = 2;
 
-        NotificationCanvasGroup = GameObject.Find("Notification").GetComponent<CanvasGroup>();
-        StatsMenu = GameObject.Find("StatsMenu").GetComponent<CanvasGroup>();
-        StartMenu = GameObject.Find("StartMenu").GetComponent<CanvasGroup>();
-        InvMenu = GameObject.Find("Inventory").GetComponent<CanvasGroup>();
-        QuestMenu = GameObject.Find("QuestPanel").GetComponent<CanvasGroup>();
-        SkillMenu = GameObject.Find("SkillMenu").GetComponent<CanvasGroup>();
+        NotificationCanvas = GameObject.Find("NotificationCanvas").GetComponent <Canvas>(); ;
+        //StatsMenuCanvas = GameObject.Find("StatsMenuCanvas");
+        StartMenuCanvas = GameObject.Find("StartMenuCanvas").GetComponent<Canvas>();
+        InvMenuCanvas = GameObject.Find("InvMenuCanvas").GetComponent<Canvas>();
+        //QuestMenuCanvas = GameObject.Find("QuestMenuCanvas");
+        SkillMenuCanvas = GameObject.Find("SkillMenuCanvas").GetComponent<Canvas>();
+        SelectBarCanvas = GameObject.Find("SelectBarCanvas").GetComponent<Canvas>();
 
         //for player
         //StatPageExperienceText = GameObject.Find("Experience");
@@ -209,40 +217,22 @@ public class GameController : MonoBehaviour
         shoot |= Input.GetMouseButtonDown(1);
         // Careful: For Mac users, ctrl + arrow is a bad idea
 
-        //cycle through menu
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-
-        }
-
         //toggle inventory on and off
         if (Input.GetKeyDown(KeyCode.I))
         {
-            InvMenu.alpha = (InvMenu.alpha + 1) % 2;
-            InvMenu.interactable = !InvMenu.interactable;
-            InvMenu.blocksRaycasts = !InvMenu.blocksRaycasts;
-
-            //stats menu is never interactable
-            StatsMenu.alpha = (StatsMenu.alpha + 1) % 2;
-            QuestMenu.alpha = (QuestMenu.alpha + 1) % 2;
-            //StatsMenu.interactable = !StatsMenu.interactable;
-            //StatsMenu.blocksRaycasts = !StatsMenu.blocksRaycasts;
+            InventoryOn();
         }
 
         //skill menu
         if (Input.GetKeyDown(KeyCode.K))
         {
-            SkillMenu.alpha = (SkillMenu.alpha + 1) % 2;
-            SkillMenu.interactable = !SkillMenu.interactable;
-            SkillMenu.blocksRaycasts = !SkillMenu.blocksRaycasts;
+            SkillMenuOn();
         }
 
         //back menu
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            StartMenu.alpha = (StartMenu.alpha + 1) % 2;
-            StartMenu.interactable = !StartMenu.interactable;
-            StartMenu.blocksRaycasts = !StartMenu.blocksRaycasts;
+            StartMenuCanvas.enabled = !StartMenuCanvas.enabled;
         }
 
         //for rotating
@@ -280,7 +270,14 @@ public class GameController : MonoBehaviour
                 {
                     Debug.Log("double tap right");
                     dashCoolDown = 1f;
-                    rb2d.velocity = new Vector2(7f, rb2d.velocity.y);
+                    if (rb2d.velocity.x >= 6f)
+                    {
+                        Debug.Log("worked");
+                        rb2d.velocity = new Vector2(-7f, rb2d.velocity.y);
+                    }
+                    else {
+                        rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
+                    }
                     rb2d.AddForce(new Vector2(dashForce, 0f));
 
                     //for rotating teemo
@@ -302,7 +299,14 @@ public class GameController : MonoBehaviour
                 {
                     Debug.Log("double tap left");
                     dashCoolDown = 1f;
-                    rb2d.velocity = new Vector2(-7f, rb2d.velocity.y);
+                    if (rb2d.velocity.x <= -6f)
+                    {
+                        Debug.Log("worked");
+                        rb2d.velocity = new Vector2(7f, rb2d.velocity.y);
+                    }
+                    else {
+                        rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
+                    }
                     rb2d.AddForce(new Vector2(-dashForce, 0f));
 
                     //for rotating teemo
@@ -497,6 +501,60 @@ public class GameController : MonoBehaviour
         dashSkill2 = true;
     }
 
+    public void InventoryOn()
+    {
+        //turn off other menu
+        SkillMenuCanvas.enabled = false;
+
+        //toggle on and off
+        InvMenuCanvas.enabled = !InvMenuCanvas.enabled;
+
+        //check if any menu item on
+        if (!SkillMenuCanvas.enabled && !InvMenuCanvas.enabled)
+        {
+            SelectBarCanvas.enabled = false;
+        }
+        else
+        {
+            SelectBarCanvas.enabled = true;
+        }
+    }
+
+    public void InventoryOnButton()
+    {
+        if(InvMenuCanvas.enabled == false)
+        {
+            InventoryOn();
+        }
+    }
+
+    public void SkillMenuOn()
+    {
+        //turn off other menu
+        InvMenuCanvas.enabled = false;
+
+        //toggle this menu
+        SkillMenuCanvas.enabled = !SkillMenuCanvas.enabled;
+
+        //check if any menu item on; else turn off select bar
+        if (!SkillMenuCanvas.enabled && !InvMenuCanvas.enabled)
+        {
+            SelectBarCanvas.enabled = false;
+        }
+        else
+        {
+            SelectBarCanvas.enabled = true;
+        }
+    }
+
+    public void SkillMenuOnButton()
+    {
+        if (SkillMenuCanvas.enabled == false)
+        {
+            SkillMenuOn();
+        }
+    }
+
     private void RemoveCurrentMapObjects()
     {
         //def of parent for removing item
@@ -522,10 +580,11 @@ public class GameController : MonoBehaviour
     //for quick message aboce character head
     IEnumerator ShowMessage(string message, float delay)
     {
+
+        NotificationCanvas.enabled = !NotificationCanvas.enabled;
         NotificationTxt.text = message;
-        NotificationCanvasGroup.alpha = (NotificationCanvasGroup.alpha + 1) % 2;
         yield return new WaitForSeconds(delay);
-        NotificationCanvasGroup.alpha = (NotificationCanvasGroup.alpha + 1) % 2;
+        NotificationCanvas.enabled = !NotificationCanvas.enabled;
     }
 
     void OnGUI()

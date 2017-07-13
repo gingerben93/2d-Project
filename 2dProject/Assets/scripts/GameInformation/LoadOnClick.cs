@@ -28,7 +28,7 @@ public class LoadOnClick : MonoBehaviour {
         {
             if (LoadOnClickSingle == null)
             {
-                DontDestroyOnLoad(gameObject);
+                //DontDestroyOnLoad(gameObject);
                 LoadOnClickSingle = this;
             }
             else if (LoadOnClickSingle != this)
