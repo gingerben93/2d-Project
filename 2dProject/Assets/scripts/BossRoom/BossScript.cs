@@ -107,26 +107,9 @@ public class BossScript : MonoBehaviour
         }
         else //shieldon is true
         {
-            if (charge)
+            if (charge == true)
             {
-                //Keeps Charging periodic 
-                charge = false;
-
-                //PLayer to the left of boss
-                if (playerTransform.position.x > transform.position.x)
-                {
-                    transform.GetComponent<Rigidbody2D>().velocity = new Vector3(0, transform.GetComponent<Rigidbody2D>().velocity.y, 0);
-                    StartCoroutine(ChargingLeft());
-                    
-                }
-                //player to the right of boss
-                else
-                {
-                    transform.GetComponent<Rigidbody2D>().velocity = new Vector3(0, transform.GetComponent<Rigidbody2D>().velocity.y, 0);
-                    StartCoroutine(ChargingRight());
-
-
-                }
+                StartCoroutine(Charge());
             }
         }
     }
@@ -253,19 +236,46 @@ public class BossScript : MonoBehaviour
 
 
     //For charging left and right
-    IEnumerator ChargingLeft()
+    IEnumerator Charge()
     {
-        charge = true;
+        //Keeps Charging periodic 
+        charge = false;
         yield return new WaitForSeconds(3);
-        transform.GetComponent<Rigidbody2D>().AddForce(new Vector3(2000f, 0, 0));
+
+        //PLayer to the left of boss
+        if (playerTransform.position.x > transform.position.x)
+        {
+            transform.GetComponent<Rigidbody2D>().velocity = new Vector3(0, transform.GetComponent<Rigidbody2D>().velocity.y, 0);
+            transform.GetComponent<Rigidbody2D>().AddForce(new Vector3(2000f, 0, 0));
+            //StartCoroutine(ChargingLeft());
+        }
+        //player to the right of boss
+        else
+        {
+            transform.GetComponent<Rigidbody2D>().velocity = new Vector3(0, transform.GetComponent<Rigidbody2D>().velocity.y, 0);
+            transform.GetComponent<Rigidbody2D>().AddForce(new Vector3(-2000f, 0, 0));
+            //StartCoroutine(ChargingRight());
+        }
+      
+        charge = true;
 
     }
 
-    IEnumerator ChargingRight()
-    {
-        charge = true;
-        yield return new WaitForSeconds(3);
-        transform.GetComponent<Rigidbody2D>().AddForce(new Vector3(-2000f, 0, 0));
+    ////For charging left and right
+    //IEnumerator ChargingLeft()
+    //{
+    //    charge = true;
+    //    yield return new WaitForSeconds(3);
+    //    transform.GetComponent<Rigidbody2D>().AddForce(new Vector3(2000f, 0, 0));
+
+    //}
+
+    //IEnumerator ChargingRight()
+    //{
+    //    charge = true;
+    //    yield return new WaitForSeconds(3);
+    //    transform.GetComponent<Rigidbody2D>().AddForce(new Vector3(-2000f, 0, 0));
         
-    }
+    //}
+
 }

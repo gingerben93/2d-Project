@@ -5,7 +5,7 @@ using UnityEngine;
 public class BossPowerShield : MonoBehaviour {
 
     public bool notGrabbed = true;
-
+    public Rigidbody2D boss;
 
     public static BossPowerShield BossPowerShieldSingle;
 
@@ -21,6 +21,11 @@ public class BossPowerShield : MonoBehaviour {
         }
 
         
+    }
+    
+    void Start()
+    {
+        boss = GameObject.Find("Boss").GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -64,8 +69,13 @@ public class BossPowerShield : MonoBehaviour {
                     collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(dir.x * 2000f, 500f));
 
                 }
+                BossScript.BossScriptSingle.charge = true;
+                boss.GetComponent<Rigidbody2D>().velocity = new Vector3(0, transform.GetComponent<Rigidbody2D>().velocity.y, 0);
                 StartCoroutine(StopPlayerControls());
+
+
             }
+            
 
         }
 

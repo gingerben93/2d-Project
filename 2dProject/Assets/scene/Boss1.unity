@@ -1242,6 +1242,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   notGrabbed: 1
+  boss: {fileID: 0}
 --- !u!60 &579760140
 PolygonCollider2D:
   m_ObjectHideFlags: 0
