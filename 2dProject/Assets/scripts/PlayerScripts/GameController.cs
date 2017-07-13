@@ -121,6 +121,10 @@ public class GameController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //assign skill functions
+        GameObject.Find("DashSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill(); });
+        GameObject.Find("DashSkill2").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill2(); });
+
         //if side quest counter is on
         sideQuestBool = false;
 
@@ -205,6 +209,12 @@ public class GameController : MonoBehaviour
         shoot |= Input.GetMouseButtonDown(1);
         // Careful: For Mac users, ctrl + arrow is a bad idea
 
+        //cycle through menu
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+
+        }
+
         //toggle inventory on and off
         if (Input.GetKeyDown(KeyCode.I))
         {
@@ -218,13 +228,8 @@ public class GameController : MonoBehaviour
             //StatsMenu.interactable = !StatsMenu.interactable;
             //StatsMenu.blocksRaycasts = !StatsMenu.blocksRaycasts;
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            StartMenu.alpha = (StartMenu.alpha + 1) % 2;
-            StartMenu.interactable = !StartMenu.interactable;
-            StartMenu.blocksRaycasts = !StartMenu.blocksRaycasts;
-        }
 
+        //skill menu
         if (Input.GetKeyDown(KeyCode.K))
         {
             SkillMenu.alpha = (SkillMenu.alpha + 1) % 2;
@@ -232,53 +237,12 @@ public class GameController : MonoBehaviour
             SkillMenu.blocksRaycasts = !SkillMenu.blocksRaycasts;
         }
 
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem.IsPointerOverGameObject())
+        //back menu
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            return;
-        }
-        else if (shoot)
-        {
-            //Find the slot named "Weapon"
-            slot = GameObject.Find("WEAPON");
-
-            //Looks at slot information in weapon slot to see if empty or not
-            Slot tmp = slot.GetComponent<Slot>();
-
-            if (tmp.IsEmpty)
-            {
-                //THERE IS NO WEAPON IN WEAPON SLOT DO NUFFIN
-            }
-            //There is a weapon equipped
-            else
-            {
-                //Obtain stack information of item in weapon
-                weap = slot.GetComponent<Slot>();
-                //Peek at stack information
-                atk = weap.Items.Peek();
-                //Access scripts of weapon
-                switch (atk.weaponName)
-                {
-                    case "Blowdart":
-                        Blowdart BlowdartWeapon = gameObject.GetComponentInChildren<Blowdart>();
-                        BlowdartWeapon.Attack();
-                        //Debug.Log(atk.weaponName);
-                        break;
-                    case "ShortSword":
-                        ShortSword ShortSwordWeapon = gameObject.GetComponentInChildren<ShortSword>();
-                        ShortSwordWeapon.Attack();
-                        //Debug.Log(atk.weaponName);
-                        break;
-                    case "GodHands":
-                        if (GodhandsCanAttack)
-                        {
-                            GodHands GodHandsWeapon = gameObject.GetComponentInChildren<GodHands>();
-                            GodHandsWeapon.Attack(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                            //Debug.Log(atk.weaponName);
-                        }
-                        break;
-                }
-            }
+            StartMenu.alpha = (StartMenu.alpha + 1) % 2;
+            StartMenu.interactable = !StartMenu.interactable;
+            StartMenu.blocksRaycasts = !StartMenu.blocksRaycasts;
         }
 
         //for rotating
@@ -365,6 +329,57 @@ public class GameController : MonoBehaviour
             if (dashCoolDown > 0.0f)
             {
                 dashCoolDown -= Time.deltaTime;
+            }
+        }
+
+        //stop all action after this if the pointer is over the canvas
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem.IsPointerOverGameObject())
+        {
+            return;
+        }
+
+        else if (shoot)
+        {
+            //Find the slot named "Weapon"
+            slot = GameObject.Find("WEAPON");
+
+            //Looks at slot information in weapon slot to see if empty or not
+            Slot tmp = slot.GetComponent<Slot>();
+
+            if (tmp.IsEmpty)
+            {
+                //THERE IS NO WEAPON IN WEAPON SLOT DO NUFFIN
+            }
+            //There is a weapon equipped
+            else
+            {
+                //Obtain stack information of item in weapon
+                weap = slot.GetComponent<Slot>();
+                //Peek at stack information
+                atk = weap.Items.Peek();
+                //Access scripts of weapon
+                switch (atk.weaponName)
+                {
+                    case "Blowdart":
+                        Blowdart BlowdartWeapon = gameObject.GetComponentInChildren<Blowdart>();
+                        BlowdartWeapon.Attack();
+                        //Debug.Log(atk.weaponName);
+                        break;
+                    case "ShortSword":
+                        ShortSword ShortSwordWeapon = gameObject.GetComponentInChildren<ShortSword>();
+                        ShortSwordWeapon.Attack();
+                        //Debug.Log(atk.weaponName);
+                        break;
+                    case "GodHands":
+                        if (GodhandsCanAttack)
+                        {
+                            GodHands GodHandsWeapon = gameObject.GetComponentInChildren<GodHands>();
+                            GodHandsWeapon.Attack(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                            //Debug.Log(atk.weaponName);
+                        }
+                        break;
+                }
             }
         }
     }

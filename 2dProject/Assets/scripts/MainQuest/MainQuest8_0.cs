@@ -16,9 +16,16 @@ public class MainQuest8_0 : MonoBehaviour {
     //wair for boss to die
     public bool bossDead { get; set; }
 
+    //spawn location outside of room
+    private Vector3 spawnLocationHolder;
+
     // Use this for initialization
     void Start ()
     {
+        //set player spawn to in room and hold player spawn location for outside area
+        spawnLocationHolder = GameController.GameControllerSingle.respawnLocation;
+        GameController.GameControllerSingle.respawnLocation = new Vector3(0, 1, 0);
+
         NPCtext = DialogManager.DialogManagerSingle.NPCtext;
         Herotext = DialogManager.DialogManagerSingle.Herotext;
         canvas = DialogManager.DialogManagerSingle.canvas;
@@ -41,6 +48,9 @@ public class MainQuest8_0 : MonoBehaviour {
     public IEnumerator Dialog()
     {
         string Conversation1 = DialogManager.DialogManagerSingle.MainQuestDialogueLoadPath + "MainQuest8_0.0";
+
+        //reset spawn location
+        GameController.GameControllerSingle.respawnLocation = spawnLocationHolder;
 
         //freeze player
         GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;

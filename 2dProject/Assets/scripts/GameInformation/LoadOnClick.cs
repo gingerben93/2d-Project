@@ -48,7 +48,7 @@ public class LoadOnClick : MonoBehaviour {
                 }
             }
             loadMap = "StartArea";
-            GameController.GameControllerSingle.transform.position = new Vector3(-56f, 1.2f, 0);
+            GameController.GameControllerSingle.transform.position = new Vector3(-0f, 1.2f, 0);
 
             loadScene = true;
             loading = false;

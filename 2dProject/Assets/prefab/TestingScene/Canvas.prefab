@@ -323,7 +323,7 @@ GameObject:
   - component: {fileID: 222777364260768576}
   - component: {fileID: 114697301120930142}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: ControlMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -579,17 +579,19 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Controls:
 
+    Skill Tree: K
+
     Left Click: Grappling hook (W shortens, S extends and Space breaks)
 
     Right Click: Shoot
 
-    move: WASD
+    Move: WASD
 
     Jump: Space
 
-    door: R
+    Door: R
 
-    talk: Q
+    Talk: Q
 
     Inventory: I
 
