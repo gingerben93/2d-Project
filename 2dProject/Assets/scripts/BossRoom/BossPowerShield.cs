@@ -20,7 +20,7 @@ public class BossPowerShield : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        BossScript.BossScriptSingle.shieldOn = true;
+        
     }
 
     void Update()
@@ -51,17 +51,17 @@ public class BossPowerShield : MonoBehaviour {
                 if(dir.x < 0.01f && dir.y >= 0.0f)
                 {
                     collision.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
-                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(-300f, 300f));
+                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(-500f, 500f));
                 }
                 else if (dir.x < 0.01f && dir.y < 0.0f)
                 {
                     collision.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
-                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(-500f, 0f));
+                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(-500f, 500f));
                 }
                 else
                 {
                     collision.GetComponent<Rigidbody2D>().velocity = new Vector3(0, 0, 0);
-                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(dir.x * 2000f, 0f));
+                    collision.GetComponent<Rigidbody2D>().AddForce(new Vector2(dir.x * 2000f, 500f));
 
                 }
                 StartCoroutine(StopPlayerControls());

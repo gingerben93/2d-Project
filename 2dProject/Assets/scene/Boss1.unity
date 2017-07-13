@@ -1182,7 +1182,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &579760137
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1739,6 +1739,20 @@ Prefab:
       value: 
       objectReference: {fileID: 4155126641972550, guid: 3b47732bdc63ef342a31ae5af456f75e,
         type: 2}
+    - target: {fileID: 1960279014140736, guid: 804906908a3a92e4594e27e18550813f, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114270350826806370, guid: 804906908a3a92e4594e27e18550813f,
+        type: 2}
+      propertyPath: movement
+      value: 
+      objectReference: {fileID: 1685482646}
+    - target: {fileID: 50912095675253136, guid: 804906908a3a92e4594e27e18550813f,
+        type: 2}
+      propertyPath: m_CollisionDetection
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 804906908a3a92e4594e27e18550813f, type: 2}
   m_IsPrefabParent: 0
@@ -2843,6 +2857,11 @@ SpriteRenderer:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+--- !u!1 &1685482646 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1960279014140736, guid: 804906908a3a92e4594e27e18550813f,
+    type: 2}
+  m_PrefabInternal: {fileID: 799520309}
 --- !u!1001 &1687791627
 Prefab:
   m_ObjectHideFlags: 0

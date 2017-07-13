@@ -20,6 +20,7 @@ public class BossScript : MonoBehaviour
 
     //shield bools
     public GameObject shield;
+    public GameObject movement;
     private bool shield1 = true;
     private bool shield2 = true;
     private bool shield3 = true;
@@ -74,7 +75,8 @@ public class BossScript : MonoBehaviour
     private Transform playerTransform;
 
     public bool shieldOn = false;
-
+    public bool charge = true;
+    public bool bombSpawn = false;
 
 
 
@@ -82,25 +84,50 @@ public class BossScript : MonoBehaviour
     {
         //for checking how far the player is
         distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+        if(shieldOn == false) { 
+            if (distanceToPlayer <= 10)
+            {
+                playersLastLocations = playerTransform.position;
+                startTimer = true;
+            }
+            //timer for time until attack
+            if (startTimer)
+            {
+                timer += Time.deltaTime;
+            }
+            if (timer >= 3)
+            {
+                startTimer = false;
+                timer = 0;
 
-        if (distanceToPlayer <= 10)
-        {
-            playersLastLocations = playerTransform.position;
-            startTimer = true;
-        }
-        //timer for time until attack
-        if (startTimer)
-        {
-            timer += Time.deltaTime;
-        }
-        if (timer >= 3)
-        {
-            startTimer = false;
-            timer = 0;
+                playersLastLocations = playerTransform.position;
+                bossAttack.AttackBoss(playersLastLocations);
 
-            playersLastLocations = playerTransform.position;
-            bossAttack.AttackBoss(playersLastLocations);
-            
+            }
+        }
+        else //shieldon is true
+        {
+            if (charge)
+            {
+                //Keeps Charging periodic 
+                charge = false;
+
+                //PLayer to the left of boss
+                if (playerTransform.position.x > transform.position.x)
+                {
+                    transform.GetComponent<Rigidbody2D>().velocity = new Vector3(0, transform.GetComponent<Rigidbody2D>().velocity.y, 0);
+                    StartCoroutine(ChargingLeft());
+                    
+                }
+                //player to the right of boss
+                else
+                {
+                    transform.GetComponent<Rigidbody2D>().velocity = new Vector3(0, transform.GetComponent<Rigidbody2D>().velocity.y, 0);
+                    StartCoroutine(ChargingRight());
+
+
+                }
+            }
         }
     }
 
@@ -108,11 +135,7 @@ public class BossScript : MonoBehaviour
     public void Damage(int damageCount)
     {
         //Cant be damage when shield is up
-        if (shieldOn)
-        {
-
-        }
-        else
+        if (shieldOn == false)
         {
             bossHealth.currentHealth -= damageCount;
 
@@ -126,24 +149,45 @@ public class BossScript : MonoBehaviour
             //Activate shields when certain thresholds are met.
             if (bossHealth.currentHealth / bossHealth.maxHealth <= .75f && shield1)
             {
+                //Make it so this statement cant happen again
                 shield1 = false;
+
+                //Set vars for charge and shield is on
+                charge = true;
+                shieldOn = true;
+                
                 shield.SetActive(true);
+                movement.SetActive(false);
                 bossHealth.currentHealth = bossHealth.maxHealth * .75f;
-                Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
+
+                //Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
             }
             else if(bossHealth.currentHealth / bossHealth.maxHealth <= .5f && shield2)
             {
+                //Make it so this statement cant happen again
                 shield2 = false;
+
+                //Set vars for charge and shield is on
+                charge = true;
+                shieldOn = true;
+                
                 shield.SetActive(true);
+                movement.SetActive(false);
                 bossHealth.currentHealth = bossHealth.maxHealth * .50f;
-                Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
+                //Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
             }
             else if(bossHealth.currentHealth / bossHealth.maxHealth <= .25f && shield3)
             {
+                //Make it so this statement cant happen again
                 shield3 = false;
+
+                charge = true;
+                shieldOn = true;
+                
                 shield.SetActive(true);
+                movement.SetActive(false);
                 bossHealth.currentHealth = bossHealth.maxHealth * .25f;
-                Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
+                //Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
             }
             else if (bossHealth.currentHealth <= 0)
             {
@@ -169,7 +213,32 @@ public class BossScript : MonoBehaviour
         {
             PlayerStats.PlayerStatsSingle.health -= 1;
         }
+        if (collision.gameObject.name == "LeftWall")
+        {
+            transform.GetComponent<Rigidbody2D>().velocity = new Vector3(0, transform.GetComponent<Rigidbody2D>().velocity.y, 0);
+            transform.GetComponent<Rigidbody2D>().AddForce(new Vector3(5f, 0f, 0));
+
+            //Spawn bomb on other side of the room is charging
+            if (bombSpawn == false && shieldOn == true)
+            {
+                Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
+            }
+        }
+        if (collision.gameObject.name == "RightWall")
+        {
+            transform.GetComponent<Rigidbody2D>().velocity = new Vector3(0, transform.GetComponent<Rigidbody2D>().velocity.y, 0);
+            transform.GetComponent<Rigidbody2D>().AddForce(new Vector3(-5f, 0f, 0));
+
+            //Spawn bomb on other side of the room
+            if (bombSpawn == false && shieldOn == true)
+            {
+                Instantiate(bomb, new Vector3(-12.0f, 0, 0), Quaternion.identity);
+            }
+        }
+
+
     }
+
 
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
@@ -183,5 +252,20 @@ public class BossScript : MonoBehaviour
     }
 
 
+    //For charging left and right
+    IEnumerator ChargingLeft()
+    {
+        charge = true;
+        yield return new WaitForSeconds(3);
+        transform.GetComponent<Rigidbody2D>().AddForce(new Vector3(2000f, 0, 0));
 
+    }
+
+    IEnumerator ChargingRight()
+    {
+        charge = true;
+        yield return new WaitForSeconds(3);
+        transform.GetComponent<Rigidbody2D>().AddForce(new Vector3(-2000f, 0, 0));
+        
+    }
 }
