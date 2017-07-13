@@ -38,10 +38,10 @@ public class TurretAttack : MonoBehaviour {
             timer += Time.deltaTime;
         }
         //2 seconds timer for firing projectiles, smaller = faster larger = slower
-        if (timer >= 2)
+        if (timer >= 2f)
         {
             startTimer = false;
-            timer = 0;
+            timer = 0f;
 
             var fireball = Instantiate(fireBallPrefab, transform);
             fireball.position = transform.position;
