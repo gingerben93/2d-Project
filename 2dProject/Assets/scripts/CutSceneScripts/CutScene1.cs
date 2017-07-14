@@ -53,7 +53,7 @@ public class CutScene1 : MonoBehaviour {
         {
             //StartCoroutine(LoadNewScene());
             Debug.Log("right click");
-            CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
+            StartCoroutine(LoadNewScene());
         }
     }
 
@@ -107,7 +107,7 @@ public class CutScene1 : MonoBehaviour {
         yield return new WaitForSeconds(3);
 
         //for loading to main game
-        CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
+        StartCoroutine(LoadNewScene());
     }
 
     IEnumerator LoadNewScene()

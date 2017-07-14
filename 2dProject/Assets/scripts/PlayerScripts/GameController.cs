@@ -840,4 +840,8 @@ public class MapInformation
 
     public List<float> enemyLocationsX;
     public List<float> enemyLocationsY;
+
+    public List<float> turretLocationsX;
+    public List<float> turretLocationsY;
+
 }

@@ -7,9 +7,10 @@ public class MapAddOns : MonoBehaviour
     public Transform doorPrefab;
     public Transform bossDoorPrefab;
 
-    public Transform EnenyPreFab;
+    public Transform EnemyPreFab;
+    public Transform TurretPreFab;
 
-    public List<Vector2> GenerateDoors(int[,] map)
+    public List<Vector2> GenerateDoorsLocations(int[,] map)
     {
         //for pos doors
         List<Vector2> doorPositions;
@@ -34,7 +35,7 @@ public class MapAddOns : MonoBehaviour
         return doorPositions;
     }
 
-    public void DrawOldDoors(List<Vector2> doorLocations, List<int> doorType)
+    public void PlaceDoorsOnMap(List<Vector2> doorLocations, List<int> doorType)
     {
         string curSeed = MapGenerator.MapGeneratorSingle.seed;
 
@@ -74,16 +75,16 @@ public class MapAddOns : MonoBehaviour
         }
     }
 
-    public List<Vector2> SpawnEnemy(MapInformation map1)
+    public List<Vector2> GenerateEnemySpawnLocation(MapInformation map1)
     {
         //for pos doors
-        List<Vector2> enemyPositions;
-        List<Vector2> drawEnemys;
+        List<Vector2> AllPossibleEnemyLocations;
+        List<Vector2> EnemyLocations;
 
         int numEnemies = 5;
 
-        enemyPositions = new List<Vector2>();
-        drawEnemys = new List<Vector2>();
+        AllPossibleEnemyLocations = new List<Vector2>();
+        EnemyLocations = new List<Vector2>();
         //pick spots for enemies to spawn
         for (int x = 1; x < map1.width - 1; x++)
         {
@@ -94,7 +95,7 @@ public class MapAddOns : MonoBehaviour
                 {
                     Vector2 possibleEnemyXY;
                     possibleEnemyXY = new Vector2(x, y);
-                    enemyPositions.Add(possibleEnemyXY);
+                    AllPossibleEnemyLocations.Add(possibleEnemyXY);
                 }
             }
         }
@@ -105,16 +106,59 @@ public class MapAddOns : MonoBehaviour
         for (int x = 0; x < numEnemies; x++)
         {
             //don't spawn enemies by possible door locations
-            enemyXY = CheckIfDoorLocations(enemyPositions, map1);
+            enemyXY = CheckIfDoorLocations(AllPossibleEnemyLocations, map1);
 
             xPos = -map1.width / 2 + enemyXY.x * map1.squareSize + map1.squareSize / 2;
             yPos = -map1.height / 2 + enemyXY.y * map1.squareSize + map1.squareSize;
 
             enemyXY = new Vector2(xPos, yPos);
 
-            drawEnemys.Add(enemyXY);
+            EnemyLocations.Add(enemyXY);
         }
-        return drawEnemys;
+        return EnemyLocations;
+    }
+
+    public List<Vector2> GenerateTurretSpawnLocation(MapInformation map1)
+    {
+        //for pos doors
+        List<Vector2> AllPossibleTurretLocations;
+        List<Vector2> TurretLocations;
+
+        int numTurrets = 5;
+
+        AllPossibleTurretLocations = new List<Vector2>();
+        TurretLocations = new List<Vector2>();
+        //pick spots for enemies to spawn
+        for (int x = 1; x < map1.width - 1; x++)
+        {
+            for (int y = 1; y < map1.height - 1; y++)
+            {
+                if ((map1.map[x, y] == 0 && map1.map[x + 1, y] == 0 && map1.map[x - 1, y] == 0 && map1.map[x, y + 1] == 0) &&
+                    (map1.map[x, y - 1] == 1 || map1.map[x + 1, y - 1] == 1 || map1.map[x - 1, y - 1] == 1))
+                {
+                    Vector2 possibleEnemyXY;
+                    possibleEnemyXY = new Vector2(x, y);
+                    AllPossibleTurretLocations.Add(possibleEnemyXY);
+                }
+            }
+        }
+
+        Vector2 enemyXY;
+        float xPos;
+        float yPos;
+        for (int x = 0; x < numTurrets; x++)
+        {
+            //don't spawn enemies by possible door locations
+            enemyXY = CheckIfDoorLocations(AllPossibleTurretLocations, map1);
+
+            xPos = -map1.width / 2 + enemyXY.x * map1.squareSize + map1.squareSize / 2;
+            yPos = -map1.height / 2 + enemyXY.y * map1.squareSize + map1.squareSize;
+
+            enemyXY = new Vector2(xPos, yPos);
+
+            TurretLocations.Add(enemyXY);
+        }
+        return TurretLocations;
     }
 
     //make sure enemies can't spawn at x distance within door spawn
@@ -153,19 +197,30 @@ public class MapAddOns : MonoBehaviour
         }
     }
 
-    public void DrawEnemys(List<Vector2> enemyLocations)
+    public void PlaceEnemyOnMap(List<Vector2> enemyLocations, List<Vector2> turretLocations)
     {
         RemoveAllEnemies();
 
-        //drawing new enemies
+        //placing enemies enemies
         for (int x = 0; x < enemyLocations.Count; x++)
         {
             float xPos = enemyLocations[x].x;
             float yPos = enemyLocations[x].y;
 
-            var doorTransform = Instantiate(EnenyPreFab) as Transform;
-            doorTransform.transform.SetParent(GameObject.Find("EnemyList").transform);
-            doorTransform.position = new Vector3(xPos, yPos, 0);
+            var enemyTransform = Instantiate(EnemyPreFab) as Transform;
+            enemyTransform.transform.SetParent(GameObject.Find("EnemyList").transform);
+            enemyTransform.position = new Vector3(xPos, yPos, 0);
+        }
+
+        //placing turrets
+        for (int x = 0; x < turretLocations.Count; x++)
+        {
+            float xPos = turretLocations[x].x;
+            float yPos = turretLocations[x].y;
+
+            var turretTransform = Instantiate(TurretPreFab) as Transform;
+            turretTransform.transform.SetParent(GameObject.Find("EnemyList").transform);
+            turretTransform.position = new Vector3(xPos, yPos, 0);
         }
     }
 }

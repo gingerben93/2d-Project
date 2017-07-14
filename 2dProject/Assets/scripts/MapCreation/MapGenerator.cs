@@ -35,6 +35,7 @@ public class MapGenerator : MonoBehaviour
     public List<Vector2> possibleDoorLocations;
     public List<Vector2> doorLocations;
     public List<Vector2> enemyLocations;
+    public List<Vector2> turretLocations;
 
     public List<string> bossRooms;
 
@@ -168,10 +169,18 @@ public class MapGenerator : MonoBehaviour
 
             for (x = 0; x < numMaps; x++)
             {
-                enemyLocations = new List<Vector2>();
+                //map size
                 map = new int[MapInfo[GameData.GameDataSingle.mapSeed[x]].width, MapInfo[GameData.GameDataSingle.mapSeed[x]].height];
-                enemyLocations = MapAddOns.SpawnEnemy(MapInfo[GameData.GameDataSingle.mapSeed[x]]);
 
+                //enemy locations
+                enemyLocations = new List<Vector2>();
+                enemyLocations = MapAddOns.GenerateEnemySpawnLocation(MapInfo[GameData.GameDataSingle.mapSeed[x]]);
+
+                //turret Locations
+                turretLocations = new List<Vector2>();
+                turretLocations = MapAddOns.GenerateTurretSpawnLocation(MapInfo[GameData.GameDataSingle.mapSeed[x]]);
+
+                //for enemy locations
                 //for storing data in not unity vectors
                 List<float> tempHolderX = new List<float>();
                 List<float> tempHolderY = new List<float>();
@@ -182,6 +191,18 @@ public class MapGenerator : MonoBehaviour
                 }
                 MapInfo[GameData.GameDataSingle.mapSeed[x]].enemyLocationsX = tempHolderX;
                 MapInfo[GameData.GameDataSingle.mapSeed[x]].enemyLocationsY = tempHolderY;
+
+                //for turret locations
+                //for storing data in not unity vectors
+                tempHolderX = new List<float>();
+                tempHolderY = new List<float>();
+                foreach (Vector2 XYCoord in turretLocations)
+                {
+                    tempHolderX.Add(XYCoord.x);
+                    tempHolderY.Add(XYCoord.y);
+                }
+                MapInfo[GameData.GameDataSingle.mapSeed[x]].turretLocationsX = tempHolderX;
+                MapInfo[GameData.GameDataSingle.mapSeed[x]].turretLocationsY = tempHolderY;
             }
 
             PlayerStats.PlayerStatsSingle.MapInfo = MapInfo;
@@ -390,7 +411,7 @@ public class MapGenerator : MonoBehaviour
 
         //for doors spawns
         possibleDoorLocations = new List<Vector2>();
-        possibleDoorLocations = MapAddOns.GenerateDoors(map);
+        possibleDoorLocations = MapAddOns.GenerateDoorsLocations(map);
 
         List<float> tempHolderX = new List<float>();
         List<float> tempHolderY = new List<float>();
@@ -422,21 +443,29 @@ public class MapGenerator : MonoBehaviour
             doorLocations.Add(new Vector2(MapInfo[seed].doorLocationsX[tempCounter], MapInfo[seed].doorLocationsY[tempCounter]));
         }
         //doorLocations = MapInfo[seed].doorLocations;
-        MapAddOns.DrawOldDoors(doorLocations, currentData.doorType);
+        MapAddOns.PlaceDoorsOnMap(doorLocations, currentData.doorType);
 
         //for enemy spawns
         enemyLocations = new List<Vector2>();
+        turretLocations = new List<Vector2>();
         //foreach (float tempXY in MapInfo[seed].enemyLocationsX)
         if (MapInfo[seed].enemyLocationsX != null)
         {
+            //for enemyLocations
             for (int tempCounter = 0; tempCounter < MapInfo[seed].enemyLocationsX.Count; tempCounter++)
             {
                 enemyLocations.Add(new Vector2(MapInfo[seed].enemyLocationsX[tempCounter], (MapInfo[seed].enemyLocationsY[tempCounter])));
             }
 
+            //for turretLocations
+            for (int tempCounter = 0; tempCounter < MapInfo[seed].turretLocationsX.Count; tempCounter++)
+            {
+                turretLocations.Add(new Vector2(MapInfo[seed].turretLocationsX[tempCounter], (MapInfo[seed].turretLocationsY[tempCounter])));
+            }
+
             if (enemyLocations != null && enemyLocations.Count > 0)
             {
-                MapAddOns.DrawEnemys(enemyLocations);
+                MapAddOns.PlaceEnemyOnMap(enemyLocations, turretLocations);
             }
         }
         else if (bossRooms.Contains(seed))
