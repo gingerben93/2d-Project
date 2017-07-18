@@ -51,6 +51,9 @@ public class DrawGrapHook : MonoBehaviour
     private Quaternion q;
     public bool hasBodyCollided { get; set; }
 
+    //number of lines
+    public int currentNumberLines = 2;
+
     //on start
     void Start()
     {
@@ -98,6 +101,10 @@ public class DrawGrapHook : MonoBehaviour
             }
             else
             {
+                //rest number lines
+                currentNumberLines = 2;
+                line.numPositions = currentNumberLines;
+
                 //set tip to dynamic for collision detection
                 rb2dTip.isKinematic = false;
                 rb2dTip.simulated = true;
@@ -129,8 +136,8 @@ public class DrawGrapHook : MonoBehaviour
                 currentPosLine = startPosLine;
                 endPosLine = mousePos;
 
-                line.SetPosition(0, startPosLine);
-                line.SetPosition(1, startPosLine);
+                line.SetPosition(currentNumberLines - 2, startPosLine);
+                line.SetPosition(currentNumberLines - 1, startPosLine);
                 line.enabled = true;
 
                 //reset variable in MoveLine
@@ -208,7 +215,7 @@ public class DrawGrapHook : MonoBehaviour
             }
             else
             {
-                line.SetPosition(0, currentPosPlayer);
+                line.SetPosition(currentNumberLines - 1, currentPosPlayer);
 
                 //jump to turn off rope
                 if (Input.GetKeyDown(KeyCode.Space))
@@ -260,9 +267,9 @@ public class DrawGrapHook : MonoBehaviour
 
         //set line coordinates
         currentPosLine = GrapTip.transform.position;
-        line.SetPosition(0, currentPosPlayer);
+        line.SetPosition(currentNumberLines - 1, currentPosPlayer);
         //off set is to make it appeat closer to wall ; + StartDirection * .5f
-        line.SetPosition(1, currentPosLine + StartDirection * .5f);
+        line.SetPosition(currentNumberLines - 2, currentPosLine + StartDirection * .5f);
     }
 
     void MovePlayerUpRope()

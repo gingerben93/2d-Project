@@ -30,7 +30,7 @@ public class Inventory : MonoBehaviour
 
     private static int emptySlots;
 
-    public Canvas canvas;
+    private Canvas canvas;
 
     private float hoverYOffset;
 
@@ -80,6 +80,8 @@ public class Inventory : MonoBehaviour
         sizeText = sizeTextObject;
         visualText = visualTextObject;
 
+        //reference to canvas
+        canvas = (Canvas)GetComponentInParent(typeof(Canvas));
         CreateLayout();
     }
 

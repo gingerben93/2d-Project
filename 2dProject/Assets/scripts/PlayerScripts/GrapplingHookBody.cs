@@ -39,10 +39,15 @@ public class GrapplingHookBody : MonoBehaviour
         {
             Vector2 hitPoint = missileHit.point;
             //Instantiate(explosion, new Vector3(hitPoint.x, hitPoint.y, 0), Quaternion.identity);
+
+            ////for drawing the line
+            //drawGrapHook.currentNumberLines += 1;
+            //drawGrapHook.line.numPositions += 1;
+            //drawGrapHook.line.SetPosition(drawGrapHook.currentNumberLines - 2, new Vector2(hitPoint.x, hitPoint.y));
             
             //update all variables in drawGrapHook for line
             drawGrapHook.rb2dTip.gameObject.transform.position = new Vector2(hitPoint.x, hitPoint.y) + missileHit.normal * .3f;
-            drawGrapHook.line.SetPosition(1, new Vector2(hitPoint.x, hitPoint.y));
+            drawGrapHook.line.SetPosition(drawGrapHook.currentNumberLines - 2, new Vector2(hitPoint.x, hitPoint.y));
             //drawGrapHook.line.numPositions += 1;
             drawGrapHook.currentPosLine = new Vector3(hitPoint.x, hitPoint.y, 0);
             break;
