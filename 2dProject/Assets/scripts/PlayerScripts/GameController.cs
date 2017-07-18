@@ -50,6 +50,7 @@ public class GameController : MonoBehaviour
     //private GameObject QuestMenuCanvas;
     private Canvas NotificationCanvas;
     private Canvas SkillMenuCanvas;
+    private Canvas QuestMenuCanvas;
     private Canvas SelectBarCanvas;
 
     public Text NotificationTxt;
@@ -129,8 +130,10 @@ public class GameController : MonoBehaviour
         GameObject.Find("DashSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill(); });
         GameObject.Find("DashSkill2").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill2(); });
 
+        //assign buttons functions for menu
         GameObject.Find("InventoryButton").GetComponent<Button>().onClick.AddListener(delegate { InventoryOnButton(); });
         GameObject.Find("SkillsButton").GetComponent<Button>().onClick.AddListener(delegate { SkillMenuOnButton(); });
+        GameObject.Find("QuestButton").GetComponent<Button>().onClick.AddListener(delegate { QuestMenuOnButton(); });
 
         //if side quest counter is on
         sideQuestBool = false;
@@ -150,6 +153,7 @@ public class GameController : MonoBehaviour
         InvMenuCanvas = GameObject.Find("InvMenuCanvas").GetComponent<Canvas>();
         //QuestMenuCanvas = GameObject.Find("QuestMenuCanvas");
         SkillMenuCanvas = GameObject.Find("SkillMenuCanvas").GetComponent<Canvas>();
+        QuestMenuCanvas = GameObject.Find("QuestMenuCanvas").GetComponent<Canvas>();
         SelectBarCanvas = GameObject.Find("SelectBarCanvas").GetComponent<Canvas>();
 
         //for player
@@ -505,12 +509,52 @@ public class GameController : MonoBehaviour
     {
         //turn off other menu
         SkillMenuCanvas.enabled = false;
+        QuestMenuCanvas.enabled = false;
 
         //toggle on and off
         InvMenuCanvas.enabled = !InvMenuCanvas.enabled;
 
         //check if any menu item on
-        if (!SkillMenuCanvas.enabled && !InvMenuCanvas.enabled)
+        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas)
+        {
+            SelectBarCanvas.enabled = false;
+        }
+        else
+        {
+            SelectBarCanvas.enabled = true;
+        }
+    }
+
+    public void SkillMenuOn()
+    {
+        //turn off other menu
+        InvMenuCanvas.enabled = false;
+        QuestMenuCanvas.enabled = false;
+
+        //toggle this menu
+        SkillMenuCanvas.enabled = !SkillMenuCanvas.enabled;
+
+        //check if any menu item on; else turn off select bar
+        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas)
+        {
+            SelectBarCanvas.enabled = false;
+        }
+        else
+        {
+            SelectBarCanvas.enabled = true;
+        }
+    }
+
+    public void QuestMenuOn()
+    {
+        //turn off other menu
+        InvMenuCanvas.enabled = false;
+        SkillMenuCanvas.enabled = false;
+        //toggle this menu
+        QuestMenuCanvas.enabled = !QuestMenuCanvas.enabled;
+
+        //check if any menu item on; else turn off select bar
+        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas)
         {
             SelectBarCanvas.enabled = false;
         }
@@ -522,28 +566,9 @@ public class GameController : MonoBehaviour
 
     public void InventoryOnButton()
     {
-        if(InvMenuCanvas.enabled == false)
+        if (InvMenuCanvas.enabled == false)
         {
             InventoryOn();
-        }
-    }
-
-    public void SkillMenuOn()
-    {
-        //turn off other menu
-        InvMenuCanvas.enabled = false;
-
-        //toggle this menu
-        SkillMenuCanvas.enabled = !SkillMenuCanvas.enabled;
-
-        //check if any menu item on; else turn off select bar
-        if (!SkillMenuCanvas.enabled && !InvMenuCanvas.enabled)
-        {
-            SelectBarCanvas.enabled = false;
-        }
-        else
-        {
-            SelectBarCanvas.enabled = true;
         }
     }
 
@@ -552,6 +577,14 @@ public class GameController : MonoBehaviour
         if (SkillMenuCanvas.enabled == false)
         {
             SkillMenuOn();
+        }
+    }
+
+    public void QuestMenuOnButton()
+    {
+        if (QuestMenuCanvas.enabled == false)
+        {
+            QuestMenuOn();
         }
     }
 

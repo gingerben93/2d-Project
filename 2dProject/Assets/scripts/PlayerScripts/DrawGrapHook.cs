@@ -18,9 +18,9 @@ public class DrawGrapHook : MonoBehaviour
     //for movement 
     private Rigidbody2D rb2d;
 
-    private LineRenderer line;
+    public LineRenderer line;
     private Vector3 mousePos;
-    private Vector3 currentPosLine;
+    public Vector3 currentPosLine;
     private Vector3 startPosLine;
     private Vector3 endPosLine;
     private Vector3 currentPosPlayer;
@@ -38,7 +38,7 @@ public class DrawGrapHook : MonoBehaviour
     //grappling hook tip
     private GameObject GrapTip;
     public bool HasTipCollided { get; set; }
-    private Rigidbody2D rb2dTip;
+    public Rigidbody2D rb2dTip;
     private Vector3 TipDirection;
     private float angleTipCollider;
 
@@ -85,8 +85,8 @@ public class DrawGrapHook : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+    // fixedupdate gives correct collisons update doesn't. collides bad at fast speeds
+    void FixedUpdate()
     {
         //needs to reset variables used for grap hook stuff
         if (Input.GetMouseButtonDown(0))
@@ -98,6 +98,17 @@ public class DrawGrapHook : MonoBehaviour
             }
             else
             {
+                //set tip to dynamic for collision detection
+                rb2dTip.isKinematic = false;
+                rb2dTip.simulated = true;
+
+                //SET BODY INFO
+                //grap body info
+                grapBody.GetComponent<BoxCollider2D>().enabled = true;
+                grapBody.GetComponent<BoxCollider2D>().size = new Vector2(.5f, .5f);
+                grapBody.GetComponent<Rigidbody2D>().isKinematic = false;
+                grapBody.GetComponent<Rigidbody2D>().simulated = true;
+
                 //grap tip info
                 GrapTip.GetComponent<BoxCollider2D>().enabled = true;
 
@@ -130,10 +141,6 @@ public class DrawGrapHook : MonoBehaviour
                 heading = endPosLine - startPosLine;
                 distance = heading.magnitude;
                 TipDirection = heading / distance;
-
-                //grap body info
-                grapBody.GetComponent<BoxCollider2D>().enabled = true;
-                grapBody.GetComponent<BoxCollider2D>().size = new Vector2(.5f, .5f);
             }
 
         }
@@ -186,6 +193,8 @@ public class DrawGrapHook : MonoBehaviour
                 line.enabled = false;
                 GrapTip.GetComponent<BoxCollider2D>().enabled = false;
                 grapBody.GetComponent<BoxCollider2D>().enabled = false;
+                grapBody.GetComponent<Rigidbody2D>().isKinematic = true;
+                grapBody.GetComponent<Rigidbody2D>().simulated = false;
                 HasTipCollided = false;
                 rb2d.gravityScale = 1;
             }
@@ -193,7 +202,8 @@ public class DrawGrapHook : MonoBehaviour
             //draw the rope
             else if (!HasTipCollided)
             {
-                rb2dTip.velocity = new Vector2(10 * TipDirection.x, 10 * TipDirection.y);
+                rb2dTip.MovePosition(rb2dTip.position + new Vector2(10 * TipDirection.x, 10 * TipDirection.y) * Time.fixedDeltaTime);
+                //rb2dTip.velocity = new Vector2(10 * TipDirection.x, 10 * TipDirection.y);
                 MoveLine();
             }
             else
