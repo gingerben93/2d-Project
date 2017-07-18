@@ -52,6 +52,7 @@ public class GameController : MonoBehaviour
     private Canvas SkillMenuCanvas;
     private Canvas QuestMenuCanvas;
     private Canvas SelectBarCanvas;
+    private Canvas MagicMenuCanvas;
 
     public Text NotificationTxt;
 
@@ -134,6 +135,7 @@ public class GameController : MonoBehaviour
         GameObject.Find("InventoryButton").GetComponent<Button>().onClick.AddListener(delegate { InventoryOnButton(); });
         GameObject.Find("SkillsButton").GetComponent<Button>().onClick.AddListener(delegate { SkillMenuOnButton(); });
         GameObject.Find("QuestButton").GetComponent<Button>().onClick.AddListener(delegate { QuestMenuOnButton(); });
+        GameObject.Find("MagicButton").GetComponent<Button>().onClick.AddListener(delegate { MagicMenuOnButton(); });
 
         //if side quest counter is on
         sideQuestBool = false;
@@ -155,6 +157,7 @@ public class GameController : MonoBehaviour
         SkillMenuCanvas = GameObject.Find("SkillMenuCanvas").GetComponent<Canvas>();
         QuestMenuCanvas = GameObject.Find("QuestMenuCanvas").GetComponent<Canvas>();
         SelectBarCanvas = GameObject.Find("SelectBarCanvas").GetComponent<Canvas>();
+        MagicMenuCanvas = GameObject.Find("MagicMenuCanvas").GetComponent<Canvas>();
 
         //for player
         //StatPageExperienceText = GameObject.Find("Experience");
@@ -220,6 +223,18 @@ public class GameController : MonoBehaviour
         bool shoot = Input.GetMouseButtonDown(1);
         shoot |= Input.GetMouseButtonDown(1);
         // Careful: For Mac users, ctrl + arrow is a bad idea
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha2)) {
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3)) {
+
+        }
 
         //toggle inventory on and off
         if (Input.GetKeyDown(KeyCode.I))
@@ -510,12 +525,13 @@ public class GameController : MonoBehaviour
         //turn off other menu
         SkillMenuCanvas.enabled = false;
         QuestMenuCanvas.enabled = false;
+        MagicMenuCanvas.enabled = false;
 
         //toggle on and off
         InvMenuCanvas.enabled = !InvMenuCanvas.enabled;
 
         //check if any menu item on
-        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas)
+        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas && !MagicMenuCanvas)
         {
             SelectBarCanvas.enabled = false;
         }
@@ -530,12 +546,13 @@ public class GameController : MonoBehaviour
         //turn off other menu
         InvMenuCanvas.enabled = false;
         QuestMenuCanvas.enabled = false;
+        MagicMenuCanvas.enabled = false;
 
         //toggle this menu
         SkillMenuCanvas.enabled = !SkillMenuCanvas.enabled;
 
         //check if any menu item on; else turn off select bar
-        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas)
+        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas && !MagicMenuCanvas)
         {
             SelectBarCanvas.enabled = false;
         }
@@ -550,11 +567,32 @@ public class GameController : MonoBehaviour
         //turn off other menu
         InvMenuCanvas.enabled = false;
         SkillMenuCanvas.enabled = false;
+        MagicMenuCanvas.enabled = false;
         //toggle this menu
         QuestMenuCanvas.enabled = !QuestMenuCanvas.enabled;
 
         //check if any menu item on; else turn off select bar
-        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas)
+        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas && !MagicMenuCanvas)
+        {
+            SelectBarCanvas.enabled = false;
+        }
+        else
+        {
+            SelectBarCanvas.enabled = true;
+        }
+    }
+
+    public void MagicMenuOn()
+    {
+        //turn off other menu
+        InvMenuCanvas.enabled = false;
+        SkillMenuCanvas.enabled = false;
+        QuestMenuCanvas.enabled = false;
+        //toggle this menu
+        MagicMenuCanvas.enabled = !MagicMenuCanvas.enabled;
+
+        //check if any menu item on; else turn off select bar
+        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas && !MagicMenuCanvas)
         {
             SelectBarCanvas.enabled = false;
         }
@@ -585,6 +623,14 @@ public class GameController : MonoBehaviour
         if (QuestMenuCanvas.enabled == false)
         {
             QuestMenuOn();
+        }
+    }
+
+    public void MagicMenuOnButton()
+    {
+        if (MagicMenuCanvas.enabled == false)
+        {
+            MagicMenuOn();
         }
     }
 
