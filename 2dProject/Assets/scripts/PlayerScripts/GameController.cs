@@ -149,14 +149,17 @@ public class GameController : MonoBehaviour
         jump = false;
         attack = 2;
 
-        NotificationCanvas = GameObject.Find("NotificationCanvas").GetComponent <Canvas>(); ;
-        //StatsMenuCanvas = GameObject.Find("StatsMenuCanvas");
+        //on all the time 
+        NotificationCanvas = GameObject.Find("NotificationCanvas").GetComponent <Canvas>();
+
+        //esc menu
         StartMenuCanvas = GameObject.Find("StartMenuCanvas").GetComponent<Canvas>();
+
+        //menu items
+        SelectBarCanvas = GameObject.Find("SelectBarCanvas").GetComponent<Canvas>();
         InvMenuCanvas = GameObject.Find("InvMenuCanvas").GetComponent<Canvas>();
-        //QuestMenuCanvas = GameObject.Find("QuestMenuCanvas");
         SkillMenuCanvas = GameObject.Find("SkillMenuCanvas").GetComponent<Canvas>();
         QuestMenuCanvas = GameObject.Find("QuestMenuCanvas").GetComponent<Canvas>();
-        SelectBarCanvas = GameObject.Find("SelectBarCanvas").GetComponent<Canvas>();
         MagicMenuCanvas = GameObject.Find("MagicMenuCanvas").GetComponent<Canvas>();
 
         //for player

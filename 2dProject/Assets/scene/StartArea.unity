@@ -1247,9 +1247,9 @@ Transform:
   - {fileID: 263162461}
   - {fileID: 787932598}
   - {fileID: 1087277214}
-  - {fileID: 371189782}
   - {fileID: 898193981}
   - {fileID: 804054864}
+  - {fileID: 371189782}
   - {fileID: 1797917902}
   m_Father: {fileID: 0}
   m_RootOrder: 13
@@ -1278,6 +1278,7 @@ GameObject:
   - component: {fileID: 371189785}
   - component: {fileID: 371189784}
   - component: {fileID: 371189783}
+  - component: {fileID: 371189786}
   m_Layer: 0
   m_Name: MagicMenuCanvas
   m_TagString: Untagged
@@ -1297,7 +1298,7 @@ RectTransform:
   m_Children:
   - {fileID: 468587683}
   m_Father: {fileID: 309733415}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1347,7 +1348,7 @@ Canvas:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 371189781}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -1360,6 +1361,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &371189786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 371189781}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e783c1bc815a9ba439d98d70e847c53d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MagicImagePrefab: {fileID: 1380255374502104, guid: 2bab44d95b0a3d743b268c18837504a3,
+    type: 2}
 --- !u!1 &373705692
 GameObject:
   m_ObjectHideFlags: 0
@@ -1837,10 +1851,10 @@ RectTransform:
   m_Father: {fileID: 371189782}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.10700001, y: 0.162}
-  m_AnchorMax: {x: 0.89400005, y: 0.79868037}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.1, y: 0}
+  m_AnchorMax: {x: 0.9, y: 0.8}
+  m_AnchoredPosition: {x: 3, y: -0.5}
+  m_SizeDelta: {x: -6, y: -1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &468587684
 MonoBehaviour:
@@ -2054,7 +2068,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.10580228, y: 0.8}
-  m_AnchorMax: {x: 0.8955552, y: 1}
+  m_AnchorMax: {x: 0.8955552, y: 0.9}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
@@ -3151,7 +3165,7 @@ RectTransform:
   - {fileID: 880132773}
   - {fileID: 1022106069}
   m_Father: {fileID: 309733415}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3273,7 +3287,6 @@ MonoBehaviour:
   slotSize: 20
   slotPrefab: {fileID: 1180141628489860, guid: 68e6c0870d9ae4143bf962e0c35af2bd, type: 2}
   iconPrefab: {fileID: 1380255374502104, guid: 2bab44d95b0a3d743b268c18837504a3, type: 2}
-  canvas: {fileID: 898193984}
   tooltipObject: {fileID: 56861395}
   sizeTextObject: {fileID: 680724546}
   visualTextObject: {fileID: 1927247169}
@@ -3602,7 +3615,7 @@ GameObject:
   - component: {fileID: 888498126}
   - component: {fileID: 888498125}
   m_Layer: 0
-  m_Name: ButtonTwo
+  m_Name: HotbarButtonTwo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3622,10 +3635,10 @@ RectTransform:
   m_Father: {fileID: 1954477751}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000022888, y: 0}
-  m_SizeDelta: {x: 77, y: 57}
+  m_AnchorMin: {x: 0.1, y: 0}
+  m_AnchorMax: {x: 0.2, y: 1}
+  m_AnchoredPosition: {x: 2, y: 0}
+  m_SizeDelta: {x: 5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &888498125
 MonoBehaviour:
@@ -3665,7 +3678,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 888498126}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 371189786}
+        m_MethodName: ClickMagic
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 888498123}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &888498126
@@ -3733,7 +3757,7 @@ RectTransform:
   - {fileID: 837401339}
   - {fileID: 56861396}
   m_Father: {fileID: 309733415}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4872,7 +4896,7 @@ Canvas:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1099101901}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -5507,10 +5531,10 @@ RectTransform:
   m_Father: {fileID: 468587683}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -330, y: 97.392}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0.8}
+  m_AnchorMax: {x: 0.10153306, y: 1}
+  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_SizeDelta: {x: -0.000061035, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1314441783
 MonoBehaviour:
@@ -5550,7 +5574,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1314441784}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 371189786}
+        m_MethodName: ClickMagic
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1314441781}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1314441784
@@ -5765,7 +5800,7 @@ GameObject:
   - component: {fileID: 1404610066}
   - component: {fileID: 1404610065}
   m_Layer: 0
-  m_Name: ButtonThree
+  m_Name: HotbarButtonThree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5785,10 +5820,10 @@ RectTransform:
   m_Father: {fileID: 1954477751}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 75.49997, y: 0}
-  m_SizeDelta: {x: 77, y: 57}
+  m_AnchorMin: {x: 0.2, y: 0}
+  m_AnchorMax: {x: 0.3, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.125}
+  m_SizeDelta: {x: 0, y: -0.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1404610065
 MonoBehaviour:
@@ -5828,7 +5863,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1404610066}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 371189786}
+        m_MethodName: ClickMagic
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1404610063}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1404610066
@@ -6616,7 +6662,7 @@ GameObject:
   - component: {fileID: 1754449920}
   - component: {fileID: 1754449919}
   m_Layer: 0
-  m_Name: ButtonOne
+  m_Name: HotbarButtonOne
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6636,10 +6682,10 @@ RectTransform:
   m_Father: {fileID: 1954477751}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -75.5, y: 0}
-  m_SizeDelta: {x: 77, y: 57}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -0.125}
+  m_SizeDelta: {x: 0.000045776, y: -0.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1754449919
 MonoBehaviour:
@@ -6679,7 +6725,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1754449920}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 371189786}
+        m_MethodName: ClickMagic
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1754449917}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1754449920
@@ -7781,10 +7838,10 @@ RectTransform:
   m_Father: {fileID: 1797917902}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 0.9}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -1.9, y: -200.1}
-  m_SizeDelta: {x: -820.2, y: -400.3}
+  m_AnchoredPosition: {x: 0.25, y: 0}
+  m_SizeDelta: {x: -0.5, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1954477752
 MonoBehaviour:
@@ -7798,7 +7855,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.5019608}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
