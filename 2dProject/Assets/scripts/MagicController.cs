@@ -29,6 +29,7 @@ public class MagicController : MonoBehaviour {
             FromMagic.transform.position = canvas.transform.TransformPoint(position);
         }
     }
+
     public void ClickMagic(GameObject clicked)
     {
         //if nothing is floating with the cursor and you clicked on empty slot

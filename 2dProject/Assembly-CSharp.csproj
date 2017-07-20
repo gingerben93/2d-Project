@@ -84,6 +84,7 @@
      <Compile Include="Assets\scripts\Items\Weapons\ShortSword\ShotM.cs" />
      <Compile Include="Assets\scripts\Items\Weapons\ShotMove.cs" />
      <Compile Include="Assets\scripts\Magic.cs" />
+     <Compile Include="Assets\scripts\MagicController.cs" />
      <Compile Include="Assets\scripts\MainQuest\MainQuest0_0.cs" />
      <Compile Include="Assets\scripts\MainQuest\MainQuest1_0.cs" />
      <Compile Include="Assets\scripts\MainQuest\MainQuest2_0.cs" />

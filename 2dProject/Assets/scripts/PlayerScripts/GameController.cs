@@ -44,15 +44,15 @@ public class GameController : MonoBehaviour
     DoorCollider doorInfo;
 
     //Inventory
-    private Canvas InvMenuCanvas;
+    private CanvasGroup InvMenuCanvas;
     //private GameObject StatsMenuCanvas;
-    private Canvas StartMenuCanvas;
+    private CanvasGroup StartMenuCanvas;
     //private GameObject QuestMenuCanvas;
     private Canvas NotificationCanvas;
-    private Canvas SkillMenuCanvas;
-    private Canvas QuestMenuCanvas;
-    private Canvas SelectBarCanvas;
-    private Canvas MagicMenuCanvas;
+    private CanvasGroup SkillMenuCanvas;
+    private CanvasGroup QuestMenuCanvas;
+    private CanvasGroup SelectBarCanvas;
+    private CanvasGroup MagicMenuCanvas;
 
     public Text NotificationTxt;
 
@@ -157,14 +157,14 @@ public class GameController : MonoBehaviour
         NotificationCanvas = GameObject.Find("NotificationCanvas").GetComponent <Canvas>();
 
         //esc menu
-        StartMenuCanvas = GameObject.Find("StartMenuCanvas").GetComponent<Canvas>();
+        StartMenuCanvas = GameObject.Find("StartMenuCanvas").GetComponent<CanvasGroup>();
 
         //menu items
-        SelectBarCanvas = GameObject.Find("SelectBarCanvas").GetComponent<Canvas>();
-        InvMenuCanvas = GameObject.Find("InvMenuCanvas").GetComponent<Canvas>();
-        SkillMenuCanvas = GameObject.Find("SkillMenuCanvas").GetComponent<Canvas>();
-        QuestMenuCanvas = GameObject.Find("QuestMenuCanvas").GetComponent<Canvas>();
-        MagicMenuCanvas = GameObject.Find("MagicMenuCanvas").GetComponent<Canvas>();
+        SelectBarCanvas = GameObject.Find("SelectBarCanvas").GetComponent<CanvasGroup>();
+        InvMenuCanvas = GameObject.Find("InvMenuCanvas").GetComponent<CanvasGroup>();
+        SkillMenuCanvas = GameObject.Find("SkillMenuCanvas").GetComponent<CanvasGroup>();
+        QuestMenuCanvas = GameObject.Find("QuestMenuCanvas").GetComponent<CanvasGroup>();
+        MagicMenuCanvas = GameObject.Find("MagicMenuCanvas").GetComponent<CanvasGroup>();
 
         //for player
         //StatPageExperienceText = GameObject.Find("Experience");
@@ -270,7 +270,9 @@ public class GameController : MonoBehaviour
         //back menu
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            StartMenuCanvas.enabled = !StartMenuCanvas.enabled;
+            StartMenuCanvas.alpha = (StartMenuCanvas.alpha + 1) % 2;
+            StartMenuCanvas.interactable = !StartMenuCanvas.interactable;
+            StartMenuCanvas.blocksRaycasts = !StartMenuCanvas.blocksRaycasts;
         }
 
         //for rotating
@@ -542,88 +544,146 @@ public class GameController : MonoBehaviour
     public void InventoryOn()
     {
         //turn off other menu
-        SkillMenuCanvas.enabled = false;
-        QuestMenuCanvas.enabled = false;
-        MagicMenuCanvas.enabled = false;
+        SkillMenuCanvas.alpha = 0;
+        SkillMenuCanvas.interactable = false;
+        SkillMenuCanvas.blocksRaycasts = false;
+
+        QuestMenuCanvas.alpha = 0;
+        QuestMenuCanvas.interactable = false;
+        QuestMenuCanvas.blocksRaycasts = false;
+
+        MagicMenuCanvas.alpha = 0;
+        MagicMenuCanvas.interactable = false;
+        MagicMenuCanvas.blocksRaycasts = false;
 
         //toggle on and off
-        InvMenuCanvas.enabled = !InvMenuCanvas.enabled;
+        InvMenuCanvas.alpha = (InvMenuCanvas.alpha + 1) %2;
+        InvMenuCanvas.interactable = !InvMenuCanvas.interactable;
+        InvMenuCanvas.blocksRaycasts = !InvMenuCanvas.blocksRaycasts;
 
         //check if any menu item on
-        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas && !MagicMenuCanvas)
+        if (SkillMenuCanvas.alpha == 0 && QuestMenuCanvas.alpha == 0 && MagicMenuCanvas.alpha == 0 && InvMenuCanvas.alpha ==0)
         {
-            SelectBarCanvas.enabled = false;
+            SelectBarCanvas.alpha = 0;
+            SelectBarCanvas.interactable = false;
+            SelectBarCanvas.blocksRaycasts = false;
         }
         else
         {
-            SelectBarCanvas.enabled = true;
+            SelectBarCanvas.alpha = 1;
+            SelectBarCanvas.interactable = true;
+            SelectBarCanvas.blocksRaycasts = true;
         }
     }
 
     public void SkillMenuOn()
     {
         //turn off other menu
-        InvMenuCanvas.enabled = false;
-        QuestMenuCanvas.enabled = false;
-        MagicMenuCanvas.enabled = false;
+        InvMenuCanvas.alpha = 0;
+        InvMenuCanvas.interactable = false;
+        InvMenuCanvas.blocksRaycasts = false;
 
-        //toggle this menu
-        SkillMenuCanvas.enabled = !SkillMenuCanvas.enabled;
+        QuestMenuCanvas.alpha = 0;
+        QuestMenuCanvas.interactable = false;
+        QuestMenuCanvas.blocksRaycasts = false;
 
-        //check if any menu item on; else turn off select bar
-        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas && !MagicMenuCanvas)
+        MagicMenuCanvas.alpha = 0;
+        MagicMenuCanvas.interactable = false;
+        MagicMenuCanvas.blocksRaycasts = false;
+
+        //toggle on and off
+        SkillMenuCanvas.alpha = (SkillMenuCanvas.alpha + 1) % 2;
+        SkillMenuCanvas.interactable = !SkillMenuCanvas.interactable;
+        SkillMenuCanvas.blocksRaycasts = !SkillMenuCanvas.blocksRaycasts;
+
+        //check if any menu item on
+        if (SkillMenuCanvas.alpha == 0 && QuestMenuCanvas.alpha == 0 && MagicMenuCanvas.alpha == 0 && InvMenuCanvas.alpha == 0)
         {
-            SelectBarCanvas.enabled = false;
+            SelectBarCanvas.alpha = 0;
+            SelectBarCanvas.interactable = false;
+            SelectBarCanvas.blocksRaycasts = false;
         }
         else
         {
-            SelectBarCanvas.enabled = true;
+            SelectBarCanvas.alpha = 1;
+            SelectBarCanvas.interactable = true;
+            SelectBarCanvas.blocksRaycasts = true;
         }
     }
 
     public void QuestMenuOn()
     {
         //turn off other menu
-        InvMenuCanvas.enabled = false;
-        SkillMenuCanvas.enabled = false;
-        MagicMenuCanvas.enabled = false;
-        //toggle this menu
-        QuestMenuCanvas.enabled = !QuestMenuCanvas.enabled;
+        SkillMenuCanvas.alpha = 0;
+        SkillMenuCanvas.interactable = false;
+        SkillMenuCanvas.blocksRaycasts = false;
 
-        //check if any menu item on; else turn off select bar
-        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas && !MagicMenuCanvas)
+        InvMenuCanvas.alpha = 0;
+        InvMenuCanvas.interactable = false;
+        InvMenuCanvas.blocksRaycasts = false;
+
+        MagicMenuCanvas.alpha = 0;
+        MagicMenuCanvas.interactable = false;
+        MagicMenuCanvas.blocksRaycasts = false;
+
+        //toggle on and off
+        QuestMenuCanvas.alpha = (QuestMenuCanvas.alpha + 1) % 2;
+        QuestMenuCanvas.interactable = !QuestMenuCanvas.interactable;
+        QuestMenuCanvas.blocksRaycasts = !QuestMenuCanvas.blocksRaycasts;
+
+        //check if any menu item on
+        if (SkillMenuCanvas.alpha == 0 && QuestMenuCanvas.alpha == 0 && MagicMenuCanvas.alpha == 0 && InvMenuCanvas.alpha == 0)
         {
-            SelectBarCanvas.enabled = false;
+            SelectBarCanvas.alpha = 0;
+            SelectBarCanvas.interactable = false;
+            SelectBarCanvas.blocksRaycasts = false;
         }
         else
         {
-            SelectBarCanvas.enabled = true;
+            SelectBarCanvas.alpha = 1;
+            SelectBarCanvas.interactable = true;
+            SelectBarCanvas.blocksRaycasts = true;
         }
     }
 
     public void MagicMenuOn()
     {
         //turn off other menu
-        InvMenuCanvas.enabled = false;
-        SkillMenuCanvas.enabled = false;
-        QuestMenuCanvas.enabled = false;
-        //toggle this menu
-        MagicMenuCanvas.enabled = !MagicMenuCanvas.enabled;
+        SkillMenuCanvas.alpha = 0;
+        SkillMenuCanvas.interactable = false;
+        SkillMenuCanvas.blocksRaycasts = false;
 
-        //check if any menu item on; else turn off select bar
-        if (!SkillMenuCanvas && !QuestMenuCanvas && !InvMenuCanvas && !MagicMenuCanvas)
+        InvMenuCanvas.alpha = 0;
+        InvMenuCanvas.interactable = false;
+        InvMenuCanvas.blocksRaycasts = false;
+
+        QuestMenuCanvas.alpha = 0;
+        QuestMenuCanvas.interactable = false;
+        QuestMenuCanvas.blocksRaycasts = false;
+
+        //toggle on and off
+        MagicMenuCanvas.alpha = (MagicMenuCanvas.alpha + 1) % 2;
+        MagicMenuCanvas.interactable = !MagicMenuCanvas.interactable;
+        MagicMenuCanvas.blocksRaycasts = !MagicMenuCanvas.blocksRaycasts;
+
+        //check if any menu item on
+        if (SkillMenuCanvas.alpha == 0 && QuestMenuCanvas.alpha == 0 && MagicMenuCanvas.alpha == 0 && InvMenuCanvas.alpha == 0)
         {
-            SelectBarCanvas.enabled = false;
+            SelectBarCanvas.alpha = 0;
+            SelectBarCanvas.interactable = false;
+            SelectBarCanvas.blocksRaycasts = false;
         }
         else
         {
-            SelectBarCanvas.enabled = true;
+            SelectBarCanvas.alpha = 1;
+            SelectBarCanvas.interactable = true;
+            SelectBarCanvas.blocksRaycasts = true;
         }
     }
 
     public void InventoryOnButton()
     {
-        if (InvMenuCanvas.enabled == false)
+        if (InvMenuCanvas.alpha == 0)
         {
             InventoryOn();
         }
@@ -631,7 +691,7 @@ public class GameController : MonoBehaviour
 
     public void SkillMenuOnButton()
     {
-        if (SkillMenuCanvas.enabled == false)
+        if (SkillMenuCanvas.alpha == 0)
         {
             SkillMenuOn();
         }
@@ -639,7 +699,7 @@ public class GameController : MonoBehaviour
 
     public void QuestMenuOnButton()
     {
-        if (QuestMenuCanvas.enabled == false)
+        if (QuestMenuCanvas.alpha == 0)
         {
             QuestMenuOn();
         }
@@ -647,7 +707,7 @@ public class GameController : MonoBehaviour
 
     public void MagicMenuOnButton()
     {
-        if (MagicMenuCanvas.enabled == false)
+        if (MagicMenuCanvas.alpha == 0)
         {
             MagicMenuOn();
         }

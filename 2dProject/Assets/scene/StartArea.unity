@@ -1044,6 +1044,7 @@ GameObject:
   - component: {fileID: 263162464}
   - component: {fileID: 263162463}
   - component: {fileID: 263162462}
+  - component: {fileID: 263162465}
   m_Layer: 5
   m_Name: StartMenuCanvas
   m_TagString: Untagged
@@ -1115,7 +1116,7 @@ Canvas:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 263162460}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -1128,6 +1129,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!225 &263162465
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 263162460}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &264951341 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1921898946599104, guid: dfd93d9dc40ad084a8383104b3807f07,
@@ -1279,6 +1291,7 @@ GameObject:
   - component: {fileID: 371189784}
   - component: {fileID: 371189783}
   - component: {fileID: 371189786}
+  - component: {fileID: 371189787}
   m_Layer: 0
   m_Name: MagicMenuCanvas
   m_TagString: Untagged
@@ -1375,6 +1388,17 @@ MonoBehaviour:
   MagicImagePrefab: {fileID: 1380255374502104, guid: 2bab44d95b0a3d743b268c18837504a3,
     type: 2}
   DefaultImage: {fileID: 21300000, guid: 4c6074db95f1a824e9f167b9461e7f52, type: 3}
+--- !u!225 &371189787
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 371189781}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &373705692
 GameObject:
   m_ObjectHideFlags: 0
@@ -3053,6 +3077,7 @@ GameObject:
   - component: {fileID: 787932601}
   - component: {fileID: 787932600}
   - component: {fileID: 787932599}
+  - component: {fileID: 787932602}
   m_Layer: 5
   m_Name: SkillMenuCanvas
   m_TagString: Untagged
@@ -3122,7 +3147,7 @@ Canvas:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 787932597}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -3135,6 +3160,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!225 &787932602
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 787932597}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &804054863
 GameObject:
   m_ObjectHideFlags: 0
@@ -3146,6 +3182,7 @@ GameObject:
   - component: {fileID: 804054867}
   - component: {fileID: 804054866}
   - component: {fileID: 804054865}
+  - component: {fileID: 804054868}
   m_Layer: 5
   m_Name: NotificationCanvas
   m_TagString: Untagged
@@ -3216,7 +3253,7 @@ Canvas:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 804054863}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -3229,6 +3266,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!225 &804054868
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 804054863}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &837401338
 GameObject:
   m_ObjectHideFlags: 0
@@ -3737,6 +3785,7 @@ GameObject:
   - component: {fileID: 898193984}
   - component: {fileID: 898193983}
   - component: {fileID: 898193982}
+  - component: {fileID: 898193985}
   m_Layer: 0
   m_Name: InvMenuCanvas
   m_TagString: Untagged
@@ -3808,7 +3857,7 @@ Canvas:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 898193980}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -3821,6 +3870,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!225 &898193985
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 898193980}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &917814416
 GameObject:
   m_ObjectHideFlags: 0
@@ -4735,6 +4795,7 @@ GameObject:
   - component: {fileID: 1087277217}
   - component: {fileID: 1087277216}
   - component: {fileID: 1087277215}
+  - component: {fileID: 1087277218}
   m_Layer: 5
   m_Name: QuestMenuCanvas
   m_TagString: Untagged
@@ -4804,7 +4865,7 @@ Canvas:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1087277213}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_RenderMode: 0
   m_Camera: {fileID: 0}
@@ -4817,6 +4878,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!225 &1087277218
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1087277213}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1099101901
 GameObject:
   m_ObjectHideFlags: 0
@@ -4828,6 +4900,7 @@ GameObject:
   - component: {fileID: 1099101905}
   - component: {fileID: 1099101904}
   - component: {fileID: 1099101903}
+  - component: {fileID: 1099101906}
   m_Layer: 5
   m_Name: SelectBarCanvas
   m_TagString: Untagged
@@ -4910,6 +4983,17 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!225 &1099101906
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1099101901}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &1108538774
 GameObject:
   m_ObjectHideFlags: 0
@@ -5534,7 +5618,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.8}
   m_AnchorMax: {x: 0.10153306, y: 1}
-  m_AnchoredPosition: {x: 0.000030517578, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -0.000061035, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1314441783
