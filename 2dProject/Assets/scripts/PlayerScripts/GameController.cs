@@ -100,6 +100,10 @@ public class GameController : MonoBehaviour
     private bool dashSkill = false;
     private bool dashSkill2 = false;
 
+    //for hotbar
+    public delegate void HotBarDelegate();
+    public HotBarDelegate HotBarSlot1, HotBarSlot2, HotBarSlot3;
+
     public static GameController GameControllerSingle;
 
     void Awake()
@@ -227,16 +231,28 @@ public class GameController : MonoBehaviour
         shoot |= Input.GetMouseButtonDown(1);
         // Careful: For Mac users, ctrl + arrow is a bad idea
 
-        if (Input.GetKeyDown(KeyCode.Alpha1)) {
-
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            if (HotBarSlot1 != null)
+            {
+                HotBarSlot1();
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha2)) {
-
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            if (HotBarSlot2 != null)
+            {
+                HotBarSlot2();
+            }
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha3)) {
-
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            if (HotBarSlot3 != null)
+            {
+                HotBarSlot3();
+            }
         }
 
         //toggle inventory on and off
