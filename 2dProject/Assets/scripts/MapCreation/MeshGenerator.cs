@@ -378,7 +378,7 @@ public class MeshGenerator : MonoBehaviour
 
         }
         SpriteRenderer renderer = groundSprite.GetComponent<SpriteRenderer>();
-        renderer.sprite = Resources.Load(groundPieceName[groundPieceIndex], typeof(Sprite)) as Sprite;
+        renderer.sprite = Resources.Load("Prefabs/Map/Textures/" + groundPieceName[groundPieceIndex], typeof(Sprite)) as Sprite;
         renderer.transform.eulerAngles = groundPiece.eulerAngles;
         renderer.transform.position = groundPiece.transform.position;
     }
