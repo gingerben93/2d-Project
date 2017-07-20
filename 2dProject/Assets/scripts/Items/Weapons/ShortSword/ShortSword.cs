@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class ShortSword : MonoBehaviour {
 
-    public Transform shotPrefab;
-    public float shootingRate = 0.25f;
+    private GameObject SwordPrefab;
+    public float weaponAttackRate = 0.25f;
 
-    private float shootCooldown;
+    private float weaponCooldown;
 
     void Start()
     {
-        shootCooldown = 0f;
+        SwordPrefab = Resources.Load("Prefabs/WeaponProjectiles/Melee", typeof(GameObject)) as GameObject;
+        weaponCooldown = 0f;
         //rotation = transform.rotation;
     }
 
     void LateUpdate()
     {
-        if (shootCooldown > 0)
+        if (weaponCooldown > 0)
         {
-            shootCooldown -= Time.deltaTime;
+            weaponCooldown -= Time.deltaTime;
         }
     }
 
@@ -27,27 +28,21 @@ public class ShortSword : MonoBehaviour {
     {
         if (CanAttack)
         {
-            shootCooldown = shootingRate;
+            weaponCooldown = weaponAttackRate;
 
             // Create a new shot
-            var shotTransform = Instantiate(shotPrefab, GameObject.Find("PlayerProjectiles").transform) as Transform;
+            GameObject WeaponTransform = Instantiate(SwordPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
             // Assign position
             //shotTransform.position = transform.position
             if (GameController.GameControllerSingle.facingRight == true)
             {
-                shotTransform.position = transform.position + transform.right;
+                WeaponTransform.transform.position = transform.position + transform.right;
             }
             else if (GameController.GameControllerSingle.facingRight == false)
             {
-                shotTransform.transform.Rotate(0, 180, 0);
-                shotTransform.position = transform.position - transform.right;
+                WeaponTransform.transform.Rotate(0, 180, 0);
+                WeaponTransform.transform.position = transform.position - transform.right;
             }
-            /* // Make the weapon shot always towards it
-             ShotMove move = shotTransform.gameObject.GetComponent<ShotMove>();
-             if (move != null)
-             {
-                 move.direction = this.transform.right; // towards in 2D space is the right of the sprite
-             }*/
         }
     }
 
@@ -56,7 +51,7 @@ public class ShortSword : MonoBehaviour {
     {
         get
         {
-            return shootCooldown <= 0f;
+            return weaponCooldown <= 0f;
         }
     }
 }

@@ -8,28 +8,32 @@ public class GodHands : MonoBehaviour {
     GodHandsFistPlayer godHandsFistPlayer;
 
     public Transform fistPrefab;
-    public Transform fistPlayerPrefab;
+    public GameObject fistPlayerPrefab;
 
     public Transform PlayerFistLocation;
 
+    public Vector3 targetLocation;
+
     Transform fist;
 
-    public void Attack(Vector3 targetLocation)
+    void Start()
+    {
+        fistPlayerPrefab = Resources.Load("Prefabs/WeaponProjectiles/FistPlayer", typeof(GameObject)) as GameObject;
+    }
+
+    public void Attack()
     {
         PlayerFistLocation = GameObject.Find("PlayerProjectiles").transform;
-
-        fist = Instantiate(fistPlayerPrefab, PlayerFistLocation);
-        fist.name = "Fist";
+        GameObject weaponTransform = Instantiate(fistPlayerPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
+        weaponTransform.name = "Fist";
 
         godHandsFistPlayer = GameObject.Find("PlayerProjectiles").transform.GetComponentInChildren<GodHandsFistPlayer>();
 
-        //godHandsFistPlayer.tag = "Player";
-
         godHandsFistPlayer.pullAttackOn = true;
-        godHandsFistPlayer.newTargetLocation = targetLocation;
-        
+        godHandsFistPlayer.newTargetLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
         godHandsFistPlayer.gotoPosition = GameController.GameControllerSingle.transform.position;
-        godHandsFistPlayer.userTransform = fist.GetComponent<Transform>();
+        godHandsFistPlayer.userTransform = weaponTransform.GetComponent<Transform>();
         godHandsFistPlayer.userTransform.position = GameController.GameControllerSingle.transform.position;
     }
 

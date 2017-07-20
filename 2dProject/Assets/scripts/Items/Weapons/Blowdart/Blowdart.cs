@@ -2,13 +2,14 @@
 
 public class Blowdart : MonoBehaviour
 {
-    public Transform shotPrefab;
+    private GameObject shotPrefab;
     public float shootingRate = 0.25f;
 
     private float shootCooldown;
 
     void Start()
     {
+        shotPrefab = Resources.Load("Prefabs/WeaponProjectiles/Bullet", typeof(GameObject)) as GameObject;
         shootCooldown = 0f;
     }
 
@@ -28,9 +29,9 @@ public class Blowdart : MonoBehaviour
             shootCooldown = shootingRate;
 
             // Create a new shot
-            var shotTransform = Instantiate(shotPrefab, GameObject.Find("PlayerProjectiles").transform) as Transform;
+            GameObject shotTransform = Instantiate(shotPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
             // Assign position
-            shotTransform.position = transform.position;
+            shotTransform.transform.position = transform.position;
 
             /* // Make the weapon shot always towards it
              ShotMove move = shotTransform.gameObject.GetComponent<ShotMove>();

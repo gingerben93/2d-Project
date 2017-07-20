@@ -24,7 +24,6 @@ public class MagicController : MonoBehaviour {
 
     }
 
-
     //public void clickmagic(GameObject clicked)
     //{
     //    //if nothing is floating with the cursor and you clicked on empty slot

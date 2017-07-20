@@ -47,6 +47,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
+    //for changing weapong attacks
+    //GameObject WeaponAttacks;
+    GameObject Attack;
+    GameObject WeaponGameobject;
+
     public static Inventory InventorySingle;
 
     void Awake()
@@ -76,6 +81,9 @@ public class Inventory : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        //for changing attacks
+        //WeaponAttacks = GameObject.Find("Hero");
+
         tooltip = tooltipObject;
         sizeText = sizeTextObject;
         visualText = visualTextObject;
@@ -89,16 +97,16 @@ public class Inventory : MonoBehaviour
     void Update()
     {
         //alph = (int)GetComponent<CanvasGroup>().alpha;
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0) && hoverObject)
         {
             if (!EventSystem.current.IsPointerOverGameObject(-1) && from != null)
             {
                 from.GetComponent<Image>().color = Color.white;
                 from.ClearSlot();
-                Destroy(GameObject.Find("Hover"));
+                Destroy(hoverObject);
                 to = null;
                 from = null;
-                hoverObject = null;
+                //hoverObject = null;
             }
         }
 
@@ -363,7 +371,7 @@ public class Inventory : MonoBehaviour
 
                 hoverObject = (GameObject)Instantiate(iconPrefab);
                 hoverObject.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
-                hoverObject.name = "Hover";
+                hoverObject.name = clicked.GetComponent<Image>().sprite.name;
 
                 RectTransform hoverTransform = hoverObject.GetComponent<RectTransform>();
                 RectTransform clickedTransform = clicked.GetComponent<RectTransform>();
@@ -378,7 +386,7 @@ public class Inventory : MonoBehaviour
         else if (to == null)
         {
             to = clicked.GetComponent<Slot>();
-            Destroy(GameObject.Find("Hover"));
+            Destroy(hoverObject);
         }
         if (to != null && from != null)
         {
@@ -387,19 +395,18 @@ public class Inventory : MonoBehaviour
             if (tmpTo.Count == 0)
             {
                 info = from.Items.Peek();
-                //Debug.Log(info.type.ToString());
-                //Debug.Log(to.gameObject.name);
-
                 //Swapping items to an empty slot
                 if (info.type.ToString() == to.gameObject.name.ToString() || to.gameObject.name == "Slot") {
-                    if(info.type.ToString() == "WEAPON" && to.gameObject.name.ToString() == "WEAPON")
+                    if (info.type.ToString() == "WEAPON" && to.gameObject.name.ToString() == "WEAPON")
                     {
+                        Debug.Log(info.weaponName + "1");
+                        SelectWeapon(info.weaponName);
                         //Set weapon damage to projectile damage;
                         GameController.GameControllerSingle.damage = info.damage;
-                        Debug.Log(info.damage);
+                        //Debug.Log(info.damage);
 
                     }
-                    Debug.Log(info.damage);
+                    //Debug.Log(info.damage);
                     to.AddItems(from.Items);
                     from.ClearSlot();
                 }
@@ -408,14 +415,18 @@ public class Inventory : MonoBehaviour
             {
                 info = from.Items.Peek();
                 info2 = to.Items.Peek();
-                //Debug.Log(info.type.ToString());
-                //Debug.Log(info2.type.ToString());
-                //Debug.Log(from.gameObject.name);
-                //Debug.Log(to.gameObject.name);
-
-                //Swap items between each others slots. Check if the swap between two items will allow both items to switch into proper slots.
+                
                 if (info.type.ToString() == to.gameObject.name || to.gameObject.name == "Slot" && info2.type.ToString() == from.gameObject.name || from.gameObject.name == "Slot" && to.gameObject.name == "Slot")
                 {
+                    if (info.type.ToString() == "WEAPON" && to.gameObject.name.ToString() == "WEAPON")
+                    {
+                        //Set weapon damage to projectile damage;
+                        GameController.GameControllerSingle.damage = info.damage;
+                        Debug.Log(info.weaponName);
+                        SelectWeapon(info.weaponName);
+                        //Debug.Log(info.damage);
+
+                    }
                     to.AddItems(from.Items);
                     from.AddItems(tmpTo);
                 }
@@ -453,5 +464,58 @@ public class Inventory : MonoBehaviour
     public void HideToolTip()
     {
         tooltip.SetActive(false);
+    }
+
+    void SelectWeapon(string weaponName)
+    {
+        Debug.Log(weaponName);
+        //Attack = Resources.Load("Prefabs/WeaponAttacks/BlowDartAttack", typeof(GameObject)) as GameObject;
+        //var temp = Instantiate(Attack, GameObject.Find("Hero").transform);
+        //Blowdart temp2 = temp.GetComponent<Blowdart>();
+        //GameController.GameControllerSingle.playerAttack = temp2.Attack;
+
+        //ShortSword temp = GameObject.Find("WeaponAttack").AddComponent<ShortSword>();
+        //GameController.GameControllerSingle.playerAttack = temp.Attack;
+
+        if (weaponName == "Blowdart")
+        {
+            //Blowdart temp = GameObject.Find("WeaponAttack").AddComponent<Blowdart>();
+            //GameController.GameControllerSingle.playerAttack = temp.Attack;
+
+            //destroy current
+            Destroy(WeaponGameobject);
+
+            //instantiate a object with the weapon attack on it
+            Attack = Resources.Load("Prefabs/WeaponAttacks/BlowDartAttack", typeof(GameObject)) as GameObject;
+            WeaponGameobject = Instantiate(Attack, GameObject.Find("WeaponAttack").transform);
+            WeaponGameobject.transform.localPosition = Vector3.zero;
+            Blowdart temp = WeaponGameobject.GetComponent<Blowdart>();
+            GameController.GameControllerSingle.playerAttack = temp.Attack;
+        }
+        else if (weaponName == "ShortSword")
+        {
+            //destroy current
+            Destroy(WeaponGameobject);
+
+            //instantiate a object with the weapon attack on it
+            Attack = Resources.Load("Prefabs/WeaponAttacks/SwordAttack", typeof(GameObject)) as GameObject;
+            WeaponGameobject = Instantiate(Attack, GameObject.Find("WeaponAttack").transform);
+            WeaponGameobject.transform.localPosition = Vector3.zero;
+            ShortSword temp = WeaponGameobject.GetComponent<ShortSword>();
+            GameController.GameControllerSingle.playerAttack = temp.Attack;
+
+            //ShortSword temp = GameObject.Find("WeaponAttack").AddComponent<ShortSword>();
+            //GameController.GameControllerSingle.playerAttack = temp.Attack;
+        }
+        else if (weaponName == "GodHands")
+        {
+            Destroy(WeaponGameobject);
+            Attack = Resources.Load("Prefabs/WeaponAttacks/GodHands", typeof(GameObject)) as GameObject;
+            WeaponGameobject = Instantiate(Attack, GameObject.Find("WeaponAttack").transform);
+            WeaponGameobject.transform.localPosition = Vector3.zero;
+            GodHands temp = WeaponGameobject.GetComponent<GodHands>();
+            temp.targetLocation = GameObject.Find("Hero").transform.position;
+            GameController.GameControllerSingle.playerAttack = temp.Attack;
+        }
     }
 }

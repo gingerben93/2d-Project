@@ -104,6 +104,11 @@ public class GameController : MonoBehaviour
     public delegate void HotBarDelegate();
     public HotBarDelegate HotBarSlot1, HotBarSlot2, HotBarSlot3;
 
+    //for player attack
+    public delegate void PlayerAttack();
+    public PlayerAttack playerAttack;
+
+
     public static GameController GameControllerSingle;
 
     void Awake()
@@ -385,46 +390,50 @@ public class GameController : MonoBehaviour
 
         else if (shoot)
         {
-            //Find the slot named "Weapon"
-            slot = GameObject.Find("WEAPON");
-
-            //Looks at slot information in weapon slot to see if empty or not
-            Slot tmp = slot.GetComponent<Slot>();
-
-            if (tmp.IsEmpty)
+            if (playerAttack != null)
             {
-                //THERE IS NO WEAPON IN WEAPON SLOT DO NUFFIN
+                playerAttack();
             }
-            //There is a weapon equipped
-            else
-            {
-                //Obtain stack information of item in weapon
-                weap = slot.GetComponent<Slot>();
-                //Peek at stack information
-                atk = weap.Items.Peek();
-                //Access scripts of weapon
-                switch (atk.weaponName)
-                {
-                    case "Blowdart":
-                        Blowdart BlowdartWeapon = gameObject.GetComponentInChildren<Blowdart>();
-                        BlowdartWeapon.Attack();
-                        //Debug.Log(atk.weaponName);
-                        break;
-                    case "ShortSword":
-                        ShortSword ShortSwordWeapon = gameObject.GetComponentInChildren<ShortSword>();
-                        ShortSwordWeapon.Attack();
-                        //Debug.Log(atk.weaponName);
-                        break;
-                    case "GodHands":
-                        if (GodhandsCanAttack)
-                        {
-                            GodHands GodHandsWeapon = gameObject.GetComponentInChildren<GodHands>();
-                            GodHandsWeapon.Attack(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-                            //Debug.Log(atk.weaponName);
-                        }
-                        break;
-                }
-            }
+            ////Find the slot named "Weapon"
+            //slot = GameObject.Find("WEAPON");
+
+            ////Looks at slot information in weapon slot to see if empty or not
+            //Slot tmp = slot.GetComponent<Slot>();
+
+            //if (tmp.IsEmpty)
+            //{
+            //    //THERE IS NO WEAPON IN WEAPON SLOT DO NUFFIN
+            //}
+            ////There is a weapon equipped
+            //else
+            //{
+            //    //Obtain stack information of item in weapon
+            //    weap = slot.GetComponent<Slot>();
+            //    //Peek at stack information
+            //    atk = weap.Items.Peek();
+            //    //Access scripts of weapon
+            //    switch (atk.weaponName)
+            //    {
+            //        case "Blowdart":
+            //            Blowdart BlowdartWeapon = gameObject.GetComponentInChildren<Blowdart>();
+            //            BlowdartWeapon.Attack();
+            //            //Debug.Log(atk.weaponName);
+            //            break;
+            //        case "ShortSword":
+            //            ShortSword ShortSwordWeapon = gameObject.GetComponentInChildren<ShortSword>();
+            //            ShortSwordWeapon.Attack();
+            //            //Debug.Log(atk.weaponName);
+            //            break;
+            //        case "GodHands":
+            //            if (GodhandsCanAttack)
+            //            {
+            //                GodHands GodHandsWeapon = gameObject.GetComponentInChildren<GodHands>();
+            //                GodHandsWeapon.Attack(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            //                //Debug.Log(atk.weaponName);
+            //            }
+            //            break;
+            //    }
+            //}
         }
     }
 
