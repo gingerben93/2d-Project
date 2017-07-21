@@ -14,6 +14,8 @@ public class GodHands : MonoBehaviour {
 
     public Vector3 targetLocation;
 
+    public bool GodhandsCanAttack = true;
+
     Transform fist;
 
     void Start()
@@ -23,18 +25,27 @@ public class GodHands : MonoBehaviour {
 
     public void Attack()
     {
-        PlayerFistLocation = GameObject.Find("PlayerProjectiles").transform;
-        GameObject weaponTransform = Instantiate(fistPlayerPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
-        weaponTransform.name = "Fist";
+        if (GodhandsCanAttack)
+        {
+            GodhandsCanAttack = false;
 
-        godHandsFistPlayer = GameObject.Find("PlayerProjectiles").transform.GetComponentInChildren<GodHandsFistPlayer>();
+            PlayerFistLocation = GameObject.Find("PlayerProjectiles").transform;
+            GameObject weaponTransform = Instantiate(fistPlayerPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
 
-        godHandsFistPlayer.pullAttackOn = true;
-        godHandsFistPlayer.newTargetLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            //set child to have reference to parent
+            weaponTransform.GetComponent<GodHandsFistPlayer>().parent = this;
 
-        godHandsFistPlayer.gotoPosition = GameController.GameControllerSingle.transform.position;
-        godHandsFistPlayer.userTransform = weaponTransform.GetComponent<Transform>();
-        godHandsFistPlayer.userTransform.position = GameController.GameControllerSingle.transform.position;
+            weaponTransform.name = "Fist";
+
+            godHandsFistPlayer = GameObject.Find("PlayerProjectiles").transform.GetComponentInChildren<GodHandsFistPlayer>();
+
+            godHandsFistPlayer.pullAttackOn = true;
+            godHandsFistPlayer.newTargetLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            godHandsFistPlayer.gotoPosition = GameController.GameControllerSingle.transform.position;
+            godHandsFistPlayer.userTransform = weaponTransform.GetComponent<Transform>();
+            godHandsFistPlayer.userTransform.position = GameController.GameControllerSingle.transform.position;
+        }
     }
 
     public void AttackBoss(Vector3 targetLocation)

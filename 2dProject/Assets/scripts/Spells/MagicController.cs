@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class MagicController : MonoBehaviour {
@@ -10,6 +11,9 @@ public class MagicController : MonoBehaviour {
     private GameObject FromMagic;
     private GameObject ToMagic;
 
+    GameObject Attack;
+    GameObject HotBarSlot1, HotBarSlot2, HotBarSlot3;
+
     private Canvas canvas;
 
     // Use this for initialization
@@ -17,133 +21,206 @@ public class MagicController : MonoBehaviour {
 
         canvas = GetComponent<Canvas>();
 
-        Vector2 position;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, Input.mousePosition, canvas.worldCamera, out position);
-        position.Set(position.x, position.y);
-        FromMagic.transform.position = canvas.transform.TransformPoint(position);
+        //Vector2 position;
+        //RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, Input.mousePosition, canvas.worldCamera, out position);
+        //position.Set(position.x, position.y);
+        //FromMagic.transform.position = canvas.transform.TransformPoint(position);
 
     }
 
-    //public void clickmagic(GameObject clicked)
-    //{
-    //    //if nothing is floating with the cursor and you clicked on empty slot
-    //    if (frommagic == null && clicked.getcomponent<image>().sprite.name.contains("inv slot"))
-    //    {
-    //        debug.log("if");
-    //    }
-    //    //for clicking on somthing
-    //    else if (frommagic == null)
-    //    {
-    //        debug.log("else if 1");
-    //        if (clicked.name.contains("hotbar"))
-    //        {
-    //            frommagic = instantiate(magicimageprefab);
-    //            frommagic.getcomponent<image>().sprite = clicked.getcomponent<image>().sprite;
-    //            frommagic.name = clicked.name;
-    //            frommagic.transform.setparent(gameobject.find("magicmenucanvas").transform, true);
-    //            clicked.getcomponent<image>().sprite = defaultimage;
+    void Update()
+    {
 
-    //            //for unassigning delegate functions if you move spell from hotbar slot
-    //            assignhotbardelegate(clicked.name, false);
-    //        }
-    //        else
-    //        {
-    //            frommagic = (gameobject)instantiate(magicimageprefab);
-    //            frommagic.getcomponent<image>().sprite = clicked.getcomponent<image>().sprite;
-    //            frommagic.name = clicked.name;
-    //            frommagic.transform.setparent(gameobject.find("magicmenucanvas").transform, true);
-    //        }
-    //    }
+        if (FromMagic)
+        {
+            Vector2 position;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.transform as RectTransform, Input.mousePosition, canvas.worldCamera, out position);
+            position.Set(position.x, position.y);
+            FromMagic.transform.position = canvas.transform.TransformPoint(position);
+        }
 
-    //    else if (tomagic == null)
-    //    {
-    //        debug.log("else if 2");
-    //        if (clicked.name.contains("hotbar"))
-    //        {
-    //            if (clicked.getcomponent<image>().sprite.name.contains("inv slot"))
-    //            {
-    //                //for assigning delegate functions
-    //                assignhotbardelegate(clicked.name, true);
-    //                clicked.getcomponent<image>().sprite = frommagic.getcomponent<image>().sprite;
-    //                destroy(frommagic);
-    //            }
-    //            //for swaping place of items you clicked on
-    //            else
-    //            {
-    //                tomagic = instantiate(magicimageprefab);
-    //                tomagic.transform.setparent(gameobject.find("magicmenucanvas").transform, true);
-    //                tomagic.getcomponent<image>().sprite = frommagic.getcomponent<image>().sprite;
-    //                frommagic.getcomponent<image>().sprite = clicked.getcomponent<image>().sprite;
-    //                clicked.getcomponent<image>().sprite = tomagic.getcomponent<image>().sprite;
+        if (Input.GetMouseButtonUp(0) && FromMagic)
+        {
+            if (!EventSystem.current.IsPointerOverGameObject(-1))
+            {
+                Destroy(FromMagic);
+                //hoverObject = null;
+            }
+        }
+    }
 
-    //                //for assigning delegate functions
-    //                assignhotbardelegate(clicked.name, true);
-    //                destroy(tomagic);
-    //            }
-    //        }
-    //        else
-    //        {
-    //            //destorying ig you click somewhere random
-    //            destroy(frommagic);
-    //        }
-    //    }
-    //    else
-    //    {
-    //        debug.log("else");
-    //        destroy(frommagic);
-    //    }
-    //}
+    public void clickmagic(GameObject clicked)
+    {
+        //if nothing is floating with the cursor and you clicked on empty slot
+        if (FromMagic == null && clicked.GetComponent<Image>().sprite.name.Contains("Inv Slot"))
+        {
+            Debug.Log("if");
+        }
+        //for clicking on somthing
+        else if (FromMagic == null)
+        {
+            //Debug.Log("else if 1");
+            if (clicked.name.Contains("Hotbar"))
+            {
+                //Debug.Log("else if 1 if");
+                FromMagic = Instantiate(MagicImagePrefab);
+                FromMagic.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
+                FromMagic.name = clicked.name;
+                FromMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
+                clicked.GetComponent<Image>().sprite = DefaultImage;
 
-    ////for assigning hotkey methods in gamecontroller
-    //void assignhotbardelegate(string hotbarname, bool on)
-    //{
-    //    if (hotbarname.contains("hotbarbuttonone"))
-    //    {
-    //        if (on)
-    //        {
-    //            gamecontroller.gamecontrollersingle.hotbarslot1 = test;
-    //        }
-    //        else
-    //        {
-    //            gamecontroller.gamecontrollersingle.hotbarslot1 = null;
-    //        }
-    //    }
-    //    else if (hotbarname.contains("hotbarbuttontwo"))
-    //    {
-    //        if (on)
-    //        {
-    //            gamecontroller.gamecontrollersingle.hotbarslot2 = test2;
-    //        }
-    //        else
-    //        {
-    //            gamecontroller.gamecontrollersingle.hotbarslot2 = null;
-    //        }
-    //    }
-    //    else if (hotbarname.contains("hotbarbuttonthree"))
-    //    {
-    //        if (on)
-    //        {
-    //            gamecontroller.gamecontrollersingle.hotbarslot3 = test3;
-    //        }
-    //        else
-    //        {
-    //            gamecontroller.gamecontrollersingle.hotbarslot3 = null;
-    //        }
-    //    }
-    //}
+                //for unassigning delegate functions if you move spell from hotbar slot
+                //Debug.Log(FromMagic.GetComponent<Image>().sprite.name);
+                assignhotbardelegate(clicked.name, "none" , false);
+            }
+            else
+            {
+                //Debug.Log("else if 1 else");
+                FromMagic = (GameObject)Instantiate(MagicImagePrefab);
+                FromMagic.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
+                FromMagic.name = clicked.name;
+                FromMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
+            }
+        }
 
-    //void test()
-    //{
-    //    debug.log("test 1");
-    //}
+        else if (ToMagic == null)
+        {
+            //Debug.Log("else if 2");
+            if (clicked.name.Contains("Hotbar"))
+            {
+                if (clicked.GetComponent<Image>().sprite.name.Contains("Inv Slot"))
+                {
+                    //for assigning delegate functions
+                    Debug.Log(FromMagic.GetComponent<Image>().sprite.name);
+                    assignhotbardelegate(clicked.name, FromMagic.GetComponent<Image>().sprite.name, true);
+                    clicked.GetComponent<Image>().sprite = FromMagic.GetComponent<Image>().sprite;
+                    Destroy(FromMagic);
+                }
+                //for swaping place of items you clicked on
+                else
+                {
+                    ToMagic = Instantiate(MagicImagePrefab);
+                    ToMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
+                    ToMagic.GetComponent<Image>().sprite = FromMagic.GetComponent<Image>().sprite;
+                    FromMagic.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
+                    clicked.GetComponent<Image>().sprite = ToMagic.GetComponent<Image>().sprite;
 
-    //void test2()
-    //{
-    //    debug.log("test 2");
-    //}
+                    //for assigning delegate functions
+                    Debug.Log(ToMagic.GetComponent<Image>().sprite.name);
+                    assignhotbardelegate(clicked.name, ToMagic.GetComponent<Image>().sprite.name, true);
+                    Destroy(ToMagic);
+                }
+            }
+            else
+            {
+                //destorying ig you click somewhere random
+                Destroy(FromMagic);
+            }
+        }
+        else
+        {
+            Debug.Log("else");
+            Destroy(FromMagic);
+        }
+    }
 
-    //void test3()
-    //{
-    //    debug.log("test 3");
-    //}
+    //for assigning hotkey methods in gamecontroller
+    void assignhotbardelegate(string hotbarName, string spellName, bool on)
+    {
+        Debug.Log("assignhotbardelegate");
+        Debug.Log(hotbarName);
+        Debug.Log(spellName);
+        if (hotbarName.Contains("HotbarButtonOne"))
+        {
+            if (on)
+            {
+                SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot1, ref HotBarSlot1);
+                //GameController.GameControllerSingle.HotBarSlot1 = test;
+            }
+            else
+            {
+                Destroy(HotBarSlot1);
+                GameController.GameControllerSingle.HotBarSlot1 = null;
+            }
+        }
+        else if (hotbarName.Contains("HotbarButtonTwo"))
+        {
+            if (on)
+            {
+                SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot2, ref HotBarSlot2);
+            }
+            else
+            {
+                Destroy(HotBarSlot2);
+                GameController.GameControllerSingle.HotBarSlot2 = null;
+            }
+        }
+        else if (hotbarName.Contains("HotbarButtonThree"))
+        {
+            if (on)
+            {
+                SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot3, ref HotBarSlot3);
+            }
+            else
+            {
+                Destroy(HotBarSlot3);
+                GameController.GameControllerSingle.HotBarSlot3 = null;
+            }
+        }
+    }
+
+    void SelectWeapon(string weaponName, ref GameController.HotBarDelegate delegateTest , ref GameObject Spell)
+    {
+        Debug.Log("selectweapon");
+        Debug.Log(weaponName);
+        if (weaponName == "Blowdart")
+        {
+            //destroy current
+            Destroy(Spell);
+
+            //instantiate a object with the weapon attack on it
+            Attack = Resources.Load("Prefabs/WeaponAttacks/BlowDartAttack", typeof(GameObject)) as GameObject;
+            Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
+            Spell.transform.localPosition = Vector3.zero;
+            Blowdart temp = Spell.GetComponent<Blowdart>();
+            delegateTest = temp.Attack;
+        }
+        else if (weaponName == "Sword")
+        {
+            //destroy current
+            Destroy(Spell);
+
+            //instantiate a object with the weapon attack on it
+            Attack = Resources.Load("Prefabs/WeaponAttacks/SwordAttack", typeof(GameObject)) as GameObject;
+            Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
+            Spell.transform.localPosition = Vector3.zero;
+            ShortSword temp = Spell.GetComponent<ShortSword>();
+            delegateTest = temp.Attack;
+        }
+        else
+        {
+            Destroy(Spell);
+            Attack = Resources.Load("Prefabs/WeaponAttacks/GodHands", typeof(GameObject)) as GameObject;
+            Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
+            Spell.transform.localPosition = Vector3.zero;
+            GodHands temp = Spell.GetComponent<GodHands>();
+            temp.targetLocation = GameObject.Find("Hero").transform.position;
+            delegateTest = temp.Attack;
+        }
+    }
+
+    void test()
+    {
+        Debug.Log("test 1");
+    }
+
+    void test2()
+    {
+        Debug.Log("test 2");
+    }
+
+    void test3()
+    {
+        Debug.Log("test 3");
+    }
 }

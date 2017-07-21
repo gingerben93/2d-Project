@@ -26,6 +26,9 @@ public class GodHandsFistPlayer : MonoBehaviour
 
     public Transform fistPrefab;
 
+    //gets set in GodHands script
+    public GodHands parent;
+
     //speed of fist
     float fistSpeed = 500;
     float step;
@@ -33,7 +36,7 @@ public class GodHandsFistPlayer : MonoBehaviour
     void Start()
     {
         //turn attack off
-        GameController.GameControllerSingle.GodhandsCanAttack = false;
+        parent.GodhandsCanAttack = false;
     }
 
     void FixedUpdate()
@@ -94,7 +97,7 @@ public class GodHandsFistPlayer : MonoBehaviour
     void OnDestroy()
     {
         //turn attack back on so you can fire godhands again
-        GameController.GameControllerSingle.GodhandsCanAttack = true;
+        parent.GodhandsCanAttack = true;
     }
 
     //void OnTriggerExit2D(Collider2D other)

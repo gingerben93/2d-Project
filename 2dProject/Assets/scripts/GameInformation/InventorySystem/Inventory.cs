@@ -468,20 +468,8 @@ public class Inventory : MonoBehaviour
 
     void SelectWeapon(string weaponName)
     {
-        Debug.Log(weaponName);
-        //Attack = Resources.Load("Prefabs/WeaponAttacks/BlowDartAttack", typeof(GameObject)) as GameObject;
-        //var temp = Instantiate(Attack, GameObject.Find("Hero").transform);
-        //Blowdart temp2 = temp.GetComponent<Blowdart>();
-        //GameController.GameControllerSingle.playerAttack = temp2.Attack;
-
-        //ShortSword temp = GameObject.Find("WeaponAttack").AddComponent<ShortSword>();
-        //GameController.GameControllerSingle.playerAttack = temp.Attack;
-
         if (weaponName == "Blowdart")
         {
-            //Blowdart temp = GameObject.Find("WeaponAttack").AddComponent<Blowdart>();
-            //GameController.GameControllerSingle.playerAttack = temp.Attack;
-
             //destroy current
             Destroy(WeaponGameobject);
 
