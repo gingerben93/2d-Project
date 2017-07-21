@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class MagicController : MonoBehaviour {
+public class MagicController : MonoBehaviour
+{
 
     public GameObject MagicImagePrefab;
     public Sprite DefaultImage;
@@ -16,9 +18,10 @@ public class MagicController : MonoBehaviour {
 
     private Canvas canvas;
 
-    // Use this for initialization
-    void Start () {
 
+    // Use this for initialization
+    void Start()
+    {
         canvas = GetComponent<Canvas>();
 
         //Vector2 position;
@@ -49,7 +52,7 @@ public class MagicController : MonoBehaviour {
         }
     }
 
-    public void clickmagic(GameObject clicked)
+    public void ClickMagic(GameObject clicked)
     {
         //if nothing is floating with the cursor and you clicked on empty slot
         if (FromMagic == null && clicked.GetComponent<Image>().sprite.name.Contains("Inv Slot"))
@@ -67,11 +70,13 @@ public class MagicController : MonoBehaviour {
                 FromMagic.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
                 FromMagic.name = clicked.name;
                 FromMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
+                FromMagic.GetComponent<Magic>().type = clicked.GetComponent<Magic>().type;
                 clicked.GetComponent<Image>().sprite = DefaultImage;
 
                 //for unassigning delegate functions if you move spell from hotbar slot
                 //Debug.Log(FromMagic.GetComponent<Image>().sprite.name);
-                assignhotbardelegate(clicked.name, "none" , false);
+
+                AssignHotbarDelegate(clicked.name, "none", null, false);
             }
             else
             {
@@ -80,6 +85,7 @@ public class MagicController : MonoBehaviour {
                 FromMagic.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
                 FromMagic.name = clicked.name;
                 FromMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
+                FromMagic.GetComponent<Magic>().type = clicked.GetComponent<Magic>().type;
             }
         }
 
@@ -92,8 +98,14 @@ public class MagicController : MonoBehaviour {
                 {
                     //for assigning delegate functions
                     Debug.Log(FromMagic.GetComponent<Image>().sprite.name);
-                    assignhotbardelegate(clicked.name, FromMagic.GetComponent<Image>().sprite.name, true);
+                    //assignhotbardelegate(clicked.name, FromMagic.GetComponent<Image>().sprite.name, true);
+
                     clicked.GetComponent<Image>().sprite = FromMagic.GetComponent<Image>().sprite;
+                    clicked.GetComponent<Magic>().type = FromMagic.GetComponent<Magic>().type;
+
+                    //pass spell type
+                    AssignHotbarDelegate(clicked.name, FromMagic.GetComponent<Image>().sprite.name, clicked.GetComponent<Magic>().type, true);
+
                     Destroy(FromMagic);
                 }
                 //for swaping place of items you clicked on
@@ -102,12 +114,15 @@ public class MagicController : MonoBehaviour {
                     ToMagic = Instantiate(MagicImagePrefab);
                     ToMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
                     ToMagic.GetComponent<Image>().sprite = FromMagic.GetComponent<Image>().sprite;
+                    ToMagic.GetComponent<Magic>().type = FromMagic.GetComponent<Magic>().type;
                     FromMagic.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
+                    FromMagic.GetComponent<Magic>().type = clicked.GetComponent<Magic>().type;
                     clicked.GetComponent<Image>().sprite = ToMagic.GetComponent<Image>().sprite;
+                    clicked.GetComponent<Magic>().type = ToMagic.GetComponent<Magic>().type;
 
                     //for assigning delegate functions
-                    Debug.Log(ToMagic.GetComponent<Image>().sprite.name);
-                    assignhotbardelegate(clicked.name, ToMagic.GetComponent<Image>().sprite.name, true);
+                    //Debug.Log(ToMagic.GetComponent<Image>().sprite.name);
+                    AssignHotbarDelegate(clicked.name, clicked.GetComponent<Image>().sprite.name, clicked.GetComponent<Magic>().type, true);
                     Destroy(ToMagic);
                 }
             }
@@ -125,17 +140,14 @@ public class MagicController : MonoBehaviour {
     }
 
     //for assigning hotkey methods in gamecontroller
-    void assignhotbardelegate(string hotbarName, string spellName, bool on)
+    void AssignHotbarDelegate(string hotbarName, string spellName, Enum type, bool on)
     {
-        Debug.Log("assignhotbardelegate");
-        Debug.Log(hotbarName);
-        Debug.Log(spellName);
         if (hotbarName.Contains("HotbarButtonOne"))
         {
             if (on)
             {
-                SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot1, ref HotBarSlot1);
-                //GameController.GameControllerSingle.HotBarSlot1 = test;
+                GameController.GameControllerSingle.HotBarSlot1 = GameObject.Find(hotbarName).GetComponent<Magic>().Cast;
+                //SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot1, ref HotBarSlot1);
             }
             else
             {
@@ -147,7 +159,8 @@ public class MagicController : MonoBehaviour {
         {
             if (on)
             {
-                SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot2, ref HotBarSlot2);
+                GameController.GameControllerSingle.HotBarSlot2 = GameObject.Find(hotbarName).GetComponent<Magic>().Cast;
+                //    SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot2, ref HotBarSlot2);
             }
             else
             {
@@ -159,7 +172,8 @@ public class MagicController : MonoBehaviour {
         {
             if (on)
             {
-                SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot3, ref HotBarSlot3);
+                GameController.GameControllerSingle.HotBarSlot3 = GameObject.Find(hotbarName).GetComponent<Magic>().Cast;
+                //    SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot3, ref HotBarSlot3);
             }
             else
             {
@@ -169,58 +183,44 @@ public class MagicController : MonoBehaviour {
         }
     }
 
-    void SelectWeapon(string weaponName, ref GameController.HotBarDelegate delegateTest , ref GameObject Spell)
-    {
-        Debug.Log("selectweapon");
-        Debug.Log(weaponName);
-        if (weaponName == "Blowdart")
-        {
-            //destroy current
-            Destroy(Spell);
+    //void SelectWeapon(string weaponName, ref GameController.HotBarDelegate delegateTest , ref GameObject Spell)
+    //{
+    //    Debug.Log("selectweapon");
+    //    Debug.Log(weaponName);
+    //    if (weaponName == "Blowdart")
+    //    {
+    //        //destroy current
+    //        Destroy(Spell);
 
-            //instantiate a object with the weapon attack on it
-            Attack = Resources.Load("Prefabs/WeaponAttacks/BlowDartAttack", typeof(GameObject)) as GameObject;
-            Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
-            Spell.transform.localPosition = Vector3.zero;
-            Blowdart temp = Spell.GetComponent<Blowdart>();
-            delegateTest = temp.Attack;
-        }
-        else if (weaponName == "Sword")
-        {
-            //destroy current
-            Destroy(Spell);
+    //        //instantiate a object with the weapon attack on it
+    //        Attack = Resources.Load("Prefabs/WeaponAttacks/BlowDartAttack", typeof(GameObject)) as GameObject;
+    //        Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
+    //        Spell.transform.localPosition = Vector3.zero;
+    //        Blowdart temp = Spell.GetComponent<Blowdart>();
+    //        delegateTest = temp.Attack;
+    //    }
+    //    else if (weaponName == "Sword")
+    //    {
+    //        //destroy current
+    //        Destroy(Spell);
 
-            //instantiate a object with the weapon attack on it
-            Attack = Resources.Load("Prefabs/WeaponAttacks/SwordAttack", typeof(GameObject)) as GameObject;
-            Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
-            Spell.transform.localPosition = Vector3.zero;
-            ShortSword temp = Spell.GetComponent<ShortSword>();
-            delegateTest = temp.Attack;
-        }
-        else
-        {
-            Destroy(Spell);
-            Attack = Resources.Load("Prefabs/WeaponAttacks/GodHands", typeof(GameObject)) as GameObject;
-            Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
-            Spell.transform.localPosition = Vector3.zero;
-            GodHands temp = Spell.GetComponent<GodHands>();
-            temp.targetLocation = GameObject.Find("Hero").transform.position;
-            delegateTest = temp.Attack;
-        }
-    }
+    //        //instantiate a object with the weapon attack on it
+    //        Attack = Resources.Load("Prefabs/WeaponAttacks/SwordAttack", typeof(GameObject)) as GameObject;
+    //        Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
+    //        Spell.transform.localPosition = Vector3.zero;
+    //        ShortSword temp = Spell.GetComponent<ShortSword>();
+    //        delegateTest = temp.Attack;
+    //    }
+    //    else
+    //    {
+    //        Destroy(Spell);
+    //        Attack = Resources.Load("Prefabs/WeaponAttacks/GodHands", typeof(GameObject)) as GameObject;
+    //        Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
+    //        Spell.transform.localPosition = Vector3.zero;
+    //        GodHands temp = Spell.GetComponent<GodHands>();
+    //        temp.targetLocation = GameObject.Find("Hero").transform.position;
+    //        delegateTest = temp.Attack;
+    //    }
+    //}
 
-    void test()
-    {
-        Debug.Log("test 1");
-    }
-
-    void test2()
-    {
-        Debug.Log("test 2");
-    }
-
-    void test3()
-    {
-        Debug.Log("test 3");
-    }
 }

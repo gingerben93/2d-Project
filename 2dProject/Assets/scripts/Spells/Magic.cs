@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public enum SpellType { FIRE, HEAL }; //add more types here for items
 
 
-public class Magic: MonoBehaviour
+public class Magic : MonoBehaviour
 {
 
     public SpellType type;
@@ -23,12 +24,16 @@ public class Magic: MonoBehaviour
         //might need this later
     }
 
-    public void Use()
+    public void Cast()
     {
         switch (type)
         {
             case SpellType.FIRE:
- 
+                Debug.Log("PewPewFireball");
+                break;
+            case SpellType.HEAL:
+                Debug.Log("HEALHEALHEAL");
+                break;
             default:
                 break;
         }
