@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
-public enum SpellType { FIRE, HEAL }; //add more types here for items
+public enum SpellType { FIRE, ICE, ZAP, HEAL, UNKNOWN }; //add more types here for items
 
 
 public class Magic : MonoBehaviour
@@ -33,6 +33,15 @@ public class Magic : MonoBehaviour
                 break;
             case SpellType.HEAL:
                 Debug.Log("HEALHEALHEAL");
+                break;
+            case SpellType.ICE:
+                Debug.Log("Frozen Solid");
+                break;
+            case SpellType.ZAP:
+                Debug.Log("Zap ZAP Zap");
+                break;
+            case SpellType.UNKNOWN:
+                Debug.Log("Spell Aint Nuffin");
                 break;
             default:
                 Debug.Log("Default case");

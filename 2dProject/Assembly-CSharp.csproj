@@ -112,6 +112,7 @@
      <Compile Include="Assets\scripts\SideQuest\KillQuest.cs" />
      <Compile Include="Assets\scripts\Spells\Magic.cs" />
      <Compile Include="Assets\scripts\Spells\MagicController.cs" />
+     <Compile Include="Assets\scripts\Spells\Scroll\FireballScroll.cs" />
      <Compile Include="Assets\scripts\WorldObjects.cs" />
      <None Include="Assets\resources\Dialog\NPC\Doctor\QuestIncomplete.txt" />
      <None Include="Assets\resources\Dialog\NPC\Doctor\QuestComplete.txt" />
