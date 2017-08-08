@@ -402,7 +402,7 @@ public class Inventory : MonoBehaviour
                         Debug.Log(info.weaponName + "1");
                         SelectWeapon(info.weaponName);
                         //Set weapon damage to projectile damage;
-                        GameController.GameControllerSingle.damage = info.damage;
+                        GameController.GameControllerSingle.weaponDamage = info.damage + PlayerStats.PlayerStatsSingle.baseWeaponDamage;
                         //Debug.Log(info.damage);
 
                     }
@@ -421,7 +421,7 @@ public class Inventory : MonoBehaviour
                     if (info.type.ToString() == "WEAPON" && to.gameObject.name.ToString() == "WEAPON")
                     {
                         //Set weapon damage to projectile damage;
-                        GameController.GameControllerSingle.damage = info.damage;
+                        GameController.GameControllerSingle.weaponDamage = info.damage + PlayerStats.PlayerStatsSingle.baseWeaponDamage;
                         Debug.Log(info.weaponName);
                         SelectWeapon(info.weaponName);
                         //Debug.Log(info.damage);

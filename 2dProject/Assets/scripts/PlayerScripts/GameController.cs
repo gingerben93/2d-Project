@@ -48,7 +48,7 @@ public class GameController : MonoBehaviour
     //private GameObject StatsMenuCanvas;
     private CanvasGroup StartMenuCanvas;
     //private GameObject QuestMenuCanvas;
-    private Canvas NotificationCanvas;
+    private CanvasGroup NotificationCanvas;
     private CanvasGroup SkillMenuCanvas;
     private CanvasGroup QuestMenuCanvas;
     private CanvasGroup SelectBarCanvas;
@@ -79,7 +79,7 @@ public class GameController : MonoBehaviour
     private static Slot weap;
     private GameObject slot;
     public Item atk;
-    public int damage;
+    public int weaponDamage;
     //public GameObject currentWeapon;
 
     //for godhands fire rate
@@ -160,7 +160,7 @@ public class GameController : MonoBehaviour
         attack = 2;
 
         //on all the time 
-        NotificationCanvas = GameObject.Find("NotificationCanvas").GetComponent <Canvas>();
+        NotificationCanvas = GameObject.Find("NotificationCanvas").GetComponent <CanvasGroup>();
 
         //esc menu
         StartMenuCanvas = GameObject.Find("StartMenuCanvas").GetComponent<CanvasGroup>();
@@ -520,16 +520,16 @@ public class GameController : MonoBehaviour
             jump = false;
         }
 
-        if (PlayerStats.PlayerStatsSingle.experiencePoints >= PlayerStats.PlayerStatsSingle.level * 15)
-        {
-            // text container
-            StartCoroutine(ShowMessage("LEVEL UP NERD!", 2));
+        //if (PlayerStats.PlayerStatsSingle.experiencePoints >= PlayerStats.PlayerStatsSingle.level * 15)
+        //{
+        //    // text container
+        //    StartCoroutine(ShowMessage("LEVEL UP NERD!", 2));
 
-            //level character up
-            PlayerStats.PlayerStatsSingle.level += 1;
-            PlayerStats.PlayerStatsSingle.maxHealth += 2;
-            PlayerStats.PlayerStatsSingle.health = PlayerStats.PlayerStatsSingle.maxHealth;
-        }
+        //    //level character up
+        //    PlayerStats.PlayerStatsSingle.level += 1;
+        //    PlayerStats.PlayerStatsSingle.maxHealth += 2;
+        //    PlayerStats.PlayerStatsSingle.health = PlayerStats.PlayerStatsSingle.maxHealth;
+        //}
     }
 
     public void LearnDashSkill()
@@ -742,28 +742,27 @@ public class GameController : MonoBehaviour
     }
 
     //for quick message aboce character head
-    IEnumerator ShowMessage(string message, float delay)
+    public IEnumerator ShowMessage(string message, float delay)
     {
-
-        NotificationCanvas.enabled = !NotificationCanvas.enabled;
+        NotificationCanvas.alpha = (NotificationCanvas.alpha + 1) % 2;
         NotificationTxt.text = message;
         yield return new WaitForSeconds(delay);
-        NotificationCanvas.enabled = !NotificationCanvas.enabled;
+        NotificationCanvas.alpha = (NotificationCanvas.alpha + 1) % 2;
     }
 
-    void OnGUI()
-    {
-        GUI.Label(new Rect(30, -3, 100, 30), "Health: " + PlayerStats.PlayerStatsSingle.health);
-        if (GUI.Button(new Rect(Screen.width / 2 + Screen.width / 4, Screen.height / 2, 100, 30), "Save"))
-        {
-            SavePlayerData();
-        }
-        if (GUI.Button(new Rect(Screen.width / 2 + Screen.width / 4, Screen.height / 2 - 40, 100, 30), "Load"))
-        {
-            LoadPlayerData();
-            //MapGenerator.MapGeneratorSingle.LoadMap();
-        }
-    }
+    //void OnGUI()
+    //{
+    //    GUI.Label(new Rect(30, -3, 100, 30), "Health: " + PlayerStats.PlayerStatsSingle.health);
+    //    if (GUI.Button(new Rect(Screen.width / 2 + Screen.width / 4, Screen.height / 2, 100, 30), "Save"))
+    //    {
+    //        SavePlayerData();
+    //    }
+    //    if (GUI.Button(new Rect(Screen.width / 2 + Screen.width / 4, Screen.height / 2 - 40, 100, 30), "Load"))
+    //    {
+    //        LoadPlayerData();
+    //        //MapGenerator.MapGeneratorSingle.LoadMap();
+    //    }
+    //}
 
     void Flip()
     {

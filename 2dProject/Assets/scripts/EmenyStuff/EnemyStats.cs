@@ -68,7 +68,8 @@ public class EnemyStats : MonoBehaviour
         if (hp <= 0)
         {
             //set exp
-            PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
+            PlayerStats.PlayerStatsSingle.GainExperiencePoints(experiencePoint);
+            //PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
 
             KillQuest temp;
             if (temp = QuestController.QuestControllerSingle.transform.GetComponent<KillQuest>())
@@ -108,7 +109,7 @@ public class EnemyStats : MonoBehaviour
         if (otherCollider.tag == "Bullet")
         {
             Destroy(otherCollider.gameObject);
-            Damage(GameController.GameControllerSingle.damage);
+            Damage(GameController.GameControllerSingle.weaponDamage);
         }
     }
 }

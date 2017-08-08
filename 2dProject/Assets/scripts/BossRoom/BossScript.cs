@@ -175,7 +175,8 @@ public class BossScript : MonoBehaviour
             else if (bossHealth.currentHealth <= 0)
             {
                 //set exp
-                PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
+                PlayerStats.PlayerStatsSingle.GainExperiencePoints(experiencePoint);
+                //PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
 
                 //Boss1 is now dead
                 GameController.GameControllerSingle.Boss1 = true;
@@ -230,7 +231,7 @@ public class BossScript : MonoBehaviour
         {
             Debug.Log("HIT by Bullet");
             Destroy(otherCollider.gameObject);
-            Damage(GameController.GameControllerSingle.damage);
+            Damage(GameController.GameControllerSingle.weaponDamage);
         }
     }
 
