@@ -75,7 +75,7 @@ public class LoadOnClick : MonoBehaviour {
         hero.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
 
         //deactivates gamecon to stop player from doing anything while game is loading
-        GameController.GameControllerSingle.isGameLoading = true;
+        GameController.GameControllerSingle.freezePlayer = true;
         
         //load functions
         AsyncOperation async = SceneManager.LoadSceneAsync(loadMap);
@@ -91,7 +91,7 @@ public class LoadOnClick : MonoBehaviour {
         hero.transform.rotation = Quaternion.identity;
 
         //actives game controler for player actions
-        GameController.GameControllerSingle.isGameLoading = false;
+        GameController.GameControllerSingle.freezePlayer = false;
         GameController.GameControllerSingle.touchingDoor = false;
         GameController.GameControllerSingle.questTravel = false;
         loadingText.text = "";

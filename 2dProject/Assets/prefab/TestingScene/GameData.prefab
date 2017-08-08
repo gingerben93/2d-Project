@@ -82,6 +82,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   QuestTxt: {fileID: 114839751707010450, guid: 0381fbe47e2f21d45803ed1028ea760b, type: 2}
-  KillQuestCounter: 0
-  GatherQuestCounter: 0
-  questDoorOpen: 
+  currentQuest: 0
+  MainQuestText: {fileID: 0}

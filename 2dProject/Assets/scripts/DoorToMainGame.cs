@@ -12,9 +12,19 @@ public class DoorToMainGame : MonoBehaviour
     //for getting mapgenerator
     private GameObject mapGenerator;
 
+    public static DoorToMainGame DoorToMainGameSingle;
+
     void Awake()
     {
-        DontDestroyOnLoad(this);
+        if (DoorToMainGameSingle == null)
+        {
+            DontDestroyOnLoad(gameObject);
+            DoorToMainGameSingle = this;
+        }
+        else if (DoorToMainGameSingle != this)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void Update()
@@ -33,7 +43,7 @@ public class DoorToMainGame : MonoBehaviour
         hero.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
 
         //deactivates gamecon to stop player from doing anything while game is loading
-        GameController.GameControllerSingle.isGameLoading = true;
+        GameController.GameControllerSingle.freezePlayer = true;
 
         //load functions
         AsyncOperation async = SceneManager.LoadSceneAsync("Area1");
@@ -50,7 +60,7 @@ public class DoorToMainGame : MonoBehaviour
         hero.transform.rotation = Quaternion.identity;
 
         //actives game controler for player actions
-        GameController.GameControllerSingle.isGameLoading = false;
+        GameController.GameControllerSingle.freezePlayer = false;
         GameController.GameControllerSingle.touchingDoor = false;
         
         Destroy(gameObject);

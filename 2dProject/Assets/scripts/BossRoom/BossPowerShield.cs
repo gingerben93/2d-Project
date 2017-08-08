@@ -43,8 +43,8 @@ public class BossPowerShield : MonoBehaviour {
         {
             if (notGrabbed)
             {
-                GameController.GameControllerSingle.stun = true;
-                Debug.Log(GameController.GameControllerSingle.stun);
+                GameController.GameControllerSingle.freezePlayer = true;
+                Debug.Log(GameController.GameControllerSingle.freezePlayer);
                 Debug.Log(collision.gameObject.tag);
                 // Calculate Angle Between the collision point and the player
                 var dir = collision.transform.position - transform.position;
@@ -88,7 +88,7 @@ public class BossPowerShield : MonoBehaviour {
     IEnumerator StopPlayerControls()
     {
         yield return new WaitForSeconds(2);
-        GameController.GameControllerSingle.stun = false;
+        GameController.GameControllerSingle.freezePlayer = false;
     }
 
     IEnumerator Grabbed()

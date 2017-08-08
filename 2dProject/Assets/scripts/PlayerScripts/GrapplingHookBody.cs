@@ -50,6 +50,7 @@ public class GrapplingHookBody : MonoBehaviour
             drawGrapHook.line.SetPosition(drawGrapHook.currentNumberLines - 2, new Vector2(hitPoint.x, hitPoint.y));
             //drawGrapHook.line.numPositions += 1;
             drawGrapHook.currentPosLine = new Vector3(hitPoint.x, hitPoint.y, 0);
+            drawGrapHook.joint.distance = Vector2.Distance(drawGrapHook.currentPosLine, GameController.GameControllerSingle.transform.position);
             break;
         }
     }

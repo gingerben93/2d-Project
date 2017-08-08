@@ -65,11 +65,9 @@ public class GameController : MonoBehaviour
     //for respawning
     public Vector3 respawnLocation;
 
-    //for loading
-    public bool isGameLoading = false;
+    //for freezeing player
+    public bool freezePlayer = false;
 
-    //for stunned
-    public bool stun = false;
     //For boss deaths
     public bool Boss1 = false;
 
@@ -136,6 +134,9 @@ public class GameController : MonoBehaviour
         //don't destroy on load objects
         DontDestroyOnLoad(GameObject.Find("Canvases"));
 
+        //grap has it's own script for this
+        //DontDestroyOnLoad(GameObject.Find("GrapplingHookParts"));
+
         //assign skill functions
         GameObject.Find("DashSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill(); });
         GameObject.Find("DashSkill2").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill2(); });
@@ -189,7 +190,8 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isGameLoading)
+        //for stoping all player actions
+        if (freezePlayer)
         {
             return;
         }
@@ -198,11 +200,6 @@ public class GameController : MonoBehaviour
         {
             transform.position = respawnLocation;
             PlayerStats.PlayerStatsSingle.health = PlayerStats.PlayerStatsSingle.maxHealth;
-        }
-
-        if (stun)
-        {
-            return;
         }
 
         Resources.UnloadUnusedAssets();
@@ -439,8 +436,8 @@ public class GameController : MonoBehaviour
 
     void FixedUpdate()
     {
-
-        if (stun)
+        // stops all player actions
+        if (freezePlayer)
         {
             return;
         }
@@ -893,7 +890,6 @@ public class GameController : MonoBehaviour
         Scene scene = SceneManager.GetActiveScene();
         if (File.Exists(Application.persistentDataPath + "/" + scene.name + ".dat"))
         {
-            Debug.Log("load called");
             BinaryFormatter bf = new BinaryFormatter();
             FileStream file = File.Open(Application.persistentDataPath + "/" + scene.name + ".dat", FileMode.Open);
             levelInformation mapData = (levelInformation)bf.Deserialize(file);
@@ -937,7 +933,7 @@ public class GameController : MonoBehaviour
         rb2d.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
 
         //deactivates gamecon to stop player from doing anything while game is loading
-        GameController.GameControllerSingle.isGameLoading = true;
+        GameController.GameControllerSingle.freezePlayer = true;
 
         //load functions
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
@@ -954,7 +950,7 @@ public class GameController : MonoBehaviour
         rb2d.transform.rotation = Quaternion.identity;
 
         //actives game controler for player actions
-        isGameLoading = false;
+        freezePlayer = false;
         touchingDoor = false;
     }
 }

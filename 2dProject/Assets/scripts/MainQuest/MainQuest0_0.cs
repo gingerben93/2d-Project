@@ -58,12 +58,17 @@ public class MainQuest0_0 : MonoBehaviour {
 
     IEnumerator Dialog()
     {
+
         //list all conversation that will be had
         string Conversation1 = DialogManager.DialogManagerSingle.MainQuestDialogueLoadPath + "MainQuest0_0.0";
         string Conversation2 = DialogManager.DialogManagerSingle.MainQuestDialogueLoadPath + "MainQuest0_0.1";
 
+        //old freeze player ; differet than old way its stops all movement period; new way just stop game controls and sets velocity to 0
+        //GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+
         //freeze player
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+        GameController.GameControllerSingle.freezePlayer = true;
+        GameController.GameControllerSingle.rb2d.velocity = Vector2.zero;
 
         //start conversavtion
         StartCoroutine(DialogManager.DialogManagerSingle.Dialog(Conversation1));      
@@ -94,10 +99,13 @@ public class MainQuest0_0 : MonoBehaviour {
         yield return new WaitForSeconds(1f);
         canvas.alpha = 0;
 
-        //let player move again
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-        GameController.GameControllerSingle.transform.transform.rotation = Quaternion.identity;
+        //old unfreeze player ; differet than old way its stops all movement period; new way just stop game controls and sets velocity to 0
+        //GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        //GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        //GameController.GameControllerSingle.transform.transform.rotation = Quaternion.identity;
+
+        //freeze player
+        GameController.GameControllerSingle.freezePlayer = false;
 
         //Text reset
         NPCtext.text = "";
@@ -117,6 +125,7 @@ public class MainQuest0_0 : MonoBehaviour {
 
             GameObject.Find("Character1").AddComponent<MainQuest1_0>();
         }
+
         
         //QuestController.QuestControllerSingle.isQuestCurrent = false;
         Destroy(this);

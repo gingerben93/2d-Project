@@ -41,7 +41,7 @@ public class Bomb : MonoBehaviour {
             BossScript.BossScriptSingle.bombSpawn = false;
 
             //No longer stun the player
-            GameController.GameControllerSingle.stun = false;
+            GameController.GameControllerSingle.freezePlayer = false;
             if (GameObject.FindGameObjectWithTag("EnemyProjectile") != null)
             {
                 Destroy(GameObject.FindGameObjectWithTag("EnemyProjectile"));

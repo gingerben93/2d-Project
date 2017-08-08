@@ -35,6 +35,7 @@ public class Magic : MonoBehaviour
                 Debug.Log("HEALHEALHEAL");
                 break;
             default:
+                Debug.Log("Default case");
                 break;
         }
     }

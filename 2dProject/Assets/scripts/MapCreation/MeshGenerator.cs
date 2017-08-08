@@ -183,7 +183,7 @@ public class MeshGenerator : MonoBehaviour
             edgeCollider.points = edgePoints;
 
             //makes walls not sticky
-            /*
+            
             PhysicsMaterial2D test = new PhysicsMaterial2D();
             test.bounciness = 0f;
             test.friction = 0f;
@@ -193,7 +193,6 @@ public class MeshGenerator : MonoBehaviour
 
             //edgeCollider.sharedMaterial = (PhysicsMaterial2D)AssetDatabase.LoadAssetAtPath("Assets/meterials/noStickOrBounce", typeof(PhysicsMaterial2D));
 
-            */
         }
     }
 
