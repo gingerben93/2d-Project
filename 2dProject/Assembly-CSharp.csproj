@@ -63,6 +63,7 @@
      <Compile Include="Assets\scripts\EmenyStuff\GodHands.cs" />
      <Compile Include="Assets\scripts\EmenyStuff\GodHandsFist.cs" />
      <Compile Include="Assets\scripts\EmenyStuff\MoveTowardPlayer.cs" />
+     <Compile Include="Assets\scripts\EmenyStuff\SliderEnemyMovment.cs" />
      <Compile Include="Assets\scripts\EmenyStuff\TurretAttack.cs" />
      <Compile Include="Assets\scripts\GameInformation\GameData.cs" />
      <Compile Include="Assets\scripts\GameInformation\GameLoader.cs" />
@@ -84,6 +85,8 @@
      <Compile Include="Assets\scripts\Items\Weapons\ShortSword\ShotM.cs" />
      <Compile Include="Assets\scripts\Items\Weapons\ShotMove.cs" />
      <Compile Include="Assets\scripts\MainQuest\MainQuest0_0.cs" />
+     <Compile Include="Assets\scripts\MainQuest\MainQuest10_0.cs" />
+     <Compile Include="Assets\scripts\MainQuest\MainQuest11_0.cs" />
      <Compile Include="Assets\scripts\MainQuest\MainQuest1_0.cs" />
      <Compile Include="Assets\scripts\MainQuest\MainQuest2_0.cs" />
      <Compile Include="Assets\scripts\MainQuest\MainQuest3_0.cs" />
@@ -92,6 +95,7 @@
      <Compile Include="Assets\scripts\MainQuest\MainQuest6_0.cs" />
      <Compile Include="Assets\scripts\MainQuest\MainQuest7_0.cs" />
      <Compile Include="Assets\scripts\MainQuest\MainQuest8_0.cs" />
+     <Compile Include="Assets\scripts\MainQuest\MainQuest9_0.cs" />
      <Compile Include="Assets\scripts\MapCreation\DoorPrefabInfo.cs" />
      <Compile Include="Assets\scripts\MapCreation\MapAddOns.cs" />
      <Compile Include="Assets\scripts\MapCreation\MapGenerator.cs" />
@@ -110,6 +114,8 @@
      <Compile Include="Assets\scripts\PlayerScripts\SaveGrapplingHook.cs" />
      <Compile Include="Assets\scripts\SideQuest\GatherQuest.cs" />
      <Compile Include="Assets\scripts\SideQuest\KillQuest.cs" />
+     <Compile Include="Assets\scripts\Spells\Fireball.cs" />
+     <Compile Include="Assets\scripts\Spells\Heal.cs" />
      <Compile Include="Assets\scripts\Spells\Magic.cs" />
      <Compile Include="Assets\scripts\Spells\MagicController.cs" />
      <Compile Include="Assets\scripts\Spells\Scroll\FireballScroll.cs" />
@@ -127,11 +133,14 @@
      <None Include="Assets\resources\Dialog\MainQuest\MainQuest3_0.0.txt" />
      <None Include="Assets\resources\Dialog\MainQuest\MainQuest7_0.0.txt" />
      <None Include="Assets\resources\Dialog\MainQuest\MainQuest5_0.0.txt" />
+     <None Include="Assets\resources\Dialog\MainQuest\MainQuest9_0.0.txt" />
      <None Include="Assets\resources\Dialog\NPC\Character1\QuestComplete.txt" />
      <None Include="Assets\resources\Dialog\NPC\Character1\AcceptQuest.txt" />
      <None Include="Assets\resources\Dialog\MainQuest\MainQuest8_0.0.txt" />
      <None Include="Assets\resources\Dialog\NPC\Blitz\QuestComplete.txt" />
      <None Include="Assets\resources\Dialog\NPC\Doctor\AcceptQuest.txt" />
+     <None Include="Assets\resources\Dialog\MainQuest\MainQuest11_0.0.txt" />
+     <None Include="Assets\resources\Dialog\MainQuest\MainQuest10_0.0.txt" />
      <None Include="Assets\resources\Dialog\MainQuest\MainQuest4_0.0.txt" />
      <None Include="Assets\resources\Dialog\NPC\Morgana\QuestComplete.txt" />
  <Reference Include="UnityEngine.UI">

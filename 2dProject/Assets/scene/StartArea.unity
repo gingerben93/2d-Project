@@ -1479,6 +1479,11 @@ Prefab:
       propertyPath: m_CollisionDetection
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114834046139357872, guid: e244b515c71179b4cba1ce42034df8fe,
+        type: 2}
+      propertyPath: dontLoadTheGame
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e244b515c71179b4cba1ce42034df8fe, type: 2}
   m_IsPrefabParent: 0
@@ -1682,6 +1687,7 @@ MonoBehaviour:
   spellName: Heal
   description: Heal Heal Heal
   spriteNeutral: {fileID: 21300000, guid: 41a42345dccbb4342a13063232159cec, type: 3}
+  spellRate: 0.25
 --- !u!114 &1003718277
 MonoBehaviour:
   m_ObjectHideFlags: 0

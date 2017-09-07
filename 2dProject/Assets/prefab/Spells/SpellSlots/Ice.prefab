@@ -9,31 +9,31 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1731320686617316}
+  m_RootGameObject: {fileID: 1300782294453842}
   m_IsPrefabParent: 1
---- !u!1 &1731320686617316
+--- !u!1 &1300782294453842
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4068302013861434}
-  - component: {fileID: 212052021577911514}
-  - component: {fileID: 114159479978571870}
+  - component: {fileID: 4743357696401466}
+  - component: {fileID: 212167243629286038}
+  - component: {fileID: 114921625768718758}
   m_Layer: 0
-  m_Name: Zap
+  m_Name: Ice
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4068302013861434
+--- !u!4 &4743357696401466
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1731320686617316}
+  m_GameObject: {fileID: 1300782294453842}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.4006567, y: 4.4324894, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
@@ -41,27 +41,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114159479978571870
+--- !u!114 &114921625768718758
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1731320686617316}
+  m_GameObject: {fileID: 1300782294453842}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b96609581010da4ab483f9c2a7bab53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 2
-  spellName: Zap
-  description: Zap Zap Zap
-  spriteNeutral: {fileID: 21300000, guid: f6f3256c9a95f5349afe646dc9bb31b7, type: 3}
---- !u!212 &212052021577911514
+  type: 1
+  spellName: Ice
+  description: Ice Ice Ice
+  spriteNeutral: {fileID: 21300000, guid: 00bb351eb2cb41a4cb921ff3b37937eb, type: 3}
+  spellRate: 0.25
+--- !u!212 &212167243629286038
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1731320686617316}
+  m_GameObject: {fileID: 1300782294453842}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -87,7 +88,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f6f3256c9a95f5349afe646dc9bb31b7, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 00bb351eb2cb41a4cb921ff3b37937eb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

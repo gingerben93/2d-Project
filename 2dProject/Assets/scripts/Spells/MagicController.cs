@@ -182,45 +182,4 @@ public class MagicController : MonoBehaviour
             }
         }
     }
-
-    //void SelectWeapon(string weaponName, ref GameController.HotBarDelegate delegateTest , ref GameObject Spell)
-    //{
-    //    Debug.Log("selectweapon");
-    //    Debug.Log(weaponName);
-    //    if (weaponName == "Blowdart")
-    //    {
-    //        //destroy current
-    //        Destroy(Spell);
-
-    //        //instantiate a object with the weapon attack on it
-    //        Attack = Resources.Load("Prefabs/WeaponAttacks/BlowDartAttack", typeof(GameObject)) as GameObject;
-    //        Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
-    //        Spell.transform.localPosition = Vector3.zero;
-    //        Blowdart temp = Spell.GetComponent<Blowdart>();
-    //        delegateTest = temp.Attack;
-    //    }
-    //    else if (weaponName == "Sword")
-    //    {
-    //        //destroy current
-    //        Destroy(Spell);
-
-    //        //instantiate a object with the weapon attack on it
-    //        Attack = Resources.Load("Prefabs/WeaponAttacks/SwordAttack", typeof(GameObject)) as GameObject;
-    //        Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
-    //        Spell.transform.localPosition = Vector3.zero;
-    //        ShortSword temp = Spell.GetComponent<ShortSword>();
-    //        delegateTest = temp.Attack;
-    //    }
-    //    else
-    //    {
-    //        Destroy(Spell);
-    //        Attack = Resources.Load("Prefabs/WeaponAttacks/GodHands", typeof(GameObject)) as GameObject;
-    //        Spell = Instantiate(Attack, GameObject.Find("SpellAttacks").transform);
-    //        Spell.transform.localPosition = Vector3.zero;
-    //        GodHands temp = Spell.GetComponent<GodHands>();
-    //        temp.targetLocation = GameObject.Find("Hero").transform.position;
-    //        delegateTest = temp.Attack;
-    //    }
-    //}
-
 }
