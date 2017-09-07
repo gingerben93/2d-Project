@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class MainQuest6_0 : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	void Start ()
+    {
+        //set quest text in questlog
+        QuestController.QuestControllerSingle.MainQuestText.text = "Find factory In Cave. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -24,9 +20,6 @@ public class MainQuest6_0 : MonoBehaviour {
 
             if (QuestController.QuestControllerSingle.currentQuest == 7f)
             {
-                //change main quest text
-                QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
-
                 Debug.Log("quest is 6");
                 Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
                 GameObject.Find("Hero").AddComponent<MainQuest7_0>();

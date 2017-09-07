@@ -19,16 +19,22 @@ public class MainQuest5_0 : MonoBehaviour {
         NPCtext = DialogManager.DialogManagerSingle.NPCtext;
         Herotext = DialogManager.DialogManagerSingle.Herotext;
         canvas = DialogManager.DialogManagerSingle.canvas;
+
+        GameController.GameControllerSingle.sideQuestCounter = 0;
+        GameController.GameControllerSingle.sideQuestBool = true;
+
+        //set quest text in questlog
+        QuestController.QuestControllerSingle.MainQuestText.text = "Do Side Quest. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
     }
 
     void Update()
     {
-        if (touchingCharacter && Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             Debug.Log("talk to character1 for quest5");
             Debug.Log(GameController.GameControllerSingle.sideQuestCounter);
             Debug.Log(GameController.GameControllerSingle.sideQuestBool);
-            if (GameController.GameControllerSingle.sideQuestCounter >= 1 && GameController.GameControllerSingle.sideQuestBool == true)
+            if (touchingCharacter && GameController.GameControllerSingle.sideQuestCounter >= 1 && GameController.GameControllerSingle.sideQuestBool == true)
             {
                 GameController.GameControllerSingle.sideQuestBool = false;
                 Debug.Log("Complete, go to main quest 5");
@@ -37,6 +43,11 @@ public class MainQuest5_0 : MonoBehaviour {
 
                 canvas.alpha = 1;
                 StartCoroutine(Dialog());
+            }
+            else if (GameController.GameControllerSingle.sideQuestCounter >= 1 && GameController.GameControllerSingle.sideQuestBool == true)
+            {
+                //set quest text in questlog
+                QuestController.QuestControllerSingle.MainQuestText.text = "Talk to Blitz. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
             }
             else
             {
@@ -80,12 +91,6 @@ public class MainQuest5_0 : MonoBehaviour {
 
         if (QuestController.QuestControllerSingle.currentQuest == 6f)
         {
-            //change main quest text
-            QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
-
-            GameController.GameControllerSingle.sideQuestCounter = 0;
-            GameController.GameControllerSingle.sideQuestBool = true;
-
             Debug.Log("quest is 6");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Hero").AddComponent<MainQuest6_0>();

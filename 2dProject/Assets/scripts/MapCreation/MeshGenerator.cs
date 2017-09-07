@@ -119,11 +119,18 @@ public class MeshGenerator : MonoBehaviour
 
     void Generate2DColliders()
     {
-        EdgeCollider2D[] currentColliders = gameObject.GetComponents<EdgeCollider2D>();
-        for (int i = 0; i < currentColliders.Length; i++)
+        //for removing all current edge colliders
+        foreach (Transform edgeTemp in GameObject.Find("ColliderHolder").transform)
         {
-            Destroy(currentColliders[i]);
+            Destroy(edgeTemp.gameObject);
         }
+
+        //for removing all current edge colliders
+        //EdgeCollider2D[] currentColliders = gameObject.GetComponents<EdgeCollider2D>();
+        //for (int i = 0; i < currentColliders.Length; i++)
+        //{
+        //    Destroy(currentColliders[i]);
+        //}
 
         CalculateMeshOutlines();
 
@@ -136,12 +143,20 @@ public class MeshGenerator : MonoBehaviour
             }
         }
 
-        foreach (List<int> outline in outlines)
+        for(int x = 0; x < outlines.Count; x++)
         {
-            EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
+            List<int> outline = outlines[x];
+        //}
+        //foreach (List<int> outline in outlines)
+        //{
+            //EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
+            GameObject temp = new GameObject();
+            temp.transform.SetParent(GameObject.Find("ColliderHolder").transform);
             Vector2[] edgePoints = new Vector2[outline.Count];
+            temp.name = "edgeCollider" + x;
+            EdgeCollider2D edgeCollider = temp.AddComponent<EdgeCollider2D>();
 
-            
+
             float vertX;
             float vertXPLus1;
             float vertXMinus1;

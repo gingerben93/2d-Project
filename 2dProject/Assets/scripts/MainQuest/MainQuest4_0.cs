@@ -18,6 +18,9 @@ public class MainQuest4_0 : MonoBehaviour {
         NPCtext = DialogManager.DialogManagerSingle.NPCtext;
         Herotext = DialogManager.DialogManagerSingle.Herotext;
         canvas = DialogManager.DialogManagerSingle.canvas;
+
+        //set quest text in questlog
+        QuestController.QuestControllerSingle.MainQuestText.text = "Talk to blitz. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
     }
 
     void Update()
@@ -68,16 +71,15 @@ public class MainQuest4_0 : MonoBehaviour {
 
         if (QuestController.QuestControllerSingle.currentQuest == 5f)
         {
-            //change main quest text
-            QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
-
-            GameController.GameControllerSingle.sideQuestCounter = 0;
-            GameController.GameControllerSingle.sideQuestBool = true;
+            //moved to quest 5
+            //GameController.GameControllerSingle.sideQuestCounter = 0;
+            //GameController.GameControllerSingle.sideQuestBool = true;
 
             Debug.Log("quest is 5");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Hero").AddComponent<MainQuest5_0>();
         }
+        BlitzCrank.BlitzCrankSingle.hasQuest = false;
         Destroy(this);
     }
 }

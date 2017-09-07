@@ -8,7 +8,8 @@ public class CutSceneLoader : MonoBehaviour
     //private int scene;
     public bool loadCutScene = false;
     public bool loadBackToGame = false;
-    public string CutSceneName = "NameOfCutSceneToLoad";
+    private string CutSceneName = "NameOfCutSceneToLoad";
+    public string LoadNewScene = "NewcutScene";
 
     //for getting mapgenerator
     private GameObject mapGenerator;
@@ -89,7 +90,7 @@ public class CutSceneLoader : MonoBehaviour
     IEnumerator LoadOldScene()
     {
         //load function
-        AsyncOperation async = SceneManager.LoadSceneAsync("StartArea");
+        AsyncOperation async = SceneManager.LoadSceneAsync(LoadNewScene);
 
         // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
         while (!async.isDone)

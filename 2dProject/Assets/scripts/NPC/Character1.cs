@@ -26,13 +26,19 @@ public class Character1 : MonoBehaviour
         {
             Debug.Log("quest is 1");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-            GameObject.Find("Character1").AddComponent<MainQuest1_0>();
+            gameObject.AddComponent<MainQuest1_0>();
         }
         else if (QuestController.QuestControllerSingle.currentQuest == 3f)
         {
             Debug.Log("quest is 3");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-            GameObject.Find("Character1").AddComponent<MainQuest3_0>();
+            gameObject.AddComponent<MainQuest3_0>();
+        }
+        else if (QuestController.QuestControllerSingle.currentQuest == 11f)
+        {
+            Debug.Log("quest is 11");
+            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            gameObject.AddComponent<MainQuest11_0>();
         }
     }
 

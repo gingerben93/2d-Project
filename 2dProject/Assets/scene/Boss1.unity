@@ -2892,6 +2892,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114716739729211596, guid: b3d65b003e0a1144f872cbc200f510ed,
+        type: 2}
+      propertyPath: currentQuest
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: b3d65b003e0a1144f872cbc200f510ed, type: 2}
   m_IsPrefabParent: 0

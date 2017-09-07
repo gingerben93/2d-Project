@@ -20,6 +20,8 @@ public class MainQuest1_0 : MonoBehaviour {
         Herotext = DialogManager.DialogManagerSingle.Herotext;
         canvas = DialogManager.DialogManagerSingle.canvas;
 
+        //set quest text in questlog
+        QuestController.QuestControllerSingle.MainQuestText.text = "Talk to CH1." + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
     }
 
     // Update is called once per frame
@@ -72,16 +74,14 @@ public class MainQuest1_0 : MonoBehaviour {
 
         if (QuestController.QuestControllerSingle.currentQuest == 2f)
         {
-            //change main quest text
-            QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
-
             Debug.Log("quest is 2");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Hero").AddComponent<MainQuest2_0>();
         }
 
-        GameController.GameControllerSingle.sideQuestCounter = 0;
-        GameController.GameControllerSingle.sideQuestBool = true;
+        //moved to start method in quest 2
+        //GameController.GameControllerSingle.sideQuestCounter = 0;
+        //GameController.GameControllerSingle.sideQuestBool = true;
 
         Destroy(this);
     }

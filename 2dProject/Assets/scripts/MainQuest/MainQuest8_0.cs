@@ -31,10 +31,13 @@ public class MainQuest8_0 : MonoBehaviour {
         canvas = DialogManager.DialogManagerSingle.canvas;
 
         bossDead = false;
+
+        //set quest text in questlog
+        QuestController.QuestControllerSingle.MainQuestText.text = "Kill Boss. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update ()
     {
         if(bossDead)
         {
@@ -81,19 +84,12 @@ public class MainQuest8_0 : MonoBehaviour {
 
         if (QuestController.QuestControllerSingle.currentQuest == 9f)
         {
-            //change main quest text
-            QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
-
-            GameController.GameControllerSingle.sideQuestCounter = 0;
-            GameController.GameControllerSingle.sideQuestBool = true;
-
             Debug.Log("quest is 9");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
             //GameObject.Find("Hero").AddComponent<MainQuest9_0>();
         }
 
         CutSceneLoader.CutSceneLoaderSingle.loadScene("CutScene3");
-
         Destroy(this);
     }
 }

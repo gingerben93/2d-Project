@@ -106,6 +106,12 @@ public class GameController : MonoBehaviour
     public delegate void PlayerAttack();
     public PlayerAttack playerAttack;
 
+    //for slide move
+    private EdgeCollider2D edge;
+    private int currentEdgePoint = 0;
+    private Vector2 knownVec;
+    private Vector2 perpVec;
+
 
     public static GameController GameControllerSingle;
 
@@ -442,6 +448,50 @@ public class GameController : MonoBehaviour
             return;
         }
 
+        if (edge)
+        {
+            if (Input.GetKey(KeyCode.S))
+            {
+                //got to set gravity scale to 0 or down velocity becomes really big
+                rb2d.gravityScale = 0;
+
+                knownVec = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) - new Vector2(edge.points[(currentEdgePoint + 1) % edge.pointCount].x, edge.points[(currentEdgePoint + 1) % edge.pointCount].y);
+                perpVec = new Vector2(knownVec.y, -knownVec.x);
+
+                //(knownVec * 0.5f) + perpVec;// or minus perpVec to go the other perpendicular way
+
+                gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) + perpVec * 1, .25f);
+
+                if (Vector3.Distance(gameObject.transform.position, new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) + perpVec * 1) <= .1f)
+                {
+                    currentEdgePoint = (currentEdgePoint + 1) % (edge.edgeCount - 1);
+
+                }
+            }
+            else if (Input.GetKey(KeyCode.W))
+            {
+                //got to set gravity scale to 0 or down velocity becomes really big
+                rb2d.gravityScale = 0;
+
+                knownVec = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) - new Vector2(edge.points[(currentEdgePoint + 1) % edge.pointCount].x, edge.points[(currentEdgePoint + 1) % edge.pointCount].y);
+                perpVec = new Vector2(knownVec.y, -knownVec.x);
+
+                //(knownVec * 0.5f) + perpVec;// or minus perpVec to go the other perpendicular way
+
+                gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) + perpVec * 1, .25f);
+
+                if (Vector3.Distance(gameObject.transform.position, new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) + perpVec * 1) <= .1f)
+                {
+                    currentEdgePoint = ((edge.edgeCount - 1) + currentEdgePoint - 1) % (edge.edgeCount - 1);
+
+                }
+            }
+            else
+            {
+                rb2d.gravityScale = 1;
+            }
+        }
+
         //anim.SetFloat("Speed", Mathf.Abs(h));
 
         //for changing exp on page
@@ -775,33 +825,71 @@ public class GameController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         IsColliding = true;
+
+        //add item to inventory
         if (collision.gameObject.tag == "Item")
         {
             Inventory.InventorySingle.AddItem(collision.gameObject.GetComponent<Item>());
             Destroy(collision.gameObject);
         }
-        if (falling && timer >= 1f)
+
+        //falling damage
+        if (falling && timer >= 2f)
         {
             PlayerStats.PlayerStatsSingle.health -= 1;
+        }
+
+        //for slide move; gets edge collider player is touching
+        if (!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+        {
+            if (collision.gameObject.GetComponent<EdgeCollider2D>())
+            {
+                edge = collision.gameObject.GetComponent<EdgeCollider2D>();
+                for (int index = 0; index < edge.pointCount; index++)
+                {
+                    if (Vector2.Distance(edge.points[index], collision.contacts[0].point) <= 1f)
+                    {
+
+                        currentEdgePoint = index;
+                        return;
+                    }
+                }
+            }
         }
     }
 
     private void OnCollisionStay2D(Collision2D collision)
     {
+        //if (!edge)
+        //{
+        //    if (collision.gameObject.GetComponent<EdgeCollider2D>())
+        //    {
+        //        Debug.Log("on stay");
+        //        edge = collision.gameObject.GetComponent<EdgeCollider2D>();
+        //        for (int index = 0; index < edge.pointCount; index++)
+        //        {
+        //            if (Vector2.Distance(edge.points[index], collision.contacts[collision.contacts.Length - 1].point) <= .1f)
+        //            {
+        //                Debug.Log(edge.points[index]);
+        //                Debug.Log(index);
+        //                currentEdgePoint = index;
+        //                return;
+        //            }
+        //        }
+        //    }
+        //}
+
         IsColliding = true;
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
         IsColliding = false;
-        if (collision.gameObject.tag == "Item")
+
+        //for slide move
+        if(!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
         {
-            Inventory.InventorySingle.AddItem(collision.gameObject.GetComponent<Item>());
-            Destroy(collision.gameObject);
-        }
-        if (falling && timer >= 1f)
-        {
-            PlayerStats.PlayerStatsSingle.health -= 1;
+            edge = null;
         }
     }
 

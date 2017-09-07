@@ -53,7 +53,7 @@ public class CutScene2 : MonoBehaviour
         if (Input.GetMouseButtonDown(1))
         {
             Debug.Log("right click");
-            CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
+            LoadNewScene();
         }
     }
 
@@ -98,24 +98,30 @@ public class CutScene2 : MonoBehaviour
         end = 3.2f;
         yield return new WaitForSeconds(2);
 
+
         Time.timeScale = 1;
         cutSceneText.text = "Panel 6-8";
         speed = 0.1f;
         targetLocation = new Vector3(11.70f, -14.40f, -1.0f);
         yield return new WaitForSeconds(3);
 
-        //load back to game
+        LoadNewScene();
+    }
+
+    void LoadNewScene()
+    {
+        //for loading to main game
+        CutSceneLoader.CutSceneLoaderSingle.LoadNewScene = "StartArea";
         CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
     }
 
-    IEnumerator LoadNewScene()
-    {
-        AsyncOperation async = SceneManager.LoadSceneAsync("StartArea");
-        // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
-        while (!async.isDone)
-        {
-            yield return null;
-        }
-    }
-
+    //IEnumerator LoadNewScene()
+    //{
+    //    AsyncOperation async = SceneManager.LoadSceneAsync("StartArea");
+    //    // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
+    //    while (!async.isDone)
+    //    {
+    //        yield return null;
+    //    }
+    //}
 }

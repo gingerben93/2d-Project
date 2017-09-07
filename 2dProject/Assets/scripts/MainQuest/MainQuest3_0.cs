@@ -18,6 +18,9 @@ public class MainQuest3_0 : MonoBehaviour {
         NPCtext = DialogManager.DialogManagerSingle.NPCtext;
         Herotext = DialogManager.DialogManagerSingle.Herotext;
         canvas = DialogManager.DialogManagerSingle.canvas;
+
+        //set quest text in questlog
+        QuestController.QuestControllerSingle.MainQuestText.text = "Talk to CH1. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
     }
 
     // Update is called once per frame
@@ -69,9 +72,6 @@ public class MainQuest3_0 : MonoBehaviour {
 
         if (QuestController.QuestControllerSingle.currentQuest == 4f)
         {
-            //change main quest text
-            QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
-
             Debug.Log("quest is 4");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Blitz").AddComponent<MainQuest4_0>();

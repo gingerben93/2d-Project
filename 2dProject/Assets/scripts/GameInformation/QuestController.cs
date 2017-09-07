@@ -33,7 +33,7 @@ public class QuestController : MonoBehaviour {
             Destroy(gameObject);
         }
 
-        currentQuest = 0f;
+        //currentQuest = 0f;
     }
 
     void Start()
@@ -42,6 +42,31 @@ public class QuestController : MonoBehaviour {
         MainQuestText = Instantiate(QuestTxt, parentQuest.transform);
         MainQuestText.name = "MainQuest";
         MainQuestText.text = "Complete Quest " + currentQuest;
+
+        if (currentQuest == 2f)
+        {
+            Debug.Log("quest is 2");
+            Debug.Log(currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            GameObject.Find("Hero").AddComponent<MainQuest2_0>();
+        }
+        else if (QuestController.QuestControllerSingle.currentQuest == 5f)
+        {
+            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            GameObject.Find("Hero").AddComponent<MainQuest5_0>();
+            Debug.Log("quest is 5");
+        }
+        else if (currentQuest == 6f)
+        {
+            Debug.Log("quest is 6");
+            Debug.Log(currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            GameObject.Find("Hero").AddComponent<MainQuest6_0>();
+        }
+        else if (currentQuest == 10f)
+        {
+            Debug.Log("quest is 10");
+            Debug.Log(currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            GameObject.Find("Hero").AddComponent<MainQuest10_0>();
+        }
     }
 
     public void PickQuest(string NPCName, int questType)

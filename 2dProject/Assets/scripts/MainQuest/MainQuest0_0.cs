@@ -22,6 +22,8 @@ public class MainQuest0_0 : MonoBehaviour {
         Herotext = DialogManager.DialogManagerSingle.Herotext;
         canvas = DialogManager.DialogManagerSingle.canvas;
 
+        //main quest log text
+        QuestController.QuestControllerSingle.MainQuestText.text = "Talk to doctor." + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
     }
 
     // Update is called once per frame
@@ -117,9 +119,6 @@ public class MainQuest0_0 : MonoBehaviour {
         //add next quest component where it needs to go
         if (QuestController.QuestControllerSingle.currentQuest == 1f)
         {
-            //change main quest text
-            QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
-
             Debug.Log("quest is 1");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
 

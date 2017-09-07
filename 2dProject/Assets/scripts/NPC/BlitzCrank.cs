@@ -53,14 +53,21 @@ public class BlitzCrank : MonoBehaviour {
             Debug.Log("quest is 4");
             hasQuest = true;
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-            GameObject.Find("Blitz").AddComponent<MainQuest4_0>();
+            gameObject.AddComponent<MainQuest4_0>();
         }
-        else if (QuestController.QuestControllerSingle.currentQuest == 5f)
+        else if (QuestController.QuestControllerSingle.currentQuest == 9f)
         {
+            Debug.Log("quest is 9");
             hasQuest = true;
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
-            GameObject.Find("Blitz").AddComponent<MainQuest5_0>();
-            Debug.Log("quest is 5");
+            gameObject.AddComponent<MainQuest9_0>();
+        }
+        else if (QuestController.QuestControllerSingle.currentQuest == 10f)
+        {
+            Debug.Log("quest is 10");
+            hasQuest = true;
+            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            gameObject.AddComponent<MainQuest10_0>();
         }
     }
 	

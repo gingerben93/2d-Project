@@ -52,7 +52,7 @@ public class CutScene3 : MonoBehaviour {
         if (Input.GetMouseButtonDown(1))
         {
             Debug.Log("right click");
-            CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
+            LoadNewScene();
         }
     }
 
@@ -105,17 +105,14 @@ public class CutScene3 : MonoBehaviour {
         Time.timeScale = 1;
         yield return new WaitForSeconds(3);
 
-        //for loading to main game
-        CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
+        LoadNewScene();
+
     }
 
-    IEnumerator LoadNewScene()
+    void LoadNewScene()
     {
-        AsyncOperation async = SceneManager.LoadSceneAsync("StartArea");
-        // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
-        while (!async.isDone)
-        {
-            yield return null;
-        }
+        //for loading to main game
+        CutSceneLoader.CutSceneLoaderSingle.LoadNewScene = "Boss1Finished";
+        CutSceneLoader.CutSceneLoaderSingle.loadBackToGame = true;
     }
 }

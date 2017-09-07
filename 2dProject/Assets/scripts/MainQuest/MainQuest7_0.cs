@@ -20,10 +20,13 @@ public class MainQuest7_0 : MonoBehaviour {
         NPCtext = DialogManager.DialogManagerSingle.NPCtext;
         Herotext = DialogManager.DialogManagerSingle.Herotext;
         canvas = DialogManager.DialogManagerSingle.canvas;
+
+        //set quest text in questlog
+        QuestController.QuestControllerSingle.MainQuestText.text = "Fight the boss. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    // Update is called once per frame
+    void Update ()
     {
         if(GameObject.Find("Boss") && waitforload)
         {
@@ -69,12 +72,6 @@ public class MainQuest7_0 : MonoBehaviour {
 
         if (QuestController.QuestControllerSingle.currentQuest == 8f)
         {
-            //change main quest text
-            QuestController.QuestControllerSingle.MainQuestText.text = "Complete Main Quest " + QuestController.QuestControllerSingle.currentQuest;
-
-            GameController.GameControllerSingle.sideQuestCounter = 0;
-            GameController.GameControllerSingle.sideQuestBool = true;
-
             Debug.Log("quest is 8");
             Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Hero").AddComponent<MainQuest8_0>();
