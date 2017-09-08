@@ -109,8 +109,11 @@ public class GameController : MonoBehaviour
     //for slide move
     private EdgeCollider2D edge;
     private int currentEdgePoint = 0;
+    private Vector2 CurrentVector;
     private Vector2 knownVec;
     private Vector2 perpVec;
+    private Quaternion targetRotation;
+
 
 
     public static GameController GameControllerSingle;
@@ -302,7 +305,7 @@ public class GameController : MonoBehaviour
             transform.Rotate(Vector3.forward, rotateSpeed);
             if (lastRotationAngle > transform.eulerAngles.z)
             {
-                transform.eulerAngles = new Vector3(0, 0, 0);
+                transform.eulerAngles = Vector3.zero;
                 rotateleft = false;
             }
             lastRotationAngle = transform.eulerAngles.z;
@@ -452,43 +455,38 @@ public class GameController : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.S))
             {
-                //got to set gravity scale to 0 or down velocity becomes really big
                 rb2d.gravityScale = 0;
 
-                knownVec = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) - new Vector2(edge.points[(currentEdgePoint + 1) % edge.pointCount].x, edge.points[(currentEdgePoint + 1) % edge.pointCount].y);
-                perpVec = new Vector2(knownVec.y, -knownVec.x);
+                CurrentVector = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y);
 
-                //(knownVec * 0.5f) + perpVec;// or minus perpVec to go the other perpendicular way
+                //gets current perp vector with current and next point
+                knownVec = CurrentVector - new Vector2(edge.points[(currentEdgePoint + 1) % edge.pointCount].x, edge.points[(currentEdgePoint + 1) % edge.pointCount].y);
+                perpVec = CurrentVector + new Vector2(knownVec.y, -knownVec.x) * 1;
 
-                gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) + perpVec * 1, .25f);
+                //for moving the object
+                gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, perpVec, .25f);
 
-                if (Vector3.Distance(gameObject.transform.position, new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) + perpVec * 1) <= .1f)
+                //for rotating the object
+                targetRotation = Quaternion.LookRotation(Vector3.forward, perpVec - CurrentVector);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, .25f);
+
+                //gets next point to move to
+                if (Vector3.Distance(gameObject.transform.position, perpVec) <= .1f)
                 {
-                    currentEdgePoint = (currentEdgePoint + 1) % (edge.edgeCount - 1);
-
+                    if (facingRight)
+                    {
+                        currentEdgePoint = (currentEdgePoint + 1) % (edge.edgeCount - 1);
+                    }
+                    else
+                    {
+                        currentEdgePoint = ((edge.edgeCount - 1) + currentEdgePoint - 1) % (edge.edgeCount - 1);
+                    }
                 }
             }
-            else if (Input.GetKey(KeyCode.W))
-            {
-                //got to set gravity scale to 0 or down velocity becomes really big
-                rb2d.gravityScale = 0;
-
-                knownVec = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) - new Vector2(edge.points[(currentEdgePoint + 1) % edge.pointCount].x, edge.points[(currentEdgePoint + 1) % edge.pointCount].y);
-                perpVec = new Vector2(knownVec.y, -knownVec.x);
-
-                //(knownVec * 0.5f) + perpVec;// or minus perpVec to go the other perpendicular way
-
-                gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) + perpVec * 1, .25f);
-
-                if (Vector3.Distance(gameObject.transform.position, new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) + perpVec * 1) <= .1f)
-                {
-                    currentEdgePoint = ((edge.edgeCount - 1) + currentEdgePoint - 1) % (edge.edgeCount - 1);
-
-                }
-            }
-            else
+            else if (Input.GetKeyUp(KeyCode.S))
             {
                 rb2d.gravityScale = 1;
+                transform.eulerAngles = Vector3.zero;
             }
         }
 

@@ -8,8 +8,10 @@ public class SliderEnemyMovment : MonoBehaviour {
     int currentEdgePoint = 0;
     GameObject ColliderHolder;
     int currentEdgeSet;
+    Vector2 CurrentVector;
     Vector2 knownVec;
     Vector2 perpVec;
+    Quaternion targetRotation;
     int Direction;
 
     // Use this for initialization
@@ -34,19 +36,30 @@ public class SliderEnemyMovment : MonoBehaviour {
             Debug.Log("initialized to early");
         }
     }
+
+    void Update()
+    {
+
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate()
     {
-        //calculate perp line from other lines. pick distance by multplying perpVec.Normalize by number
-        knownVec = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) - new Vector2(edge.points[(currentEdgePoint + 1) % edge.pointCount].x, edge.points[(currentEdgePoint + 1) % edge.pointCount].y);
-        perpVec = new Vector2(knownVec.y, -knownVec.x); 
+        CurrentVector = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y);
 
-        //(knownVec * 0.5f) + perpVec;// or minus perpVec to go the other perpendicular way
+        //gets current perp vector with current and next point
+        knownVec = CurrentVector - new Vector2(edge.points[(currentEdgePoint + 1) % edge.pointCount].x, edge.points[(currentEdgePoint + 1) % edge.pointCount].y);
+        perpVec = CurrentVector + new Vector2(knownVec.y, -knownVec.x) * 1;
 
-        gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) + perpVec * 1, .25f);
+        //for moving the object
+        gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, perpVec, .25f);
 
-        if (Vector3.Distance(gameObject.transform.position, new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y) + perpVec * 1) <= .1f)
+        //for rotating the object
+        targetRotation = Quaternion.LookRotation(Vector3.forward, perpVec - CurrentVector);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, .25f);
+
+        //gets next point to move to
+        if (Vector3.Distance(gameObject.transform.position, perpVec) <= .1f)
         {
             if (Direction == 0)
             {
@@ -56,7 +69,6 @@ public class SliderEnemyMovment : MonoBehaviour {
             {
                 currentEdgePoint = ((edge.edgeCount - 1) + currentEdgePoint - 1) % (edge.edgeCount - 1);
             }
-            
         }
     }
 
