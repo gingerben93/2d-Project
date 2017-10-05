@@ -9,112 +9,32 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
-
-    public string playerName { get; set; }
-
     public int sideQuestCounter { get; set; }
     public bool sideQuestBool { get; set; }
-
-    public bool facingRight { get; set; }
-    public bool jump { get; set; }
-
-    public float attack { get; set; }
-    public float moveForce { get; set; }
-    public float maxSpeed { get; set; }
-    public float jumpForce { get; set; }
-
-    //dash force
-    float dashForce = 1000f;
-
-    //rotate with dash
-    private bool rotateRight = false;
-    private bool rotateleft = false;
-    float rotateSpeed = 20f;
-    float lastRotationAngle = 0f;
-
-    //touching anything
-    public bool IsColliding = true;
 
     //for if game needs to load test
     public bool dontLoadTheGame;
 
-    //private bool grounded = false;
-    private Animator anim;
-    public Rigidbody2D rb2d;
-    DoorCollider doorInfo;
-
-    //Inventory
+    //all canvas elements
     private CanvasGroup InvMenuCanvas;
-    //private GameObject StatsMenuCanvas;
     private CanvasGroup StartMenuCanvas;
-    //private GameObject QuestMenuCanvas;
     private CanvasGroup NotificationCanvas;
     private CanvasGroup SkillMenuCanvas;
     private CanvasGroup QuestMenuCanvas;
     private CanvasGroup SelectBarCanvas;
     private CanvasGroup MagicMenuCanvas;
 
-    public Text NotificationTxt;
+    //should get ref to this is start // change later
+    private Text NotificationTxt;
 
-    //is touching door
-    public bool touchingDoor { get; set; }
     public bool questTravel { get; set; }
     public string mapSeed { get; set; }
-    public int doorRef { get; set; }
-
-    //for respawning
-    public Vector3 respawnLocation;
-
-    //for freezeing player
-    public bool freezePlayer = false;
-
-    //For boss deaths
-    public bool Boss1 = false;
-
-    //for falling
-    private bool falling = false;
-    private float timer = 0;
-
-    //for weapons
-    private static Slot weap;
-    private GameObject slot;
-    public Item atk;
-    public int weaponDamage;
-    //public GameObject currentWeapon;
-
-    //for godhands fire rate
-    public bool GodhandsCanAttack = true;
 
     //for removing the current items other things on map
     Transform itemlist;
     GameObject playerProjectileList;
 
-    //double tap click event
-    private float ButtonCooler = 0.5f; // Half a second before reset
-    private int ButtonCount = 0;
-    private float dashCoolDown = 0.0f;
-
-    //skillBoolCheck
-    private bool dashSkill = false;
-    private bool dashSkill2 = false;
-
-    //for hotbar
-    public delegate void HotBarDelegate();
-    public HotBarDelegate HotBarSlot1, HotBarSlot2, HotBarSlot3;
-
-    //for player attack
-    public delegate void PlayerAttack();
-    public PlayerAttack playerAttack;
-
-    //for slide move
-    private EdgeCollider2D edge;
-    private int currentEdgePoint = 0;
-    private Vector2 CurrentVector;
-    private Vector2 knownVec;
-    private Vector2 perpVec;
-    private Quaternion targetRotation;
-
-
+    
 
     public static GameController GameControllerSingle;
 
@@ -159,15 +79,6 @@ public class GameController : MonoBehaviour
         //if side quest counter is on
         sideQuestBool = false;
 
-        //variables on start
-        maxSpeed = 7f;
-        moveForce = 5f;
-        jumpForce = 500;
-        touchingDoor = false;
-        facingRight = true;
-        jump = false;
-        attack = 2;
-
         //on all the time 
         NotificationCanvas = GameObject.Find("NotificationCanvas").GetComponent <CanvasGroup>();
 
@@ -181,90 +92,18 @@ public class GameController : MonoBehaviour
         QuestMenuCanvas = GameObject.Find("QuestMenuCanvas").GetComponent<CanvasGroup>();
         MagicMenuCanvas = GameObject.Find("MagicMenuCanvas").GetComponent<CanvasGroup>();
 
-        //for player
-        //StatPageExperienceText = GameObject.Find("Experience");
-
-        //other start stuff
-        doorInfo = FindObjectOfType<DoorCollider>();
-        rb2d = GetComponent<Rigidbody2D>();
-
-        //for where player is at start of scene
-        transform.position = respawnLocation;
-
-        //start player name
-        playerName = "fukin nerd";
+        //set notification text
+        NotificationTxt = NotificationCanvas.transform.Find("Notification").GetComponent<Text>();
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        //for stoping all player actions
-        if (freezePlayer)
-        {
-            return;
-        }
-
-        if (PlayerStats.PlayerStatsSingle.health <= 0)
-        {
-            transform.position = respawnLocation;
-            PlayerStats.PlayerStatsSingle.health = PlayerStats.PlayerStatsSingle.maxHealth;
-        }
-
-        Resources.UnloadUnusedAssets();
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            //Debug.Log("GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed) = " + GameData.GameDataSingle.isBossRoomOpen.ContainsKey(mapSeed));
-            if (touchingDoor)
-            {
-                MapGenerator.MapGeneratorSingle.seed = mapSeed;
-                MapGenerator.MapGeneratorSingle.LoadMap();
-
-                Vector2 door;
-                door = MapGenerator.MapGeneratorSingle.doorLocations[doorInfo.numVal];
-                transform.position = new Vector3(door.x, door.y, 0);
-
-                respawnLocation = door;
-
-                RemoveCurrentMapObjects();
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && rb2d.velocity.y < maxSpeed /*&& grounded*/)
-        {
-            jump = true;
-            rb2d.gravityScale = 1;
-        }
-
-        // 5 - Shooting
-        //attack = 2; //TESTING PURPOSE
-        bool shoot = Input.GetMouseButtonDown(1);
-        shoot |= Input.GetMouseButtonDown(1);
+        //this is being called, why in update?
+        //Resources.UnloadUnusedAssets();
         // Careful: For Mac users, ctrl + arrow is a bad idea
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            if (HotBarSlot1 != null)
-            {
-                HotBarSlot1();
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            if (HotBarSlot2 != null)
-            {
-                HotBarSlot2();
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            if (HotBarSlot3 != null)
-            {
-                HotBarSlot3();
-            }
-        }
 
         //toggle inventory on and off
         if (Input.GetKeyDown(KeyCode.I))
@@ -286,288 +125,16 @@ public class GameController : MonoBehaviour
             StartMenuCanvas.blocksRaycasts = !StartMenuCanvas.blocksRaycasts;
         }
 
-        //for rotating
-        if (rotateRight)
-        {
-            //euler angle start at 360 when going right
-            transform.Rotate(Vector3.back, rotateSpeed);
-            if (lastRotationAngle < transform.eulerAngles.z)
-            {
-                transform.eulerAngles = new Vector3(0, 0, 0);
-                rotateRight = false;
-            }
-            lastRotationAngle = transform.eulerAngles.z;
-        }
-
-        if (rotateleft)
-        {
-            //euler angle start at 0 when going left
-            transform.Rotate(Vector3.forward, rotateSpeed);
-            if (lastRotationAngle > transform.eulerAngles.z)
-            {
-                transform.eulerAngles = Vector3.zero;
-                rotateleft = false;
-            }
-            lastRotationAngle = transform.eulerAngles.z;
-        }
-
-        //have to learn dash skill to start using it
-        if (dashSkill && dashSkill2)
-        {
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                //Number of Taps you want Minus One
-                if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
-                {
-                    Debug.Log("double tap right");
-                    dashCoolDown = 1f;
-                    if (rb2d.velocity.x >= 6f)
-                    {
-                        Debug.Log("worked");
-                        rb2d.velocity = new Vector2(-7f, rb2d.velocity.y);
-                    }
-                    else {
-                        rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
-                    }
-                    rb2d.AddForce(new Vector2(dashForce, 0f));
-
-                    //for rotating teemo
-                    rotateleft = false;
-                    rotateRight = true;
-                    lastRotationAngle = 360f;
-                }
-                else
-                {
-                    ButtonCooler = 0.2f;
-                    ButtonCount += 1;
-                }
-            }
-
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                //Number of Taps you want Minus One
-                if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
-                {
-                    Debug.Log("double tap left");
-                    dashCoolDown = 1f;
-                    if (rb2d.velocity.x <= -6f)
-                    {
-                        Debug.Log("worked");
-                        rb2d.velocity = new Vector2(7f, rb2d.velocity.y);
-                    }
-                    else {
-                        rb2d.velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
-                    }
-                    rb2d.AddForce(new Vector2(-dashForce, 0f));
-
-                    //for rotating teemo
-                    rotateRight = false;
-                    rotateleft = true;
-                    lastRotationAngle = 0f;
-                }
-                else
-                {
-                    ButtonCooler = 0.2f;
-                    ButtonCount += 1;
-                }
-            }
-
-            if (ButtonCooler > 0.0f)
-            {
-                ButtonCooler -= 1.0f * Time.deltaTime;
-            }
-            else
-            {
-                ButtonCount = 0;
-            }
-
-            if (dashCoolDown > 0.0f)
-            {
-                dashCoolDown -= Time.deltaTime;
-            }
-        }
-
         //stop all action after this if the pointer is over the canvas
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem.IsPointerOverGameObject())
-        {
-            return;
-        }
-
-        else if (shoot)
-        {
-            if (playerAttack != null)
-            {
-                playerAttack();
-            }
-            ////Find the slot named "Weapon"
-            //slot = GameObject.Find("WEAPON");
-
-            ////Looks at slot information in weapon slot to see if empty or not
-            //Slot tmp = slot.GetComponent<Slot>();
-
-            //if (tmp.IsEmpty)
-            //{
-            //    //THERE IS NO WEAPON IN WEAPON SLOT DO NUFFIN
-            //}
-            ////There is a weapon equipped
-            //else
-            //{
-            //    //Obtain stack information of item in weapon
-            //    weap = slot.GetComponent<Slot>();
-            //    //Peek at stack information
-            //    atk = weap.Items.Peek();
-            //    //Access scripts of weapon
-            //    switch (atk.weaponName)
-            //    {
-            //        case "Blowdart":
-            //            Blowdart BlowdartWeapon = gameObject.GetComponentInChildren<Blowdart>();
-            //            BlowdartWeapon.Attack();
-            //            //Debug.Log(atk.weaponName);
-            //            break;
-            //        case "ShortSword":
-            //            ShortSword ShortSwordWeapon = gameObject.GetComponentInChildren<ShortSword>();
-            //            ShortSwordWeapon.Attack();
-            //            //Debug.Log(atk.weaponName);
-            //            break;
-            //        case "GodHands":
-            //            if (GodhandsCanAttack)
-            //            {
-            //                GodHands GodHandsWeapon = gameObject.GetComponentInChildren<GodHands>();
-            //                GodHandsWeapon.Attack(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-            //                //Debug.Log(atk.weaponName);
-            //            }
-            //            break;
-            //    }
-            //}
-        }
+        //EventSystem eventSystem = EventSystem.current;
+        //if (eventSystem.IsPointerOverGameObject())
+        //{
+        //    return;
+        //}
     }
 
     void FixedUpdate()
     {
-        // stops all player actions
-        if (freezePlayer)
-        {
-            return;
-        }
-
-        if (edge)
-        {
-            if (Input.GetKey(KeyCode.S))
-            {
-                rb2d.gravityScale = 0;
-
-                CurrentVector = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y);
-
-                //gets current perp vector with current and next point
-                knownVec = CurrentVector - new Vector2(edge.points[(currentEdgePoint + 1) % edge.pointCount].x, edge.points[(currentEdgePoint + 1) % edge.pointCount].y);
-                perpVec = CurrentVector + new Vector2(knownVec.y, -knownVec.x) * 1;
-
-                //for moving the object
-                gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, perpVec, .25f);
-
-                //for rotating the object
-                targetRotation = Quaternion.LookRotation(Vector3.forward, perpVec - CurrentVector);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, .25f);
-
-                //gets next point to move to
-                if (Vector3.Distance(gameObject.transform.position, perpVec) <= .1f)
-                {
-                    if (facingRight)
-                    {
-                        currentEdgePoint = (currentEdgePoint + 1) % (edge.edgeCount - 1);
-                    }
-                    else
-                    {
-                        currentEdgePoint = ((edge.edgeCount - 1) + currentEdgePoint - 1) % (edge.edgeCount - 1);
-                    }
-                }
-            }
-            else if (Input.GetKeyUp(KeyCode.S))
-            {
-                rb2d.gravityScale = 1;
-                transform.eulerAngles = Vector3.zero;
-            }
-        }
-
-        //anim.SetFloat("Speed", Mathf.Abs(h));
-
-        //for changing exp on page
-        //StatPageExperienceText.GetComponent<Text>().text = "EXP: " + PlayerStats.playerStatistics.experiencePoints;
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            //flip character sprite
-            if (!facingRight)
-            {
-                Flip();
-            }
-            //if going other direction, stop
-            if (rb2d.velocity.x < 0)
-            {
-                rb2d.velocity = new Vector2(0, rb2d.velocity.y);
-            }
-            //speed up by 1 to the right
-            if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
-            {
-                rb2d.velocity = new Vector2(rb2d.velocity.x + 1, rb2d.velocity.y);
-            }
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            //flip character sprite
-            if (facingRight)
-            {
-                Flip();
-            }
-            //if going other direction, stop
-            if (rb2d.velocity.x > 0)
-            {
-                rb2d.velocity = new Vector2(0, rb2d.velocity.y);
-            }
-            //speed up by 1 to the left
-            if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
-            {
-                rb2d.velocity = new Vector2(rb2d.velocity.x - 1, rb2d.velocity.y);
-            }
-        }
-        //if colliding then slow down (don't slow doing in air)
-        else if (IsColliding == true)
-        {
-            rb2d.velocity = new Vector2(rb2d.velocity.x * .5f, rb2d.velocity.y);
-        }
-
-        if (Mathf.Abs(rb2d.velocity.y) >= maxSpeed)
-        {
-            //start timer for falling; take damage after 1 sec
-            //deltatime is time sinece last frame.
-            timer += Time.deltaTime;
-            falling = true;
-        }
-        else
-        {
-            falling = false;
-            timer = 0;
-        }
-
-        if (jump)
-        {
-            rb2d.gravityScale = 1;
-            if (rb2d.velocity.y < 0)
-            {
-                rb2d.velocity = new Vector3(rb2d.velocity.x, 0, 0);
-            }
-            if (Mathf.Sign(rb2d.velocity.y) < 1.2f)
-            {
-                rb2d.AddForce(new Vector2(0f, jumpForce));
-            }
-            if (Mathf.Sign(rb2d.velocity.y) > 1.2f)
-            {
-                rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Sign(rb2d.velocity.y) * 0.2f);
-            }
-            jump = false;
-        }
-
         //if (PlayerStats.PlayerStatsSingle.experiencePoints >= PlayerStats.PlayerStatsSingle.level * 15)
         //{
         //    // text container
@@ -582,7 +149,7 @@ public class GameController : MonoBehaviour
 
     public void LearnDashSkill()
     {
-        dashSkill = true;
+        PlayerController.PlayerControllerSingle.dashSkill = true;
         GameObject.Find("DashSkill").GetComponent<Button>().image.color = Color.yellow;
         GameObject.Find("DashSkill").GetComponent<Button>().interactable = false;
         GameObject.Find("DashSkill2").GetComponent<Button>().interactable = true;
@@ -592,7 +159,7 @@ public class GameController : MonoBehaviour
     {
         GameObject.Find("DashSkill2").GetComponent<Button>().image.color = Color.yellow;
         GameObject.Find("DashSkill2").GetComponent<Button>().interactable = false;
-        dashSkill2 = true;
+        PlayerController.PlayerControllerSingle.dashSkill2 = true;
     }
 
     public void InventoryOn()
@@ -767,10 +334,10 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void RemoveCurrentMapObjects()
+    public void RemoveCurrentMapObjects()
     {
         //def of parent for removing item
-        itemlist = WorldObjects.WorldObjectsSingle.transform.FindChild("WorldItems");
+        itemlist = WorldObjects.WorldObjectsSingle.transform.Find("WorldItems");
         //itemlist = GameObject.Find("WorldItems");
 
         //remove player projectiles
@@ -811,85 +378,6 @@ public class GameController : MonoBehaviour
     //        //MapGenerator.MapGeneratorSingle.LoadMap();
     //    }
     //}
-
-    void Flip()
-    {
-        facingRight = !facingRight;
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        IsColliding = true;
-
-        //add item to inventory
-        if (collision.gameObject.tag == "Item")
-        {
-            Inventory.InventorySingle.AddItem(collision.gameObject.GetComponent<Item>());
-            Destroy(collision.gameObject);
-        }
-
-        //falling damage
-        if (falling && timer >= 2f)
-        {
-            PlayerStats.PlayerStatsSingle.health -= 1;
-        }
-
-        //for slide move; gets edge collider player is touching
-        if (!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
-        {
-            if (collision.gameObject.GetComponent<EdgeCollider2D>())
-            {
-                edge = collision.gameObject.GetComponent<EdgeCollider2D>();
-                for (int index = 0; index < edge.pointCount; index++)
-                {
-                    if (Vector2.Distance(edge.points[index], collision.contacts[0].point) <= 1f)
-                    {
-
-                        currentEdgePoint = index;
-                        return;
-                    }
-                }
-            }
-        }
-    }
-
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        //if (!edge)
-        //{
-        //    if (collision.gameObject.GetComponent<EdgeCollider2D>())
-        //    {
-        //        Debug.Log("on stay");
-        //        edge = collision.gameObject.GetComponent<EdgeCollider2D>();
-        //        for (int index = 0; index < edge.pointCount; index++)
-        //        {
-        //            if (Vector2.Distance(edge.points[index], collision.contacts[collision.contacts.Length - 1].point) <= .1f)
-        //            {
-        //                Debug.Log(edge.points[index]);
-        //                Debug.Log(index);
-        //                currentEdgePoint = index;
-        //                return;
-        //            }
-        //        }
-        //    }
-        //}
-
-        IsColliding = true;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        IsColliding = false;
-
-        //for slide move
-        if(!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
-        {
-            edge = null;
-        }
-    }
 
     //have to put in my hand for load on click field in canvas
     public void SavePlayerData()
@@ -1014,11 +502,7 @@ public class GameController : MonoBehaviour
 
     IEnumerator LoadNewScene(string sceneName)
     {
-        //stops player from moving during loading
-        rb2d.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-
-        //deactivates gamecon to stop player from doing anything while game is loading
-        GameController.GameControllerSingle.freezePlayer = true;
+        PlayerController.PlayerControllerSingle.LockPosition();
 
         //load functions
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName);
@@ -1029,14 +513,11 @@ public class GameController : MonoBehaviour
             yield return null;
         }
 
-        //lets player move after loading
-        rb2d.constraints = RigidbodyConstraints2D.None;
-        rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-        rb2d.transform.rotation = Quaternion.identity;
 
-        //actives game controler for player actions
-        freezePlayer = false;
-        touchingDoor = false;
+        //unlock player
+        PlayerController.PlayerControllerSingle.UnLockPosition();
+
+        PlayerController.PlayerControllerSingle.touchingDoor = false;
     }
 }
 
@@ -1048,7 +529,6 @@ public class PlayerData
     public int maxHealth;
     public int experiencePoints;
     public int level;
-
 }
 
 [System.Serializable]

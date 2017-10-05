@@ -53,10 +53,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4844c771e17c4345b56215556bb1eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 4
+  health: 40
   maxHealth: 4
   experiencePoints: 2
   level: 1
+  baseWeaponDamage: 0
+  baseSpellDamage: 0
 --- !u!114 &114698404427513212
 MonoBehaviour:
   m_ObjectHideFlags: 1

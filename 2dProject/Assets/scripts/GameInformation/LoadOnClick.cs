@@ -39,7 +39,8 @@ public class LoadOnClick : MonoBehaviour {
     }
 
     void Update() {
-        if (loading) {
+        if (loading)
+        {
             foreach (Transform child in WorldObjects.WorldObjectsSingle.transform)
             {
                 foreach (Transform child2 in child)
@@ -48,7 +49,7 @@ public class LoadOnClick : MonoBehaviour {
                 }
             }
             loadMap = "StartArea";
-            GameController.GameControllerSingle.transform.position = new Vector3(-0f, 1.2f, 0);
+            PlayerController.PlayerControllerSingle.transform.position = new Vector3(-0f, 1.2f, 0);
 
             loadScene = true;
             loading = false;
@@ -57,7 +58,8 @@ public class LoadOnClick : MonoBehaviour {
             StartCoroutine(LoadNewScene());
 
         }
-        if (loadScene == true) {
+        if (loadScene == true)
+        {
             loadingText.color = new Color(loadingText.color.r, loadingText.color.g, loadingText.color.b, Mathf.PingPong(Time.time, .1f));
         }
     }
@@ -70,29 +72,23 @@ public class LoadOnClick : MonoBehaviour {
 
     IEnumerator LoadNewScene()
     {
-        GameObject hero = GameObject.Find("Hero");
         //stops player from moving during loading
-        hero.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-
-        //deactivates gamecon to stop player from doing anything while game is loading
-        GameController.GameControllerSingle.freezePlayer = true;
+        PlayerController.PlayerControllerSingle.LockPosition();
         
         //load functions
         AsyncOperation async = SceneManager.LoadSceneAsync(loadMap);
 
         // While the asynchronous operation to load the new scene is not yet complete, continue waiting until it's done.
-        while (!async.isDone) {
+        while (!async.isDone)
+        {
             yield return null;
         }
 
         //lets player move after loading
-        hero.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        hero.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-        hero.transform.rotation = Quaternion.identity;
+        PlayerController.PlayerControllerSingle.UnLockPosition();
 
         //actives game controler for player actions
-        GameController.GameControllerSingle.freezePlayer = false;
-        GameController.GameControllerSingle.touchingDoor = false;
+        PlayerController.PlayerControllerSingle.touchingDoor = false;
         GameController.GameControllerSingle.questTravel = false;
         loadingText.text = "";
     }

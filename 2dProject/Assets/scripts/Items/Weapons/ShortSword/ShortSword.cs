@@ -34,11 +34,11 @@ public class ShortSword : MonoBehaviour {
             GameObject WeaponTransform = Instantiate(SwordPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
             // Assign position
             //shotTransform.position = transform.position
-            if (GameController.GameControllerSingle.facingRight == true)
+            if (PlayerController.PlayerControllerSingle.facingRight == true)
             {
                 WeaponTransform.transform.position = transform.position + transform.right;
             }
-            else if (GameController.GameControllerSingle.facingRight == false)
+            else
             {
                 WeaponTransform.transform.Rotate(0, 180, 0);
                 WeaponTransform.transform.position = transform.position - transform.right;

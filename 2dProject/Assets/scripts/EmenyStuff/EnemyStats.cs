@@ -37,6 +37,9 @@ public class EnemyStats : MonoBehaviour
     public bool isEnemy { get; set; }
     private int experiencePoint;
 
+    //invinsible
+    public bool invincible = false;
+
     void Start()
     {
         //10 items
@@ -71,16 +74,22 @@ public class EnemyStats : MonoBehaviour
             PlayerStats.PlayerStatsSingle.GainExperiencePoints(experiencePoint);
             //PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
 
-            KillQuest temp;
-            if (temp = QuestController.QuestControllerSingle.transform.GetComponent<KillQuest>())
+            KillQuest[] listKillQuests = QuestController.QuestControllerSingle.GetComponentsInChildren<KillQuest>();
+            if (listKillQuests.Length > 0)
             {
-                temp.KillQuestCounter += 1;
-                temp.UpdateKillQuest("Enemy");
+                foreach (KillQuest quest in listKillQuests)
+                {
+                    if (gameObject.name == quest.killTarget)
+                    {
+                        quest.killQuestCounter += 1;
+                        quest.UpdateKillQuest();
+                    }
+                }
             }
 
             Instantiate(loot, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
 
-            dropChance = (float)Random.Range(0, 1.0f);
+            dropChance = Random.Range(0, 1.0f);
 
             if(dropChance < dropRate)
             {
@@ -106,10 +115,10 @@ public class EnemyStats : MonoBehaviour
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
         //if bullet, do bullet stuff
-        if (otherCollider.tag == "Bullet")
+        if (otherCollider.tag == "Bullet" && !invincible)
         {
             Destroy(otherCollider.gameObject);
-            Damage(GameController.GameControllerSingle.weaponDamage);
+            Damage(PlayerController.PlayerControllerSingle.weaponDamage);
         }
     }
 }

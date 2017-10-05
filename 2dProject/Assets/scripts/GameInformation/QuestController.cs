@@ -9,17 +9,25 @@ public class QuestController : MonoBehaviour {
     public Text QuestTxt;
 
     //main story quest counter
-    public float currentQuest;
-
-    //for on start of gatherquest
-    //quest giver
-    public string questGiver { get; private set; }
-    public int gatheramount { get; private set; }
-    public string gathertarget { get; private set; }
+    public float currentMainQuest;
 
     public Text MainQuestText; 
 
     public static QuestController QuestControllerSingle;
+
+    //names of enemies for kill quests
+    string[] EnemyNames = new string[] 
+    {
+        "Enemy",
+        "SliderEnemy",
+    };
+
+    //names of items to gather // needs to be same name as prefabs object in resource folder
+    string[] GatherTargets = new string[]
+    {
+        "ManaPotion",
+        "HealthPotion",
+    };
 
     void Awake()
     {
@@ -38,33 +46,35 @@ public class QuestController : MonoBehaviour {
 
     void Start()
     {
+        //main quest text box
         GameObject parentQuest = GameObject.Find("QuestPanel");
         MainQuestText = Instantiate(QuestTxt, parentQuest.transform);
         MainQuestText.name = "MainQuest";
-        MainQuestText.text = "Complete Quest " + currentQuest;
+        MainQuestText.text = "Complete Quest " + currentMainQuest;
 
-        if (currentQuest == 2f)
+        //check if player is on main quest
+        if (currentMainQuest == 2f)
         {
             Debug.Log("quest is 2");
-            Debug.Log(currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Hero").AddComponent<MainQuest2_0>();
         }
-        else if (QuestController.QuestControllerSingle.currentQuest == 5f)
+        else if (QuestController.QuestControllerSingle.currentMainQuest == 5f)
         {
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Hero").AddComponent<MainQuest5_0>();
             Debug.Log("quest is 5");
         }
-        else if (currentQuest == 6f)
+        else if (currentMainQuest == 6f)
         {
             Debug.Log("quest is 6");
-            Debug.Log(currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Hero").AddComponent<MainQuest6_0>();
         }
-        else if (currentQuest == 10f)
+        else if (currentMainQuest == 10f)
         {
             Debug.Log("quest is 10");
-            Debug.Log(currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Hero").AddComponent<MainQuest10_0>();
         }
     }
@@ -107,49 +117,72 @@ public class QuestController : MonoBehaviour {
 
     private void KillQuest(string NPCName)
     {
-        gameObject.AddComponent<KillQuest>();
-        KillQuest temp = GetComponent<KillQuest>();
+        //gameObject.AddComponent<KillQuest>();
+        //KillQuest KillQuestClass = GetComponent<KillQuest>();
 
-        //create name of quest
-        string questName = "KillQuest";
+        //would rather do the method above if possible
+        GameObject QuestGameobject = new GameObject(NPCName + " Kill Quest");
+        QuestGameobject.GetComponent<Transform>().SetParent(transform);
+        KillQuest KillQuestClass = QuestGameobject.AddComponent<KillQuest>();
 
         //Instantiate quest text
         GameObject parentQuest = GameObject.Find("QuestPanel");
-        Text tempText = Instantiate(QuestTxt, parentQuest.transform);
-        tempText.name = questName;
 
-        //assign variables
-        temp.questGiver = NPCName;
-        temp.killamount = 3;
-        temp.killtarget = "Enemy";
-        temp.KillQuestCounter = 0;
-        temp.QuestTxt = tempText;
+        Text QuestTextBox = Instantiate(QuestTxt, parentQuest.transform);
+        //Text QuestTextBox = Object.Instantiate<Text>(QuestTxt, parentQuest.transform);
+
+        //gather target random number
+        int killTargetNumber = Random.Range(0, EnemyNames.Length);
+
+        //assign quest vaiables
+        Debug.Log("NPCName = " + NPCName);
+        KillQuestClass.questGiver = NPCName;
+        KillQuestClass.killAmount = Random.Range(2, 5);
+        KillQuestClass.killTarget = EnemyNames[killTargetNumber];
+        //KillQuestClass.killItemPrefab = Resources.Load("Prefabs/Items/" + GatherTargets[killTargetNumber]) as GameObject;
+        KillQuestClass.killQuestCounter = 0;
+        KillQuestClass.QuestTxt = QuestTextBox;
+
+        //name of text box for quest; happens in gatherQuestStarter()
+        QuestTextBox.name = NPCName + " Kill ";
 
         //start quest
-        temp.KillQuestStarter();
+        KillQuestClass.KillQuestStarter();
     }
 
     private void GatherQuest(string NPCName)
     {
-        gameObject.AddComponent<GatherQuest>();
-        GatherQuest temp = GetComponent<GatherQuest>();
+        //this puts them on gamedata; multiple of same type is giving weird error for now; might be solvable
+        //gameObject.AddComponent<GatherQuest>();
+        //GatherQuest GatherQuestClass = GetComponent<GatherQuest>();
 
-        //create name of quest
-        string questName = "ManaPotions";
+        //would rather do the method above if possible
+        GameObject QuestGameobject = new GameObject(NPCName + " Gather Quest");
+        QuestGameobject.GetComponent<Transform>().SetParent(transform);
+        GatherQuest GatherQuestClass = QuestGameobject.AddComponent<GatherQuest>();
 
         //Instantiate quest text
         GameObject parentQuest = GameObject.Find("QuestPanel");
-        Text tempText = Instantiate(QuestTxt, parentQuest.transform);
-        tempText.name = questName;
+
+        Text QuestTextBox = Instantiate(QuestTxt, parentQuest.transform);
+        //Text QuestTextBox = Object.Instantiate<Text>(QuestTxt, parentQuest.transform);
+
+        //gather target random number
+        int gatherTargetNumber = Random.Range(0, GatherTargets.Length);
 
         //assign quest vaiables
-        temp.questGiver = NPCName;
-        temp.gatheramount = 2;
-        temp.gathertarget = "ManaPotion";
-        temp.GatherQuestCounter = 0;
-        temp.QuestTxt = tempText;
+        Debug.Log("NPCName = " + NPCName);
+        GatherQuestClass.questGiver = NPCName;
+        GatherQuestClass.gatherAmount = Random.Range(2, 5);
+        GatherQuestClass.gatherTarget = GatherTargets[gatherTargetNumber];
+        GatherQuestClass.gatherItemPrefab = Resources.Load("Prefabs/Items/" + GatherTargets[gatherTargetNumber]) as GameObject;
+        GatherQuestClass.gatherQuestCounter = 0;
+        GatherQuestClass.QuestTxt = QuestTextBox;
+
+        //name of text box for quest; happens in gatherQuestStarter()
+        QuestTextBox.name = NPCName + " Gather ";
 
         //start quest
-        temp.GatherQuestStarter();
+        GatherQuestClass.GatherQuestStarter();
     }
 }

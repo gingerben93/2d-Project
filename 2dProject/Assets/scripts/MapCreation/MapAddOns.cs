@@ -7,8 +7,14 @@ public class MapAddOns : MonoBehaviour
     public Transform doorPrefab;
     public Transform bossDoorPrefab;
 
+    //enemy prefabs
     public Transform EnemyPreFab;
     public Transform TurretPreFab;
+    public GameObject SlideEnemyPreFab;
+
+    //gather prefabs
+    public GameObject ManaPotion;
+    public GameObject HealthPotion;
 
     public List<Vector2> GenerateDoorsLocations(int[,] map)
     {
@@ -40,7 +46,7 @@ public class MapAddOns : MonoBehaviour
         string curSeed = MapGenerator.MapGeneratorSingle.seed;
 
         //this is for removing the old doors
-        foreach (Transform door in transform.FindChild("DoorHolder"))
+        foreach (Transform door in transform.Find("DoorHolder"))
         {
             Destroy(door.gameObject);
         }
@@ -55,7 +61,7 @@ public class MapAddOns : MonoBehaviour
             switch (doorType[x])
             {
                 case 0:
-                    Transform doorTransform = Instantiate(doorPrefab, transform.FindChild("DoorHolder")) as Transform;
+                    Transform doorTransform = Instantiate(doorPrefab, transform.Find("DoorHolder")) as Transform;
                     doorTransform.name = "Door";
                     doorTransform.position = new Vector3(xPos, yPos, 0);
 
@@ -66,7 +72,7 @@ public class MapAddOns : MonoBehaviour
                     mapInfo.seedReference = curSeed;
                     break;
                 case 1:
-                    Transform BossDoor = Instantiate(bossDoorPrefab, transform.FindChild("DoorHolder")) as Transform;
+                    Transform BossDoor = Instantiate(bossDoorPrefab, transform.Find("DoorHolder")) as Transform;
                     BossDoor.GetComponent<DoorToNewScene>().sceneToLoad = "Boss1";
                     BossDoor.name = "BossDoor1";
                     BossDoor.position = new Vector3(xPos, yPos, 0);
@@ -201,6 +207,8 @@ public class MapAddOns : MonoBehaviour
     {
         RemoveAllEnemies();
 
+        Transform Parent = GameObject.Find("EnemyList").transform;
+
         //placing enemies enemies
         for (int x = 0; x < enemyLocations.Count; x++)
         {
@@ -208,7 +216,8 @@ public class MapAddOns : MonoBehaviour
             float yPos = enemyLocations[x].y;
 
             var enemyTransform = Instantiate(EnemyPreFab) as Transform;
-            enemyTransform.transform.SetParent(GameObject.Find("EnemyList").transform);
+            enemyTransform.name = EnemyPreFab.name;
+            enemyTransform.transform.SetParent(Parent);
             enemyTransform.position = new Vector3(xPos, yPos, 0);
         }
 
@@ -219,8 +228,67 @@ public class MapAddOns : MonoBehaviour
             float yPos = turretLocations[x].y;
 
             var turretTransform = Instantiate(TurretPreFab) as Transform;
-            turretTransform.transform.SetParent(GameObject.Find("EnemyList").transform);
+            turretTransform.name = TurretPreFab.name;
+            turretTransform.transform.SetParent(Parent);
             turretTransform.position = new Vector3(xPos, yPos, 0);
+        }
+    }
+
+    public void SpawnSliderEnemy()
+    {
+        for (int x = 0; x < 15; x++)
+        {
+            GameObject SlideEnemy = Instantiate(SlideEnemyPreFab);
+            SlideEnemy.transform.SetParent(GameObject.Find("EnemyList").transform);
+            SlideEnemy.name = SlideEnemyPreFab.name;
+        }
+    }
+
+    public List<Vector2> GenerateAllOpenMapLocations(MapInformation map1)
+    {
+        List<Vector2> allOpenMapLocations;
+        allOpenMapLocations = new List<Vector2>();
+        Vector2 openLocation;
+        for (int x = 1; x < map1.width - 1; x++)
+        {
+            for (int y = 1; y < map1.height - 1; y++)
+            {
+                if ((map1.map[x, y] == 0))
+                {
+                    openLocation = new Vector2(x, y);
+                    allOpenMapLocations.Add(openLocation);
+                }
+            }
+        }
+        return allOpenMapLocations;
+    }
+
+    public void GatherQuestItems(MapInformation map1)
+    {
+        //List<GatherQuest> listGatherQuests = new List<GatherQuest>();
+        GatherQuest[] listGatherQuests = FindObjectsOfType(typeof(GatherQuest)) as GatherQuest[];
+        if (listGatherQuests.Length > 0)
+        {
+            //get spawn locations for items
+            List<Vector2> availableSpawnLocations = new List<Vector2>();
+            availableSpawnLocations = GenerateAllOpenMapLocations(map1);
+            int spawnLocationIndex;
+
+            Transform ItemHeirarchySpawn = GameObject.Find("WorldItems").transform;
+
+            //spawn all items that need to be spawned
+            foreach (GatherQuest gatherQuest in listGatherQuests)
+            {
+                GameObject spawnedItem = Instantiate(gatherQuest.gatherItemPrefab, ItemHeirarchySpawn);
+                Debug.Log(spawnedItem.name);
+                spawnedItem.name = gatherQuest.gatherTarget;
+                spawnLocationIndex = Random.Range(0, availableSpawnLocations.Count);
+                spawnedItem.transform.position = new Vector2(-map1.width / 2 + availableSpawnLocations[spawnLocationIndex].x * map1.squareSize + map1.squareSize / 2, -map1.height / 2 + availableSpawnLocations[spawnLocationIndex].y * map1.squareSize + map1.squareSize);
+                availableSpawnLocations.RemoveAt(spawnLocationIndex);
+
+                //give item gather script
+                //spawnedItem.AddComponent<Gather>();
+            }
         }
     }
 }

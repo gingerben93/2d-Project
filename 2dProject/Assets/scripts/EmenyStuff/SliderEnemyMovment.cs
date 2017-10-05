@@ -12,11 +12,27 @@ public class SliderEnemyMovment : MonoBehaviour {
     Vector2 knownVec;
     Vector2 perpVec;
     Quaternion targetRotation;
+
+    //random variables
     int Direction;
+    float speed;
+
+    //for attack
+    Transform PlayerTransform;
+    public bool attacking = false;
+    SliderEnemyAttack Attack;
+
+    //attack cooldown when destoryed
+    float coolDown = 2;
+    float coolDownTimer = 2;
 
     // Use this for initialization
     void Start ()
     {
+        //for attack
+        PlayerTransform = PlayerController.PlayerControllerSingle.transform;
+        Attack = GetComponentInChildren<SliderEnemyAttack>();
+
         try
         {
             //get random edge collider
@@ -27,65 +43,102 @@ public class SliderEnemyMovment : MonoBehaviour {
             //set information
             currentEdgePoint = 0;
             gameObject.transform.position = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y);
-            //OnDrawGizmos();
+            
+            //random variables
             Direction = Random.Range(0, 2);
+            speed = Random.Range(20, 40) / 100f;
  
         }
         catch
         {
             Debug.Log("initialized to early");
+            Destroy(gameObject);
         }
     }
 
     void Update()
     {
+        if (Vector2.Distance(transform.position, PlayerTransform.position) <= 1000f && !attacking)
+        {
+            if (coolDownTimer == 0)
+            {
+                coolDownTimer = coolDown;
+                attacking = true;
+                Attack.StartAttack();
 
+                //get new random direction
+                Direction = Random.Range(0, 2);
+            }
+        }
     }
 	
 	// Update is called once per frame
 	void FixedUpdate()
     {
-        CurrentVector = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y);
-
-        //gets current perp vector with current and next point
-        knownVec = CurrentVector - new Vector2(edge.points[(currentEdgePoint + 1) % edge.pointCount].x, edge.points[(currentEdgePoint + 1) % edge.pointCount].y);
-        perpVec = CurrentVector + new Vector2(knownVec.y, -knownVec.x) * 1;
-
-        //for moving the object
-        gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, perpVec, .25f);
-
-        //for rotating the object
-        targetRotation = Quaternion.LookRotation(Vector3.forward, perpVec - CurrentVector);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, .25f);
-
-        //gets next point to move to
-        if (Vector3.Distance(gameObject.transform.position, perpVec) <= .1f)
+        if (attacking)
         {
-            if (Direction == 0)
+            //now gets set in attack script
+            //attacking = Attack.attacking;
+        }
+        else
+        {
+            //cool down for attack
+            if (coolDownTimer > 0)
             {
-                currentEdgePoint = (currentEdgePoint + 1) % (edge.edgeCount - 1);
+                coolDownTimer -= Time.deltaTime;
             }
             else
             {
-                currentEdgePoint = ((edge.edgeCount - 1) + currentEdgePoint - 1) % (edge.edgeCount - 1);
+                coolDownTimer = 0;
+            }
+
+            try
+            {
+                CurrentVector = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y);
+
+                //gets current perp vector with current and next point
+                knownVec = CurrentVector - new Vector2(edge.points[(currentEdgePoint + 1) % edge.pointCount].x, edge.points[(currentEdgePoint + 1) % edge.pointCount].y);
+                perpVec = CurrentVector + new Vector2(knownVec.y, -knownVec.x) * 1;
+
+                //for moving the object
+                gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, perpVec, speed);
+
+                //for rotating the object
+                targetRotation = Quaternion.LookRotation(Vector3.forward, perpVec - CurrentVector);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, .25f);
+
+                //gets next point to move to
+                if (Vector3.Distance(gameObject.transform.position, perpVec) <= .1f)
+                {
+                    if (Direction == 0)
+                    {
+                        currentEdgePoint = (currentEdgePoint + 1) % (edge.edgeCount - 1);
+                    }
+                    else
+                    {
+                        currentEdgePoint = ((edge.edgeCount - 1) + currentEdgePoint - 1) % (edge.edgeCount - 1);
+                    }
+                }
+            }
+            catch
+            {
+                try
+                {
+                    //get random edge collider
+                    ColliderHolder = GameObject.Find("ColliderHolder");
+                    currentEdgeSet = Random.Range(0, ColliderHolder.transform.childCount);
+                    edge = ColliderHolder.transform.GetChild(currentEdgeSet).GetComponent<EdgeCollider2D>();
+
+                    //set information
+                    currentEdgePoint = Random.Range(0, edge.edgeCount);
+                    gameObject.transform.position = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y);
+                    Direction = Random.Range(0, 2);
+                }
+                catch
+                {
+                    //needs time to spawn
+                }
             }
         }
     }
-
-    //void OnDrawGizmos()
-    //{
-    //    float slope;
-        
-    //    for (int y = 0; y < edge.edgeCount - 1; y++)
-    //    {
-    //        knownVec = new Vector2(edge.points[y].x, edge.points[y].y) - new Vector2(edge.points[(y + 1) % edge.pointCount].x, edge.points[(y + 1) % edge.pointCount].y);
-    //        perpVec = new Vector2(knownVec.y, -knownVec.x);
-    //        //perpVec.Normalize();
-
-    //        slope = -1 / (edge.points[(y + 1) % edge.pointCount].y - edge.points[y].y / edge.points[(y + 1) % edge.pointCount].x - edge.points[y].x);
-
-    //        Gizmos.color = Color.black;
-    //        Gizmos.DrawCube(new Vector2(edge.points[y].x, edge.points[y].y) + perpVec * 1, Vector2.one/5);
-    //    }
-    //}
 }

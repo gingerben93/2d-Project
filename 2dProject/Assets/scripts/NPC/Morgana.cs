@@ -32,25 +32,44 @@ public class Morgana : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q) && character && DialogManager.DialogManagerSingle.dialogOn == false)
         {
             DialogManager.DialogManagerSingle.TalkingCharacter.sprite = newSprite;
-            GatherQuest gather = QuestController.QuestControllerSingle.transform.GetComponent<GatherQuest>();
-            if (gather)
+            GatherQuest[] listGatherQuests = QuestController.QuestControllerSingle.GetComponentsInChildren<GatherQuest>();
+
+            if (listGatherQuests.Length > 0)
             {
-                if (gather.GatherQuestCounter >= gather.gatheramount)
+                foreach (GatherQuest quest in listGatherQuests)
                 {
-                    Destroy(gather.QuestTxt.gameObject);
-                    Destroy(gather);
+                    if (quest.questGiver == gameObject.name)
+                    {
+                        if (quest.gatherQuestCounter >= quest.gatherAmount)
+                        {
+                            Destroy(quest.QuestTxt.gameObject);
+                            Destroy(quest.gameObject);
 
-                    canvas.alpha = 1;
+                            canvas.alpha = 1;
 
-                    //start conversavtion
-                    StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Morgana/QuestComplete"));
-                }
-                else
-                {
-                    canvas.alpha = 1;
+                            //start conversavtion
+                            StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Morgana/QuestComplete"));
+                        }
+                        else
+                        {
+                            canvas.alpha = 1;
 
-                    //start conversavtion
-                    StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Morgana/QuestIncomplete"));
+                            //start conversavtion
+                            StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Morgana/QuestIncomplete"));
+                        }
+                    }
+                    else
+                    {
+                        canvas.alpha = 1;
+
+                        //start conversavtion
+                        StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Morgana/AcceptQuest"));
+
+                        //will be random quest later
+                        QuestController.QuestControllerSingle.PickQuest("Morgana", 2);
+                        QuestController.QuestControllerSingle.PickQuest("Morgana", 2);
+                        QuestController.QuestControllerSingle.PickQuest("Morgana", 2);
+                    }
                 }
             }
             else
@@ -59,8 +78,10 @@ public class Morgana : MonoBehaviour
 
                 //start conversavtion
                 StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Morgana/AcceptQuest"));
-                
+
                 //will be random quest later
+                QuestController.QuestControllerSingle.PickQuest("Morgana", 2);
+                QuestController.QuestControllerSingle.PickQuest("Morgana", 2);
                 QuestController.QuestControllerSingle.PickQuest("Morgana", 2);
             }
         }

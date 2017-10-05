@@ -24,7 +24,7 @@ public class MainQuest5_0 : MonoBehaviour {
         GameController.GameControllerSingle.sideQuestBool = true;
 
         //set quest text in questlog
-        QuestController.QuestControllerSingle.MainQuestText.text = "Do Side Quest. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
+        QuestController.QuestControllerSingle.MainQuestText.text = "Do Side Quest. " + "Main Quest " + QuestController.QuestControllerSingle.currentMainQuest;
     }
 
     void Update()
@@ -39,7 +39,7 @@ public class MainQuest5_0 : MonoBehaviour {
                 GameController.GameControllerSingle.sideQuestBool = false;
                 Debug.Log("Complete, go to main quest 5");
                 BlitzCrank.BlitzCrankSingle.hasQuest = false;
-                QuestController.QuestControllerSingle.currentQuest = 6f;
+                QuestController.QuestControllerSingle.currentMainQuest = 6f;
 
                 canvas.alpha = 1;
                 StartCoroutine(Dialog());
@@ -47,7 +47,7 @@ public class MainQuest5_0 : MonoBehaviour {
             else if (GameController.GameControllerSingle.sideQuestCounter >= 1 && GameController.GameControllerSingle.sideQuestBool == true)
             {
                 //set quest text in questlog
-                QuestController.QuestControllerSingle.MainQuestText.text = "Talk to Blitz. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
+                QuestController.QuestControllerSingle.MainQuestText.text = "Talk to Blitz. " + "Main Quest " + QuestController.QuestControllerSingle.currentMainQuest;
             }
             else
             {
@@ -64,7 +64,7 @@ public class MainQuest5_0 : MonoBehaviour {
         string Conversation1 = DialogManager.DialogManagerSingle.MainQuestDialogueLoadPath + "MainQuest5_0.0";
 
         //freeze player
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+        PlayerController.PlayerControllerSingle.LockPosition();
 
         StartCoroutine(DialogManager.DialogManagerSingle.Dialog(Conversation1));
 
@@ -79,20 +79,18 @@ public class MainQuest5_0 : MonoBehaviour {
         canvas.alpha = 0;
 
         //let player move again
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-        GameController.GameControllerSingle.transform.transform.rotation = Quaternion.identity;
+        PlayerController.PlayerControllerSingle.UnLockPosition();
 
         //Text reset
         NPCtext.text = "";
         Herotext.text = "";
 
-        QuestController.QuestControllerSingle.currentQuest = 6f;
+        QuestController.QuestControllerSingle.currentMainQuest = 6f;
 
-        if (QuestController.QuestControllerSingle.currentQuest == 6f)
+        if (QuestController.QuestControllerSingle.currentMainQuest == 6f)
         {
             Debug.Log("quest is 6");
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Hero").AddComponent<MainQuest6_0>();
         }
 

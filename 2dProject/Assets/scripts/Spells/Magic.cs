@@ -20,10 +20,8 @@ public class Magic : MonoBehaviour
 
     //spell information
     private GameObject spellPrefab;
-    private GameObject spellTransform;
+    private GameObject spellGameObject;
     public float spellRate = 0.25f;
-
-    private float spellCooldown;
 
     void Start()
     {
@@ -37,19 +35,24 @@ public class Magic : MonoBehaviour
             case SpellType.FIRE:
                 Debug.Log("PewPewFireball");
                 spellPrefab = Resources.Load("Prefabs/Spells/Fireball", typeof(GameObject)) as GameObject;
-                spellCooldown = 0f;
 
                 // Create a new spell
-                spellTransform = Instantiate(spellPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
+                spellGameObject = Instantiate(spellPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
+                spellGameObject.name = spellPrefab.name;
+
+                var temp = Input.mousePosition;
+                Vector3 mousePos;
+                mousePos = Camera.main.ScreenToWorldPoint(temp);
+                mousePos.z = 0;
+                spellGameObject.GetComponent<Fireball>().SetStartData(PlayerController.PlayerControllerSingle.transform.position, mousePos);
      
                 break;
             case SpellType.HEAL:
                 Debug.Log("HEALHEALHEAL");
                 spellPrefab = Resources.Load("Prefabs/Spells/Heal", typeof(GameObject)) as GameObject;
-                spellCooldown = 0f;
 
                 // Create a new spell
-                spellTransform = Instantiate(spellPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
+                spellGameObject = Instantiate(spellPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
 
                 break;
             case SpellType.ICE:

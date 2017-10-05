@@ -402,7 +402,7 @@ public class Inventory : MonoBehaviour
                         Debug.Log(info.weaponName + "1");
                         SelectWeapon(info.weaponName);
                         //Set weapon damage to projectile damage;
-                        GameController.GameControllerSingle.weaponDamage = info.damage + PlayerStats.PlayerStatsSingle.baseWeaponDamage;
+                        PlayerController.PlayerControllerSingle.weaponDamage = info.damage + PlayerStats.PlayerStatsSingle.baseWeaponDamage;
                         //Debug.Log(info.damage);
 
                     }
@@ -421,7 +421,7 @@ public class Inventory : MonoBehaviour
                     if (info.type.ToString() == "WEAPON" && to.gameObject.name.ToString() == "WEAPON")
                     {
                         //Set weapon damage to projectile damage;
-                        GameController.GameControllerSingle.weaponDamage = info.damage + PlayerStats.PlayerStatsSingle.baseWeaponDamage;
+                        PlayerController.PlayerControllerSingle.weaponDamage = info.damage + PlayerStats.PlayerStatsSingle.baseWeaponDamage;
                         Debug.Log(info.weaponName);
                         SelectWeapon(info.weaponName);
                         //Debug.Log(info.damage);
@@ -478,7 +478,7 @@ public class Inventory : MonoBehaviour
             WeaponGameobject = Instantiate(Attack, GameObject.Find("WeaponAttack").transform);
             WeaponGameobject.transform.localPosition = Vector3.zero;
             Blowdart temp = WeaponGameobject.GetComponent<Blowdart>();
-            GameController.GameControllerSingle.playerAttack = temp.Attack;
+            PlayerController.PlayerControllerSingle.playerAttack = temp.Attack;
         }
         else if (weaponName == "ShortSword")
         {
@@ -490,7 +490,7 @@ public class Inventory : MonoBehaviour
             WeaponGameobject = Instantiate(Attack, GameObject.Find("WeaponAttack").transform);
             WeaponGameobject.transform.localPosition = Vector3.zero;
             ShortSword temp = WeaponGameobject.GetComponent<ShortSword>();
-            GameController.GameControllerSingle.playerAttack = temp.Attack;
+            PlayerController.PlayerControllerSingle.playerAttack = temp.Attack;
 
             //ShortSword temp = GameObject.Find("WeaponAttack").AddComponent<ShortSword>();
             //GameController.GameControllerSingle.playerAttack = temp.Attack;
@@ -503,7 +503,7 @@ public class Inventory : MonoBehaviour
             WeaponGameobject.transform.localPosition = Vector3.zero;
             GodHands temp = WeaponGameobject.GetComponent<GodHands>();
             temp.targetLocation = GameObject.Find("Hero").transform.position;
-            GameController.GameControllerSingle.playerAttack = temp.Attack;
+            PlayerController.PlayerControllerSingle.playerAttack = temp.Attack;
         }
     }
 }

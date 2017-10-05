@@ -59,7 +59,7 @@ public class PlayerStats : MonoBehaviour {
             baseSpellDamage += 1;
 
             // change damage for currently equipt weapons
-            GameController.GameControllerSingle.weaponDamage += 1;
+            PlayerController.PlayerControllerSingle.weaponDamage += 1;
         }
     }
 }

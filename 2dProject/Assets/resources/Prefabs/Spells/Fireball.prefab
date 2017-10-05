@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4984866630045812}
   - component: {fileID: 212607077323118344}
-  - component: {fileID: 50834381708712302}
   - component: {fileID: 61488693361656162}
   - component: {fileID: 114461046428239156}
+  - component: {fileID: 50922498093415384}
   m_Layer: 10
   m_Name: Fireball
   m_TagString: Bullet
@@ -37,13 +37,13 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1011830522429356}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.61, y: 1.3, z: 0.0559375}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &50834381708712302
+--- !u!50 &50922498093415384
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 1
@@ -57,7 +57,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 6.2784
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -74,9 +74,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: 0.007942677, y: 0.12742567}
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 0.53203607, y: 0.26006818}
+  m_Size: {x: 0.3, y: 0.24}
 --- !u!114 &114461046428239156
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -88,8 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56b30b684b6378049903cfb694a26269, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  rigidbodyComponent: {fileID: 50834381708712302}
+  rigidbodyComponent: {fileID: 50922498093415384}
 --- !u!212 &212607077323118344
 SpriteRenderer:
   m_ObjectHideFlags: 1

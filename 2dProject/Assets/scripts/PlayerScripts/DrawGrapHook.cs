@@ -45,8 +45,6 @@ public class DrawGrapHook : MonoBehaviour
     //grap body
     private GameObject grapBody;
     private Vector2 difference;
-    private float distanceInX;
-    private float distanceInY;
     private float grapBodyAngle;
     private Quaternion q;
     public bool hasBodyCollided { get; set; }
@@ -74,13 +72,13 @@ public class DrawGrapHook : MonoBehaviour
         //line.SetWidth(.1f, .1f);
         //line.SetColors(Color.green, Color.green);
 
-        line.numPositions = 2;
+        line.positionCount = 2;
         line.startWidth = .1f;
         line.endWidth = .1f;
         line.startColor = Color.green;
         line.endColor = Color.green;
 
-        player = GameController.GameControllerSingle.gameObject;
+        player = PlayerController.PlayerControllerSingle.gameObject;
 
         line.useWorldSpace = true;
         line.enabled = false;
@@ -116,7 +114,7 @@ public class DrawGrapHook : MonoBehaviour
 
                 //rest number lines
                 currentNumberLines = 2;
-                line.numPositions = currentNumberLines;
+                line.positionCount = currentNumberLines;
 
                 //set tip to dynamic for collision detection
                 rb2dTip.isKinematic = false;
@@ -196,7 +194,7 @@ public class DrawGrapHook : MonoBehaviour
             {
                 rb2d.gravityScale = 1;
                 moveUpRope = false;
-                joint.distance = Vector2.Distance(rb2dTip.transform.position, GameController.GameControllerSingle.transform.position);
+                joint.distance = Vector2.Distance(rb2dTip.transform.position, PlayerController.PlayerControllerSingle.transform.position);
                 joint.enabled = true;
             }
 
@@ -215,7 +213,7 @@ public class DrawGrapHook : MonoBehaviour
             {
                 rb2d.gravityScale = 1;
                 moveDownRope = false;
-                joint.distance = Vector2.Distance(rb2dTip.transform.position, GameController.GameControllerSingle.transform.position);
+                joint.distance = Vector2.Distance(rb2dTip.transform.position, PlayerController.PlayerControllerSingle.transform.position);
                 joint.enabled = true;
             }
 
@@ -260,15 +258,16 @@ public class DrawGrapHook : MonoBehaviour
 
             //for rotating body
             difference = GrapTip.transform.position - player.transform.position;
-            distanceInX = difference.x;
-            distanceInY = difference.y;
+            grapBody.transform.position = (player.transform.position + GrapTip.transform.position) / 2;
 
             grapBodyAngle = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-
-            grapBody.transform.position = GrapTip.transform.position - new Vector3(distanceInX / 2f, distanceInY / 2f, 0);
             q = Quaternion.AngleAxis(grapBodyAngle, Vector3.forward);
             grapBody.transform.rotation = q;
-            grapBody.GetComponent<BoxCollider2D>().size = new Vector2(Vector3.Distance(GrapTip.transform.position, player.transform.position) * 4, .5f);
+
+            //transform.rotation = Quaternion.LookRotation(Vector3.forward, GrapTip.transform.position - player.transform.position);
+
+            //grapBody.GetComponent<BoxCollider2D>().size = new Vector2(.25f, Vector3.Distance(GrapTip.transform.position, player.transform.position));
+            grapBody.GetComponent<BoxCollider2D>().size = new Vector2(Vector3.Distance(GrapTip.transform.position, player.transform.position), .25f);
         }
     }
 

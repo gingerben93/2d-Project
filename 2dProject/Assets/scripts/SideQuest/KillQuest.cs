@@ -5,25 +5,25 @@ using UnityEngine.UI;
 
 public class KillQuest : MonoBehaviour {
 
-    //quest prefab
+    //quest text prefab object
     public Text QuestTxt;
 
-    //quest giver
+    //quest giver name
     public string questGiver { get; set; }
 
-    //Kill Quest
-    public int KillQuestCounter { get; set; }
-    public int killamount { get; set; }
-    public string killtarget { get; set; }
+    //Kill Quest variables
+    public int killQuestCounter { get; set; }
+    public int killAmount { get; set; }
+    public string killTarget { get; set; }
 
-    public void UpdateKillQuest(string target)
+    public void UpdateKillQuest()
     {
-        Text updateQuest2 = GameObject.Find("QuestPanel/KillQuest").GetComponent<Text>();
-        updateQuest2.text = "Kill " + killamount + " of " + target + "\nCurrent Kills: " + KillQuestCounter;
+        //Text QuestTxt = GameObject.Find("QuestPanel/KillQuest").GetComponent<Text>();
+        QuestTxt.text = "Kill " + killAmount + " of " + killTarget + "\nCurrent Kills: " + killQuestCounter;
 
-        if (KillQuestCounter >= killamount)
+        if (killQuestCounter >= killAmount)
         {
-            updateQuest2.text = questGiver + " Kill Quest Complete";
+            QuestTxt.text = "Kill Quest Complete. Return to " + questGiver;
 
             //for if thye main quest needs side quest complete to continue
             if (GameController.GameControllerSingle.sideQuestBool == true)
@@ -35,7 +35,7 @@ public class KillQuest : MonoBehaviour {
 
     public void KillQuestStarter()
     {
-        QuestTxt.text = "kill " + killamount + " of " + killtarget + "\nCurrent kills: " + KillQuestCounter;
-        QuestTxt.name = "KillQuest";
+        QuestTxt.text = "kill " + killAmount + " of " + killTarget + "\nCurrent kills: " + killQuestCounter;
+        //QuestTxt.name = questGiver + " Gather " + gatherTarget;
     }
 }

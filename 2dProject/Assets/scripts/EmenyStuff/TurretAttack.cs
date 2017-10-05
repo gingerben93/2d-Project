@@ -19,7 +19,7 @@ public class TurretAttack : MonoBehaviour {
     // Use this for initialization
     void Start () {
         //for turret attack
-        playerTransform = GameController.GameControllerSingle.transform;
+        playerTransform = PlayerController.PlayerControllerSingle.transform;
 
     }
 	

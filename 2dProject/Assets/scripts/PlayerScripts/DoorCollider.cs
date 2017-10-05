@@ -57,8 +57,8 @@ public class DoorCollider : MonoBehaviour {
 
             //pass seed and door info to gameController.
             GameController.GameControllerSingle.mapSeed = newSeed;
-            GameController.GameControllerSingle.doorRef = numVal;
-            GameController.GameControllerSingle.touchingDoor = true;
+            //GameController.GameControllerSingle.doorRef = numVal;
+            PlayerController.PlayerControllerSingle.touchingDoor = true;
         }
     }
 
@@ -77,7 +77,7 @@ public class DoorCollider : MonoBehaviour {
     {
         if (node.gameObject.tag == "Door")
         {
-            GameController.GameControllerSingle.touchingDoor = false;
+            PlayerController.PlayerControllerSingle.touchingDoor = false;
         }
     }
 

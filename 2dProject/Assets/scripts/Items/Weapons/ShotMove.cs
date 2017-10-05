@@ -33,7 +33,7 @@ public class ShotMove : MonoBehaviour
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
 
-        heading = mousePos - GameController.GameControllerSingle.transform.position;
+        heading = mousePos - PlayerController.PlayerControllerSingle.transform.position;
         distance = heading.magnitude;
         direction = heading / distance;
 

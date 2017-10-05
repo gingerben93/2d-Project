@@ -42,9 +42,9 @@ public class GodHands : MonoBehaviour {
             godHandsFistPlayer.pullAttackOn = true;
             godHandsFistPlayer.newTargetLocation = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            godHandsFistPlayer.gotoPosition = GameController.GameControllerSingle.transform.position;
+            godHandsFistPlayer.gotoPosition = PlayerController.PlayerControllerSingle.transform.position;
             godHandsFistPlayer.userTransform = weaponTransform.GetComponent<Transform>();
-            godHandsFistPlayer.userTransform.position = GameController.GameControllerSingle.transform.position;
+            godHandsFistPlayer.userTransform.position = PlayerController.PlayerControllerSingle.transform.position;
         }
     }
 

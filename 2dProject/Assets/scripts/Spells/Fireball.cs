@@ -3,9 +3,10 @@ using System.Collections;
 
 public class Fireball : MonoBehaviour
 {
-    public GameObject player;
 
-    private Vector3 mousePos;
+    private Vector3 StartLocation, EndLocation;
+
+    //private Vector3 mousePos;
     private Vector3 heading;
     private float distance;
     private Vector3 direction;
@@ -16,82 +17,66 @@ public class Fireball : MonoBehaviour
     float angleY;
 
     private Vector2 movement;
-    public Rigidbody2D rigidbodyComponent;
-    // Update is called once per frame
+    private Rigidbody2D rigidbodyComponent;
 
     void Start()
     {
-        Shoot();
         Destroy(gameObject, 5);
-        transform.position = GameObject.Find("Hero").transform.position;
     }
 
     void FixedUpdate()
     {
+        //Debug.Log("vel = " + rigidbodyComponent.velocity);
+    }
 
+    //start method
+    public void SetStartData(Vector3 Start, Vector3 End)
+    {
+        StartLocation = Start;
+        EndLocation = End;
+
+        //get fireball rb
+        rigidbodyComponent = GetComponent<Rigidbody2D>();
+        //set start locations of object
+        transform.position = Start;
+        //get firball velocity
+        Shoot();
     }
 
     void Shoot()
     {
-        //temp = Input.mousePosition;
-        var temp = Input.mousePosition;
-        mousePos = Camera.main.ScreenToWorldPoint(temp);
-        mousePos.z = 0;
 
-        heading = mousePos - GameController.GameControllerSingle.transform.position;
-
-        float vel, x, y, g, angle1, angle2;
-        vel = 5;
-        x = heading.x;
-        y = heading.y;
+        float g, maxHeight, time, displacementY;
+        Vector3 velocityY, velocityXZ, displacementXZ;
         g = -9.81f;
 
-        rigidbodyComponent.velocity = new Vector2(heading.x * vel, heading.y * vel);
+        maxHeight = EndLocation.y - StartLocation.y;
 
-        //angle1 = Mathf.Atan((Mathf.Pow(vel,2) + Mathf.Sqrt(Mathf.Pow(vel,4) - g*(g*x + 2*y*Mathf.Pow(vel,2)))) / (g*x) );
-        //angle2 = Mathf.Atan((Mathf.Pow(vel, 2) - Mathf.Sqrt(Mathf.Pow(vel, 4) - g * (g * x + 2 * y * Mathf.Pow(vel, 2)))) / (g * x));
+        if(0 < maxHeight && maxHeight < 3)
+        {
+            maxHeight = 3;
+        }
 
-        //Debug.Log(heading);
-        //Debug.Log(angle1 * (180 / Mathf.PI));
-        //Debug.Log(angle2 * (180 / Mathf.PI));
+        displacementY = EndLocation.y - StartLocation.y;
+        displacementXZ = new Vector3(EndLocation.x - StartLocation.x, 0, EndLocation.z - StartLocation.z);
+        time = Mathf.Sqrt(-2 * maxHeight / g) + Mathf.Sqrt(2 * (displacementY - maxHeight) / g);
 
-        //angleX = Mathf.Atan(((Mathf.Pow(10, 2)) + Mathf.Sqrt(Mathf.Pow(10, 4) - -9.81f * (-9.81f * (Mathf.Pow(heading.x, 2) + (2 * heading.y * (Mathf.Pow(10, 2))))))) / (-9.81f * heading.x));
-        //angleY = Mathf.Atan(((Mathf.Pow(10, 2)) - Mathf.Sqrt(Mathf.Pow(10, 4) - -9.81f * (-9.81f * (Mathf.Pow(heading.x, 2) + (2 * heading.y * (Mathf.Pow(10, 2))))))) / (-9.81f * heading.x));
+        //for above player
+        if (displacementY <= 0)
+        {
+            time = Mathf.Sqrt(2 * displacementY / g);
+            velocityY = Vector3.zero;
+            velocityXZ = displacementXZ / time;
+        }
+        //for below player
+        else
+        {
+            time = Mathf.Sqrt(-2 * maxHeight / g) + Mathf.Sqrt(2 * (displacementY - maxHeight) / g);
+            velocityY = Vector3.up * Mathf.Sqrt(-2 * g * maxHeight);
+            velocityXZ = displacementXZ / time;
+        }
 
-        //Debug.Log(angle);
-        //Debug.Log(angleX * (180 / Mathf.PI));
-        //Debug.Log(angleY * (180 / Mathf.PI));
-
-
-        //angle = Vector2.Angle(mousePos, GameController.GameControllerSingle.transform.position);
-        //Debug.Log(GameController.GameControllerSingle.transform.position);
-        //Debug.Log(mousePos);
-        //Debug.Log(angle);
-
-        //if (angle1 * (180 / Mathf.PI) >= 0)
-        //{
-        //    if (angle2 * (180 / Mathf.PI) >= 0)
-        //    {
-        //        Debug.Log("quad 3");
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("quad 2");
-        //    }
-        //}
-        //else
-        //{
-        //    if (angle2 * (180 / Mathf.PI) >= 0)
-        //    {
-        //        Debug.Log("quad 1");
-        //        rigidbodyComponent.velocity = new Vector2(Mathf.Cos(angle2) * vel, Mathf.Sin(angle2) * vel);
-
-        //    }
-        //    else
-        //    {
-        //        Debug.Log("quad 4");
-        //    }
-        //}
+        //set velocity x y in rb
+        rigidbodyComponent.velocity = (velocityXZ + velocityY * -Mathf.Sign(g));
     }
-
 }

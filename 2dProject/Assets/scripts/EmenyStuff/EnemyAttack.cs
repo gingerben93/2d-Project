@@ -10,12 +10,14 @@ public class EnemyAttack : MonoBehaviour {
     private float shootCooldown;
 
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         shootCooldown = 0f;
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         if (shootCooldown > 0)
         {
             shootCooldown -= Time.deltaTime;

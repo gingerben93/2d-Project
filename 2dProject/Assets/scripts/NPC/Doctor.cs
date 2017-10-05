@@ -24,10 +24,10 @@ public class Doctor : MonoBehaviour
         Herotext = DialogManager.DialogManagerSingle.Herotext;
         canvas = DialogManager.DialogManagerSingle.canvas;
 
-        if (QuestController.QuestControllerSingle.currentQuest == 0f)
+        if (QuestController.QuestControllerSingle.currentMainQuest == 0f)
         {
             Debug.Log("quest is 0");
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Doctor").AddComponent<MainQuest0_0>();
         }
     }

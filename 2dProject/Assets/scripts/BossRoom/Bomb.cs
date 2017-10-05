@@ -6,7 +6,7 @@ public class Bomb : MonoBehaviour {
 
     public Rigidbody2D rb2d;
     public GameObject shield;
-    public GameObject movement;
+    public MoveTowardPlayer movement;
 
     void Start()
     {
@@ -14,7 +14,7 @@ public class Bomb : MonoBehaviour {
 
         //Access to gameobjects on boss
         shield = BossScript.BossScriptSingle.shield;
-        movement = BossScript.BossScriptSingle.movement;
+        movement = BossScript.BossScriptSingle.GetComponent<MoveTowardPlayer>();
 
         //No more bombs
         BossScript.BossScriptSingle.bombSpawn = true;
@@ -30,7 +30,7 @@ public class Bomb : MonoBehaviour {
 
             //turn off shield and turn on movement
             shield.SetActive(false);
-            movement.SetActive(true);
+            movement.enabled = false;
 
             //One bomb at a time
             BossScript.BossScriptSingle.bombSpawn = false;
@@ -41,7 +41,7 @@ public class Bomb : MonoBehaviour {
             BossScript.BossScriptSingle.bombSpawn = false;
 
             //No longer stun the player
-            GameController.GameControllerSingle.freezePlayer = false;
+            PlayerController.PlayerControllerSingle.freezePlayer = false;
             if (GameObject.FindGameObjectWithTag("EnemyProjectile") != null)
             {
                 Destroy(GameObject.FindGameObjectWithTag("EnemyProjectile"));

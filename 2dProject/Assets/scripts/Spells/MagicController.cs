@@ -13,8 +13,8 @@ public class MagicController : MonoBehaviour
     private GameObject FromMagic;
     private GameObject ToMagic;
 
-    GameObject Attack;
-    GameObject HotBarSlot1, HotBarSlot2, HotBarSlot3;
+    //GameObject Attack;
+    //GameObject HotBarSlot1, HotBarSlot2, HotBarSlot3;
 
     private Canvas canvas;
 
@@ -146,39 +146,39 @@ public class MagicController : MonoBehaviour
         {
             if (on)
             {
-                GameController.GameControllerSingle.HotBarSlot1 = GameObject.Find(hotbarName).GetComponent<Magic>().Cast;
+                PlayerController.PlayerControllerSingle.HotBarSlot1 = GameObject.Find(hotbarName).GetComponent<Magic>().Cast;
                 //SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot1, ref HotBarSlot1);
             }
             else
             {
-                Destroy(HotBarSlot1);
-                GameController.GameControllerSingle.HotBarSlot1 = null;
+                //Destroy(HotBarSlot1);
+                PlayerController.PlayerControllerSingle.HotBarSlot1 = null;
             }
         }
         else if (hotbarName.Contains("HotbarButtonTwo"))
         {
             if (on)
             {
-                GameController.GameControllerSingle.HotBarSlot2 = GameObject.Find(hotbarName).GetComponent<Magic>().Cast;
+                PlayerController.PlayerControllerSingle.HotBarSlot2 = GameObject.Find(hotbarName).GetComponent<Magic>().Cast;
                 //    SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot2, ref HotBarSlot2);
             }
             else
             {
-                Destroy(HotBarSlot2);
-                GameController.GameControllerSingle.HotBarSlot2 = null;
+                //Destroy(HotBarSlot2);
+                PlayerController.PlayerControllerSingle.HotBarSlot2 = null;
             }
         }
         else if (hotbarName.Contains("HotbarButtonThree"))
         {
             if (on)
             {
-                GameController.GameControllerSingle.HotBarSlot3 = GameObject.Find(hotbarName).GetComponent<Magic>().Cast;
+                PlayerController.PlayerControllerSingle.HotBarSlot3 = GameObject.Find(hotbarName).GetComponent<Magic>().Cast;
                 //    SelectWeapon(spellName, ref GameController.GameControllerSingle.HotBarSlot3, ref HotBarSlot3);
             }
             else
             {
-                Destroy(HotBarSlot3);
-                GameController.GameControllerSingle.HotBarSlot3 = null;
+                //Destroy(HotBarSlot3);
+                PlayerController.PlayerControllerSingle.HotBarSlot3 = null;
             }
         }
     }

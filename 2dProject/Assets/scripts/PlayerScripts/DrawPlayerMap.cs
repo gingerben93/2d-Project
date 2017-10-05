@@ -130,7 +130,7 @@ public class DrawPlayerMap : MonoBehaviour {
             //turn off worldmap if on
             if (worldMapOn)
             {
-                foreach (Transform child in transform.parent.FindChild("WorldMaps"))
+                foreach (Transform child in transform.parent.Find("WorldMaps"))
                 {
                     child.gameObject.SetActive(false);
                 }
@@ -174,7 +174,7 @@ public class DrawPlayerMap : MonoBehaviour {
                 }
             }
         }
-        if (GameController.GameControllerSingle.touchingDoor == true && Input.GetKeyDown(KeyCode.R)) {
+        if (PlayerController.PlayerControllerSingle.touchingDoor == true && Input.GetKeyDown(KeyCode.R)) {
 
             if (localMapOn)
             {
@@ -187,7 +187,7 @@ public class DrawPlayerMap : MonoBehaviour {
             {
                 //for door maps
                 transform.localScale = new Vector3(.175f, .175f, .175f);
-                transform.position = GameController.GameControllerSingle.transform.position;
+                transform.position = PlayerController.PlayerControllerSingle.transform.position;
                 drawDoors = false;
                 DrawDoorsLocalMap(nextMap);
                 var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
@@ -205,7 +205,7 @@ public class DrawPlayerMap : MonoBehaviour {
 
                 //for door maps
                 transform.localScale = new Vector3(.175f, .175f, .175f);
-                transform.position = GameController.GameControllerSingle.transform.position;
+                transform.position = PlayerController.PlayerControllerSingle.transform.position;
                 drawDoors = false;
                 DrawDoorsLocalMap(nextMap);
                 var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
@@ -222,7 +222,7 @@ public class DrawPlayerMap : MonoBehaviour {
         if (localMapOn)
         {
             //keep map locked on character
-            MapMarkerTeemoPos.position = GameController.GameControllerSingle.transform.position + (GameController.GameControllerSingle.transform.position * .175f);
+            MapMarkerTeemoPos.position = PlayerController.PlayerControllerSingle.transform.position + (PlayerController.PlayerControllerSingle.transform.position * .175f);
             //keep map locked on character
             UpdatePosition();
         }
@@ -244,7 +244,7 @@ public class DrawPlayerMap : MonoBehaviour {
                 }
 
                 //turn off
-                if (transform.parent.FindChild("WorldMaps").GetComponent<Transform>())
+                if (transform.parent.Find("WorldMaps").GetComponent<Transform>())
                 {
                     currentWorldMap.SetActive(false);
                 }
@@ -278,19 +278,19 @@ public class DrawPlayerMap : MonoBehaviour {
             //keep map locked on character
             if (currentMapSetIndex < GameData.GameDataSingle.mapSets.Count)
             {
-                MapMarkerTeemoPos.position = GameController.GameControllerSingle.transform.position + GetCurrentMapLocation(currentMap) + (GameController.GameControllerSingle.transform.position * .075f);
+                MapMarkerTeemoPos.position = PlayerController.PlayerControllerSingle.transform.position + GetCurrentMapLocation(currentMap) + (PlayerController.PlayerControllerSingle.transform.position * .075f);
             }
             else
             {
-                MapMarkerTeemoPos.position = GameController.GameControllerSingle.transform.position + (GameController.GameControllerSingle.transform.position * .075f);
+                MapMarkerTeemoPos.position = PlayerController.PlayerControllerSingle.transform.position + (PlayerController.PlayerControllerSingle.transform.position * .075f);
             }
             //update door lines pos
             int x = 0;
             foreach (Transform child in GameObject.Find("MapDoorLines").transform)
             {
                 //can ig et the current line 0 position? i want that to currrent plus player pos
-                child.GetComponent<LineRenderer>().SetPosition(0, GameController.GameControllerSingle.transform.position + MapGenerator.MapGeneratorSingle.LinePos[x * 2]);
-                child.GetComponent<LineRenderer>().SetPosition(1, GameController.GameControllerSingle.transform.position + MapGenerator.MapGeneratorSingle.LinePos[x * 2 + 1]);
+                child.GetComponent<LineRenderer>().SetPosition(0, PlayerController.PlayerControllerSingle.transform.position + MapGenerator.MapGeneratorSingle.LinePos[x * 2]);
+                child.GetComponent<LineRenderer>().SetPosition(1, PlayerController.PlayerControllerSingle.transform.position + MapGenerator.MapGeneratorSingle.LinePos[x * 2 + 1]);
                 x++;
             }
 
@@ -337,8 +337,8 @@ public class DrawPlayerMap : MonoBehaviour {
         //tempMapLine.GetComponent<LineRenderer>().SetWidth(.1f, .1f); old version now outdated
         tempMapLine.GetComponent<LineRenderer>().startWidth = .1f;
         tempMapLine.GetComponent<LineRenderer>().endWidth = .1f;
-        tempMapLine.GetComponent<LineRenderer>().SetPosition(0, GameController.GameControllerSingle.transform.position + linePos1);
-        tempMapLine.GetComponent<LineRenderer>().SetPosition(1, GameController.GameControllerSingle.transform.position + linePos2);
+        tempMapLine.GetComponent<LineRenderer>().SetPosition(0, PlayerController.PlayerControllerSingle.transform.position + linePos1);
+        tempMapLine.GetComponent<LineRenderer>().SetPosition(1, PlayerController.PlayerControllerSingle.transform.position + linePos2);
         tempMapLine.name = seed1.ToString() + door1.ToString() + seed2.ToString() + door2.ToString() + "," + set1 + "," + set2;
 
         if (!worldMapOn)
@@ -384,8 +384,8 @@ public class DrawPlayerMap : MonoBehaviour {
         //tempMapLine.GetComponent<LineRenderer>().SetWidth(.1f, .1f); old version now outdated
         tempMapLine.GetComponent<LineRenderer>().startWidth = .1f;
         tempMapLine.GetComponent<LineRenderer>().endWidth = .1f;
-        tempMapLine.GetComponent<LineRenderer>().SetPosition(0, GameController.GameControllerSingle.transform.position + linePos1);
-        tempMapLine.GetComponent<LineRenderer>().SetPosition(1, GameController.GameControllerSingle.transform.position + linePos2);
+        tempMapLine.GetComponent<LineRenderer>().SetPosition(0, PlayerController.PlayerControllerSingle.transform.position + linePos1);
+        tempMapLine.GetComponent<LineRenderer>().SetPosition(1, PlayerController.PlayerControllerSingle.transform.position + linePos2);
         tempMapLine.name = seed1.ToString() + door1.ToString() + seed2.ToString() + door2.ToString() + "," + set1 + "," + set2;
 
         if (!worldMapOn)
@@ -459,7 +459,7 @@ public class DrawPlayerMap : MonoBehaviour {
             {
                 var doorTransform = Instantiate(doorPrefab);
                 doorTransform.transform.SetParent(transform);
-                doorTransform.position = GameController.GameControllerSingle.transform.position + new Vector3(MapGenerator.MapGeneratorSingle.MapInfo[curMap].doorLocationsX[tempCounter] * .175f,
+                doorTransform.position = PlayerController.PlayerControllerSingle.transform.position + new Vector3(MapGenerator.MapGeneratorSingle.MapInfo[curMap].doorLocationsX[tempCounter] * .175f,
                                                                                  MapGenerator.MapGeneratorSingle.MapInfo[curMap].doorLocationsY[tempCounter] * .175f, 0);
                 doorTransform.localScale = new Vector3(.7f, .7f, .7f);
             }
@@ -484,7 +484,7 @@ public class DrawPlayerMap : MonoBehaviour {
         {
             var objectTransform = Instantiate(PrefabObject);
             objectTransform.transform.SetParent(transform);
-            objectTransform.position = GameController.GameControllerSingle.transform.position + new Vector3(single.x * .175f, single.y * .175f, 0);
+            objectTransform.position = PlayerController.PlayerControllerSingle.transform.position + new Vector3(single.x * .175f, single.y * .175f, 0);
             objectTransform.localScale = new Vector3(.7f, .7f, .7f);
         }
     }
@@ -504,12 +504,12 @@ public class DrawPlayerMap : MonoBehaviour {
 
         //scale size down and set position
         transform.localScale = new Vector3(.175f, .175f, .175f);
-        transform.position = GameController.GameControllerSingle.transform.position;
+        transform.position = PlayerController.PlayerControllerSingle.transform.position;
         transform.eulerAngles = new Vector3(270, 0, 0);
         //transform.Rotate(Vector3.zero);
 
         //for mapdoors
-        if (GameController.GameControllerSingle.touchingDoor == true && firstRun != false)
+        if (PlayerController.PlayerControllerSingle.touchingDoor == true && firstRun != false)
         {
             DrawDoorsLocalMap(nextMap);
         }
@@ -524,11 +524,11 @@ public class DrawPlayerMap : MonoBehaviour {
     {
         if (localMapOn)
         {
-            transform.position = GameController.GameControllerSingle.transform.position;
+            transform.position = PlayerController.PlayerControllerSingle.transform.position;
         }
         else
         {
-            currentWorldMap.transform.position = GameController.GameControllerSingle.transform.position;
+            currentWorldMap.transform.position = PlayerController.PlayerControllerSingle.transform.position;
         }
     }
 
@@ -574,7 +574,7 @@ public class DrawPlayerMap : MonoBehaviour {
             }
 
             //create a worldmap object for this set of maps
-            GameObject tempWorldMap = Instantiate(playerWorldMap, transform.parent.FindChild("WorldMaps").transform);
+            GameObject tempWorldMap = Instantiate(playerWorldMap, transform.parent.Find("WorldMaps").transform);
             tempWorldMap.name = "WorldMap" + currentSetMaps;
             tempWorldMap.GetComponent<MeshFilter>().mesh.CombineMeshes(combineTest);
 
@@ -616,7 +616,7 @@ public class DrawPlayerMap : MonoBehaviour {
         }
 
         //bad try at active world map
-        foreach (Transform child in transform.parent.FindChild("WorldMaps"))
+        foreach (Transform child in transform.parent.Find("WorldMaps"))
         {
             child.gameObject.SetActive(false);
         }

@@ -3,7 +3,6 @@ using System.Collections;
 
 public class MoveTowardPlayer : MonoBehaviour {
 
-    private Transform enemy;
     private Transform player;
 
     //
@@ -34,11 +33,10 @@ public class MoveTowardPlayer : MonoBehaviour {
     void Start ()
     {
         //enemy = transform.GetComponentInParent<Transform>();
-        enemy = transform.parent.transform;
-        player = GameController.GameControllerSingle.transform;
+        player = PlayerController.PlayerControllerSingle.transform;
 
         //
-        enemyRigBody = enemy.GetComponent<Rigidbody2D>();
+        enemyRigBody = gameObject.GetComponent<Rigidbody2D>();
 
         //
         maxSpeed = 2f;
@@ -51,7 +49,7 @@ public class MoveTowardPlayer : MonoBehaviour {
 
         scriptDelayAmount = .5f;
         scriptDelayLastTime = 0;
-}
+    }
 
     void Update()
     {
@@ -80,7 +78,7 @@ public class MoveTowardPlayer : MonoBehaviour {
         }
         previousLocations[previousLocations.Length - 1] = transform.position;
 
-        distanceToPlayer = Vector3.Distance(enemy.position, player.position);
+        distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         if (distanceToPlayer <= 10)
         {
@@ -107,7 +105,7 @@ public class MoveTowardPlayer : MonoBehaviour {
                     }
                 }
 
-                heading = player.position - enemy.position;
+                heading = player.position - transform.position;
                 distance = heading.magnitude;
                 StartDirection = heading / distance;
                 enemyRigBody.velocity = new Vector2(maxSpeed * StartDirection.x, enemyRigBody.velocity.y);

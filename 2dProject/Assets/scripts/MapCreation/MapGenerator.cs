@@ -210,7 +210,7 @@ public class MapGenerator : MonoBehaviour
             LoadMap();
 
             DrawPlayerMap.DrawPlayerMapSingle.currentMap = seed;
-            GameController.GameControllerSingle.respawnLocation = new Vector3(PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsX[0],
+            PlayerController.PlayerControllerSingle.respawnLocation = new Vector3(PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsX[0],
                                                                               PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsY[0], 0);
 
             //have to create set some variables in drawplayermap
@@ -238,7 +238,7 @@ public class MapGenerator : MonoBehaviour
             }
 
             //for turing off all cave objects. need to wait for this beacuse haven't build world map yet
-            foreach (Transform child in transform.FindChild("MapHolder"))
+            foreach (Transform child in transform.Find("MapHolder"))
             {
                 child.gameObject.SetActive(false);
             }
@@ -258,7 +258,7 @@ public class MapGenerator : MonoBehaviour
 
             seed = GameData.GameDataSingle.mapSeed[0];
 
-            GameController.GameControllerSingle.respawnLocation = new Vector3(PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsX[0],
+            PlayerController.PlayerControllerSingle.respawnLocation = new Vector3(PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsX[0],
                                                                               PlayerStats.PlayerStatsSingle.MapInfo[seed].doorLocationsY[0], 0);
 
             DrawPlayerMap.DrawPlayerMapSingle.currentMap = seed;
@@ -288,33 +288,16 @@ public class MapGenerator : MonoBehaviour
             }
 
             //for turing off all cave objects. need to wait for this beacuse haven't build world map yet
-            foreach (Transform child in transform.FindChild("MapHolder"))
+            foreach (Transform child in transform.Find("MapHolder"))
             {
                 child.gameObject.SetActive(false);
             }
 
             //loads the map
             LoadMap();
-            
-
 
         }
     }
-
-    //have to wait 1 sec beacuse enemylist isn't created right away
-    //void OnEnable()
-    //{
-    //    if (seed != null)
-    //    {
-    //        StartCoroutine(WaitForGameToLoad());
-    //    }
-    //}
-
-    //IEnumerator WaitForGameToLoad()
-    //{
-    //    yield return null;
-    //    LoadMap();
-    //}
 
     public void GenerateOldMaps()
     {
@@ -427,12 +410,11 @@ public class MapGenerator : MonoBehaviour
     public void LoadMap()
     {
         //have to set respawn locations
-        GameController.GameControllerSingle.transform.position = GameController.GameControllerSingle.respawnLocation;
+        PlayerController.PlayerControllerSingle.transform.position = PlayerController.PlayerControllerSingle.respawnLocation;
 
         MapInformation currentData = MapInfo[seed];
         borderedMap = currentData.borderedMap;
 
-        //find a way to save the map data so oyu don't even have to recreate the borderedMap (and doorLocations); this can jsut go right at the top.
         meshGen.LoadMeshFromAssests(currentData.borderedMap, 1);
 
         //for door spawns
@@ -467,6 +449,12 @@ public class MapGenerator : MonoBehaviour
             {
                 MapAddOns.PlaceEnemyOnMap(enemyLocations, turretLocations);
             }
+
+            //for enemies that free spawn
+            MapAddOns.SpawnSliderEnemy();
+
+            //spawns gather items // should be somewhere else later (only spawns if there are enemies)
+            MapAddOns.GatherQuestItems(MapInfo[seed]);
         }
         else if (bossRooms.Contains(seed))
         {

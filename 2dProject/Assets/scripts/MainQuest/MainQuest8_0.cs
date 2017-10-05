@@ -23,8 +23,8 @@ public class MainQuest8_0 : MonoBehaviour {
     void Start ()
     {
         //set player spawn to in room and hold player spawn location for outside area
-        spawnLocationHolder = GameController.GameControllerSingle.respawnLocation;
-        GameController.GameControllerSingle.respawnLocation = new Vector3(0, 1, 0);
+        spawnLocationHolder = PlayerController.PlayerControllerSingle.respawnLocation;
+        PlayerController.PlayerControllerSingle.respawnLocation = new Vector3(0, 1, 0);
 
         NPCtext = DialogManager.DialogManagerSingle.NPCtext;
         Herotext = DialogManager.DialogManagerSingle.Herotext;
@@ -33,7 +33,7 @@ public class MainQuest8_0 : MonoBehaviour {
         bossDead = false;
 
         //set quest text in questlog
-        QuestController.QuestControllerSingle.MainQuestText.text = "Kill Boss. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
+        QuestController.QuestControllerSingle.MainQuestText.text = "Kill Boss. " + "Main Quest " + QuestController.QuestControllerSingle.currentMainQuest;
     }
 
     // Update is called once per frame
@@ -53,10 +53,10 @@ public class MainQuest8_0 : MonoBehaviour {
         string Conversation1 = DialogManager.DialogManagerSingle.MainQuestDialogueLoadPath + "MainQuest8_0.0";
 
         //reset spawn location
-        GameController.GameControllerSingle.respawnLocation = spawnLocationHolder;
+        PlayerController.PlayerControllerSingle.respawnLocation = spawnLocationHolder;
 
         //freeze player
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+        PlayerController.PlayerControllerSingle.LockPosition();
 
         //start conversavtion 1
         StartCoroutine(DialogManager.DialogManagerSingle.Dialog(Conversation1));
@@ -72,20 +72,18 @@ public class MainQuest8_0 : MonoBehaviour {
         canvas.alpha = 0;
 
         //let player move again
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-        GameController.GameControllerSingle.transform.transform.rotation = Quaternion.identity;
+        PlayerController.PlayerControllerSingle.UnLockPosition();
 
         //Text reset
         NPCtext.text = "";
         Herotext.text = "";
 
-        QuestController.QuestControllerSingle.currentQuest = 9f;
+        QuestController.QuestControllerSingle.currentMainQuest = 9f;
 
-        if (QuestController.QuestControllerSingle.currentQuest == 9f)
+        if (QuestController.QuestControllerSingle.currentMainQuest == 9f)
         {
             Debug.Log("quest is 9");
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             //GameObject.Find("Hero").AddComponent<MainQuest9_0>();
         }
 

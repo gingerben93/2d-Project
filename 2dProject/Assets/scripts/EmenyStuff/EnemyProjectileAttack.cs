@@ -12,15 +12,12 @@ public class EnemyProjectileAttack : MonoBehaviour {
     //Finalized movement of projectile
     private Vector2 movement;
 
-    //Where the hero is located
-    public Transform playerTransform;
-
+    //rb game object
+    Rigidbody2D gameObjectRB;
 
     void Start()
     {
-        //for turret attack
-        playerTransform = GameController.GameControllerSingle.transform;
-
+        gameObjectRB = GetComponent<Rigidbody2D>();
         //Last for 3 seconds 
         Destroy(gameObject, 3.0f);
         ProjectileMovement();
@@ -29,13 +26,13 @@ public class EnemyProjectileAttack : MonoBehaviour {
     void Update()
     {
         //Move projectile towards where the player was
-        gameObject.GetComponent<Rigidbody2D>().velocity = movement;
+        gameObjectRB.velocity = movement;
     }
 
     void ProjectileMovement()
     {
         //Calculate where to fire the projectile
-        heading = playerTransform.position - transform.position;
+        heading = PlayerController.PlayerControllerSingle.transform.position - transform.position;
         distance = heading.magnitude;
         direction = heading / distance;
 

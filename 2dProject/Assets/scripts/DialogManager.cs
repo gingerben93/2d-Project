@@ -80,7 +80,7 @@ public class DialogManager : MonoBehaviour {
             leftClick = false;
             rightClick = false;
 
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
 
             TextAsset TextObject = Resources.Load(Conversation) as TextAsset;
             string fullConversation = TextObject.text;

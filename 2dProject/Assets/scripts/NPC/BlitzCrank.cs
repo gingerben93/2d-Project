@@ -48,25 +48,25 @@ public class BlitzCrank : MonoBehaviour {
         Herotext = DialogManager.DialogManagerSingle.Herotext;
         canvas = DialogManager.DialogManagerSingle.canvas;
 
-        if (QuestController.QuestControllerSingle.currentQuest == 4f)
+        if (QuestController.QuestControllerSingle.currentMainQuest == 4f)
         {
             Debug.Log("quest is 4");
             hasQuest = true;
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             gameObject.AddComponent<MainQuest4_0>();
         }
-        else if (QuestController.QuestControllerSingle.currentQuest == 9f)
+        else if (QuestController.QuestControllerSingle.currentMainQuest == 9f)
         {
             Debug.Log("quest is 9");
             hasQuest = true;
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             gameObject.AddComponent<MainQuest9_0>();
         }
-        else if (QuestController.QuestControllerSingle.currentQuest == 10f)
+        else if (QuestController.QuestControllerSingle.currentMainQuest == 10f)
         {
             Debug.Log("quest is 10");
             hasQuest = true;
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             gameObject.AddComponent<MainQuest10_0>();
         }
     }
@@ -81,23 +81,39 @@ public class BlitzCrank : MonoBehaviour {
         else if (Input.GetKeyDown(KeyCode.Q) && touchingCharacter && DialogManager.DialogManagerSingle.dialogOn == false)
         {
             DialogManager.DialogManagerSingle.TalkingCharacter.sprite = newSprite;
-            KillQuest kill = QuestController.QuestControllerSingle.transform.GetComponent<KillQuest>();
+            KillQuest[] listKillQuests = QuestController.QuestControllerSingle.GetComponentsInChildren<KillQuest>();
             //remove sidequest and text object
-            if (kill)
+            if (listKillQuests.Length > 0)
             {
-                if (kill.KillQuestCounter >= kill.killamount)
+                foreach (KillQuest quest in listKillQuests)
                 {
-                    Destroy(kill.QuestTxt.gameObject);
-                    Destroy(kill);
-                    
-                    canvas.alpha = 1;
-                    StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Blitz/QuestComplete"));
+                    if (quest.questGiver == gameObject.name)
+                    {
+                        if (quest.killQuestCounter >= quest.killAmount)
+                        {
+                            Destroy(quest.QuestTxt.gameObject);
+                            Destroy(quest.gameObject);
 
-                }
-                else
-                {
-                    canvas.alpha = 1;
-                    StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Blitz/QuestIncomplete"));
+                            canvas.alpha = 1;
+                            StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Blitz/QuestComplete"));
+                        }
+                        else
+                        {
+                            canvas.alpha = 1;
+                            StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Blitz/QuestIncomplete"));
+                        }
+                    }
+                    else
+                    {
+                        canvas.alpha = 1;
+
+                        //start conversavtion
+                        StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Blitz/AcceptQuest"));
+
+                        QuestController.QuestControllerSingle.PickQuest("Blitz", 1);
+                        QuestController.QuestControllerSingle.PickQuest("Blitz", 1);
+                        QuestController.QuestControllerSingle.PickQuest("Blitz", 1);
+                    }
                 }
             }
             else
@@ -107,6 +123,8 @@ public class BlitzCrank : MonoBehaviour {
                 //start conversavtion
                 StartCoroutine(DialogManager.DialogManagerSingle.Dialog(DialogManager.DialogManagerSingle.NPCDialogueLoadPath + "Blitz/AcceptQuest"));
 
+                QuestController.QuestControllerSingle.PickQuest("Blitz", 1);
+                QuestController.QuestControllerSingle.PickQuest("Blitz", 1);
                 QuestController.QuestControllerSingle.PickQuest("Blitz", 1);
             }
         }

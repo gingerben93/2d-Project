@@ -20,14 +20,14 @@ public class MainQuest10_0 : MonoBehaviour {
         canvas = DialogManager.DialogManagerSingle.canvas;
 
         //set quest text in questlog
-        QuestController.QuestControllerSingle.MainQuestText.text = "return to town and talk to blitz. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
+        QuestController.QuestControllerSingle.MainQuestText.text = "return to town and talk to blitz. " + "Main Quest " + QuestController.QuestControllerSingle.currentMainQuest;
     }
 
     void Update()
     {
         if (!inRange)
         {
-            if (Vector3.Distance(GameController.GameControllerSingle.transform.position, transform.position) <= 5f)
+            if (Vector3.Distance(PlayerController.PlayerControllerSingle.transform.position, transform.position) <= 5f)
             {
                 DialogManager.DialogManagerSingle.TalkingCharacter.sprite = transform.GetComponent<SpriteRenderer>().sprite;
                 inRange = true;
@@ -44,7 +44,7 @@ public class MainQuest10_0 : MonoBehaviour {
         string Conversation1 = DialogManager.DialogManagerSingle.MainQuestDialogueLoadPath + "MainQuest10_0.0";
 
         //freeze player
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+        PlayerController.PlayerControllerSingle.LockPosition();
 
         StartCoroutine(DialogManager.DialogManagerSingle.Dialog(Conversation1));
 
@@ -59,20 +59,18 @@ public class MainQuest10_0 : MonoBehaviour {
         canvas.alpha = 0;
 
         //let player move again
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-        GameController.GameControllerSingle.transform.transform.rotation = Quaternion.identity;
+        PlayerController.PlayerControllerSingle.UnLockPosition();
 
         //Text reset
         NPCtext.text = "";
         Herotext.text = "";
 
-        QuestController.QuestControllerSingle.currentQuest = 9f;
+        QuestController.QuestControllerSingle.currentMainQuest = 9f;
 
-        if (QuestController.QuestControllerSingle.currentQuest == 9f)
+        if (QuestController.QuestControllerSingle.currentMainQuest == 9f)
         {
             Debug.Log("quest is 10");
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Character1").AddComponent<MainQuest11_0>();
         }
         //Destroy(this);

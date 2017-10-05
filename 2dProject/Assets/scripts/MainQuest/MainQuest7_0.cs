@@ -22,7 +22,7 @@ public class MainQuest7_0 : MonoBehaviour {
         canvas = DialogManager.DialogManagerSingle.canvas;
 
         //set quest text in questlog
-        QuestController.QuestControllerSingle.MainQuestText.text = "Fight the boss. " + "Main Quest " + QuestController.QuestControllerSingle.currentQuest;
+        QuestController.QuestControllerSingle.MainQuestText.text = "Fight the boss. " + "Main Quest " + QuestController.QuestControllerSingle.currentMainQuest;
     }
 
     // Update is called once per frame
@@ -44,7 +44,7 @@ public class MainQuest7_0 : MonoBehaviour {
         string Conversation1 = DialogManager.DialogManagerSingle.MainQuestDialogueLoadPath + "MainQuest7_0.0";
 
         //freeze player
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+        PlayerController.PlayerControllerSingle.LockPosition();
 
         //start conversavtion 1
         StartCoroutine(DialogManager.DialogManagerSingle.Dialog(Conversation1));
@@ -60,20 +60,18 @@ public class MainQuest7_0 : MonoBehaviour {
         canvas.alpha = 0;
 
         //let player move again
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        GameController.GameControllerSingle.transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-        GameController.GameControllerSingle.transform.transform.rotation = Quaternion.identity;
+        PlayerController.PlayerControllerSingle.UnLockPosition();
 
         //Text reset
         NPCtext.text = "";
         Herotext.text = "";
 
-        QuestController.QuestControllerSingle.currentQuest = 8f;
+        QuestController.QuestControllerSingle.currentMainQuest = 8f;
 
-        if (QuestController.QuestControllerSingle.currentQuest == 8f)
+        if (QuestController.QuestControllerSingle.currentMainQuest == 8f)
         {
             Debug.Log("quest is 8");
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             GameObject.Find("Hero").AddComponent<MainQuest8_0>();
         }
         Destroy(this);

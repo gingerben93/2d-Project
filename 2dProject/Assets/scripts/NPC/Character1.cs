@@ -22,22 +22,22 @@ public class Character1 : MonoBehaviour
         Herotext = DialogManager.DialogManagerSingle.Herotext;
         canvas = DialogManager.DialogManagerSingle.canvas;
 
-        if (QuestController.QuestControllerSingle.currentQuest == 1f)
+        if (QuestController.QuestControllerSingle.currentMainQuest == 1f)
         {
             Debug.Log("quest is 1");
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             gameObject.AddComponent<MainQuest1_0>();
         }
-        else if (QuestController.QuestControllerSingle.currentQuest == 3f)
+        else if (QuestController.QuestControllerSingle.currentMainQuest == 3f)
         {
             Debug.Log("quest is 3");
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             gameObject.AddComponent<MainQuest3_0>();
         }
-        else if (QuestController.QuestControllerSingle.currentQuest == 11f)
+        else if (QuestController.QuestControllerSingle.currentMainQuest == 11f)
         {
             Debug.Log("quest is 11");
-            Debug.Log(QuestController.QuestControllerSingle.currentQuest + " = QuestController.QuestControllerSingle.currentQuest");
+            Debug.Log(QuestController.QuestControllerSingle.currentMainQuest + " = QuestController.QuestControllerSingle.currentQuest");
             gameObject.AddComponent<MainQuest11_0>();
         }
     }

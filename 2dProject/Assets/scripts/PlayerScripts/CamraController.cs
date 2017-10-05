@@ -26,10 +26,10 @@ public class CamraController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        player = GameController.GameControllerSingle.transform;
+        player = PlayerController.PlayerControllerSingle.transform;
         offset = transform.position - player.transform.position;
         transform.Rotate(Vector3.zero);
-        transform.position = GameController.GameControllerSingle.transform.position;
+        transform.position = PlayerController.PlayerControllerSingle.transform.position;
     }
 
     // Update is called once per frame

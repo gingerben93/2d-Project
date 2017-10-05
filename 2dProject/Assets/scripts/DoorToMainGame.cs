@@ -38,12 +38,7 @@ public class DoorToMainGame : MonoBehaviour
 
     IEnumerator LoadNewScene()
     {
-        GameObject hero = GameObject.Find("Hero");
-        //stops player from moving during loading
-        hero.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
-
-        //deactivates gamecon to stop player from doing anything while game is loading
-        GameController.GameControllerSingle.freezePlayer = true;
+        PlayerController.PlayerControllerSingle.LockPosition();
 
         //load functions
         AsyncOperation async = SceneManager.LoadSceneAsync("Area1");
@@ -55,13 +50,9 @@ public class DoorToMainGame : MonoBehaviour
         }
 
         //lets player move after loading
-        hero.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        hero.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
-        hero.transform.rotation = Quaternion.identity;
+        PlayerController.PlayerControllerSingle.UnLockPosition();
 
-        //actives game controler for player actions
-        GameController.GameControllerSingle.freezePlayer = false;
-        GameController.GameControllerSingle.touchingDoor = false;
+        PlayerController.PlayerControllerSingle.touchingDoor = false;
         
         Destroy(gameObject);
     }

@@ -47,7 +47,7 @@ public class MeshGenerator : MonoBehaviour
             }
         }
 
-        GameObject Cave = Instantiate(cavePrefab, transform.FindChild("MapHolder"));
+        GameObject Cave = Instantiate(cavePrefab, transform.Find("MapHolder"));
 
         Cave.name = "Cave" + MapGenerator.MapGeneratorSingle.seed;
 

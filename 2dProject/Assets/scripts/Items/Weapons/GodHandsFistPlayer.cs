@@ -60,13 +60,13 @@ public class GodHandsFistPlayer : MonoBehaviour
         }
         else if (returnFist)
         {
-            userTransform.position = Vector3.MoveTowards(userTransform.position, GameController.GameControllerSingle.transform.position, step);
+            userTransform.position = Vector3.MoveTowards(userTransform.position, PlayerController.PlayerControllerSingle.transform.position, step);
 
             if (returnWithPlayer)
             {
-                targetTransform.position = Vector3.MoveTowards(userTransform.position, GameController.GameControllerSingle.transform.position, step);
+                targetTransform.position = Vector3.MoveTowards(userTransform.position, PlayerController.PlayerControllerSingle.transform.position, step);
             }
-            if (Vector3.Distance(userTransform.position, GameController.GameControllerSingle.transform.position) <= .5f)
+            if (Vector3.Distance(userTransform.position, PlayerController.PlayerControllerSingle.transform.position) <= .5f)
             {
                 returnFist = false;
 

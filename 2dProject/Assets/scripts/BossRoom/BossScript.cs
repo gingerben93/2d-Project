@@ -20,13 +20,26 @@ public class BossScript : MonoBehaviour
 
     //shield bools
     public GameObject shield;
-    public GameObject movement;
+    public MoveTowardPlayer movement;
     private bool shield1 = true;
     private bool shield2 = true;
     private bool shield3 = true;
 
     //Accessing Healthbar Script on boss
     public Healthbar bossHealth;
+
+    GodHands bossAttack;
+
+    bool startTimer = false;
+
+    private float timer = 0;
+    private float distanceToPlayer;
+
+    private Vector3 playersLastLocations;
+
+    public bool shieldOn = false;
+    public bool charge = true;
+    public bool bombSpawn = false;
 
     public static BossScript BossScriptSingle;
 
@@ -58,36 +71,22 @@ public class BossScript : MonoBehaviour
         isEnemy = true;
 
         //for boss attack
-        playerTransform = GameController.GameControllerSingle.transform;
         bossAttack = GetComponentInChildren<GodHands>();
 
-}
-
-    GodHands bossAttack;
-
-    bool startTimer = false;
-
-    private float timer = 0;
-    private float distanceToPlayer;
-
-    private Vector3 playersLastLocations;
-
-    private Transform playerTransform;
-
-    public bool shieldOn = false;
-    public bool charge = true;
-    public bool bombSpawn = false;
+        //for movement scipt
+        movement = gameObject.GetComponent<MoveTowardPlayer>();
+    }
 
 
 
     void Update()
     {
         //for checking how far the player is
-        distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+        distanceToPlayer = Vector3.Distance(transform.position, PlayerController.PlayerControllerSingle.transform.position);
         if(shieldOn == false) { 
             if (distanceToPlayer <= 10)
             {
-                playersLastLocations = playerTransform.position;
+                playersLastLocations = PlayerController.PlayerControllerSingle.transform.position;
                 startTimer = true;
             }
             //timer for time until attack
@@ -100,7 +99,7 @@ public class BossScript : MonoBehaviour
                 startTimer = false;
                 timer = 0;
 
-                playersLastLocations = playerTransform.position;
+                playersLastLocations = PlayerController.PlayerControllerSingle.transform.position;
                 bossAttack.AttackBoss(playersLastLocations);
 
             }
@@ -140,7 +139,7 @@ public class BossScript : MonoBehaviour
                 shieldOn = true;
                 
                 shield.SetActive(true);
-                movement.SetActive(false);
+                movement.enabled = false;
                 bossHealth.currentHealth = bossHealth.maxHealth * .75f;
 
                 //Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
@@ -155,7 +154,7 @@ public class BossScript : MonoBehaviour
                 shieldOn = true;
                 
                 shield.SetActive(true);
-                movement.SetActive(false);
+                movement.enabled = false;
                 bossHealth.currentHealth = bossHealth.maxHealth * .50f;
                 //Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
             }
@@ -168,7 +167,7 @@ public class BossScript : MonoBehaviour
                 shieldOn = true;
                 
                 shield.SetActive(true);
-                movement.SetActive(false);
+                movement.enabled = false;
                 bossHealth.currentHealth = bossHealth.maxHealth * .25f;
                 //Instantiate(bomb, new Vector3(12.0f, 0, 0), Quaternion.identity);
             }
@@ -179,8 +178,7 @@ public class BossScript : MonoBehaviour
                 //PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
 
                 //Boss1 is now dead
-                GameController.GameControllerSingle.Boss1 = true;
-                MainQuest8_0 mainQuest = GameController.GameControllerSingle.transform.GetComponent<MainQuest8_0>();
+                MainQuest8_0 mainQuest = PlayerController.PlayerControllerSingle.transform.GetComponent<MainQuest8_0>();
                 mainQuest.bossDead = true;
 
                 mainQuest.BossSprite = GameObject.Find("Boss").GetComponent<SpriteRenderer>().sprite;
@@ -231,7 +229,7 @@ public class BossScript : MonoBehaviour
         {
             Debug.Log("HIT by Bullet");
             Destroy(otherCollider.gameObject);
-            Damage(GameController.GameControllerSingle.weaponDamage);
+            Damage(PlayerController.PlayerControllerSingle.weaponDamage);
         }
     }
 
@@ -244,7 +242,7 @@ public class BossScript : MonoBehaviour
         yield return new WaitForSeconds(3);
 
         //PLayer to the left of boss
-        if (playerTransform.position.x > transform.position.x)
+        if (PlayerController.PlayerControllerSingle.transform.position.x > transform.position.x)
         {
             transform.GetComponent<Rigidbody2D>().velocity = new Vector3(0, transform.GetComponent<Rigidbody2D>().velocity.y, 0);
             transform.GetComponent<Rigidbody2D>().AddForce(new Vector3(2000f, 0, 0));

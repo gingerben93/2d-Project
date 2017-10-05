@@ -5,23 +5,28 @@ using UnityEngine.UI;
 
 public class GatherQuest : MonoBehaviour {
 
-    //quest prefab
+    //quest text prefab object
     public Text QuestTxt;
 
-    //quest giver
+    //quest giver name
     public string questGiver { get; set; }
-    public int GatherQuestCounter { get; set; }
-    public int gatheramount { get; set; }
-    public string gathertarget { get; set; }
 
-    public void UpdateGatherQuest(string gather)
+    //Gather quest variables
+    public int gatherQuestCounter { get; set; }
+    public int gatherAmount { get; set; }
+    public string gatherTarget { get; set; }
+
+    //gather quest item prefab
+    public GameObject gatherItemPrefab;
+
+    public void UpdateGatherQuest()
     {
-        Text updateQuest2 = GameObject.Find("QuestPanel/ManaPotions").GetComponent<Text>();
-        updateQuest2.text = "Gather " + gatheramount + " of " + gather + "\nCurrent Gathered: " + GatherQuestCounter;
+        //Text updateQuest2 = GameObject.Find("QuestPanel/GatherQuest").GetComponent<Text>();
+        QuestTxt.text = "Gather " + gatherAmount + " of " + gatherTarget + "\nCurrent Gathered: " + gatherQuestCounter;
 
-        if (GatherQuestCounter >= gatheramount)
+        if (gatherQuestCounter >= gatherAmount)
         {
-            updateQuest2.text = questGiver + " Gather Quest Complete";
+            QuestTxt.text = "Gather Quest Complete. Return to " + questGiver;
 
             //for if thye main quest needs side quest complete to continue
             if (GameController.GameControllerSingle.sideQuestBool == true)
@@ -33,9 +38,7 @@ public class GatherQuest : MonoBehaviour {
 
     public void GatherQuestStarter()
     {
-        //QuestTxt = tempText;
-
-        QuestTxt.text = "Gather " + gatheramount + " of " + gathertarget + "\nCurrent Gathered: " + GatherQuestCounter;
-        QuestTxt.name = "ManaPotions";
+        QuestTxt.text = "Gather " + gatherAmount + " of " + gatherTarget + "\nCurrent Gathered: " + gatherQuestCounter;
+        //QuestTxt.name = questGiver + " Gather " + gatherTarget;
     }
 }
