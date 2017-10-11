@@ -27,6 +27,7 @@ public class EnemyProjectileAttack : MonoBehaviour {
     {
         //Move projectile towards where the player was
         gameObjectRB.velocity = movement;
+        //transform.position = Vector2.MoveTowards(transform.position, PlayerController.PlayerControllerSingle.transform.position, .3f);
     }
 
     void ProjectileMovement()

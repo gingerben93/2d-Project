@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 4480484309328420}
   - component: {fileID: 61813994403589322}
   - component: {fileID: 212048288659661892}
-  m_Layer: 17
+  m_Layer: 0
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -278,6 +278,7 @@ MonoBehaviour:
   loot10: {fileID: 4913389887696664, guid: 5053b64c7494e95408f34e7ff621bd25, type: 2}
   loot11: {fileID: 4184709057733690, guid: 6322bc45db7b5214d8a1909ebc499a80, type: 2}
   items: []
+  invincible: 0
 --- !u!212 &212048288659661892
 SpriteRenderer:
   m_ObjectHideFlags: 1

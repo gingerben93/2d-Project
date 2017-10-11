@@ -236,13 +236,28 @@ public class MapAddOns : MonoBehaviour
 
     public void SpawnSliderEnemy()
     {
-        for (int x = 0; x < 15; x++)
+        for (int x = 0; x < 1; x++)
         {
             GameObject SlideEnemy = Instantiate(SlideEnemyPreFab);
             SlideEnemy.transform.SetParent(GameObject.Find("EnemyList").transform);
             SlideEnemy.name = SlideEnemyPreFab.name;
         }
     }
+
+    //public void SpawnSeekingEnemy(MapInformation map1)
+    //{
+    //    for (int x = 1; x < map1.width - 1; x++)
+    //    {
+    //        for (int y = 1; y < map1.height - 1; y++)
+    //        {
+    //            if (map1.map[x, y] == 0)
+    //            {
+    //                int xPos = -map1.width / 2 + x * map1.squareSize + map1.squareSize / 2;
+    //                int yPos = -map1.height / 2 + y * map1.squareSize + map1.squareSize;
+    //            }
+    //        }
+    //    }
+    //}
 
     public List<Vector2> GenerateAllOpenMapLocations(MapInformation map1)
     {

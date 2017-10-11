@@ -17,7 +17,6 @@ public class MainQuest0_0 : MonoBehaviour {
 
     void Start()
     {
-        Debug.Log("TalkOnApproach");
         NPCtext = DialogManager.DialogManagerSingle.NPCtext;
         Herotext = DialogManager.DialogManagerSingle.Herotext;
         canvas = DialogManager.DialogManagerSingle.canvas;

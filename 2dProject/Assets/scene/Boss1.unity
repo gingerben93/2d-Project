@@ -2461,7 +2461,7 @@ Prefab:
     - target: {fileID: 224819530377623610, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -11
       objectReference: {fileID: 0}
     - target: {fileID: 224819530377623610, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
@@ -2471,7 +2471,7 @@ Prefab:
     - target: {fileID: 224819530377623610, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 224653680972784142, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
@@ -2731,23 +2731,6 @@ Prefab:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
-    - target: {fileID: 1393622638586044, guid: 804906908a3a92e4594e27e18550813f, type: 2}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4519130607354134, guid: 804906908a3a92e4594e27e18550813f, type: 2}
-      propertyPath: m_LocalScale.x
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4519130607354134, guid: 804906908a3a92e4594e27e18550813f, type: 2}
-      propertyPath: m_LocalScale.y
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 61250077066955284, guid: 804906908a3a92e4594e27e18550813f,
-        type: 2}
-      propertyPath: m_SpriteTilingProperty.drawMode
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 804906908a3a92e4594e27e18550813f, type: 2}
   m_IsPrefabParent: 0
@@ -2980,7 +2963,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1124327448}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.22, y: 6.543089, z: 0}
+  m_LocalPosition: {x: -2.3, y: 6.543089, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

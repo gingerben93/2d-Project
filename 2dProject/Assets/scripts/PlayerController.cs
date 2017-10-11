@@ -75,6 +75,16 @@ public class PlayerController : MonoBehaviour
     //is touching door
     public bool touchingDoor { get; set; }
 
+    //invinsible
+    private bool invincible = false;
+    //attack cooldown when destoryed
+    float InvinicbleCoolDown = 1;
+    float InvinicbleCoolDownTimer = 0;
+
+    //for fade in and out player sprite
+    SpriteRenderer PlayerSprite;
+
+    //singleton
     public static PlayerController PlayerControllerSingle;
 
     void Awake()
@@ -113,11 +123,18 @@ public class PlayerController : MonoBehaviour
 
         //start player name
         playerName = "fukin nerd";
+
+        //set sprite
+        PlayerSprite =  transform.GetComponentInChildren<SpriteRenderer>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+
+
+
         //for stoping all player actions
         if (freezePlayer)
         {
@@ -302,6 +319,23 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (invincible)
+        {
+            //cool down for attack
+            if (InvinicbleCoolDownTimer > 0)
+            {
+                InvinicbleCoolDownTimer -= Time.deltaTime;
+                PlayerSprite.color = new Color(PlayerSprite.color.r, PlayerSprite.color.b, PlayerSprite.color.g, (PlayerSprite.color.a + .04f) % 1f);
+            }
+            else
+            {
+                InvinicbleCoolDownTimer = 0;
+                PlayerSprite.color = new Color(PlayerSprite.color.r, PlayerSprite.color.b, PlayerSprite.color.g, 1f);
+                invincible = false;
+            }
+        }
+
+
         // stops all player actions
         if (freezePlayer)
         {
@@ -443,6 +477,21 @@ public class PlayerController : MonoBehaviour
         transform.transform.rotation = Quaternion.identity;
     }
 
+    private void SetInvisible()
+    {
+        invincible = true;
+        InvinicbleCoolDownTimer = InvinicbleCoolDown;
+    }
+
+    public void DamagePlayer(int DamageAmount)
+    {
+        if (!invincible)
+        {
+            SetInvisible();
+            PlayerStats.PlayerStatsSingle.health -= DamageAmount;
+        }
+    }
+
     void OnTriggerEnter2D(Collider2D triggerCollition)
     {
 
@@ -463,7 +512,7 @@ public class PlayerController : MonoBehaviour
         //falling damage
         if (falling && timer >= 2f)
         {
-            PlayerStats.PlayerStatsSingle.health -= 1;
+            DamagePlayer(1);
         }
 
         //for slide move; gets edge collider player is touching
@@ -482,6 +531,12 @@ public class PlayerController : MonoBehaviour
                     }
                 }
             }
+        }
+
+        //for taking damage
+        if (collision.gameObject.tag == "Enemy")
+        {
+            Debug.Log("hit enemy");
         }
     }
 

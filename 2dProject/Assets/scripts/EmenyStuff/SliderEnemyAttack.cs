@@ -76,6 +76,17 @@ public class SliderEnemyAttack : MonoBehaviour {
         }
     }
 
+    void OnTriggerExit2D(Collider2D other)
+    {
+        //take out of collide for some action
+        if (collide)
+        {
+            reverseAttack = true;
+        }
+        //reverseAttack = true;
+
+    }
+
     public void StartAttack()
     {
         SpriteRender.enabled = true;

@@ -299,6 +299,21 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            MapInformation currentData = MapInfo[seed];
+            for (int x = 1; x < currentData.width - 1; x++)
+            {
+                for (int y = 1; y < currentData.height - 1; y++)
+                {
+                    Debug.Log(map[x,y]);
+                }
+            }
+        }
+    }
+
     public void GenerateOldMaps()
     {
         meshGen = GetComponent<MeshGenerator>();
@@ -409,11 +424,14 @@ public class MapGenerator : MonoBehaviour
 
     public void LoadMap()
     {
+       
         //have to set respawn locations
         PlayerController.PlayerControllerSingle.transform.position = PlayerController.PlayerControllerSingle.respawnLocation;
 
         MapInformation currentData = MapInfo[seed];
         borderedMap = currentData.borderedMap;
+
+        //MapAddOns.SpawnSeekingEnemy(currentData);
 
         meshGen.LoadMeshFromAssests(currentData.borderedMap, 1);
 

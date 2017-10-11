@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224314664486663328}
   - component: {fileID: 222672799930777860}
   - component: {fileID: 114839751707010450}
-  - component: {fileID: 114815955718629950}
+  - component: {fileID: 114493397172559614}
   m_Layer: 5
   m_Name: QuestDescription
   m_TagString: Untagged
@@ -29,7 +29,7 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &114815955718629950
+--- !u!114 &114493397172559614
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -37,16 +37,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1374736893760404}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1679637790, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: 100
-  m_MinHeight: 40
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
 --- !u!114 &114839751707010450
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -71,13 +66,13 @@ MonoBehaviour:
     m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 1
-    m_MinSize: 10
+    m_MinSize: 20
     m_MaxSize: 20
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: "Gather 0 of \nCurrent gathered: 0"
 --- !u!222 &222672799930777860

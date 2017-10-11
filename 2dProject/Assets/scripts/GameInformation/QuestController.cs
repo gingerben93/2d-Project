@@ -15,6 +15,9 @@ public class QuestController : MonoBehaviour {
 
     public static QuestController QuestControllerSingle;
 
+    //parent
+    GameObject parentQuest;
+
     //names of enemies for kill quests
     string[] EnemyNames = new string[] 
     {
@@ -47,7 +50,7 @@ public class QuestController : MonoBehaviour {
     void Start()
     {
         //main quest text box
-        GameObject parentQuest = GameObject.Find("QuestPanel");
+        parentQuest = GameObject.Find("QuestTitlePanel/QuestListPanel");
         MainQuestText = Instantiate(QuestTxt, parentQuest.transform);
         MainQuestText.name = "MainQuest";
         MainQuestText.text = "Complete Quest " + currentMainQuest;
@@ -125,9 +128,6 @@ public class QuestController : MonoBehaviour {
         QuestGameobject.GetComponent<Transform>().SetParent(transform);
         KillQuest KillQuestClass = QuestGameobject.AddComponent<KillQuest>();
 
-        //Instantiate quest text
-        GameObject parentQuest = GameObject.Find("QuestPanel");
-
         Text QuestTextBox = Instantiate(QuestTxt, parentQuest.transform);
         //Text QuestTextBox = Object.Instantiate<Text>(QuestTxt, parentQuest.transform);
 
@@ -160,9 +160,6 @@ public class QuestController : MonoBehaviour {
         GameObject QuestGameobject = new GameObject(NPCName + " Gather Quest");
         QuestGameobject.GetComponent<Transform>().SetParent(transform);
         GatherQuest GatherQuestClass = QuestGameobject.AddComponent<GatherQuest>();
-
-        //Instantiate quest text
-        GameObject parentQuest = GameObject.Find("QuestPanel");
 
         Text QuestTextBox = Instantiate(QuestTxt, parentQuest.transform);
         //Text QuestTextBox = Object.Instantiate<Text>(QuestTxt, parentQuest.transform);

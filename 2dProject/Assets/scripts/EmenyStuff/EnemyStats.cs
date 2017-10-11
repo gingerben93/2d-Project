@@ -108,7 +108,7 @@ public class EnemyStats : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            PlayerStats.PlayerStatsSingle.health -= 1;
+            PlayerController.PlayerControllerSingle.DamagePlayer(1);
         }
     }
 
