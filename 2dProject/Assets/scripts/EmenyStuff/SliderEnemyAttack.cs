@@ -9,21 +9,32 @@ public class SliderEnemyAttack : MonoBehaviour {
     bool reverseAttack = false;
 
     //for attack collider
-    BoxCollider2D col;
-    SpriteRenderer SpriteRender;
+    BoxCollider2D tipCollider;
+    SpriteRenderer tipImage;
     SliderEnemyMovment MovementScript;
     EnemyStats StatScript;
+
+    //Bubble parts
+    SpriteRenderer bubbleImage;
+    PolygonCollider2D bubbleCollider;
 
     // Use this for initialization
     void Start ()
     {
-        col = transform.parent.Find("Collider").GetComponent<BoxCollider2D>();
-        SpriteRender = transform.parent.Find("Collider").GetComponent<SpriteRenderer>();
-        MovementScript = transform.parent.GetComponent<SliderEnemyMovment>();
-        StatScript = transform.parent.GetComponent<EnemyStats>();
-        //SpriteRender.enabled = false;
-        //col.enabled = false;
 
+        //collider parts
+        tipCollider = transform.parent.Find("Collider").GetComponent<BoxCollider2D>();
+        tipImage = transform.parent.Find("Collider").GetComponent<SpriteRenderer>();
+
+        //for attacking
+        MovementScript = transform.parent.GetComponent<SliderEnemyMovment>();
+
+        //for making invincible
+        StatScript = transform.parent.GetComponent<EnemyStats>();
+
+        //bubble parts
+        bubbleImage = transform.parent.Find("Bubble").gameObject.GetComponent<SpriteRenderer>();
+        bubbleCollider = transform.parent.Find("Bubble").gameObject.GetComponent<PolygonCollider2D>();
     }
 	
 	// Update is called once per frame
@@ -39,13 +50,14 @@ public class SliderEnemyAttack : MonoBehaviour {
         {
             if (Vector2.Distance(transform.parent.transform.position, transform.position) <= .4f)
             {
+                //for stopping loop after object attack is close
                 reverseAttack = false;
 
                 transform.position = transform.parent.transform.position;
                 transform.localPosition += new Vector3(0, .4f, 0);
-                col.size = Vector2.one;
-                col.transform.position = transform.parent.transform.position;
-                SpriteRender.size = Vector2.one;
+                tipCollider.size = Vector2.one;
+                tipCollider.transform.position = transform.parent.transform.position;
+                tipImage.size = Vector2.one;
 
                 attacking = false;
                 MovementScript.attacking = false;
@@ -69,6 +81,10 @@ public class SliderEnemyAttack : MonoBehaviour {
 
             reverseAttack = true;
             attacking = false;
+
+            //bubble parts off
+            bubbleImage.enabled = false;
+            bubbleCollider.enabled = false;
         }
         if (attacking)
         {
@@ -89,8 +105,13 @@ public class SliderEnemyAttack : MonoBehaviour {
 
     public void StartAttack()
     {
-        SpriteRender.enabled = true;
-        col.enabled = true;
+        //collider parts
+        tipImage.enabled = true;
+        tipCollider.enabled = true;
+
+        //bubble parts
+        bubbleImage.enabled = true;
+        bubbleCollider.enabled = true;
 
         //move slighty forward so it doesn't break if it collides right away (from a 0 distance move)
         transform.localPosition += Vector3.up * .4f;
@@ -117,10 +138,10 @@ public class SliderEnemyAttack : MonoBehaviour {
     void SizeObjects()
     {
         //size and position of attack body
-        col.size = new Vector2(1, Vector2.Distance(transform.parent.transform.position, transform.position));
-        col.transform.position = (transform.parent.transform.position + transform.position) / 2;
+        tipCollider.size = new Vector2(1, Vector2.Distance(transform.parent.transform.position, transform.position));
+        tipCollider.transform.position = (transform.parent.transform.position + transform.position) / 2;
 
-        SpriteRender.size = new Vector2(1, Vector2.Distance(transform.parent.transform.position, transform.position));
+        tipImage.size = new Vector2(1, Vector2.Distance(transform.parent.transform.position, transform.position));
     }
 
 }

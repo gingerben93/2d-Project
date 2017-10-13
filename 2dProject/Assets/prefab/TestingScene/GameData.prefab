@@ -54,7 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 40
-  maxHealth: 4
+  maxHealth: 40
   experiencePoints: 2
   level: 1
   baseWeaponDamage: 0
@@ -84,5 +84,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   QuestTxt: {fileID: 114839751707010450, guid: 0381fbe47e2f21d45803ed1028ea760b, type: 2}
-  currentQuest: 0
+  currentMainQuest: 0
   MainQuestText: {fileID: 0}

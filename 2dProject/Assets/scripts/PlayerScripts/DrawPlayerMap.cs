@@ -174,50 +174,6 @@ public class DrawPlayerMap : MonoBehaviour {
                 }
             }
         }
-        if (PlayerController.PlayerControllerSingle.touchingDoor == true && Input.GetKeyDown(KeyCode.R)) {
-
-            if (localMapOn)
-            {
-                drawDoors = false;
-                DrawLocalMap();
-                //touchingDoor = false;
-
-            }
-            else if (worldMapOn)
-            {
-                //for door maps
-                transform.localScale = new Vector3(.175f, .175f, .175f);
-                transform.position = PlayerController.PlayerControllerSingle.transform.position;
-                drawDoors = false;
-                DrawDoorsLocalMap(nextMap);
-                var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
-                foreach (var door in oldMapDoors)
-                {
-                    door.GetComponent<SpriteRenderer>().enabled = false;
-                }
-                transform.localScale = new Vector3(.075f, .075f, .075f);
-                //for door lines
-                LoadCorrectDoorLines(nextMap);
-                LoadWorldMap();
-            }
-            else if (!localMapOn && !worldMapOn)
-            {
-
-                //for door maps
-                transform.localScale = new Vector3(.175f, .175f, .175f);
-                transform.position = PlayerController.PlayerControllerSingle.transform.position;
-                drawDoors = false;
-                DrawDoorsLocalMap(nextMap);
-                var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
-                foreach (var door in oldMapDoors)
-                {
-                    door.GetComponent<SpriteRenderer>().enabled = false;
-                }
-                transform.localScale = new Vector3(.075f, .075f, .075f);
-            }
-            //teemo Character. wasn't setting fast enough for next frams
-            currentMap = nextMap;
-        }
 
         if (localMapOn)
         {
@@ -258,11 +214,6 @@ public class DrawPlayerMap : MonoBehaviour {
                     door.GetComponent<SpriteRenderer>().enabled = false;
                 }
 
-                //turn on lines
-                //foreach (Transform child in GameObject.Find("MapDoorLines").transform)
-                //{
-                //    child.GetComponent<LineRenderer>().enabled = true;
-                //}
                 LoadCorrectDoorLines(currentMap);
                 //TURN ON TEEMO MARKER
                 MapMarkerTeemoSprite.enabled = true;
@@ -297,6 +248,49 @@ public class DrawPlayerMap : MonoBehaviour {
             //update map pos
             UpdatePosition();
         }
+    }
+
+    public void UpdateMap()
+    {
+        if (localMapOn)
+        {
+            drawDoors = false;
+            DrawLocalMap();
+
+        }
+        else if (worldMapOn)
+        {
+            //for door maps
+            transform.localScale = new Vector3(.175f, .175f, .175f);
+            transform.position = PlayerController.PlayerControllerSingle.transform.position;
+            drawDoors = false;
+            DrawDoorsLocalMap(nextMap);
+            var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
+            foreach (var door in oldMapDoors)
+            {
+                door.GetComponent<SpriteRenderer>().enabled = false;
+            }
+            transform.localScale = new Vector3(.075f, .075f, .075f);
+            //for door lines
+            LoadCorrectDoorLines(nextMap);
+            LoadWorldMap();
+        }
+        else if (!localMapOn && !worldMapOn)
+        {
+
+            //for door maps
+            transform.localScale = new Vector3(.175f, .175f, .175f);
+            transform.position = PlayerController.PlayerControllerSingle.transform.position;
+            drawDoors = false;
+            DrawDoorsLocalMap(nextMap);
+            var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
+            foreach (var door in oldMapDoors)
+            {
+                door.GetComponent<SpriteRenderer>().enabled = false;
+            }
+            transform.localScale = new Vector3(.075f, .075f, .075f);
+        }
+
     }
 
     void CreateLines(string seed1, string seed2, int door1, int door2, int set1, int set2)
@@ -506,10 +500,9 @@ public class DrawPlayerMap : MonoBehaviour {
         transform.localScale = new Vector3(.175f, .175f, .175f);
         transform.position = PlayerController.PlayerControllerSingle.transform.position;
         transform.eulerAngles = new Vector3(270, 0, 0);
-        //transform.Rotate(Vector3.zero);
 
         //for mapdoors
-        if (PlayerController.PlayerControllerSingle.touchingDoor == true && firstRun != false)
+        if (firstRun)
         {
             DrawDoorsLocalMap(nextMap);
         }

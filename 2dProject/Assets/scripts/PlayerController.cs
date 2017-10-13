@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
     //invinsible
     private bool invincible = false;
     //attack cooldown when destoryed
-    float InvinicbleCoolDown = 1;
+    float InvinicbleCoolDown = 2;
     float InvinicbleCoolDownTimer = 0;
 
     //for fade in and out player sprite
@@ -157,6 +157,9 @@ public class PlayerController : MonoBehaviour
 
                 MapGenerator.MapGeneratorSingle.seed = GameController.GameControllerSingle.mapSeed;
                 MapGenerator.MapGeneratorSingle.LoadMap();
+
+                //for minimap
+                DrawPlayerMap.DrawPlayerMapSingle.UpdateMap();
 
                 Vector2 door;
                 door = MapGenerator.MapGeneratorSingle.doorLocations[doorInfo.numVal];
@@ -396,7 +399,7 @@ public class PlayerController : MonoBehaviour
             //speed up by 1 to the right
             if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
             {
-                rb2d.velocity = new Vector2(rb2d.velocity.x + 1, rb2d.velocity.y);
+                rb2d.velocity = new Vector2(rb2d.velocity.x + .5f, rb2d.velocity.y);
             }
         }
         else if (Input.GetKey(KeyCode.A))
@@ -414,13 +417,18 @@ public class PlayerController : MonoBehaviour
             //speed up by 1 to the left
             if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
             {
-                rb2d.velocity = new Vector2(rb2d.velocity.x - 1, rb2d.velocity.y);
+                rb2d.velocity = new Vector2(rb2d.velocity.x - .5f, rb2d.velocity.y);
             }
         }
         //if colliding then slow down (don't slow doing in air)
         else if (IsColliding == true)
         {
             rb2d.velocity = new Vector2(rb2d.velocity.x * .5f, rb2d.velocity.y);
+        }
+        //else slow down by a little
+        else
+        {
+            rb2d.velocity = new Vector2(rb2d.velocity.x * .97f, rb2d.velocity.y);
         }
 
         if (Mathf.Abs(rb2d.velocity.y) >= maxSpeed)
@@ -536,7 +544,7 @@ public class PlayerController : MonoBehaviour
         //for taking damage
         if (collision.gameObject.tag == "Enemy")
         {
-            Debug.Log("hit enemy");
+            Debug.Log("hit enemy = " + collision.gameObject.name);
         }
     }
 

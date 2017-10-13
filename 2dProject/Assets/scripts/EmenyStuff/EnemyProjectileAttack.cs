@@ -5,9 +5,9 @@ using UnityEngine;
 public class EnemyProjectileAttack : MonoBehaviour {
 
     //Where the projectile is going towards
-    private Vector3 heading;
+    private Vector2 heading;
     private float distance;
-    private Vector3 direction;
+    private Vector2 direction;
 
     //Finalized movement of projectile
     private Vector2 movement;

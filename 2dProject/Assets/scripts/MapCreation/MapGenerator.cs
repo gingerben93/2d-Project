@@ -37,17 +37,12 @@ public class MapGenerator : MonoBehaviour
     public List<Vector2> enemyLocations;
     public List<Vector2> turretLocations;
 
-    public List<string> bossRooms;
-
     MeshGenerator meshGen;
     MapAddOns MapAddOns;
 
     public Dictionary<string, MapInformation> MapInfo = new Dictionary<string, MapInformation>();
 
     public static MapGenerator MapGeneratorSingle;
-
-    //for spawing boss
-    public Transform BossPrefab;
 
     //for drawplayermap
     public List<Vector3> MapPosWorldMaps;
@@ -299,21 +294,6 @@ public class MapGenerator : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            MapInformation currentData = MapInfo[seed];
-            for (int x = 1; x < currentData.width - 1; x++)
-            {
-                for (int y = 1; y < currentData.height - 1; y++)
-                {
-                    Debug.Log(map[x,y]);
-                }
-            }
-        }
-    }
-
     public void GenerateOldMaps()
     {
         meshGen = GetComponent<MeshGenerator>();
@@ -473,13 +453,6 @@ public class MapGenerator : MonoBehaviour
 
             //spawns gather items // should be somewhere else later (only spawns if there are enemies)
             MapAddOns.GatherQuestItems(MapInfo[seed]);
-        }
-        else if (bossRooms.Contains(seed))
-        {
-
-            MapAddOns.RemoveAllEnemies();
-            var temp = Instantiate(BossPrefab, new Vector3(0, -currentData.height / 2 + 2, 0), Quaternion.identity);
-            temp.transform.SetParent(GameObject.Find("EnemyList").transform);
         }
         else
         {

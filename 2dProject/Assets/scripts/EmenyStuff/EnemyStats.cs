@@ -34,7 +34,6 @@ public class EnemyStats : MonoBehaviour
 
     /// Total hitpoints
     public int hp { get; set; }
-    public bool isEnemy { get; set; }
     private int experiencePoint;
 
     //invinsible
@@ -59,8 +58,7 @@ public class EnemyStats : MonoBehaviour
         // set emeny information
         experiencePoint = 5;
 
-        hp = 1;
-        isEnemy = true;
+        hp = 2;
     }
 
     /// Inflicts damage and check if the object should be destroyed
@@ -108,6 +106,7 @@ public class EnemyStats : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
+            Debug.Log("name object = " + gameObject.name);
             PlayerController.PlayerControllerSingle.DamagePlayer(1);
         }
     }
@@ -115,10 +114,14 @@ public class EnemyStats : MonoBehaviour
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
         //if bullet, do bullet stuff
-        if (otherCollider.tag == "Bullet" && !invincible)
+        if (otherCollider.tag == "Bullet")
         {
             Destroy(otherCollider.gameObject);
-            Damage(PlayerController.PlayerControllerSingle.weaponDamage);
+
+            if (!invincible)
+            {
+                Damage(PlayerController.PlayerControllerSingle.weaponDamage);
+            }
         }
     }
 }

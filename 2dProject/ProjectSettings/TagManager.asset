@@ -57,9 +57,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: MapLines
-    uniqueID: 1160316469
+  - name: ForeGround
+    uniqueID: 790803075
     locked: 0
-  - name: Map
-    uniqueID: 893249859
+  - name: MiddleGround
+    uniqueID: 2861465969
+    locked: 0
+  - name: Background
+    uniqueID: 992809251
     locked: 0

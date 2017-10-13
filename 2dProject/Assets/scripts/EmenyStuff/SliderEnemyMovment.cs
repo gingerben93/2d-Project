@@ -26,12 +26,16 @@ public class SliderEnemyMovment : MonoBehaviour {
     float coolDown = 2;
     float coolDownTimer = 2;
 
+
+
     // Use this for initialization
     void Start ()
     {
         //for attack
         PlayerTransform = PlayerController.PlayerControllerSingle.transform;
         Attack = GetComponentInChildren<SliderEnemyAttack>();
+
+
 
         try
         {
@@ -62,11 +66,12 @@ public class SliderEnemyMovment : MonoBehaviour {
         {
             if (coolDownTimer == 0)
             {
+                Debug.Log("move again");
                 coolDownTimer = coolDown;
                 attacking = true;
                 Attack.StartAttack();
 
-                //get new random direction
+                //get new random direction when moving again
                 Direction = Random.Range(0, 2);
             }
         }
