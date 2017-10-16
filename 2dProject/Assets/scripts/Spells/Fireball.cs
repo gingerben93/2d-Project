@@ -3,20 +3,7 @@ using System.Collections;
 
 public class Fireball : MonoBehaviour
 {
-
     private Vector3 StartLocation, EndLocation;
-
-    //private Vector3 mousePos;
-    private Vector3 heading;
-    private float distance;
-    private Vector3 direction;
-
-    //arc curve variables
-    float angle;
-    float angleX;
-    float angleY;
-
-    private Vector2 movement;
     private Rigidbody2D rigidbodyComponent;
 
     void Start()
@@ -26,7 +13,14 @@ public class Fireball : MonoBehaviour
 
     void FixedUpdate()
     {
-        //Debug.Log("vel = " + rigidbodyComponent.velocity);
+        CalculateRotation();
+    }
+
+    void CalculateRotation()
+    {
+        //faces object forward
+        float angle = Mathf.Atan2(rigidbodyComponent.velocity.y, -rigidbodyComponent.velocity.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.back);
     }
 
     //start method
@@ -40,10 +34,11 @@ public class Fireball : MonoBehaviour
         //set start locations of object
         transform.position = Start;
         //get firball velocity
-        Shoot();
+        CalculateSpeed();
+        CalculateRotation();
     }
 
-    void Shoot()
+    void CalculateSpeed()
     {
 
         float g, maxHeight, time, displacementY;
@@ -51,30 +46,45 @@ public class Fireball : MonoBehaviour
         g = -9.81f;
 
         maxHeight = EndLocation.y - StartLocation.y;
+        displacementY = EndLocation.y - StartLocation.y;
 
-        if(0 < maxHeight && maxHeight < 3)
+        if (0 < maxHeight && maxHeight < 3)
         {
             maxHeight = 3;
         }
 
-        displacementY = EndLocation.y - StartLocation.y;
-        displacementXZ = new Vector3(EndLocation.x - StartLocation.x, 0, EndLocation.z - StartLocation.z);
-        time = Mathf.Sqrt(-2 * maxHeight / g) + Mathf.Sqrt(2 * (displacementY - maxHeight) / g);
-
-        //for above player
+        //max height must be positive // can we find a fix for this?
         if (displacementY <= 0)
         {
-            time = Mathf.Sqrt(2 * displacementY / g);
-            velocityY = Vector3.zero;
-            velocityXZ = displacementXZ / time;
+            if (displacementY == 0)
+            {
+                maxHeight = 3f;
+                displacementY = 3f;
+            }
+            else
+            {
+                maxHeight = 1;
+            }
         }
-        //for below player
-        else
-        {
-            time = Mathf.Sqrt(-2 * maxHeight / g) + Mathf.Sqrt(2 * (displacementY - maxHeight) / g);
-            velocityY = Vector3.up * Mathf.Sqrt(-2 * g * maxHeight);
-            velocityXZ = displacementXZ / time;
-        }
+
+        displacementXZ = new Vector3(EndLocation.x - StartLocation.x, 0, EndLocation.z - StartLocation.z);
+        time = Mathf.Sqrt(-2 * maxHeight / g) + Mathf.Sqrt(2 * (displacementY - maxHeight) / g);
+        velocityY = Vector3.up * Mathf.Sqrt(-2 * g * maxHeight);
+        velocityXZ = displacementXZ / time;
+
+        ////for below player
+        //if (displacementY <= 0)
+        //{
+        //    time = Mathf.Sqrt(2 * displacementY / g);
+        //    velocityY = Vector3.zero;
+        //    velocityXZ = displacementXZ / time;
+        //}
+        ////for above player
+        //else
+        //{
+        //    velocityY = Vector3.up * Mathf.Sqrt(-2 * g * maxHeight);
+        //    velocityXZ = displacementXZ / time;
+        //}
 
         //set velocity x y in rb
         rigidbodyComponent.velocity = (velocityXZ + velocityY * -Mathf.Sign(g));

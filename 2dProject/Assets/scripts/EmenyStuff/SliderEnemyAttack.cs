@@ -79,6 +79,7 @@ public class SliderEnemyAttack : MonoBehaviour {
             //make enemy killable
             StatScript.invincible = false;
 
+            //reverse direction of attack
             reverseAttack = true;
             attacking = false;
 
@@ -97,7 +98,16 @@ public class SliderEnemyAttack : MonoBehaviour {
         //take out of collide for some action
         if (collide)
         {
+            //make enemy killable
+            StatScript.invincible = false;
+
+            //reverse direction of attack
             reverseAttack = true;
+            attacking = false;
+
+            //bubble parts off
+            bubbleImage.enabled = false;
+            bubbleCollider.enabled = false;
         }
         //reverseAttack = true;
 
