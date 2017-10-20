@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: c708782078ac3ea4b9b74745dd73b08e
+timeCreated: 1508490735
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 180
+  forceTextureCase: -1
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Ravie
+  fontNames:
+  - Ravie
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
