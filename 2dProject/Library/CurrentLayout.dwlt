@@ -537,21 +537,21 @@ MonoBehaviour:
     width: 385
     height: 470
   m_TreeViewState:
-    scrollPos: {x: 0, y: 120}
-    m_SelectedIDs: c62c0000
-    m_LastClickedID: 11462
+    scrollPos: {x: 0, y: 0}
+    m_SelectedIDs: 9e2c0000
+    m_LastClickedID: 11422
     m_ExpandedIDs: e6fbfffff4ffffff000000006e2a00009c2a0000562b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: Charisma
-      m_OriginalName: Charisma
+      m_Name: Level
+      m_OriginalName: Level
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 10924
+      m_UserData: 11184
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
       m_OriginalEventType: 0
@@ -667,7 +667,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: 362400003c24000042240000222c00005e240000862a00007424000080240000ba300000a4300000ec300000922400009e2400008e2400003e250000da2400009613eeff74250000de250000342700001a26000078250000842600002a2f0000000000009e270000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
