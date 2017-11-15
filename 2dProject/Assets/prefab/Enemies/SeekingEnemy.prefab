@@ -20,9 +20,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4297604268097718}
   - component: {fileID: 114577095536415602}
-  m_Layer: 0
+  - component: {fileID: 50923520292152784}
+  m_Layer: 13
   m_Name: SeekingEnemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,7 +37,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4414573474980940}
   - component: {fileID: 212301676820964482}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,6 +71,26 @@ Transform:
   m_Father: {fileID: 4297604268097718}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &50923520292152784
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1163375627866920}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!114 &114577095536415602
 MonoBehaviour:
   m_ObjectHideFlags: 1

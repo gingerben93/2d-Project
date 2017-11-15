@@ -141,9 +141,6 @@ public class Inventory : MonoBehaviour
         invRect = GetComponent<RectTransform>();
         invRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, invWidth);
         invRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, invHeight);
-        
-        
-
 
         int columns = slots / rows;
 
@@ -161,7 +158,6 @@ public class Inventory : MonoBehaviour
                     slotRect.localPosition = invRect.localPosition + new Vector3(-5 + (slotSize * 6), -10 - (slotSize * y));
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
-                    slotRect.localScale = new Vector3(1, 1, 1);
 
                     //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
@@ -176,7 +172,6 @@ public class Inventory : MonoBehaviour
                     slotRect.localPosition = invRect.localPosition + new Vector3(5 + (slotSize * 7), -20 - (slotSize * y));
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
-                    slotRect.localScale = new Vector3(1, 1, 1);
 
                     //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
@@ -191,7 +186,6 @@ public class Inventory : MonoBehaviour
                     slotRect.localPosition = invRect.localPosition + new Vector3((slotSize * 4), -30 - (slotSize * y));
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize * 3);
-                    slotRect.localScale = new Vector3(1, 1, 1);
 
                     //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
@@ -206,7 +200,6 @@ public class Inventory : MonoBehaviour
                     slotRect.localPosition = invRect.localPosition + new Vector3(5 + (slotSize * 5), -40 - (slotSize * y));
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize * 2);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize * 3);
-                    slotRect.localScale = new Vector3(1, 1, 1);
 
                     //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
@@ -221,7 +214,6 @@ public class Inventory : MonoBehaviour
                     slotRect.localPosition = invRect.localPosition + new Vector3(-5 + (slotSize * 8), -50 - (slotSize * y));
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize * 2);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize * 2);
-                    slotRect.localScale = new Vector3(1, 1, 1);
 
                     //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
@@ -236,7 +228,6 @@ public class Inventory : MonoBehaviour
                     slotRect.localPosition = invRect.localPosition + new Vector3((slotSize * 4), -95 - (slotSize * y));
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize * 2);
-                    slotRect.localScale = new Vector3(1, 1, 1);
 
                     //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
@@ -251,7 +242,6 @@ public class Inventory : MonoBehaviour
                     slotRect.localPosition = invRect.localPosition + new Vector3(5 + (slotSize * 5), -110 - (slotSize * y));
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize * 2);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
-                    slotRect.localScale = new Vector3(1, 1, 1);
 
                     //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
@@ -266,7 +256,6 @@ public class Inventory : MonoBehaviour
                     slotRect.localPosition = invRect.localPosition + new Vector3(5 + (slotSize * 5), -135 - (slotSize * y));
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize * 2);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
-                    slotRect.localScale = new Vector3(1, 1, 1);
 
                     //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
@@ -281,7 +270,6 @@ public class Inventory : MonoBehaviour
                     slotRect.localPosition = invRect.localPosition + new Vector3((slotSize * 8), -100 - (slotSize * y));
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
-                    slotRect.localScale = new Vector3(1, 1, 1);
 
                     //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
@@ -296,7 +284,6 @@ public class Inventory : MonoBehaviour
                     slotRect.localPosition = invRect.localPosition + new Vector3((slotSize * 8), -125 - (slotSize * y));
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
-                    slotRect.localScale = new Vector3(1, 1, 1);
 
                     //allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
@@ -312,7 +299,6 @@ public class Inventory : MonoBehaviour
                     slotRect.localPosition = invRect.localPosition + new Vector3(slotPaddingLeft * (x + 1) + (slotSize * x), -slotPaddingTop * (y + 1) - (slotSize * y));
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, slotSize);
                     slotRect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, slotSize);
-                    slotRect.localScale = new Vector3(1, 1, 1);
 
                     allSlots.Add(newSlot);
                     newSlot.transform.SetParent(this.transform);
@@ -321,8 +307,7 @@ public class Inventory : MonoBehaviour
         }
         //Helm Location
 
-        //CHANGE SCALE HERE AFTER ALL THE SLOTS ARE SCALED TO INV
-        invRect.localScale = new Vector3(3, 3, 1);
+
     }
 
     public bool AddItem(Item item)
@@ -492,8 +477,14 @@ public class Inventory : MonoBehaviour
             Attack = Resources.Load("Prefabs/WeaponAttacks/BlowDartAttack", typeof(GameObject)) as GameObject;
             WeaponGameobject = Instantiate(Attack, GameObject.Find("WeaponAttack").transform);
             WeaponGameobject.transform.localPosition = Vector3.zero;
+
+            //set attack and damage
             Blowdart temp = WeaponGameobject.GetComponent<Blowdart>();
+            temp.damage = info.damage;
             PlayerController.PlayerControllerSingle.playerAttack = temp.Attack;
+
+            //set damage
+
         }
         else if (weaponName == "ShortSword")
         {
@@ -501,9 +492,11 @@ public class Inventory : MonoBehaviour
             Destroy(WeaponGameobject);
 
             //instantiate a object with the weapon attack on it
-            Attack = Resources.Load("Prefabs/WeaponAttacks/SwordAttack", typeof(GameObject)) as GameObject;
+            Attack = Resources.Load("Prefabs/WeaponAttacks/ShortSwordAttack", typeof(GameObject)) as GameObject;
             WeaponGameobject = Instantiate(Attack, GameObject.Find("WeaponAttack").transform);
             WeaponGameobject.transform.localPosition = Vector3.zero;
+
+
             ShortSword temp = WeaponGameobject.GetComponent<ShortSword>();
             PlayerController.PlayerControllerSingle.playerAttack = temp.Attack;
 

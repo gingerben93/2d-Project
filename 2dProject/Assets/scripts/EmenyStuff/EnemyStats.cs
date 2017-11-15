@@ -33,7 +33,7 @@ public class EnemyStats : MonoBehaviour
     ShotM shotM;
 
     /// Total hitpoints
-    public int hp { get; set; }
+    public int health;
     private int experiencePoint;
 
     //invinsible
@@ -58,70 +58,82 @@ public class EnemyStats : MonoBehaviour
         // set emeny information
         experiencePoint = 5;
 
-        hp = 2;
+        health = 2;
     }
 
     /// Inflicts damage and check if the object should be destroyed
     public void Damage(int damageCount)
     {
-        hp -= damageCount;
-
-        if (hp <= 0)
+        if (!invincible)
         {
-            //set exp
-            PlayerStats.PlayerStatsSingle.GainExperiencePoints(experiencePoint);
-            //PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
+            health -= damageCount;
 
-            KillQuest[] listKillQuests = QuestController.QuestControllerSingle.GetComponentsInChildren<KillQuest>();
-            if (listKillQuests.Length > 0)
+            if (health <= 0)
             {
-                foreach (KillQuest quest in listKillQuests)
+                //set exp
+                PlayerStats.PlayerStatsSingle.GainExperiencePoints(experiencePoint);
+                //PlayerStats.PlayerStatsSingle.experiencePoints += experiencePoint;
+
+                KillQuest[] listKillQuests = QuestController.QuestControllerSingle.GetComponentsInChildren<KillQuest>();
+                if (listKillQuests.Length > 0)
                 {
-                    if (gameObject.name == quest.killTarget)
+                    foreach (KillQuest quest in listKillQuests)
                     {
-                        quest.killQuestCounter += 1;
-                        quest.UpdateKillQuest();
+                        if (gameObject.name == quest.killTarget)
+                        {
+                            quest.killQuestCounter += 1;
+                            quest.UpdateKillQuest();
+                        }
                     }
                 }
+
+                Instantiate(loot, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
+
+                dropChance = Random.Range(0, 1.0f);
+
+                if (dropChance < dropRate)
+                {
+                    choice = Random.Range(0, 10);
+                    Instantiate(items[choice], transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
+                }
+
+                //Instantiate(loot2, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
+                //Instantiate(loot3, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
+                // Dead!
+                Destroy(gameObject);
             }
-
-            Instantiate(loot, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
-
-            dropChance = Random.Range(0, 1.0f);
-
-            if(dropChance < dropRate)
-            {
-                choice = Random.Range(0, 10);
-                Instantiate(items[choice], transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
-            }
-
-            //Instantiate(loot2, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
-            //Instantiate(loot3, transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
-            // Dead!
-            Destroy(gameObject);
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    //public void Damage()
+    //{
+    //    Debug.Log("damage");
+    //    if (!invincible)
+    //    {
+    //        Damage(PlayerController.PlayerControllerSingle.weaponDamage);
+    //    }
+    //}
+
+    void OnCollisionStay2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player")
+        if (collision.gameObject.tag == "Player" && !PlayerController.PlayerControllerSingle.invincible)
         {
             Debug.Log("name object = " + gameObject.name);
             PlayerController.PlayerControllerSingle.DamagePlayer(1);
         }
     }
 
-    void OnTriggerEnter2D(Collider2D otherCollider)
-    {
-        //if bullet, do bullet stuff
-        if (otherCollider.tag == "Bullet")
-        {
-            Destroy(otherCollider.gameObject);
+    //void OnTriggerEnter2D(Collider2D otherCollider)
+    //{
+    //    //if bullet, do bullet stuff
+    //    if (otherCollider.tag == "Bullet")
+    //    {
+    //        Destroy(otherCollider.gameObject);
 
-            if (!invincible)
-            {
-                Damage(PlayerController.PlayerControllerSingle.weaponDamage);
-            }
-        }
-    }
+    //        if (!invincible)
+    //        {
+    //            Damage(PlayerController.PlayerControllerSingle.weaponDamage);
+    //        }
+    //    }
+    //}
 }

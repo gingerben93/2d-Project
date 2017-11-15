@@ -7,31 +7,21 @@ public class GrapplingHookBody : MonoBehaviour
 
     void Start()
     {
-        drawGrapHook = FindObjectOfType<DrawGrapHook>();
+        drawGrapHook = transform.parent.GetComponentInChildren<DrawGrapHook>();
     }
-
+    
     public void OnCollisionStay2D(Collision2D coll)
     {
-        if (coll.gameObject.tag == "Enemy")
+        if (coll.gameObject.GetComponent<EdgeCollider2D>())
         {
-            //drawGrapHook.rb2dTip.MovePosition(coll.gameObject.transform.position);
-            drawGrapHook.rb2dTip.gameObject.transform.position = coll.gameObject.transform.position;
-            drawGrapHook.line.SetPosition(drawGrapHook.currentNumberLines - 2, coll.gameObject.transform.position);
-            drawGrapHook.currentPosLine = coll.gameObject.transform.position;
-            //drawGrapHook.joint.distance = Vector2.Distance(drawGrapHook.currentPosLine, PlayerController.PlayerControllerSingle.transform.position);
-        }
-        if(coll.gameObject.tag == "Untagged")
-        {
+            drawGrapHook.hitEnemy = false;
             foreach (ContactPoint2D missileHit in coll.contacts)
             {
                 Vector2 hitPoint = missileHit.point;
+                //Debug.Log("missileHit.point = " + missileHit.point);
 
-                //update all variables in drawGrapHook for line
                 drawGrapHook.rb2dTip.gameObject.transform.position = new Vector2(hitPoint.x, hitPoint.y) + missileHit.normal * .3f;
-                drawGrapHook.line.SetPosition(drawGrapHook.currentNumberLines - 2, new Vector2(hitPoint.x, hitPoint.y));
-                //drawGrapHook.line.numPositions += 1;
-                drawGrapHook.currentPosLine = new Vector3(hitPoint.x, hitPoint.y, 0);
-                drawGrapHook.joint.distance = Vector2.Distance(drawGrapHook.currentPosLine, PlayerController.PlayerControllerSingle.transform.position);
+                drawGrapHook.joint.distance = Vector2.Distance(drawGrapHook.rb2dTip.gameObject.transform.position, PlayerController.PlayerControllerSingle.transform.position);
                 break;
             }
         }

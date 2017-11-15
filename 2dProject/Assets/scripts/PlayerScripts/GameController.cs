@@ -30,12 +30,6 @@ public class GameController : MonoBehaviour
     public bool questTravel { get; set; }
     public string mapSeed { get; set; }
 
-    //for removing the current items other things on map
-    Transform itemlist;
-    GameObject playerProjectileList;
-
-    
-
     public static GameController GameControllerSingle;
 
     void Awake()
@@ -62,8 +56,7 @@ public class GameController : MonoBehaviour
     {
         //don't destroy on load objects
         DontDestroyOnLoad(GameObject.Find("Canvases"));
-
-        //grap has it's own script for this
+        //DontDestroyOnLoad(GameObject.Find("WorldObject"));
         //DontDestroyOnLoad(GameObject.Find("GrapplingHookParts"));
 
         //assign skill functions
@@ -334,28 +327,6 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void RemoveCurrentMapObjects()
-    {
-        //def of parent for removing item
-        itemlist = WorldObjects.WorldObjectsSingle.transform.Find("WorldItems");
-        //itemlist = GameObject.Find("WorldItems");
-
-        //remove player projectiles
-        playerProjectileList = GameObject.Find("PlayerProjectiles");
-
-        //remove items
-        foreach (Transform child in itemlist)
-        {
-            Destroy(child.gameObject);
-        }
-
-        //remove playerProjectiles
-        foreach (Transform child in playerProjectileList.transform)
-        {
-            Destroy(child.gameObject);
-        }
-    }
-
     //for quick message aboce character head
     public IEnumerator ShowMessage(string message, float delay)
     {
@@ -490,6 +461,12 @@ public class GameController : MonoBehaviour
 
     public void loadScence(string sceneName)
     {
+        RemoveEveryingOnMap();
+        StartCoroutine(LoadNewScene(sceneName));
+    }
+
+    public void RemoveEveryingOnMap()
+    {
         foreach (Transform child in WorldObjects.WorldObjectsSingle.transform)
         {
             foreach (Transform child2 in child)
@@ -497,7 +474,6 @@ public class GameController : MonoBehaviour
                 Destroy(child2.gameObject);
             }
         }
-        StartCoroutine(LoadNewScene(sceneName));
     }
 
     IEnumerator LoadNewScene(string sceneName)

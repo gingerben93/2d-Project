@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{87161626-0D33-C17A-C6DC-E5AAF2793E6A}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp.dll</AssemblyName>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
@@ -16,9 +16,9 @@
     <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
-    <UnityVersion>5.6.4f1</UnityVersion>
+    <UnityVersion>5.5.0f3</UnityVersion>
     <RootNamespace></RootNamespace>
-    <LangVersion>4</LangVersion>
+    <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -27,8 +27,8 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_4;UNITY_5_6;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_5_0;UNITY_5_5;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VIDEO;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,8 +37,8 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_4;UNITY_5_6;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_5_0;UNITY_5_5;UNITY_5;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;UNITY_STANDALONE_WIN;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_EVENT_QUEUE;ENABLE_CLUSTERINPUT;ENABLE_VIDEO;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;UNITY_TEAM_LICENSE;ENABLE_VSTU</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -50,138 +50,53 @@
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="UnityEngine">
-      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+      <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.TestRunner">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/UnityEngine.TestRunner.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/TestRunner/net35/unity-custom/nunit.framework.dll</HintPath>
+    <Reference Include="UnityEngine.PlaymodeTestsRunner">
+      <HintPath>Library\UnityAssemblies\UnityEngine.PlaymodeTestsRunner.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Analytics">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+      <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.HoloLens">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+      <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.VR">
-      <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+      <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor">
-      <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\scripts\BossRoom\Bomb.cs" />
-    <Compile Include="Assets\scripts\BossRoom\BossPowerShield.cs" />
-    <Compile Include="Assets\scripts\BossRoom\BossScript.cs" />
-    <Compile Include="Assets\scripts\BossRoom\DamagePlayerOnCollision.cs" />
-    <Compile Include="Assets\scripts\CutSceneScripts\CutScene1.cs" />
-    <Compile Include="Assets\scripts\CutSceneScripts\CutScene2.cs" />
-    <Compile Include="Assets\scripts\CutSceneScripts\CutScene3.cs" />
-    <Compile Include="Assets\scripts\CutSceneScripts\CutSceneLoader.cs" />
-    <Compile Include="Assets\scripts\DialogManager.cs" />
-    <Compile Include="Assets\scripts\DoorToMainGame.cs" />
-    <Compile Include="Assets\scripts\DoorToNewScene.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\EnemyAttack.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\EnemyProjectileAttack.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\EnemyStats.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\FlyingPathfinding.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\GodHands.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\GodHandsFist.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\MoveTowardPlayer.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\SeekingEnemy.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\SliderEnemyAttack.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\SliderEnemyMovment.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\SpinAttack.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\TurretAttack.cs" />
-    <Compile Include="Assets\scripts\EmenyStuff\TurretCrystal.cs" />
-    <Compile Include="Assets\scripts\GameInformation\GameData.cs" />
-    <Compile Include="Assets\scripts\GameInformation\GameLoader.cs" />
-    <Compile Include="Assets\scripts\GameInformation\InventorySystem\Inventory.cs" />
-    <Compile Include="Assets\scripts\GameInformation\InventorySystem\Slot.cs" />
-    <Compile Include="Assets\scripts\GameInformation\LoadOnClick.cs" />
-    <Compile Include="Assets\scripts\GameInformation\PlayerStats.cs" />
-    <Compile Include="Assets\scripts\GameInformation\QuestController.cs" />
-    <Compile Include="Assets\scripts\GameInformation\StartGame.cs" />
-    <Compile Include="Assets\scripts\GameInformation\StatsMenu.cs" />
-    <Compile Include="Assets\scripts\Healthbar.cs" />
-    <Compile Include="Assets\scripts\Items\Item.cs" />
-    <Compile Include="Assets\scripts\Items\Magnet.cs" />
-    <Compile Include="Assets\scripts\Items\Weapons\Blowdart\Blowdart.cs" />
-    <Compile Include="Assets\scripts\Items\Weapons\Blowdart\Shot.cs" />
-    <Compile Include="Assets\scripts\Items\Weapons\GodHandsFistPlayer.cs" />
-    <Compile Include="Assets\scripts\Items\Weapons\ShortSword\ShortSword.cs" />
-    <Compile Include="Assets\scripts\Items\Weapons\ShortSword\ShotM.cs" />
-    <Compile Include="Assets\scripts\Items\Weapons\ShotMove.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest0_0.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest10_0.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest11_0.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest1_0.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest2_0.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest3_0.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest4_0.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest5_0.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest6_0.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest7_0.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest8_0.cs" />
-    <Compile Include="Assets\scripts\MainQuest\MainQuest9_0.cs" />
-    <Compile Include="Assets\scripts\MapCreation\DoorPrefabInfo.cs" />
-    <Compile Include="Assets\scripts\MapCreation\MapAddOns.cs" />
-    <Compile Include="Assets\scripts\MapCreation\MapGenerator.cs" />
-    <Compile Include="Assets\scripts\MapCreation\MeshGenerator.cs" />
-    <Compile Include="Assets\scripts\NPC\BlitzCrank.cs" />
-    <Compile Include="Assets\scripts\NPC\Character1.cs" />
-    <Compile Include="Assets\scripts\NPC\Doctor.cs" />
-    <Compile Include="Assets\scripts\NPC\Morgana.cs" />
-    <Compile Include="Assets\scripts\PlayerController.cs" />
-    <Compile Include="Assets\scripts\PlayerScripts\CamraController.cs" />
-    <Compile Include="Assets\scripts\PlayerScripts\DoorCollider.cs" />
-    <Compile Include="Assets\scripts\PlayerScripts\DrawGrapHook.cs" />
-    <Compile Include="Assets\scripts\PlayerScripts\DrawPlayerMap.cs" />
-    <Compile Include="Assets\scripts\PlayerScripts\GameController.cs" />
-    <Compile Include="Assets\scripts\PlayerScripts\GrapplingHookBody.cs" />
-    <Compile Include="Assets\scripts\PlayerScripts\GrapplingHookTip.cs" />
-    <Compile Include="Assets\scripts\PlayerScripts\SaveGrapplingHook.cs" />
-    <Compile Include="Assets\scripts\SideQuest\GatherQuest.cs" />
-    <Compile Include="Assets\scripts\SideQuest\KillQuest.cs" />
-    <Compile Include="Assets\scripts\Spells\Fireball.cs" />
-    <Compile Include="Assets\scripts\Spells\Heal.cs" />
-    <Compile Include="Assets\scripts\Spells\Magic.cs" />
-    <Compile Include="Assets\scripts\Spells\MagicController.cs" />
-    <Compile Include="Assets\scripts\Spells\Scroll\FireballScroll.cs" />
-    <Compile Include="Assets\scripts\WorldObjects.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Assets\resources\Dialog\MainQuest\MainQuest0_0.0.txt" />
-    <None Include="Assets\resources\Dialog\MainQuest\MainQuest0_0.1.txt" />
-    <None Include="Assets\resources\Dialog\MainQuest\MainQuest10_0.0.txt" />
-    <None Include="Assets\resources\Dialog\MainQuest\MainQuest11_0.0.txt" />
-    <None Include="Assets\resources\Dialog\MainQuest\MainQuest1_0.0.txt" />
-    <None Include="Assets\resources\Dialog\MainQuest\MainQuest3_0.0.txt" />
-    <None Include="Assets\resources\Dialog\MainQuest\MainQuest4_0.0.txt" />
-    <None Include="Assets\resources\Dialog\MainQuest\MainQuest5_0.0.txt" />
-    <None Include="Assets\resources\Dialog\MainQuest\MainQuest7_0.0.txt" />
-    <None Include="Assets\resources\Dialog\MainQuest\MainQuest8_0.0.txt" />
-    <None Include="Assets\resources\Dialog\MainQuest\MainQuest9_0.0.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Blitz\AcceptQuest.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Blitz\QuestComplete.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Blitz\QuestIncomplete.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Character1\AcceptQuest.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Character1\QuestComplete.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Character1\QuestIncomplete.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Doctor\AcceptQuest.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Doctor\QuestComplete.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Doctor\QuestIncomplete.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Morgana\AcceptQuest.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Morgana\QuestComplete.txt" />
-    <None Include="Assets\resources\Dialog\NPC\Morgana\QuestIncomplete.txt" />
+    <Compile Include="Assets\EnemyAttack.cs" />
+    <Compile Include="Assets\scripts\CamraController.cs" />
+    <Compile Include="Assets\scripts\DoorCollider.cs" />
+    <Compile Include="Assets\scripts\DoorPrefabInfo.cs" />
+    <Compile Include="Assets\scripts\DrawGrapHook.cs" />
+    <Compile Include="Assets\scripts\DrawPlayerMap.cs" />
+    <Compile Include="Assets\scripts\EnemyStats.cs" />
+    <Compile Include="Assets\scripts\GameController.cs" />
+    <Compile Include="Assets\scripts\GameData.cs" />
+    <Compile Include="Assets\scripts\GrapplingHookBody.cs" />
+    <Compile Include="Assets\scripts\GrapplingHookTip.cs" />
+    <Compile Include="Assets\scripts\Inventory.cs" />
+    <Compile Include="Assets\scripts\Item.cs" />
+    <Compile Include="Assets\scripts\LoadOnClick.cs" />
+    <Compile Include="Assets\scripts\MapAddOns.cs" />
+    <Compile Include="Assets\scripts\MapGenerator.cs" />
+    <Compile Include="Assets\scripts\MeshGenerator.cs" />
+    <Compile Include="Assets\scripts\MoveTowardPlayer.cs" />
+    <Compile Include="Assets\scripts\Shot.cs" />
+    <Compile Include="Assets\scripts\ShotMove.cs" />
+    <Compile Include="Assets\scripts\Slot.cs" />
+    <Compile Include="Assets\scripts\Weapon.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />

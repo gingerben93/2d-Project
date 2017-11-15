@@ -9,12 +9,10 @@ public class PlayerController : MonoBehaviour
     public string playerName { get; set; }
 
     public bool facingRight { get; set; }
-    public bool jump { get; set; }
 
-    public float attack { get; set; }
-    public float moveForce { get; set; }
-    public float maxSpeed { get; set; }
-    public float jumpForce { get; set; }
+    //private float moveForce;
+    private float maxSpeed;
+    private float jumpForce;
 
     //dash force
     float dashForce = 1000f;
@@ -65,24 +63,58 @@ public class PlayerController : MonoBehaviour
     public PlayerAttack playerAttack;
 
     //for slide move
-    private EdgeCollider2D edge;
+    private EdgeCollider2D currentEdge;
     private int currentEdgePoint = 0;
     private Vector2 CurrentVector;
     private Vector2 knownVec;
     private Vector2 perpVec;
     private Quaternion targetRotation;
+    public bool IsSliding;
+
+    private EdgeCollider2D[] Edges;
+    bool firstRun = true;
+    bool jumpOff = false;
+
+    //for slide move particles
+    private ParticleSystem SlideParticles;
+    private ParticleSystem SlideJumpParticles;
 
     //is touching door
     public bool touchingDoor { get; set; }
 
     //invinsible
-    private bool invincible = false;
+    public bool invincible { get; set; }
     //attack cooldown when destoryed
     float InvinicbleCoolDown = 2;
     float InvinicbleCoolDownTimer = 0;
 
     //for fade in and out player sprite
     SpriteRenderer PlayerSprite;
+
+    //for smooth force movments
+    public Vector2 forceAddToPlayer;
+
+    //for grappling hook
+    DrawGrapHook grapplingHookScript;
+
+    //bools for inputs
+    bool spaceDown;
+    bool SHold;
+    bool SUp;
+    bool Mouse0Up;
+    bool Mouse0Down;
+    bool Mouse1Hold;
+    bool DHold;
+    bool AHold;
+
+    // need to not add force with a and d when player is doing other stuff
+    bool noMovement;
+
+    //only one rotate call at a time
+    bool isRotating;
+
+    bool isGrapplingHook;
+
 
     //singleton
     public static PlayerController PlayerControllerSingle;
@@ -108,11 +140,9 @@ public class PlayerController : MonoBehaviour
 
         //variables on start
         maxSpeed = 7f;
-        moveForce = 5f;
+        //moveForce = 5f;
         jumpForce = 500;
         facingRight = true;
-        jump = false;
-        attack = 2;
 
         //other start stuff
         doorInfo = GetComponent<DoorCollider>();
@@ -126,20 +156,37 @@ public class PlayerController : MonoBehaviour
 
         //set sprite
         PlayerSprite =  transform.GetComponentInChildren<SpriteRenderer>();
-        
+
+        //slide particle system
+        SlideParticles = transform.Find("SlideSkill").transform.Find("ParticleSlide").GetComponentInChildren<ParticleSystem>();
+        SlideJumpParticles = transform.Find("SlideSkill").transform.Find("ParticleJump").GetComponentInChildren<ParticleSystem>();
+
+        //for gappling hook
+        grapplingHookScript = GameObject.Find("GrapplingHook").GetComponent<DrawGrapHook>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
-
-
         //for stoping all player actions
         if (freezePlayer)
         {
             return;
         }
+
+        spaceDown = Input.GetKeyDown(KeyCode.Space);
+
+        SUp = Input.GetKeyUp(KeyCode.S);
+        SHold = Input.GetKey(KeyCode.S);
+
+        Mouse0Up = Input.GetMouseButtonUp(0);
+        Mouse0Down = Input.GetMouseButtonDown(0);
+
+        Mouse1Hold = Input.GetMouseButton(1);
+
+        DHold = Input.GetKey(KeyCode.D);
+        AHold = Input.GetKey(KeyCode.A);
+
 
         //if player health hits 0
         if (PlayerStats.PlayerStatsSingle.health <= 0)
@@ -153,7 +200,7 @@ public class PlayerController : MonoBehaviour
         {
             if (touchingDoor)
             {
-                GameController.GameControllerSingle.RemoveCurrentMapObjects();
+                GameController.GameControllerSingle.RemoveEveryingOnMap();
 
                 MapGenerator.MapGeneratorSingle.seed = GameController.GameControllerSingle.mapSeed;
                 MapGenerator.MapGeneratorSingle.LoadMap();
@@ -169,11 +216,20 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        //jumping
-        if (Input.GetKeyDown(KeyCode.Space) && rb2d.velocity.y < maxSpeed)
+        if (Mouse0Down)
         {
-            jump = true;
-            rb2d.gravityScale = 1;
+            isGrapplingHook = true;
+            grapplingHookScript.TurnGrapHookOn();
+        }
+
+        if (Mouse0Up)
+        {
+            if (isGrapplingHook)
+            {
+                isGrapplingHook = false;
+                grapplingHookScript.TurnGrapHookOff();
+                StartCoroutine(RotateToZero());
+            }
         }
 
         //button 1
@@ -236,11 +292,9 @@ public class PlayerController : MonoBehaviour
                 //Number of Taps you want Minus One
                 if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
                 {
-                    Debug.Log("double tap right");
                     dashCoolDown = 1f;
                     if (rb2d.velocity.x >= 6f)
                     {
-                        Debug.Log("worked");
                         rb2d.velocity = new Vector2(-7f, rb2d.velocity.y);
                     }
                     else {
@@ -265,11 +319,9 @@ public class PlayerController : MonoBehaviour
                 //Number of Taps you want Minus One
                 if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
                 {
-                    Debug.Log("double tap left");
                     dashCoolDown = 1f;
                     if (rb2d.velocity.x <= -6f)
                     {
-                        Debug.Log("worked");
                         rb2d.velocity = new Vector2(7f, rb2d.velocity.y);
                     }
                     else {
@@ -311,7 +363,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        else if (Input.GetMouseButtonDown(1))
+        else if (Mouse1Hold)
         {
             if (playerAttack != null)
             {
@@ -320,6 +372,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    //don't put keybutton reads in here; they can hit twice
     void FixedUpdate()
     {
         if (invincible)
@@ -338,86 +391,179 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-
+        
         // stops all player actions
         if (freezePlayer)
         {
             return;
         }
-
-        //if edge collider is there 
-        if (edge)
+        if (SHold && !IsSliding)
         {
-            if (Input.GetKey(KeyCode.S))
+            try
             {
-                rb2d.gravityScale = 0;
-                CurrentVector = new Vector2(edge.points[currentEdgePoint].x, edge.points[currentEdgePoint].y);
-
-                //gets current perp vector with current and next point
-                knownVec = CurrentVector - new Vector2(edge.points[(currentEdgePoint + 1) % edge.pointCount].x, edge.points[(currentEdgePoint + 1) % edge.pointCount].y);
-                perpVec = CurrentVector + new Vector2(knownVec.y, -knownVec.x) * 1;
-
-                //for moving the object
-                gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, perpVec, .25f);
-
-                //for rotating the object
-                targetRotation = Quaternion.LookRotation(Vector3.forward, perpVec - CurrentVector);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, .25f);
-
-                //gets next point to move to
-                if (Vector3.Distance(gameObject.transform.position, perpVec) <= .1f)
+                if (firstRun)
                 {
-                    if (facingRight)
+                    Edges = GameObject.Find("ColliderHolder").GetComponentsInChildren<EdgeCollider2D>();
+                    float closestCollider = 5000;
+                    foreach (EdgeCollider2D edge in Edges)
                     {
-                        currentEdgePoint = (currentEdgePoint + 1) % (edge.edgeCount - 1);
+                        if (edge.Distance(transform.GetComponent<CapsuleCollider2D>()).distance < closestCollider)
+                        {
+                            closestCollider = edge.Distance(transform.GetComponent<CapsuleCollider2D>()).distance;
+
+                            if (closestCollider <= 2)
+                            {
+                                currentEdge = edge;
+                                firstRun = false;
+                                noMovement = true;
+                                IsSliding = true;
+                                break;
+                            }
+                            else
+                            {
+                                closestCollider = 5000;
+                                firstRun = true;
+                            }
+                        }
                     }
-                    else
+                    if (!firstRun && !jumpOff)
                     {
-                        currentEdgePoint = ((edge.edgeCount - 1) + currentEdgePoint - 1) % (edge.edgeCount - 1);
+                        GetContactPoint();
+
+                        rb2d.gravityScale = 0;
+                        //turn on particles
+                        SlideParticles.Play();
                     }
                 }
             }
-            else if (Input.GetKeyUp(KeyCode.S))
+            catch
             {
-                rb2d.gravityScale = 1;
-                transform.eulerAngles = Vector3.zero;
+
+            }
+        }
+        else if (SUp)
+        {
+            noMovement = false;
+            IsSliding = false;
+            firstRun = true;
+            rb2d.gravityScale = 1;
+
+            jumpOff = false;
+
+            //turn off particles
+            SlideParticles.Stop();
+            SlideJumpParticles.Stop();
+
+            StartCoroutine(RotateToZero());
+        }
+
+        if (IsSliding)
+        {
+            if (spaceDown && !jumpOff)
+            {
+                jumpOff = true;
+                SlideJumpParticles.Play();
+                rb2d.gravityScale = 0;
+                rb2d.AddForce(transform.up * 25f);
+            }
+            else if (jumpOff)
+            {
+                if (DHold)
+                {
+                    transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z - 2);
+                }
+                else if (AHold)
+                {
+                    transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + 2);
+                }
+
+                //if (rb2d.velocity.magnitude < 10f)
+                //{
+                //    rb2d.AddForce(transform.up * 25f);
+                //}
+                transform.position += transform.up * .25f;
+            }
+            //for rotating the object
+            else if (!jumpOff)
+            {
+                //get new location to move to
+                CurrentVector = new Vector2(currentEdge.points[currentEdgePoint].x, currentEdge.points[currentEdgePoint].y);
+
+                //gets current perp vector with current and next point
+                knownVec = CurrentVector - new Vector2(currentEdge.points[(currentEdgePoint + 1) % currentEdge.pointCount].x, currentEdge.points[(currentEdgePoint + 1) % currentEdge.pointCount].y);
+                perpVec = CurrentVector + new Vector2(knownVec.y, -knownVec.x);
+                //for moving the object
+                gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, perpVec, .25f);
+
+                targetRotation = Quaternion.LookRotation(Vector3.forward, perpVec - CurrentVector);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, .25f);
+            }
+
+
+            //gets next point to move to
+            if (Vector3.Distance(gameObject.transform.position, perpVec) <= .1f)
+            {
+                if (facingRight)
+                {
+                    currentEdgePoint = (currentEdgePoint + 1) % (currentEdge.edgeCount - 1);
+                }
+                else
+                {
+                    currentEdgePoint = ((currentEdge.edgeCount - 1) + currentEdgePoint - 1) % (currentEdge.edgeCount - 1);
+                }
             }
         }
 
-        if (Input.GetKey(KeyCode.D))
+        if (DHold)
         {
             //flip character sprite
             if (!facingRight)
             {
                 Flip();
             }
-            //if going other direction, stop
-            if (rb2d.velocity.x < 0)
+            if (!noMovement)
             {
-                rb2d.velocity = new Vector2(0, rb2d.velocity.y);
-            }
-            //speed up by 1 to the right
-            if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
-            {
-                rb2d.velocity = new Vector2(rb2d.velocity.x + .5f, rb2d.velocity.y);
+                //if going other direction, stop
+                if (rb2d.velocity.x < 0)
+                {
+                    rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+                }
+                //speed up by 1 to the right
+                if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
+                {
+                    rb2d.velocity = new Vector2(rb2d.velocity.x + .5f, rb2d.velocity.y);
+
+                    //rb2d.velocity += (Vector2)transform.right;
+
+                    //forceAddToPlayer = transform.right * .5f;
+                    //rb2d.velocity += forceAddToPlayer;
+                }
             }
         }
-        else if (Input.GetKey(KeyCode.A))
+        else if (AHold)
         {
             //flip character sprite
             if (facingRight)
             {
                 Flip();
             }
-            //if going other direction, stop
-            if (rb2d.velocity.x > 0)
+            if (!noMovement)
             {
-                rb2d.velocity = new Vector2(0, rb2d.velocity.y);
-            }
-            //speed up by 1 to the left
-            if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
-            {
-                rb2d.velocity = new Vector2(rb2d.velocity.x - .5f, rb2d.velocity.y);
+                //if going other direction, stop
+                if (rb2d.velocity.x > 0)
+                {
+                    rb2d.velocity = new Vector2(0, rb2d.velocity.y);
+                }
+                //speed up by 1 to the left
+                if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
+                {
+                    rb2d.velocity = new Vector2(rb2d.velocity.x - .5f, rb2d.velocity.y);
+
+                    //rb2d.velocity += -(Vector2)transform.right;
+
+                    //forceAddToPlayer = -transform.right * .5f;
+                    //rb2d.velocity += forceAddToPlayer;
+                }
             }
         }
         //if colliding then slow down (don't slow doing in air)
@@ -444,23 +590,64 @@ public class PlayerController : MonoBehaviour
             timer = 0;
         }
 
-        if (jump)
+        if (spaceDown && !jumpOff)
         {
             rb2d.gravityScale = 1;
-            if (rb2d.velocity.y < 0)
+            if (isGrapplingHook)
             {
-                rb2d.velocity = new Vector3(rb2d.velocity.x, 0, 0);
+                if (facingRight)
+                {
+                    rb2d.AddForce(transform.right * jumpForce);
+                }
+                else
+                {
+                    rb2d.AddForce(-transform.right * jumpForce);
+                }
             }
-            if (Mathf.Sign(rb2d.velocity.y) < 1.2f)
+            else
             {
-                rb2d.AddForce(new Vector2(0f, jumpForce));
+                if (rb2d.velocity.y < 0)
+                {
+                    rb2d.velocity = new Vector3(rb2d.velocity.x, 0, 0);
+                }
+                if (Mathf.Sign(rb2d.velocity.y) < 1.2f)
+                {
+                    rb2d.AddForce(new Vector2(0f, jumpForce));
+                }
+                if (Mathf.Sign(rb2d.velocity.y) > 1.2f)
+                {
+                    rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Sign(rb2d.velocity.y) * 0.2f);
+                }
             }
-            if (Mathf.Sign(rb2d.velocity.y) > 1.2f)
-            {
-                rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Sign(rb2d.velocity.y) * 0.2f);
-            }
-            jump = false;
         }
+
+        if (spaceDown)
+        {
+            //turn off grappling hook
+            if (isGrapplingHook)
+            {
+                isGrapplingHook = false;
+                grapplingHookScript.TurnGrapHookOff();
+            }
+
+            if (!IsSliding)
+            {
+                StartCoroutine(RotateToZero());
+            }
+        }
+
+        //in fixed update you should set all button click bools to false or they might go off twice
+        //can't decide if should do same for holds; gives difference feel
+        spaceDown = false;
+
+        SUp = false;
+        //SHold = false;
+
+        Mouse0Up = false;
+        Mouse0Down = false;
+
+        //DHold = false;
+        //AHold = false;
     }
 
     void Flip()
@@ -471,17 +658,19 @@ public class PlayerController : MonoBehaviour
         transform.localScale = theScale;
     }
 
+    //stops play all player actions and x y movements, rotations, etc.
     public void LockPosition()
     {
         freezePlayer = true;
-        transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
+        rb2d.constraints = RigidbodyConstraints2D.FreezePositionX | RigidbodyConstraints2D.FreezePositionY;
     }
 
+    //returns player movement
     public void UnLockPosition()
     {
         freezePlayer = false;
-        transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        transform.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+        rb2d.constraints = RigidbodyConstraints2D.None;
+        rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
         transform.transform.rotation = Quaternion.identity;
     }
 
@@ -497,6 +686,52 @@ public class PlayerController : MonoBehaviour
         {
             SetInvisible();
             PlayerStats.PlayerStatsSingle.health -= DamageAmount;
+        }
+    }
+
+    //gets closest point to on the edge that the player is next to
+    private void GetContactPoint()
+    {
+        float closestPoint = 1000;
+        for (int index = 0; index < currentEdge.pointCount; index++)
+        {
+            if (Vector2.Distance(currentEdge.points[index], transform.position) <= closestPoint)
+            {
+                closestPoint = Vector2.Distance(currentEdge.points[index], transform.position);
+                currentEdgePoint = index;
+            }
+        }
+
+        //get first location
+        CurrentVector = new Vector2(currentEdge.points[currentEdgePoint].x, currentEdge.points[currentEdgePoint].y);
+
+        //gets current perp vector with current and next point
+        knownVec = CurrentVector - new Vector2(currentEdge.points[(currentEdgePoint + 1) % currentEdge.pointCount].x, currentEdge.points[(currentEdgePoint + 1) % currentEdge.pointCount].y);
+        perpVec = CurrentVector + new Vector2(knownVec.y, -knownVec.x);
+    }
+
+    public IEnumerator RotateToZero()
+    {
+        if (!isRotating && !IsSliding && !isGrapplingHook)
+        {
+            isRotating = true;
+            Quaternion start = transform.rotation;
+            Quaternion end = Quaternion.Euler(new Vector3(0.0f, 0.0f, 0.0f));
+            float elapsed = 0.0f;
+            while (elapsed < 1f)
+            {
+                //Debug.Log("rotate playercon");
+                transform.rotation = Quaternion.Slerp(start, end, elapsed/.1f);
+                elapsed += Time.deltaTime;
+                if (Mathf.Abs(transform.rotation.eulerAngles.z) <= 5)
+                {
+                    transform.eulerAngles = new Vector3(0, 0, 0);
+                    elapsed = 1f;
+                }
+
+                yield return null;
+            }
+            isRotating = false;
         }
     }
 
@@ -524,20 +759,23 @@ public class PlayerController : MonoBehaviour
         }
 
         //for slide move; gets edge collider player is touching
-        if (!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
+        if (jumpOff)
         {
             if (collision.gameObject.GetComponent<EdgeCollider2D>())
             {
-                edge = collision.gameObject.GetComponent<EdgeCollider2D>();
-                for (int index = 0; index < edge.pointCount; index++)
-                {
-                    if (Vector2.Distance(edge.points[index], collision.contacts[0].point) <= 1f)
-                    {
-
-                        currentEdgePoint = index;
-                        return;
-                    }
-                }
+                currentEdge = collision.gameObject.GetComponent<EdgeCollider2D>();
+                GetContactPoint();
+                jumpOff = false;
+                SlideJumpParticles.Stop();
+            }
+            else
+            {
+                //Debug.Log("no collider");
+                //Debug.Log(transform.eulerAngles);
+                //Debug.Log(transform.eulerAngles.z + 180f);
+                ////Quaternion test = Quaternion.Euler(new Vector3(0.0f, 0.0f, transform.eulerAngles.z + 90f));
+                ////transform.rotation = test;
+                //transform.eulerAngles = new Vector3(0, 0, -(transform.eulerAngles.z - collision.transform.eulerAngles.z)/2 );
             }
         }
 
@@ -556,11 +794,5 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionExit2D(Collision2D collision)
     {
         IsColliding = false;
-
-        //for slide move
-        if (!Input.GetKey(KeyCode.S) && !Input.GetKey(KeyCode.W))
-        {
-            edge = null;
-        }
     }
 }

@@ -13,13 +13,21 @@ public class SpinAttack : MonoBehaviour {
     SpriteRenderer closeImage;
     SpriteRenderer farImage;
 
+    //for particle systems
+    private ParticleSystem FarParticle;
+    private ParticleSystem CloseParticle;
+    ParticleSystem.ShapeModule shapeModule;
+
     // Use this for initialization
     void Start ()
     {
         closeBar = transform.Find("CloseBar").gameObject;
-        farBar = transform.Find("FarBar").gameObject;
         closeImage = closeBar.transform.GetComponentInChildren<SpriteRenderer>();
+        CloseParticle = closeBar.transform.GetComponentInChildren<ParticleSystem>();
+
+        farBar = transform.Find("FarBar").gameObject;
         farImage = farBar.transform.GetComponentInChildren<SpriteRenderer>();
+        FarParticle = farBar.transform.GetComponentInChildren<ParticleSystem>();
 
         //transform.position = new Vector2(Random.Range(-50, 50), Random.Range(-50, 50));
 
@@ -31,18 +39,20 @@ public class SpinAttack : MonoBehaviour {
         closeBar.transform.localPosition = new Vector3(0, 2 + length * .25f, 0);
         closeBar.GetComponent<BoxCollider2D>().size = new Vector2(1, length * .5f);
         closeImage.size = new Vector2(1, length / 2);
+        shapeModule = CloseParticle.shape;
+        shapeModule.radius = length / 4;
 
         farBar.transform.localPosition = new Vector3(0, length, 0);
         farBar.GetComponent<BoxCollider2D>().size = new Vector2(1, length * .5f);
         farImage.size = new Vector2(1, length / 2);
-
+        shapeModule = FarParticle.shape;
+        shapeModule.box = new Vector3(1, length / 2, 1);
     }
 	
 	// Update is called once per frame
 	void Update ()
     {
-
-        if (Vector2.Distance(PlayerController.PlayerControllerSingle.transform.position, transform.position) <= 500f)
+        if (Vector2.Distance(PlayerController.PlayerControllerSingle.transform.position, transform.parent.transform.position) <= 500f)
         {
             transform.eulerAngles = new Vector3(0, 0, (transform.eulerAngles.z - speed));
         }

@@ -2516,12 +2516,12 @@ Prefab:
     - target: {fileID: 224300859181793018, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 25
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 224300859181793018, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -80
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 224300859181793018, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
@@ -2546,12 +2546,12 @@ Prefab:
     - target: {fileID: 224934857732249304, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 25
+      value: 135
       objectReference: {fileID: 0}
     - target: {fileID: 224934857732249304, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -135
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 224934857732249304, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
@@ -2576,12 +2576,12 @@ Prefab:
     - target: {fileID: 224882983534306416, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 25
+      value: 190
       objectReference: {fileID: 0}
     - target: {fileID: 224882983534306416, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: -190
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 224882983534306416, guid: 951ee2ab28d1821419687d2ccba68d70,
         type: 2}
@@ -2592,6 +2592,21 @@ Prefab:
         type: 2}
       propertyPath: m_SizeDelta.y
       value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 224008257493944822, guid: 951ee2ab28d1821419687d2ccba68d70,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224008257493944822, guid: 951ee2ab28d1821419687d2ccba68d70,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224521686538445154, guid: 951ee2ab28d1821419687d2ccba68d70,
+        type: 2}
+      propertyPath: m_SizeDelta.y
+      value: -171.9412
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 951ee2ab28d1821419687d2ccba68d70, type: 2}
@@ -2907,7 +2922,7 @@ BoxCollider2D:
     border: {x: 0.1, y: 0.4, z: 0.1, w: 0.90000004}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 3.2, y: 3.2}
-    newSize: {x: 10, y: 3.2}
+    newSize: {x: 14.7, y: 5.04}
     adaptiveTilingThreshold: 0.5
     drawMode: 2
     adaptiveTiling: 0
@@ -2952,7 +2967,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 10, y: 3.2}
+  m_Size: {x: 14.7, y: 5.04}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1

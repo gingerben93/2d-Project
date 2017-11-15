@@ -6,55 +6,27 @@ public class DrawGrapHook : MonoBehaviour
 {
 
     private bool drawHook = false;
-    private bool moveUpRope = false;
-    private bool moveDownRope = false;
-
-    //private float currentDrawDistance;
-    private float lineDrawSpeed = .1f;
-
-    //reference to player
-    private GameObject player;
-
-    //for movement 
-    private Rigidbody2D rb2d;
-
-    public LineRenderer line;
-    private Vector2 mousePos;
-    public Vector2 currentPosLine;
+    
     private Vector2 startPosLine;
     private Vector2 endPosLine;
-    private Vector2 currentPosPlayer;
-
-    private float yIncrement;
-    private float xIncrement;
-
-    //for moving player up or down rope
-    private Vector2 heading;
-    private float distance;
-    private Vector2 direction;
-
-    private Vector2 StartDirection;
 
     //grappling hook tip
-    private GameObject GrapTip;
+    public GameObject GrapTip;
+    private BoxCollider2D grabTipCollider;
+    private SpriteRenderer tipImage;
     public bool HasTipCollided { get; set; }
     public Rigidbody2D rb2dTip;
-    private Vector2 TipDirection;
-    private float angleTipCollider;
 
     //grap body
     private GameObject grapBody;
+    private GameObject grap2Body;
+    private BoxCollider2D grapBodyCollider;
+    private BoxCollider2D grapBody2Collider;
+    private SpriteRenderer bodyImage;
     private Vector2 difference;
     private float grapBodyAngle;
-    private Quaternion q;
+    private Quaternion bodyRoatation;
     public bool hasBodyCollided { get; set; }
-
-    //grab hook pull power
-    //float grapplingPullSpeed = 25f;
-    //float hookMaxSpeed = 10f;
-
-    //number of lines
-    public int currentNumberLines = 2;
 
     //bools for key press
     bool WDown, SDown;
@@ -62,37 +34,31 @@ public class DrawGrapHook : MonoBehaviour
     //joint
     public DistanceJoint2D joint;
 
+    //player rotation
+    private Quaternion playerRotation;
+
+    //for hit moveing object
+    public Transform enemyTransform;
+    public bool hitEnemy;
+    public int InstanceID;
+
     //on start
     void Start()
     {
-        //line info
-        line = GetComponent<LineRenderer>();
-        line.material = new Material(Shader.Find("Diffuse"));
-        //line.SetVertexCount(2);
-        //line.SetWidth(.1f, .1f);
-        //line.SetColors(Color.green, Color.green);
-
-        line.positionCount = 2;
-        line.startWidth = .1f;
-        line.endWidth = .1f;
-        line.startColor = Color.green;
-        line.endColor = Color.green;
-
-        player = PlayerController.PlayerControllerSingle.gameObject;
-
-        line.useWorldSpace = true;
-        line.enabled = false;
-        rb2d = player.GetComponent<Rigidbody2D>();
-
         //grap hook info
         GrapTip = GameObject.Find("GrapplingHookTip");
+        grabTipCollider = GrapTip.GetComponent<BoxCollider2D>();
         //change to false at somepoint
         HasTipCollided = false;
         rb2dTip = GrapTip.GetComponent<Rigidbody2D>();
 
         //grap hook body
-        grapBody = GameObject.Find("BodyCollider");
-
+        grapBody = gameObject.transform.parent.Find("BodyCollider").gameObject;
+        grap2Body = gameObject.transform.parent.Find("BodyCollider2").gameObject;
+        grapBodyCollider = grapBody.GetComponent<BoxCollider2D>();
+        grapBody2Collider = grap2Body.GetComponent<BoxCollider2D>();
+        bodyImage = grapBody.GetComponentInChildren<SpriteRenderer>();
+        tipImage = GrapTip.GetComponentInChildren<SpriteRenderer>();
         //add joint
         joint = rb2dTip.GetComponent<DistanceJoint2D>();
         joint.enabled = false;
@@ -100,74 +66,45 @@ public class DrawGrapHook : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            EventSystem eventSystem = EventSystem.current;
-            if (eventSystem.IsPointerOverGameObject())
-            {
-                return;
-            }
-            else
-            {
-                //turn off joint
-                joint.enabled = false;
-
-                //rest number lines
-                currentNumberLines = 2;
-                line.positionCount = currentNumberLines;
-
-                //set tip to dynamic for collision detection
-                rb2dTip.isKinematic = false;
-                //rb2dTip.simulated = true;
-
-                //SET BODY INFO
-                //grap body info
-                grapBody.GetComponent<BoxCollider2D>().enabled = true;
-                grapBody.GetComponent<BoxCollider2D>().size = new Vector2(.5f, .5f);
-                grapBody.GetComponent<Rigidbody2D>().isKinematic = false;
-                grapBody.GetComponent<Rigidbody2D>().simulated = true;
-
-                //grap tip info
-                GrapTip.GetComponent<BoxCollider2D>().enabled = true;
-
-                HasTipCollided = false;
-
-                //turn gravity back on
-                rb2d.gravityScale = 1;
-                moveUpRope = false;
-                moveDownRope = false;
-
-                startPosLine = player.transform.position;
-                drawHook = true;
-                mousePos = Input.mousePosition;
-                mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                //mousePos.z = 0;
-
-                currentPosLine = startPosLine;
-                endPosLine = mousePos;
-
-                line.SetPosition(currentNumberLines - 2, startPosLine);
-                line.SetPosition(currentNumberLines - 1, startPosLine);
-                line.enabled = true;
-
-                //reset variable in MoveLine
-                //currentDrawDistance = 0;
-
-                //info grap hook tip
-                GrapTip.transform.position = currentPosPlayer;
-                heading = endPosLine - startPosLine;
-                distance = heading.magnitude;
-                TipDirection = heading / distance;
-            }
-        }
-
         if (drawHook == true)
         {
             WDown = Input.GetKey(KeyCode.W);
             SDown = Input.GetKey(KeyCode.S);
-        }
 
-        currentPosPlayer = player.transform.position;
+            if (Vector2.Distance(PlayerController.PlayerControllerSingle.transform.position, GrapTip.transform.position) <= 1f)
+            {
+                WDown = false;
+            }
+            if (!HasTipCollided)
+            {
+                WDown = false;
+            }
+
+            if (hitEnemy)
+            {
+                GrapTip.transform.position = enemyTransform.position;
+            }
+
+
+            //for rotating body
+            difference = GrapTip.transform.position - PlayerController.PlayerControllerSingle.transform.position;
+            grapBody.transform.position = (PlayerController.PlayerControllerSingle.transform.position + GrapTip.transform.position) / 2;
+            grap2Body.transform.position = (PlayerController.PlayerControllerSingle.transform.position + GrapTip.transform.position) / 2;
+
+            grapBodyAngle = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
+            bodyRoatation = Quaternion.AngleAxis(grapBodyAngle, Vector3.forward);
+            grapBody.transform.rotation = bodyRoatation;
+            grap2Body.transform.rotation = bodyRoatation;
+
+            grapBodyCollider.size = new Vector2(Vector3.Distance(GrapTip.transform.position, PlayerController.PlayerControllerSingle.transform.position), .25f);
+            grapBody2Collider.size = new Vector2(Vector3.Distance(GrapTip.transform.position, PlayerController.PlayerControllerSingle.transform.position), .25f);
+            bodyImage.size = new Vector2(Vector3.Distance(GrapTip.transform.position, PlayerController.PlayerControllerSingle.transform.position), .2f);
+
+        }
+        else
+        {
+            GrapTip.transform.position = PlayerController.PlayerControllerSingle.transform.position;
+        }
     }
 
     // fixedupdate gives correct collisons update doesn't. collides bad at fast speeds
@@ -176,216 +113,120 @@ public class DrawGrapHook : MonoBehaviour
         //needs to reset variables used for grap hook stuff
         if (drawHook == true)
         {
-            //angleTipCollider = Vector3.Angle(currentPosPlayer, mousePos);
-            //GrapTip.transform.eulerAngles = new Vector3(0, 0, angleTipCollider);
-
             // move up rope
-            if (WDown && !moveUpRope)
+            if (WDown)
             {
-                //calculate direction
-                //heading = endPosLine - startPosLine;
-                //distance = heading.magnitude;
-                //StartDirection = heading / distance;
-                moveUpRope = true;
+                joint.distance = Vector2.Distance(rb2dTip.transform.position, PlayerController.PlayerControllerSingle.transform.position);
                 joint.enabled = false;
             }
-
-            else if (!WDown && moveUpRope)
+            else if (!WDown && HasTipCollided)
             {
-                rb2d.gravityScale = 1;
-                moveUpRope = false;
-                joint.distance = Vector2.Distance(rb2dTip.transform.position, PlayerController.PlayerControllerSingle.transform.position);
+
                 joint.enabled = true;
             }
 
             //move down rope
-            if (SDown && !moveDownRope)
+            if (SDown)
             {
-                //calculate direction
-                //heading = endPosLine - startPosLine;
-                //distance = heading.magnitude;
-                //StartDirection = heading / distance;
-                moveDownRope = true;
+                joint.distance = Vector2.Distance(rb2dTip.transform.position, PlayerController.PlayerControllerSingle.transform.position);
                 joint.enabled = false;
             }
 
-            else if (!SDown && moveDownRope)
+            else if (!SDown && HasTipCollided)
             {
-                rb2d.gravityScale = 1;
-                moveDownRope = false;
-                joint.distance = Vector2.Distance(rb2dTip.transform.position, PlayerController.PlayerControllerSingle.transform.position);
                 joint.enabled = true;
             }
 
             if (!HasTipCollided)
             {
-                rb2dTip.MovePosition(rb2dTip.position + new Vector2(.4f * TipDirection.x, .4f * TipDirection.y));
-                MoveLine();
+                //now moves in grap tip
+                GrapTip.transform.position += GrapTip.transform.right * .5f;
+                //rb2dTip.velocity = GrapTip.transform.right * 15f;
+                //rb2dTip.AddForce(GrapTip.transform.right * .5f);
             }
             else
             {
-                line.SetPosition(currentNumberLines - 1, currentPosPlayer);
-
-                //jump to turn off rope
-                if (Input.GetKeyDown(KeyCode.Space))
+                //don't rotate when sliding or move when sliding
+                if (!PlayerController.PlayerControllerSingle.IsSliding)
                 {
-                    drawHook = false;
-                    line.enabled = false;
-                    GrapTip.GetComponent<BoxCollider2D>().enabled = false;
-                    grapBody.GetComponent<BoxCollider2D>().enabled = false;
-                    GrapTip.transform.position = currentPosPlayer;
+                    //for rotating the player object;
+                    playerRotation = Quaternion.LookRotation(Vector3.forward, GrapTip.transform.position - PlayerController.PlayerControllerSingle.transform.position);
+                    PlayerController.PlayerControllerSingle.transform.rotation = Quaternion.Slerp(PlayerController.PlayerControllerSingle.transform.rotation, playerRotation, .2f);
 
-                    //turn off tip
-                    joint.enabled = false;
+                    if (WDown)
+                    {
+                        //PlayerController.PlayerControllerSingle.transform.position += PlayerController.PlayerControllerSingle.transform.up * .5f;
+                        PlayerController.PlayerControllerSingle.rb2d.velocity += (Vector2)PlayerController.PlayerControllerSingle.transform.up * .5f;
+                    }
                 }
-
-                if (moveUpRope == true)
-                {
-                    rb2d.gravityScale = 0;
-                    rb2d.position = Vector3.MoveTowards(rb2d.position, GrapTip.transform.position, .25f);
-                }
-
-                //if (moveDownRope == true)
-                //{
-                //    //calculate direction for pushing away
-                //    currentPosPlayer = GameController.GameControllerSingle.transform.position;
-                //    heading = currentPosLine - currentPosPlayer;
-                //    rb2d.gravityScale = 0;
-                //    rb2d.position = Vector2.MoveTowards(rb2d.position, rb2d.position - heading, .25f);
-                //    //MovePlayerDownRope();
-                //}
             }
-
-            //for rotating body
-            difference = GrapTip.transform.position - player.transform.position;
-            grapBody.transform.position = (player.transform.position + GrapTip.transform.position) / 2;
-
-            grapBodyAngle = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-            q = Quaternion.AngleAxis(grapBodyAngle, Vector3.forward);
-            grapBody.transform.rotation = q;
-
-            //transform.rotation = Quaternion.LookRotation(Vector3.forward, GrapTip.transform.position - player.transform.position);
-
-            //grapBody.GetComponent<BoxCollider2D>().size = new Vector2(.25f, Vector3.Distance(GrapTip.transform.position, player.transform.position));
-            grapBody.GetComponent<BoxCollider2D>().size = new Vector2(Vector3.Distance(GrapTip.transform.position, player.transform.position), .25f);
         }
     }
 
-    void MoveLine()
+    public void TurnGrapHookOn()
     {
-        //currentDrawDistance = lineDrawSpeed;
+        EventSystem eventSystem = EventSystem.current;
+        if (eventSystem.IsPointerOverGameObject())
+        {
+            return;
+        }
+        else
+        {
+            //grap body info
+            grapBody.transform.position = PlayerController.PlayerControllerSingle.transform.position;
+            grap2Body.transform.position = PlayerController.PlayerControllerSingle.transform.position;
+            grapBodyCollider.enabled = true;
+            grapBody2Collider.enabled = true;
+            grapBody.GetComponent<Rigidbody2D>().isKinematic = false;
+            bodyImage.enabled = true;
 
-        //calculate vector direction
-        heading = endPosLine - startPosLine;
-        distance = heading.magnitude;
-        StartDirection = heading / distance;
+            //grap tip info
+            grabTipCollider.enabled = true;
+            GrapTip.transform.position = PlayerController.PlayerControllerSingle.transform.position;
+            //set tip to dynamic for collision detection
+            rb2dTip.isKinematic = false;
+            tipImage.enabled = true;
+            HasTipCollided = false;
 
-        currentPosLine += StartDirection * lineDrawSpeed;
+            startPosLine = PlayerController.PlayerControllerSingle.transform.position;
+            endPosLine = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        //set line coordinates
-        currentPosLine = GrapTip.transform.position;
-        line.SetPosition(currentNumberLines - 1, currentPosPlayer);
-        //off set is to make it appeat closer to wall ; + StartDirection * .5f
-        line.SetPosition(currentNumberLines - 2, currentPosLine + StartDirection * .5f);
+            float TipAngle = Mathf.Atan2(endPosLine.y - startPosLine.y, endPosLine.x - startPosLine.x) * Mathf.Rad2Deg;
+            Quaternion tipRotation = Quaternion.AngleAxis(TipAngle, Vector3.forward);
+            GrapTip.transform.rotation = tipRotation;
+
+            //start grap hook
+            drawHook = true;
+        }
     }
 
-    //void MovePlayerUpRope()
-    //{
-    //    Vector2 temp = rb2dTip.transform.InverseTransformDirection(rb2d.transform.position);
-    //    Debug.Log(temp);
-    //    if (temp.x <= hookMaxSpeed)
-    //    {
-    //        heading = currentPosLine - currentPosPlayer;
+    public void TurnGrapHookOff()
+    {
+        //HasTipCollided = true;
 
-    //        distance = heading.magnitude;
-    //        direction = heading / distance;
+        //set to kinmatic so it doens't move while it's off
+        grapBody.GetComponent<Rigidbody2D>().isKinematic = true;
 
-    //        rb2d.AddForce(new Vector2(direction.x * grapplingPullSpeed, 0));
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("MAX X");
-    //    }
-    //    if (temp.y <= hookMaxSpeed)
-    //    {
-    //        heading = currentPosLine - currentPosPlayer;
-    //        distance = heading.magnitude;
-    //        direction = heading / distance;
+        //body stuff
+        grapBodyCollider.size = new Vector2(.5f, .5f);
+        grapBody2Collider.size = new Vector2(.5f, .5f);
+        bodyImage.size = new Vector2(.1f, .2f);
+        grapBodyCollider.enabled = false;
+        grapBody2Collider.enabled = false;
+        bodyImage.enabled = false;
 
-    //        rb2d.AddForce(new Vector2(0, direction.y * grapplingPullSpeed));
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("MAX Y");
-    //    }
 
-    //    //if (StartDirection.x != direction.x)
-    //    //{
-    //    //    //rb2d.velocity = new Vector3(0, rb2d.velocity.y, 0);
-    //    //    rb2d.AddForce(new Vector2(0, direction.y * grapplingPullSpeed));
-    //    //}
-    //    //else
-    //    //{
-    //    //    rb2d.AddForce(new Vector2(direction.x * grapplingPullSpeed, 0));
-    //    //}
+        //tip stuff
+        rb2dTip.isKinematic = true;
+        tipImage.enabled = false;
+        grabTipCollider.enabled = false;
 
-    //    //if (StartDirection.y != direction.y)
-    //    //{
-    //    //    //rb2d.velocity = new Vector3(rb2d.velocity.x, 0, 0);
-    //    //    rb2d.AddForce(new Vector2(direction.x * grapplingPullSpeed, 0));
-    //    //}
-    //    //else
-    //    //{
-    //    //    rb2d.AddForce(new Vector2(0, direction.y * grapplingPullSpeed));
-    //    //}
-    //}
+        // for resetting pulling stuff
+        WDown = false;
+        SDown = false;
 
-    //void MovePlayerDownRope()
-    //{
-    //    Vector2 temp = rb2dTip.transform.InverseTransformDirection(rb2d.transform.position);
-    //    Debug.Log(temp);
-
-    //    if (temp.x >= -hookMaxSpeed)
-    //    {
-    //        //calculate direction
-    //        heading = currentPosLine - currentPosPlayer;
-    //        distance = heading.magnitude;
-    //        direction = heading / distance;
-
-    //        rb2d.AddForce(new Vector2(-direction.x * grapplingPullSpeed, 0));
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("-MAX X");
-    //    }
-
-    //    if (temp.y >= -hookMaxSpeed)
-    //    {
-    //        rb2d.AddForce(new Vector2(0, -direction.y * grapplingPullSpeed));
-    //    }
-    //    else
-    //    {
-    //        Debug.Log("-MAX Y");
-    //    }
-
-    //    //if (StartDirection.x != direction.x)
-    //    //{
-    //    //    //rb2d.velocity = new Vector3(0, rb2d.velocity.y, 0);
-    //    //    rb2d.AddForce(new Vector2(0, -direction.y * grapplingPullSpeed));
-    //    //}
-    //    //else
-    //    //{
-    //    //    rb2d.AddForce(new Vector2(-direction.x * grapplingPullSpeed, 0));
-    //    //}
-
-    //    //if (StartDirection.y != direction.y)
-    //    //{
-    //    //    //rb2d.velocity = new Vector3(rb2d.velocity.x, 0, 0);
-    //    //    rb2d.AddForce(new Vector2(-direction.x * grapplingPullSpeed, 0));
-    //    //}
-    //    //else
-    //    //{
-    //    //    rb2d.AddForce(new Vector2(0, -direction.y * grapplingPullSpeed));
-    //    //}
-    //}
+        joint.enabled = false;
+        //turn off tip
+        drawHook = false;
+    }
 }

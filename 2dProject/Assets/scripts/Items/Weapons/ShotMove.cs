@@ -16,6 +16,7 @@ public class ShotMove : MonoBehaviour
 
     void Start()
     {
+        transform.GetComponent<DamageOnCollision>().onCollide = onCollide;
         Shoot();
     }
 
@@ -25,6 +26,11 @@ public class ShotMove : MonoBehaviour
 
         // Apply movement to the rigidbody
         rigidbodyComponent.velocity = movement;
+    }
+
+    void onCollide()
+    {
+        Destroy(gameObject);
     }
 
     void Shoot()
@@ -40,4 +46,31 @@ public class ShotMove : MonoBehaviour
         movement = new Vector2(10 * direction.x, 10 * direction.y);
     }
 
+    //void OnTriggerEnter2D(Collider2D otherCollider)
+    //{
+    //    //if bullet, do bullet stuff
+    //    if (otherCollider.tag == "Enemy")
+    //    {
+    //        EnemyStats Enemy;
+    //        //might needs to also look in children of gameobjects fi this ever fails
+    //        if(Enemy = otherCollider.gameObject.GetComponent<EnemyStats>())
+    //        {
+
+    //        }
+    //        else
+    //        {
+    //            Enemy = otherCollider.gameObject.transform.parent.GetComponent<EnemyStats>();
+    //        }
+
+    //        if (Enemy)
+    //        {
+    //            Enemy.Damage(PlayerController.PlayerControllerSingle.weaponDamage);
+    //        }
+    //        Destroy(gameObject);
+    //    }
+    //    else
+    //    {
+    //        Destroy(gameObject);
+    //    }
+    //}
 }

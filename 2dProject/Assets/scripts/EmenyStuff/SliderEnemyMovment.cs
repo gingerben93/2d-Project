@@ -66,7 +66,6 @@ public class SliderEnemyMovment : MonoBehaviour {
         {
             if (coolDownTimer == 0)
             {
-                Debug.Log("move again");
                 coolDownTimer = coolDown;
                 attacking = true;
                 Attack.StartAttack();

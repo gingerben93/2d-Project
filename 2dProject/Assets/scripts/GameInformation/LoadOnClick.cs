@@ -41,13 +41,8 @@ public class LoadOnClick : MonoBehaviour {
     void Update() {
         if (loading)
         {
-            foreach (Transform child in WorldObjects.WorldObjectsSingle.transform)
-            {
-                foreach (Transform child2 in child)
-                {
-                    Destroy(child2.gameObject);
-                }
-            }
+            GameController.GameControllerSingle.RemoveEveryingOnMap();
+
             loadMap = "StartArea";
             PlayerController.PlayerControllerSingle.transform.position = new Vector3(-0f, 1.2f, 0);
 

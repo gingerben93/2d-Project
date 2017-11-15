@@ -3,9 +3,11 @@
 public class Blowdart : MonoBehaviour
 {
     private GameObject shotPrefab;
-    public float shootingRate = 0.25f;
 
+    public float shootingRate = 0.25f;
     private float shootCooldown;
+
+    public int damage { get; set; }
 
     void Start()
     {
@@ -21,7 +23,7 @@ public class Blowdart : MonoBehaviour
         }
     }
 
-    public void Attack(/*bool isEnemy*/)
+    public void Attack()
     {
         //Debug.Log(GameController.GameControllerSingle.damage);
         if (CanAttack)
@@ -30,8 +32,10 @@ public class Blowdart : MonoBehaviour
 
             // Create a new shot
             GameObject shotTransform = Instantiate(shotPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
-            // Assign position
+
+            // Assign bullet information; location and damage
             shotTransform.transform.position = transform.position;
+            shotTransform.GetComponent<DamageOnCollision>().damage = damage;
 
             /* // Make the weapon shot always towards it
              ShotMove move = shotTransform.gameObject.GetComponent<ShotMove>();

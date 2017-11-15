@@ -151,7 +151,14 @@ public class MeshGenerator : MonoBehaviour
         //{
             //EdgeCollider2D edgeCollider = gameObject.AddComponent<EdgeCollider2D>();
             GameObject temp = new GameObject();
-            temp.transform.SetParent(GameObject.Find("ColliderHolder").transform);
+
+            //need to add a rigid body so collition detect child object not parent
+            Rigidbody2D tempRb2d;
+            tempRb2d = temp.AddComponent<Rigidbody2D>();
+            tempRb2d.isKinematic = true;
+
+            temp.transform.SetParent(gameObject.transform.Find("ColliderHolder").transform);
+            temp.layer = 8;
             Vector2[] edgePoints = new Vector2[outline.Count];
             temp.name = "edgeCollider" + x;
             EdgeCollider2D edgeCollider = temp.AddComponent<EdgeCollider2D>();

@@ -17887,7 +17887,7 @@ Changing this value affects any subsequently loaded shaders. Initially this valu
         <para>Copies source texture into destination render texture with a shader.</para>
       </summary>
       <param name="source">Source texture.</param>
-      <param name="dest">Destination RenderTexture, or null to blit directly to screen.</param>
+      <param name="dest">The destination RenderTexture. Set this to null to blit directly to screen. See description for more information.</param>
       <param name="mat">Material to use. Material's shader could do some post-processing effect, for example.</param>
       <param name="pass">If -1 (default), draws all passes in the material. Otherwise, draws given pass only.</param>
     </member>
@@ -17896,7 +17896,7 @@ Changing this value affects any subsequently loaded shaders. Initially this valu
         <para>Copies source texture into destination render texture with a shader.</para>
       </summary>
       <param name="source">Source texture.</param>
-      <param name="dest">Destination RenderTexture, or null to blit directly to screen.</param>
+      <param name="dest">The destination RenderTexture. Set this to null to blit directly to screen. See description for more information.</param>
       <param name="mat">Material to use. Material's shader could do some post-processing effect, for example.</param>
       <param name="pass">If -1 (default), draws all passes in the material. Otherwise, draws given pass only.</param>
     </member>
@@ -17905,7 +17905,7 @@ Changing this value affects any subsequently loaded shaders. Initially this valu
         <para>Copies source texture into destination render texture with a shader.</para>
       </summary>
       <param name="source">Source texture.</param>
-      <param name="dest">Destination RenderTexture, or null to blit directly to screen.</param>
+      <param name="dest">The destination RenderTexture. Set this to null to blit directly to screen. See description for more information.</param>
       <param name="mat">Material to use. Material's shader could do some post-processing effect, for example.</param>
       <param name="pass">If -1 (default), draws all passes in the material. Otherwise, draws given pass only.</param>
     </member>

@@ -8,6 +8,8 @@ public class Fireball : MonoBehaviour
 
     void Start()
     {
+        transform.GetComponent<DamageOnCollision>().damage = 1;
+        transform.GetComponent<DamageOnCollision>().onCollide = onCollide;
         Destroy(gameObject, 5);
     }
 
@@ -16,9 +18,14 @@ public class Fireball : MonoBehaviour
         CalculateRotation();
     }
 
+    void onCollide()
+    {
+        Destroy(gameObject);
+    }
+
     void CalculateRotation()
     {
-        //faces object forward
+        //faces object forward; rigidbody needs to be getting speeds
         float angle = Mathf.Atan2(rigidbodyComponent.velocity.y, -rigidbodyComponent.velocity.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.back);
     }

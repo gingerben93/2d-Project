@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 60869429267159428}
   m_Layer: 13
   m_Name: Image
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37,8 +37,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4289445302858516}
   - component: {fileID: 50365542033340640}
-  - component: {fileID: 114516495171110408}
   - component: {fileID: 114628142680904870}
+  - component: {fileID: 114571100995965866}
   m_Layer: 13
   m_Name: Turret
   m_TagString: Enemy
@@ -56,10 +56,9 @@ GameObject:
   - component: {fileID: 4331722243229440}
   - component: {fileID: 61334910147329622}
   - component: {fileID: 50693716657703870}
-  - component: {fileID: 114915445297294192}
   m_Layer: 13
   m_Name: CrystalCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -71,7 +70,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1417131505188614}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 8.02, y: 2.18, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4302338007905374}
@@ -231,7 +230,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.67, y: 1.24}
   m_EdgeRadius: 0
---- !u!114 &114516495171110408
+--- !u!114 &114571100995965866
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -244,7 +243,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loot: {fileID: 4608652777673112, guid: b6fd51c9f95fc474b94f7579577cb2f8, type: 2}
   loot2: {fileID: 4608652777673112, guid: b6fd51c9f95fc474b94f7579577cb2f8, type: 2}
-  loot3: {fileID: 4091342300454142, guid: ddda9a7bc282c24459e0044624ee7df9, type: 2}
+  loot3: {fileID: 0}
   loot4: {fileID: 4425881544222182, guid: 06b0c2b703f394b438870eb9a78b2b6c, type: 2}
   loot5: {fileID: 4724824790748332, guid: 4b2939b4686d402448b6dea172410955, type: 2}
   loot6: {fileID: 4251220755674976, guid: c2eb96701c2ce6e4186d7b57199dd7b9, type: 2}
@@ -254,7 +253,8 @@ MonoBehaviour:
   loot10: {fileID: 4913389887696664, guid: 5053b64c7494e95408f34e7ff621bd25, type: 2}
   loot11: {fileID: 4184709057733690, guid: 6322bc45db7b5214d8a1909ebc499a80, type: 2}
   items: []
-  invincible: 1
+  health: 0
+  invincible: 0
 --- !u!114 &114628142680904870
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -269,17 +269,6 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   fireBallPrefab: {fileID: 4117291810871610, guid: 66b2cbeb8a68b524ba9f3d3a8a73e332,
     type: 2}
---- !u!114 &114915445297294192
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1990947626062246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 409bad1cd58a9f84cb7177682fab9aa0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &212313265837591002
 SpriteRenderer:
   m_ObjectHideFlags: 1

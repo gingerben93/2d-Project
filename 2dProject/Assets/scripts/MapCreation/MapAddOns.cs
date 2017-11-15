@@ -192,20 +192,8 @@ public class MapAddOns : MonoBehaviour
         return tempEnemyPos;
     }
 
-    public void RemoveAllEnemies()
-    {
-        var oldEnemy = GameObject.FindGameObjectsWithTag("Enemy");
-
-        //this is for removing the old doors
-        foreach (var enemy in oldEnemy)
-        {
-            Destroy(enemy);
-        }
-    }
-
     public void PlaceEnemyOnMap(List<Vector2> enemyLocations, List<Vector2> turretLocations)
     {
-        RemoveAllEnemies();
 
         Transform Parent = GameObject.Find("EnemyList").transform;
 

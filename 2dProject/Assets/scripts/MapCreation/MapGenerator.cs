@@ -454,10 +454,6 @@ public class MapGenerator : MonoBehaviour
             //spawns gather items // should be somewhere else later (only spawns if there are enemies)
             MapAddOns.GatherQuestItems(MapInfo[seed]);
         }
-        else
-        {
-            MapAddOns.RemoveAllEnemies();
-        }
     }
 
     //smooths the map with arbitrary process, change be changed and modified 
