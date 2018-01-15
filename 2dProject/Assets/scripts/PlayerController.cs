@@ -58,6 +58,11 @@ public class PlayerController : MonoBehaviour
     public delegate void HotBarDelegate();
     public HotBarDelegate HotBarSlot1, HotBarSlot2, HotBarSlot3;
 
+    //hotbar cooldowns
+    float hotBar1CoolDownTimer = 0;
+    float hotBar2CoolDownTimer = 0;
+    float hotBar3CoolDownTimer = 0;
+
     //for player attack
     public delegate void PlayerAttack();
     public PlayerAttack playerAttack;
@@ -191,6 +196,7 @@ public class PlayerController : MonoBehaviour
         //if player health hits 0
         if (PlayerStats.PlayerStatsSingle.health <= 0)
         {
+            ResetPlayer();
             transform.position = respawnLocation;
             PlayerStats.PlayerStatsSingle.health = PlayerStats.PlayerStatsSingle.maxHealth;
         }
@@ -200,6 +206,10 @@ public class PlayerController : MonoBehaviour
         {
             if (touchingDoor)
             {
+                //reset player skills and stuff
+                LockPosition();
+                ResetPlayer();
+
                 GameController.GameControllerSingle.RemoveEveryingOnMap();
 
                 MapGenerator.MapGeneratorSingle.seed = GameController.GameControllerSingle.mapSeed;
@@ -213,11 +223,13 @@ public class PlayerController : MonoBehaviour
                 transform.position = new Vector3(door.x, door.y, 0);
 
                 respawnLocation = door;
+                UnLockPosition();
             }
         }
 
         if (Mouse0Down)
         {
+            Debug.Log("Mouse 0 down");
             isGrapplingHook = true;
             grapplingHookScript.TurnGrapHookOn();
         }
@@ -233,11 +245,18 @@ public class PlayerController : MonoBehaviour
         }
 
         //button 1
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKey(KeyCode.Alpha1))
         {
-            if (HotBarSlot1 != null)
+            if (hotBar1CoolDownTimer > 0)
             {
-                HotBarSlot1();
+                hotBar1CoolDownTimer -= Time.deltaTime;
+            }
+            else
+            {
+                if (HotBarSlot1 != null)
+                {
+                    HotBarSlot1();
+                }
             }
         }
 
@@ -733,6 +752,42 @@ public class PlayerController : MonoBehaviour
             }
             isRotating = false;
         }
+    }
+
+    public void ResetPlayer()
+    {
+        //reset speed
+        rb2d.velocity = Vector2.zero;
+
+        //reset presses
+        spaceDown = false;
+        SHold = false;
+        SUp = false;
+        Mouse0Up = false;
+        Mouse0Down = false;
+        Mouse1Hold = false;
+        DHold = false;
+        AHold = false;
+
+        //reset local variables
+
+        //for grap hook
+        isGrapplingHook = false;
+
+        //for rotations
+        isRotating = false;
+
+        //for sliding skill
+        IsSliding = false;
+        firstRun = true;
+        jumpOff = false;
+        noMovement = false;
+        //particles for sliding skill
+        SlideParticles.Stop();
+        SlideJumpParticles.Stop();
+
+        //reset grappling hook;
+        grapplingHookScript.TurnGrapHookOff();
     }
 
     void OnTriggerEnter2D(Collider2D triggerCollition)

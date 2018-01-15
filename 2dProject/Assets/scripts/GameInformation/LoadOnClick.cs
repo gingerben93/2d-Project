@@ -69,6 +69,9 @@ public class LoadOnClick : MonoBehaviour {
     {
         //stops player from moving during loading
         PlayerController.PlayerControllerSingle.LockPosition();
+
+        //reset player
+        PlayerController.PlayerControllerSingle.ResetPlayer();
         
         //load functions
         AsyncOperation async = SceneManager.LoadSceneAsync(loadMap);

@@ -78,6 +78,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\scripts\AudioMixer.cs" />
     <Compile Include="Assets\scripts\BossRoom\Bomb.cs" />
     <Compile Include="Assets\scripts\BossRoom\BossPowerShield.cs" />
     <Compile Include="Assets\scripts\BossRoom\BossScript.cs" />

@@ -30,6 +30,7 @@ public class Magic : MonoBehaviour
 
     public void Cast()
     {
+        Debug.Log("spellName = " + spellName);
         switch (type)
         {
             case SpellType.FIRE:

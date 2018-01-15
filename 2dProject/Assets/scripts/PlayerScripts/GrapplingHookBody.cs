@@ -12,7 +12,7 @@ public class GrapplingHookBody : MonoBehaviour
     
     public void OnCollisionStay2D(Collision2D coll)
     {
-        if (coll.gameObject.GetComponent<EdgeCollider2D>())
+        if (coll.gameObject.GetComponent<EdgeCollider2D>() || coll.gameObject.GetComponent<BoxCollider2D>())
         {
             drawGrapHook.hitEnemy = false;
             foreach (ContactPoint2D missileHit in coll.contacts)

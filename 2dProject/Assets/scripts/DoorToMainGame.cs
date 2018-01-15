@@ -38,7 +38,12 @@ public class DoorToMainGame : MonoBehaviour
 
     IEnumerator LoadNewScene()
     {
+
+        //stops player
         PlayerController.PlayerControllerSingle.LockPosition();
+
+        //reset player skills and stuff
+        PlayerController.PlayerControllerSingle.ResetPlayer();
 
         //load functions
         AsyncOperation async = SceneManager.LoadSceneAsync("Area1");

@@ -56,7 +56,10 @@ public class PlayerStats : MonoBehaviour {
     public void GainExperiencePoints(int exp)
     {
         experiencePoints += exp;
+        //change exp text
         experiencePointsTxt.text = "EXP: " + experiencePoints;
+
+        //player level up
         if (experiencePoints >= level * 15)
         {
             // text container
