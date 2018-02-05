@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GodHands : MonoBehaviour {
+public class GodHands : Weapon {
 
     GodHandsFist godHandsFist;
     GodHandsFistPlayer godHandsFistPlayer;
@@ -23,7 +23,7 @@ public class GodHands : MonoBehaviour {
         fistPlayerPrefab = Resources.Load("Prefabs/WeaponProjectiles/FistPlayer", typeof(GameObject)) as GameObject;
     }
 
-    public void Attack()
+    public override void Attack()
     {
         if (GodhandsCanAttack)
         {

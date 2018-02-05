@@ -60,8 +60,14 @@ public class GameController : MonoBehaviour
         //DontDestroyOnLoad(GameObject.Find("GrapplingHookParts"));
 
         //assign skill functions
+        //dash
         GameObject.Find("DashSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill(); });
         GameObject.Find("DashSkill2").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill2(); });
+
+        //slide skill
+        GameObject.Find("SlideSkill1").GetComponent<Button>().onClick.AddListener(delegate { LearnSlideSkill(); });
+        GameObject.Find("SlideJumpSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnSlideJumpSkill(); });
+        GameObject.Find("SlideSteerSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnSlideSteerSkill(); });
 
         //assign buttons functions for menu
         GameObject.Find("InventoryButton").GetComponent<Button>().onClick.AddListener(delegate { InventoryOnButton(); });
@@ -142,17 +148,70 @@ public class GameController : MonoBehaviour
 
     public void LearnDashSkill()
     {
-        PlayerController.PlayerControllerSingle.dashSkill = true;
-        GameObject.Find("DashSkill").GetComponent<Button>().image.color = Color.yellow;
-        GameObject.Find("DashSkill").GetComponent<Button>().interactable = false;
-        GameObject.Find("DashSkill2").GetComponent<Button>().interactable = true;
+        if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
+        {
+            PlayerStats.PlayerStatsSingle.DecSkillPoints();
+
+            PlayerController.PlayerControllerSingle.dashSkill = true;
+
+            GameObject.Find("DashSkill").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("DashSkill").GetComponent<Button>().interactable = false;
+            GameObject.Find("DashSkill2").GetComponent<Button>().interactable = true;
+        }
     }
 
     public void LearnDashSkill2()
     {
-        GameObject.Find("DashSkill2").GetComponent<Button>().image.color = Color.yellow;
-        GameObject.Find("DashSkill2").GetComponent<Button>().interactable = false;
-        PlayerController.PlayerControllerSingle.dashSkill2 = true;
+        if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
+        {
+            PlayerStats.PlayerStatsSingle.DecSkillPoints();
+
+            PlayerController.PlayerControllerSingle.dashSkill2 = true;
+
+            GameObject.Find("DashSkill2").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("DashSkill2").GetComponent<Button>().interactable = false;
+        }
+    }
+
+    public void LearnSlideSkill()
+    {
+        if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
+        {
+            PlayerStats.PlayerStatsSingle.DecSkillPoints();
+
+            PlayerController.PlayerControllerSingle.slideSkill = true;
+
+            GameObject.Find("SlideSkill1").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("SlideSkill1").GetComponent<Button>().interactable = false;
+            GameObject.Find("SlideJumpSkill").GetComponent<Button>().interactable = true;
+        }
+    }
+
+    public void LearnSlideJumpSkill()
+    {
+        if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
+        {
+            PlayerStats.PlayerStatsSingle.DecSkillPoints();
+
+            PlayerController.PlayerControllerSingle.slideJumpSkill = true;
+
+            GameObject.Find("SlideJumpSkill").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("SlideJumpSkill").GetComponent<Button>().interactable = false;
+            GameObject.Find("SlideSteerSkill").GetComponent<Button>().interactable = true;
+        }
+    }
+
+    public void LearnSlideSteerSkill()
+    {
+        if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
+        {
+            PlayerStats.PlayerStatsSingle.DecSkillPoints();
+
+            PlayerController.PlayerControllerSingle.slideSteerSKill = true;
+
+            GameObject.Find("SlideSteerSkill").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("SlideSteerSkill").GetComponent<Button>().interactable = false;
+        }
     }
 
     public void InventoryOn()

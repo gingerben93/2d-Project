@@ -96,8 +96,7 @@ public class Inventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //alph = (int)GetComponent<CanvasGroup>().alpha;
-        if (Input.GetMouseButtonUp(0) && hoverObject)
+        if (Input.GetMouseButtonDown(0) && hoverObject)
         {
             if (!EventSystem.current.IsPointerOverGameObject(-1) && from != null)
             {
@@ -348,7 +347,6 @@ public class Inventory : MonoBehaviour
             {
                 Slot tmp = slot.GetComponent<Slot>();
 
-
                 if (tmp.IsEmpty)
                 {
                     tmp.AddItem(item);
@@ -360,6 +358,7 @@ public class Inventory : MonoBehaviour
         return false;
     }
 
+    //moves items and changes player stats
     public void MoveItem(GameObject clicked)
     {
         if (from == null)
@@ -395,38 +394,57 @@ public class Inventory : MonoBehaviour
             if (tmpTo.Count == 0)
             {
                 info = from.Items.Peek();
-                //Swapping items to an empty slot
-                if (info.type.ToString() == to.gameObject.name.ToString() || to.gameObject.name == "Slot") {
-                    if (info.type.ToString() == "WEAPON" && to.gameObject.name.ToString() == "WEAPON")
-                    {
-                        Debug.Log(info.weaponName + "1");
-                        SelectWeapon(info.weaponName);
-                        //Set weapon damage to projectile damage;
-                        PlayerController.PlayerControllerSingle.weaponDamage = info.damage + PlayerStats.PlayerStatsSingle.baseWeaponDamage;
-                        //Debug.Log(info.damage);
 
-                    }
-                    //Debug.Log(info.damage);
+                //swap to slot of same name then equipt item
+                if (info.type.ToString() == to.gameObject.name)
+                {
+                    info.Use();
+
                     to.AddItems(from.Items);
                     from.ClearSlot();
                 }
+                //unequipt item when swap out of slot
+                else if (to.gameObject.name == "Slot" && info.type.ToString() == from.gameObject.name)
+                {
+                    info.UnEquipt();
+
+                    to.AddItems(from.Items);
+                    from.ClearSlot();
+                }
+                else if(to.gameObject.name == "Slot")
+                {
+                    to.AddItems(from.Items);
+                    from.ClearSlot();
+                }
+
             }
             else
             {
                 info = from.Items.Peek();
                 info2 = to.Items.Peek();
-                
-                if (info.type.ToString() == to.gameObject.name || to.gameObject.name == "Slot" && info2.type.ToString() == from.gameObject.name || from.gameObject.name == "Slot" && to.gameObject.name == "Slot")
-                {
-                    if (info.type.ToString() == "WEAPON" && to.gameObject.name.ToString() == "WEAPON")
-                    {
-                        //Set weapon damage to projectile damage;
-                        PlayerController.PlayerControllerSingle.weaponDamage = info.damage + PlayerStats.PlayerStatsSingle.baseWeaponDamage;
-                        Debug.Log(info.weaponName);
-                        SelectWeapon(info.weaponName);
-                        //Debug.Log(info.damage);
 
-                    }
+                //Debug.Log(" 2 from.gameObject.name  = " + from.gameObject.name + " to.gameObject.name = " + to.gameObject.name);
+                //Debug.Log(" 2 info.type.ToString()  = " + info.type.ToString() + " info2.type.ToString() = " + info2.type.ToString());
+
+                if (info.type.ToString() == to.gameObject.name)
+                {
+                    //order when decide if armor is over or under what is should be fore  a very little amount of time
+                    info2.UnEquipt();
+                    info.Use();
+
+                    to.AddItems(from.Items);
+                    from.AddItems(tmpTo);
+                }
+                else if(from.gameObject.name == info2.type.ToString())
+                {
+                    info.UnEquipt();
+                    info2.Use();
+
+                    to.AddItems(from.Items);
+                    from.AddItems(tmpTo);
+                }
+                else if(to.gameObject.name == from.gameObject.name)
+                {
                     to.AddItems(from.Items);
                     from.AddItems(tmpTo);
                 }
@@ -466,7 +484,7 @@ public class Inventory : MonoBehaviour
         tooltip.SetActive(false);
     }
 
-    void SelectWeapon(string weaponName)
+    public void SelectWeapon(string weaponName)
     {
         if (weaponName == "Blowdart")
         {
@@ -480,7 +498,6 @@ public class Inventory : MonoBehaviour
 
             //set attack and damage
             Blowdart temp = WeaponGameobject.GetComponent<Blowdart>();
-            temp.damage = info.damage;
             PlayerController.PlayerControllerSingle.playerAttack = temp.Attack;
 
             //set damage

@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShortSword : MonoBehaviour {
+public class ShortSword : Weapon
+{
 
     public float weaponAttackRate = 0.25f;
     private float weaponCooldown;
@@ -43,7 +44,7 @@ public class ShortSword : MonoBehaviour {
         }
     }
 
-    public void Attack()
+    public override void Attack()
     {
         if (CanAttack)
         {

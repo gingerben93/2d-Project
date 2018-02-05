@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 4289445302858516}
   - component: {fileID: 50365542033340640}
   - component: {fileID: 114628142680904870}
-  - component: {fileID: 114571100995965866}
+  - component: {fileID: 114144639959865776}
   m_Layer: 13
   m_Name: Turret
   m_TagString: Enemy
@@ -55,7 +55,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4331722243229440}
   - component: {fileID: 61334910147329622}
-  - component: {fileID: 50693716657703870}
   m_Layer: 13
   m_Name: CrystalCollider
   m_TagString: Enemy
@@ -111,26 +110,6 @@ Rigidbody2D:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1417131505188614}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!50 &50693716657703870
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1990947626062246}
   m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
@@ -230,7 +209,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.67, y: 1.24}
   m_EdgeRadius: 0
---- !u!114 &114571100995965866
+--- !u!114 &114144639959865776
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -238,23 +217,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 1417131505188614}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f963711c28e4c342b90c88535fc0377, type: 3}
+  m_Script: {fileID: 11500000, guid: 5fb0ef3d1e73b364d88f01053f23e7db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loot: {fileID: 4608652777673112, guid: b6fd51c9f95fc474b94f7579577cb2f8, type: 2}
-  loot2: {fileID: 4608652777673112, guid: b6fd51c9f95fc474b94f7579577cb2f8, type: 2}
-  loot3: {fileID: 0}
-  loot4: {fileID: 4425881544222182, guid: 06b0c2b703f394b438870eb9a78b2b6c, type: 2}
-  loot5: {fileID: 4724824790748332, guid: 4b2939b4686d402448b6dea172410955, type: 2}
-  loot6: {fileID: 4251220755674976, guid: c2eb96701c2ce6e4186d7b57199dd7b9, type: 2}
-  loot7: {fileID: 4502387004759054, guid: a0f8f1b6c7fcdc740a6fa80ff54bbd8c, type: 2}
-  loot8: {fileID: 4684830867315142, guid: 5da3b325d197e2744bf946436d8d666a, type: 2}
-  loot9: {fileID: 4871406016944426, guid: b8998d3b5f040474ebb7d325688d3ebb, type: 2}
-  loot10: {fileID: 4913389887696664, guid: 5053b64c7494e95408f34e7ff621bd25, type: 2}
-  loot11: {fileID: 4184709057733690, guid: 6322bc45db7b5214d8a1909ebc499a80, type: 2}
   items: []
-  health: 0
+  health: 2
   invincible: 0
+  loot: {fileID: 4425881544222182, guid: 06b0c2b703f394b438870eb9a78b2b6c, type: 2}
+  loot2: {fileID: 4724824790748332, guid: 4b2939b4686d402448b6dea172410955, type: 2}
+  loot3: {fileID: 4251220755674976, guid: c2eb96701c2ce6e4186d7b57199dd7b9, type: 2}
+  loot4: {fileID: 4502387004759054, guid: a0f8f1b6c7fcdc740a6fa80ff54bbd8c, type: 2}
+  loot5: {fileID: 4684830867315142, guid: 5da3b325d197e2744bf946436d8d666a, type: 2}
+  loot6: {fileID: 4871406016944426, guid: b8998d3b5f040474ebb7d325688d3ebb, type: 2}
+  loot7: {fileID: 4913389887696664, guid: 5053b64c7494e95408f34e7ff621bd25, type: 2}
+  loot8: {fileID: 4184709057733690, guid: 6322bc45db7b5214d8a1909ebc499a80, type: 2}
 --- !u!114 &114628142680904870
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -266,7 +242,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd93834015935fe44a3c73abbc5f5e9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerTransform: {fileID: 0}
   fireBallPrefab: {fileID: 4117291810871610, guid: 66b2cbeb8a68b524ba9f3d3a8a73e332,
     type: 2}
 --- !u!212 &212313265837591002
@@ -298,9 +273,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1433501327
+  m_SortingLayer: 2
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: c89886fbb65ae2f4ca7fe464a2b2d708, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

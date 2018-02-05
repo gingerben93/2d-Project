@@ -57,8 +57,19 @@ MonoBehaviour:
   maxHealth: 40
   experiencePoints: 2
   level: 1
-  baseWeaponDamage: 0
-  baseSpellDamage: 0
+  skillPoints: 5
+  statPoints: 20
+  maxPoints: 20
+  armor: 0
+  dexterity: 0
+  intelligence: 0
+  strength: 0
+  vitality: 0
+  armorMin: 0
+  dexterityMin: 0
+  intelligenceMin: 0
+  strengthMin: 0
+  vitalityMin: 0
 --- !u!114 &114698404427513212
 MonoBehaviour:
   m_ObjectHideFlags: 1

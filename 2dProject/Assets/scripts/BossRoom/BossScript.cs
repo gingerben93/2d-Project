@@ -11,9 +11,6 @@ public class BossScript : MonoBehaviour
     //Drop bomb when shield is activate
     public Transform bomb;
 
-    Shot shot;
-    ShotM shotM;
-
     /// Total hitpoints
     public bool isEnemy { get; set; }
     private int experiencePoint;
@@ -229,7 +226,7 @@ public class BossScript : MonoBehaviour
         {
             Debug.Log("HIT by Bullet");
             Destroy(otherCollider.gameObject);
-            Damage(PlayerController.PlayerControllerSingle.weaponDamage);
+            Damage(1);
         }
     }
 

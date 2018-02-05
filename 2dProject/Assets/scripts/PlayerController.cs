@@ -47,12 +47,12 @@ public class PlayerController : MonoBehaviour
     private bool falling = false;
     private float timer = 0;
 
-    //for weapons
-    public int weaponDamage;
-
     //skillBoolCheck
     public bool dashSkill = false;
     public bool dashSkill2 = false;
+    public bool slideSkill = false;
+    public bool slideJumpSkill = false;
+    public bool slideSteerSKill = false;
 
     //for hotbar
     public delegate void HotBarDelegate();
@@ -60,8 +60,8 @@ public class PlayerController : MonoBehaviour
 
     //hotbar cooldowns
     float hotBar1CoolDownTimer = 0;
-    float hotBar2CoolDownTimer = 0;
-    float hotBar3CoolDownTimer = 0;
+    //float hotBar2CoolDownTimer = 0;
+    //float hotBar3CoolDownTimer = 0;
 
     //for player attack
     public delegate void PlayerAttack();
@@ -118,7 +118,7 @@ public class PlayerController : MonoBehaviour
     //only one rotate call at a time
     bool isRotating;
 
-    bool isGrapplingHook;
+    public bool isGrapplingHook;
 
 
     //singleton
@@ -144,7 +144,7 @@ public class PlayerController : MonoBehaviour
         freezePlayer = false;
 
         //variables on start
-        maxSpeed = 7f;
+        maxSpeed = 9f;
         //moveForce = 5f;
         jumpForce = 500;
         facingRight = true;
@@ -229,7 +229,6 @@ public class PlayerController : MonoBehaviour
 
         if (Mouse0Down)
         {
-            Debug.Log("Mouse 0 down");
             isGrapplingHook = true;
             grapplingHookScript.TurnGrapHookOn();
         }
@@ -245,18 +244,16 @@ public class PlayerController : MonoBehaviour
         }
 
         //button 1
-        if (Input.GetKey(KeyCode.Alpha1))
+        if (hotBar1CoolDownTimer > 0)
         {
-            if (hotBar1CoolDownTimer > 0)
+            hotBar1CoolDownTimer -= Time.deltaTime;
+        }
+        else if (Input.GetKey(KeyCode.Alpha1))
+        {
+            hotBar1CoolDownTimer += .5f;
+            if (HotBarSlot1 != null)
             {
-                hotBar1CoolDownTimer -= Time.deltaTime;
-            }
-            else
-            {
-                if (HotBarSlot1 != null)
-                {
-                    HotBarSlot1();
-                }
+                HotBarSlot1();
             }
         }
 
@@ -303,8 +300,8 @@ public class PlayerController : MonoBehaviour
             lastRotationAngle = transform.eulerAngles.z;
         }
 
-        //have to learn dash skill to start using it
-        if (dashSkill && dashSkill2)
+        //have to learn dash skill to start using it can't dash while sliding
+        if (!IsSliding && dashSkill && dashSkill2)
         {
             if (Input.GetKeyDown(KeyCode.D))
             {
@@ -416,7 +413,7 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
-        if (SHold && !IsSliding)
+        if (slideSkill && SHold && !IsSliding)
         {
             try
             {
@@ -436,6 +433,10 @@ public class PlayerController : MonoBehaviour
                                 firstRun = false;
                                 noMovement = true;
                                 IsSliding = true;
+
+                                //need to set player speed to zero to stop weird interations
+                                rb2d.velocity = Vector2.zero;
+
                                 break;
                             }
                             else
@@ -478,7 +479,7 @@ public class PlayerController : MonoBehaviour
 
         if (IsSliding)
         {
-            if (spaceDown && !jumpOff)
+            if (slideJumpSkill && spaceDown && !jumpOff)
             {
                 jumpOff = true;
                 SlideJumpParticles.Play();
@@ -487,18 +488,18 @@ public class PlayerController : MonoBehaviour
             }
             else if (jumpOff)
             {
-                if (DHold)
+                if (slideSteerSKill && DHold)
                 {
                     transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z - 2);
                 }
-                else if (AHold)
+                else if (slideSteerSKill && AHold)
                 {
                     transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + 2);
                 }
 
-                //if (rb2d.velocity.magnitude < 10f)
+                //if (rb2d.velocity.magnitude < 20f)
                 //{
-                //    rb2d.AddForce(transform.up * 25f);
+                //    rb2d.AddForce(transform.localPosition * 25f);
                 //}
                 transform.position += transform.up * .25f;
             }
@@ -550,7 +551,12 @@ public class PlayerController : MonoBehaviour
                 //speed up by 1 to the right
                 if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
                 {
-                    rb2d.velocity = new Vector2(rb2d.velocity.x + .5f, rb2d.velocity.y);
+                    //rb2d.velocity = new Vector2(rb2d.velocity.x + .5f, rb2d.velocity.y);
+                    //dont' need time in fixed update
+                    //rb2d.velocity = new Vector3(rb2d.velocity.x, rb2d.velocity.y, 0) + transform.right * 10f * Time.deltaTime;
+
+                    //rb2d.velocity = new Vector3(rb2d.velocity.x, rb2d.velocity.y, 0) + transform.right * 10f;
+                    rb2d.AddForce(transform.right * 15f);
 
                     //rb2d.velocity += (Vector2)transform.right;
 
@@ -576,12 +582,8 @@ public class PlayerController : MonoBehaviour
                 //speed up by 1 to the left
                 if (Mathf.Abs(rb2d.velocity.x) < maxSpeed)
                 {
-                    rb2d.velocity = new Vector2(rb2d.velocity.x - .5f, rb2d.velocity.y);
-
-                    //rb2d.velocity += -(Vector2)transform.right;
-
-                    //forceAddToPlayer = -transform.right * .5f;
-                    //rb2d.velocity += forceAddToPlayer;
+                    //rb2d.velocity = new Vector2(rb2d.velocity.x - .5f, rb2d.velocity.y);
+                    rb2d.AddForce(-transform.right * 15f);
                 }
             }
         }
@@ -596,20 +598,25 @@ public class PlayerController : MonoBehaviour
             rb2d.velocity = new Vector2(rb2d.velocity.x * .97f, rb2d.velocity.y);
         }
 
-        if (Mathf.Abs(rb2d.velocity.y) >= maxSpeed)
+        if (-rb2d.velocity.y >= maxSpeed*2)
         {
             //start timer for falling; take damage after 1 sec
             //deltatime is time sinece last frame.
             timer += Time.deltaTime;
             falling = true;
+            rb2d.gravityScale = 0;
         }
         else
         {
             falling = false;
             timer = 0;
+            if (!IsSliding)
+            {
+                rb2d.gravityScale = 1;
+            }
         }
 
-        if (spaceDown && !jumpOff)
+        if (spaceDown && !jumpOff && !IsSliding)
         {
             rb2d.gravityScale = 1;
             if (isGrapplingHook)
@@ -629,13 +636,9 @@ public class PlayerController : MonoBehaviour
                 {
                     rb2d.velocity = new Vector3(rb2d.velocity.x, 0, 0);
                 }
-                if (Mathf.Sign(rb2d.velocity.y) < 1.2f)
+                if (rb2d.velocity.y < 1.2f)
                 {
                     rb2d.AddForce(new Vector2(0f, jumpForce));
-                }
-                if (Mathf.Sign(rb2d.velocity.y) > 1.2f)
-                {
-                    rb2d.velocity = new Vector2(rb2d.velocity.x, Mathf.Sign(rb2d.velocity.y) * 0.2f);
                 }
             }
         }
@@ -808,7 +811,7 @@ public class PlayerController : MonoBehaviour
         //}
 
         //falling damage
-        if (falling && timer >= 2f)
+        if (falling && timer >= 1.5f)
         {
             DamagePlayer(1);
         }
@@ -837,7 +840,7 @@ public class PlayerController : MonoBehaviour
         //for taking damage
         if (collision.gameObject.tag == "Enemy")
         {
-            Debug.Log("hit enemy = " + collision.gameObject.name);
+            //Debug.Log("hit enemy = " + collision.gameObject.name);
         }
     }
 

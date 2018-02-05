@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 212226741870089044}
   - component: {fileID: 61912059710220506}
   - component: {fileID: 50070654228191492}
-  - component: {fileID: 114141816148748028}
   - component: {fileID: 114890507116883644}
+  - component: {fileID: 114285087692691476}
   m_Layer: 0
   m_Name: Shield
   m_TagString: Item
@@ -75,10 +75,21 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 0.32, y: 0.32}
---- !u!114 &114141816148748028
+  m_EdgeRadius: 0
+--- !u!114 &114285087692691476
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -86,7 +97,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1552248786461730}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c8e5082f97f6074c9629700c56b604a, type: 3}
+  m_Script: {fileID: 11500000, guid: 558c76570e20b1447800fcaf59c8cb42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 3
@@ -94,26 +105,23 @@ MonoBehaviour:
   spriteNeutral: {fileID: 21300000, guid: e958816d63d8ce54caad02893a5620ca, type: 3}
   spriteHighlighted: {fileID: 21300000, guid: 087b423c632e9a24b817e8978aedb15e, type: 3}
   maxSize: 1
-  armorL: 0
-  armorH: 8
+  itemName: 
+  description: hand
+  armorL: 1
+  armorH: 3
   armor: 0
-  damageL: 0
-  damageH: 0
-  damage: 0
-  vitL: 0
-  vitH: 0
-  vit: 0
-  intelligenceL: 0
-  intelligenceH: 0
+  dexterityL: 4
+  dexterityH: 8
+  dexterity: 0
+  intelligenceL: 4
+  intelligenceH: 8
   intelligence: 0
-  strengthL: 0
-  strengthH: 0
+  strengthL: 1
+  strengthH: 3
   strength: 0
-  charismaL: 0
-  charismaH: 0
-  charisma: 0
-  weaponName: Shield
-  description: LOL get something better to block damage
+  vitalityL: 3
+  vitalityH: 6
+  vitality: 0
 --- !u!114 &114890507116883644
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -125,7 +133,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56ec8de48bb60747bfa716da857218f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 1552248786461730}
 --- !u!212 &212226741870089044
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -156,8 +163,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 27f21fce5e75e9c46a153e9ae4c16188, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1

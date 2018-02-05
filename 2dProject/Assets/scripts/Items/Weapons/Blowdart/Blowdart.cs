@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
 
-public class Blowdart : MonoBehaviour
+public class Blowdart : Weapon
 {
-    private GameObject shotPrefab;
+    public GameObject shotPrefab;
 
     public float shootingRate = 0.25f;
     private float shootCooldown;
 
-    public int damage { get; set; }
-
     void Start()
     {
-        shotPrefab = Resources.Load("Prefabs/WeaponProjectiles/Bullet", typeof(GameObject)) as GameObject;
+        //shotPrefab = Resources.Load("Prefabs/WeaponProjectiles/Bullet", typeof(GameObject)) as GameObject;
         shootCooldown = 0f;
     }
 
@@ -23,7 +21,7 @@ public class Blowdart : MonoBehaviour
         }
     }
 
-    public void Attack()
+    public override void Attack()
     {
         //Debug.Log(GameController.GameControllerSingle.damage);
         if (CanAttack)
@@ -35,7 +33,8 @@ public class Blowdart : MonoBehaviour
 
             // Assign bullet information; location and damage
             shotTransform.transform.position = transform.position;
-            shotTransform.GetComponent<DamageOnCollision>().damage = damage;
+            shotTransform.GetComponent<DamageOnCollision>().damage = PlayerStats.PlayerStatsSingle.strength;
+
 
             /* // Make the weapon shot always towards it
              ShotMove move = shotTransform.gameObject.GetComponent<ShotMove>();

@@ -22,8 +22,8 @@ GameObject:
   - component: {fileID: 212767098699052472}
   - component: {fileID: 61559892672978874}
   - component: {fileID: 50502301679446348}
-  - component: {fileID: 114297499826483448}
   - component: {fileID: 114608907350838236}
+  - component: {fileID: 114289841778207490}
   m_Layer: 0
   m_Name: ManaPotion
   m_TagString: GatherQuestItem
@@ -37,8 +37,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1726618347381004}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.1001911, y: 1.6020229, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7.52, y: 4.63, z: 0}
   m_LocalScale: {x: 5, y: 5, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -55,7 +55,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 2.5599997
+  m_Mass: 1.2165961
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -75,10 +75,21 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: -0.008815194, y: -0.013693071}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 0.20789443, y: 0.2340796}
---- !u!114 &114297499826483448
+  m_EdgeRadius: 0
+--- !u!114 &114289841778207490
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -86,7 +97,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1726618347381004}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c8e5082f97f6074c9629700c56b604a, type: 3}
+  m_Script: {fileID: 11500000, guid: 9dd388c1b4b2e3a4b9c841cc004f3ac7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
@@ -94,25 +105,7 @@ MonoBehaviour:
   spriteNeutral: {fileID: 21300000, guid: 2c730777b6ddb184a8e8fcfda6502adf, type: 3}
   spriteHighlighted: {fileID: 21300000, guid: 8d2b3b0ddc5c34d4c80d9458a57e0dec, type: 3}
   maxSize: 3
-  armorL: 0
-  armorH: 0
-  armor: 0
-  damageL: 0
-  damageH: 0
-  damage: 0
-  vitL: 0
-  vitH: 0
-  vit: 0
-  intelligenceL: 0
-  intelligenceH: 0
-  intelligence: 0
-  strengthL: 0
-  strengthH: 0
-  strength: 0
-  charismaL: 0
-  charismaH: 0
-  charisma: 0
-  weaponName: Mana Potion
+  itemName: 
   description: Restores Mana
 --- !u!114 &114608907350838236
 MonoBehaviour:
@@ -155,8 +148,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2c730777b6ddb184a8e8fcfda6502adf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1

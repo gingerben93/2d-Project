@@ -33,7 +33,6 @@ public class MagicController : MonoBehaviour
 
     void Update()
     {
-
         if (FromMagic)
         {
             Vector2 position;
@@ -66,11 +65,11 @@ public class MagicController : MonoBehaviour
             if (clicked.name.Contains("Hotbar"))
             {
                 //Debug.Log("else if 1 if");
-                FromMagic = Instantiate(MagicImagePrefab);
+                FromMagic = Instantiate(MagicImagePrefab, GameObject.Find("HotbarCanvas").transform);
                 FromMagic.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
                 FromMagic.name = clicked.name;
-                FromMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
-                FromMagic.GetComponent<Magic>().type = clicked.GetComponent<Magic>().type;
+                //FromMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
+                //FromMagic.GetComponent<Magic>().type = clicked.GetComponent<Magic>().type;
                 clicked.GetComponent<Image>().sprite = DefaultImage;
 
                 //for unassigning delegate functions if you move spell from hotbar slot
@@ -80,12 +79,16 @@ public class MagicController : MonoBehaviour
             }
             else
             {
-                //Debug.Log("else if 1 else");
-                FromMagic = (GameObject)Instantiate(MagicImagePrefab);
+                
+                FromMagic = Instantiate(MagicImagePrefab, GameObject.Find("HotbarCanvas").transform);
+                Debug.Log("FromMagic = " + FromMagic.name);
+                Debug.Log("clicked = " + clicked.name);
                 FromMagic.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
                 FromMagic.name = clicked.name;
-                FromMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
-                FromMagic.GetComponent<Magic>().type = clicked.GetComponent<Magic>().type;
+                //FromMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
+                Debug.Log("clicked.GetComponent<Magic>().type + " + clicked.GetComponent<Magic>().type);
+                //Debug.Log("FromMagic.GetComponent<Magic>().type + " + FromMagic.GetComponent<Magic>().type);
+                //FromMagic.GetComponent<Magic>().type = clicked.GetComponent<Magic>().type;
             }
         }
 
@@ -101,7 +104,7 @@ public class MagicController : MonoBehaviour
                     //assignhotbardelegate(clicked.name, FromMagic.GetComponent<Image>().sprite.name, true);
 
                     clicked.GetComponent<Image>().sprite = FromMagic.GetComponent<Image>().sprite;
-                    clicked.GetComponent<Magic>().type = FromMagic.GetComponent<Magic>().type;
+                    //clicked.GetComponent<Magic>().type = FromMagic.GetComponent<Magic>().type;
 
                     //pass spell type
                     AssignHotbarDelegate(clicked.name, FromMagic.GetComponent<Image>().sprite.name, clicked.GetComponent<Magic>().type, true);
@@ -111,14 +114,14 @@ public class MagicController : MonoBehaviour
                 //for swaping place of items you clicked on
                 else
                 {
-                    ToMagic = Instantiate(MagicImagePrefab);
-                    ToMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
+                    ToMagic = Instantiate(MagicImagePrefab, GameObject.Find("HotbarCanvas").transform);
+                    //ToMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
                     ToMagic.GetComponent<Image>().sprite = FromMagic.GetComponent<Image>().sprite;
-                    ToMagic.GetComponent<Magic>().type = FromMagic.GetComponent<Magic>().type;
+                    //ToMagic.GetComponent<Magic>().type = FromMagic.GetComponent<Magic>().type;
                     FromMagic.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
-                    FromMagic.GetComponent<Magic>().type = clicked.GetComponent<Magic>().type;
+                    //FromMagic.GetComponent<Magic>().type = clicked.GetComponent<Magic>().type;
                     clicked.GetComponent<Image>().sprite = ToMagic.GetComponent<Image>().sprite;
-                    clicked.GetComponent<Magic>().type = ToMagic.GetComponent<Magic>().type;
+                    //clicked.GetComponent<Magic>().type = ToMagic.GetComponent<Magic>().type;
 
                     //for assigning delegate functions
                     //Debug.Log(ToMagic.GetComponent<Image>().sprite.name);

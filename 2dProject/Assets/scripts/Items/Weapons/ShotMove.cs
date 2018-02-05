@@ -3,29 +3,21 @@ using System.Collections;
 
 public class ShotMove : MonoBehaviour
 {
-    public GameObject player;
-
     private Vector3 mousePos;
-    private Vector3 heading;
-    private float distance;
-    private Vector3 direction;
-
-    private Vector2 movement;
-    private Rigidbody2D rigidbodyComponent;
-    // Update is called once per frame
+    public float speed = 8f;
 
     void Start()
     {
+        speed = Random.Range(6f, 10f);
+        Destroy(gameObject, 2);
         transform.GetComponent<DamageOnCollision>().onCollide = onCollide;
         Shoot();
     }
 
     void FixedUpdate()
     {
-        if (rigidbodyComponent == null) rigidbodyComponent = GetComponent<Rigidbody2D>();
-
         // Apply movement to the rigidbody
-        rigidbodyComponent.velocity = movement;
+        transform.position += transform.right * speed * Time.deltaTime;
     }
 
     void onCollide()
@@ -37,40 +29,9 @@ public class ShotMove : MonoBehaviour
     {
         mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0;
-
-        heading = mousePos - PlayerController.PlayerControllerSingle.transform.position;
-        distance = heading.magnitude;
-        direction = heading / distance;
-
-        movement = new Vector2(10 * direction.x, 10 * direction.y);
+        mousePos += new Vector3(Random.Range(-.2f, .2f), Random.Range(-.2f, .2f), 0);
+        var dir = mousePos - transform.position;
+        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
-
-    //void OnTriggerEnter2D(Collider2D otherCollider)
-    //{
-    //    //if bullet, do bullet stuff
-    //    if (otherCollider.tag == "Enemy")
-    //    {
-    //        EnemyStats Enemy;
-    //        //might needs to also look in children of gameobjects fi this ever fails
-    //        if(Enemy = otherCollider.gameObject.GetComponent<EnemyStats>())
-    //        {
-
-    //        }
-    //        else
-    //        {
-    //            Enemy = otherCollider.gameObject.transform.parent.GetComponent<EnemyStats>();
-    //        }
-
-    //        if (Enemy)
-    //        {
-    //            Enemy.Damage(PlayerController.PlayerControllerSingle.weaponDamage);
-    //        }
-    //        Destroy(gameObject);
-    //    }
-    //    else
-    //    {
-    //        Destroy(gameObject);
-    //    }
-    //}
 }

@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 212612275302429584}
   - component: {fileID: 50903681064799416}
   - component: {fileID: 61552611081668746}
-  - component: {fileID: 114672581222891570}
   m_Layer: 17
   m_Name: Fireball
   m_TagString: EnemyProjectile
@@ -37,7 +36,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1234243913077570}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.61, y: 1.3, z: 0.0559375}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
@@ -86,19 +85,8 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.2}
+  m_Size: {x: 0.2, y: 0.2}
   m_EdgeRadius: 0
---- !u!114 &114672581222891570
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1234243913077570}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56306f4300b5e7a4f8b98147ffcc2cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &212612275302429584
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -128,12 +116,12 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 790803075
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 158368f4a8b748b47ab151fbdcf1a5af, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}

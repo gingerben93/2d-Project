@@ -4,29 +4,19 @@ using UnityEngine;
 
 public class DamageOnCollision : MonoBehaviour {
 
-    public int damage { get; set; }
+    public int damage;
 
     //for player attack
     public delegate void OnCollide();
     public OnCollide onCollide;
-
-    //// Use this for initialization
-    //void Start ()
-    //   {
-
-    //}
-
-    //// Update is called once per frame
-    //void Update ()
-    //   {
-
-    //}
 
     void OnTriggerEnter2D(Collider2D otherCollider)
     {
         //if bullet, do bullet stuff
         if (otherCollider.tag == "Enemy")
         {
+
+            //Debug.Log("otherCollider = " + otherCollider.name);
             EnemyStats Enemy;
             //might needs to also look in children of gameobjects fi this ever fails
             if (Enemy = otherCollider.gameObject.GetComponent<EnemyStats>())
@@ -40,7 +30,7 @@ public class DamageOnCollision : MonoBehaviour {
 
             if (Enemy)
             {
-                Enemy.Damage(damage);
+                Enemy.Damage(damage, otherCollider.name);
             }
             onCollide();
             //Destroy(gameObject);

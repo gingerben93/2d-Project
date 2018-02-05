@@ -146,6 +146,14 @@ public class DrawGrapHook : MonoBehaviour
             }
             else
             {
+                if (PlayerController.PlayerControllerSingle.isGrapplingHook && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
+                {
+                    PlayerController.PlayerControllerSingle.rb2d.gravityScale = 0;
+                }
+                else
+                {
+                    PlayerController.PlayerControllerSingle.rb2d.gravityScale = 1;
+                }
                 //don't rotate when sliding or move when sliding
                 if (!PlayerController.PlayerControllerSingle.IsSliding)
                 {
@@ -156,7 +164,10 @@ public class DrawGrapHook : MonoBehaviour
                     if (WDown)
                     {
                         //PlayerController.PlayerControllerSingle.transform.position += PlayerController.PlayerControllerSingle.transform.up * .5f;
-                        PlayerController.PlayerControllerSingle.rb2d.velocity += (Vector2)PlayerController.PlayerControllerSingle.transform.up * .5f;
+                        if (PlayerController.PlayerControllerSingle.rb2d.velocity.y <= 10f)
+                        {
+                            PlayerController.PlayerControllerSingle.rb2d.velocity += (Vector2)PlayerController.PlayerControllerSingle.transform.up * .5f;
+                        }
                     }
                 }
             }

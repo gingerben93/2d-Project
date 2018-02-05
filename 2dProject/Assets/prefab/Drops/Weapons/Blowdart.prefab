@@ -22,9 +22,8 @@ GameObject:
   - component: {fileID: 212811089521472920}
   - component: {fileID: 61249897679807922}
   - component: {fileID: 50198457276811342}
-  - component: {fileID: 114023801814290812}
   - component: {fileID: 114459484290906038}
-  - component: {fileID: 114779105631381308}
+  - component: {fileID: 114355472424927326}
   m_Layer: 0
   m_Name: Blowdart
   m_TagString: Item
@@ -38,9 +37,9 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1572121999650776}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.1409891, y: 2.552228, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.1, y: 1.59, z: 0}
+  m_LocalScale: {x: 7, y: 7, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -56,7 +55,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 1
-  m_Mass: 0.103959896
+  m_Mass: 0.5660039
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 1
@@ -76,10 +75,21 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: -0.003783822, y: 0.0014514923}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.32, y: 0.32}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
   m_Size: {x: 0.05128334, y: 0.2252408}
---- !u!114 &114023801814290812
+  m_EdgeRadius: 0
+--- !u!114 &114355472424927326
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -87,14 +97,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1572121999650776}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9c8e5082f97f6074c9629700c56b604a, type: 3}
+  m_Script: {fileID: 11500000, guid: 558c76570e20b1447800fcaf59c8cb42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 2
   quality: 0
   spriteNeutral: {fileID: 21300000, guid: 17dd8dd38202e5346b5444161b0efcdb, type: 3}
   spriteHighlighted: {fileID: 21300000, guid: 02f8b573083443e499b227e6b30e1f0b, type: 3}
-  maxSize: 1
+  maxSize: 0
+  itemName: 
+  description: A thing that blows darts.
   armorL: 0
   armorH: 0
   armor: 0
@@ -113,8 +125,6 @@ MonoBehaviour:
   charismaL: 0
   charismaH: 0
   charisma: 0
-  weaponName: Blowdart
-  description: A thing that blows darts.
 --- !u!114 &114459484290906038
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -126,20 +136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56ec8de48bb60747bfa716da857218f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 1572121999650776}
---- !u!114 &114779105631381308
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1572121999650776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00e40a516030dd14e90241b2015c4f59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shotPrefab: {fileID: 447600, guid: 76e8f9fe745b4c741ab5990b5099bbc7, type: 2}
-  shootingRate: 0.25
 --- !u!212 &212811089521472920
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -170,8 +166,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0cdc618419b838348af45d80eec958d4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
