@@ -1,21 +1,12 @@
 fileFormatVersion: 2
 guid: 5f963711c28e4c342b90c88535fc0377
-timeCreated: 1516265753
+timeCreated: 1518322630
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - loot: {fileID: 4608652777673112, guid: b6fd51c9f95fc474b94f7579577cb2f8, type: 2}
-  - loot2: {fileID: 4425881544222182, guid: 06b0c2b703f394b438870eb9a78b2b6c, type: 2}
-  - loot3: {fileID: 4724824790748332, guid: 4b2939b4686d402448b6dea172410955, type: 2}
-  - loot4: {fileID: 4251220755674976, guid: c2eb96701c2ce6e4186d7b57199dd7b9, type: 2}
-  - loot5: {fileID: 4502387004759054, guid: a0f8f1b6c7fcdc740a6fa80ff54bbd8c, type: 2}
-  - loot6: {fileID: 4684830867315142, guid: 5da3b325d197e2744bf946436d8d666a, type: 2}
-  - loot7: {fileID: 4871406016944426, guid: b8998d3b5f040474ebb7d325688d3ebb, type: 2}
-  - loot8: {fileID: 4913389887696664, guid: 5053b64c7494e95408f34e7ff621bd25, type: 2}
-  - loot9: {fileID: 4184709057733690, guid: 6322bc45db7b5214d8a1909ebc499a80, type: 2}
-  - loot10: {fileID: 4238880327069878, guid: 115d04814098586478167a45d53b2d7d, type: 2}
-  - loot11: {fileID: 4165315825156496, guid: ca4e98373ebece349a7bb63b9164dcb0, type: 2}
+  - HealthDrop: {fileID: 4385126627494212, guid: 79174ad8318ab024a81ed58d83e4a4a8,
+      type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

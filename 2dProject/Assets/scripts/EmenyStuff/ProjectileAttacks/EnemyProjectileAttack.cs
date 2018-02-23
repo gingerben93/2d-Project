@@ -41,5 +41,4 @@ public class EnemyProjectileAttack : MonoBehaviour {
     {
         Destroy(gameObject);
     }
-
 }

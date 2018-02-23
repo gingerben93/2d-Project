@@ -4,22 +4,27 @@ using UnityEngine;
 
 public class Walker : EnemyStats
 {
-
-    public Transform loot; // 100% drop rate
-    public Transform loot2; // 5% drop rate
-    public Transform loot3; // 5% drop rate
+    public Transform HealthDrop;
+    public Transform loot;
+    public Transform loot2;
+    public Transform loot3;
 
     void Start()
     {
+        items.Add(HealthDrop);
         this.items.Add(loot);
         this.items.Add(loot2);
         this.items.Add(loot3);
 
-        health = 3;
+        StartStats();
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
+    public override void StartStats()
+    {
+        dropRate = .5f;
+        damagePlayerOnCollision = true;
+        health = 3;
+        experiencePoint = 4;
+        invincible = false;
+    }
 }

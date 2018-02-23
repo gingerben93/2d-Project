@@ -9,7 +9,6 @@ public class Blowdart : Weapon
 
     void Start()
     {
-        //shotPrefab = Resources.Load("Prefabs/WeaponProjectiles/Bullet", typeof(GameObject)) as GameObject;
         shootCooldown = 0f;
     }
 
@@ -34,17 +33,13 @@ public class Blowdart : Weapon
             // Assign bullet information; location and damage
             shotTransform.transform.position = transform.position;
             shotTransform.GetComponent<DamageOnCollision>().damage = PlayerStats.PlayerStatsSingle.strength;
-
-
-            /* // Make the weapon shot always towards it
-             ShotMove move = shotTransform.gameObject.GetComponent<ShotMove>();
-             if (move != null)
-             {
-                 move.direction = this.transform.right; // towards in 2D space is the right of the sprite
-             }*/
         }
     }
 
+    void OnDestroy()
+    {
+        PlayerController.PlayerControllerSingle.playerAttack -= Attack;
+    }
 
     public bool CanAttack
     {

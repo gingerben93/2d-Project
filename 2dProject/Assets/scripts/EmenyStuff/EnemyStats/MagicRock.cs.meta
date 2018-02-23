@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4d6d90d000770de46b206aba7667244e
+timeCreated: 1518323473
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - MagicEssence: {fileID: 4254558497576356, guid: f60a6ab904fdd3d4eae6ec1f01702971,
+      type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

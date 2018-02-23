@@ -91,6 +91,8 @@
     <Compile Include="Assets\scripts\DoorToMainGame.cs" />
     <Compile Include="Assets\scripts\DoorToNewScene.cs" />
     <Compile Include="Assets\scripts\EmenyStuff\EnemyStats\EnemyStats.cs" />
+    <Compile Include="Assets\scripts\EmenyStuff\EnemyStats\MagicRock.cs" />
+    <Compile Include="Assets\scripts\EmenyStuff\EnemyStats\Slider.cs" />
     <Compile Include="Assets\scripts\EmenyStuff\EnemyStats\Turret.cs" />
     <Compile Include="Assets\scripts\EmenyStuff\EnemyStats\Walker.cs" />
     <Compile Include="Assets\scripts\EmenyStuff\GodHands.cs" />

@@ -15,6 +15,8 @@ public class TurretAttack : MonoBehaviour {
     public Transform fireBallPrefab;
 
     public int attackType = 0;
+
+    public Vector3 spawnLocationOffset;
 	
 	// Update is called once per frame
 	void Update () {
@@ -37,7 +39,7 @@ public class TurretAttack : MonoBehaviour {
             timer = 0f;
 
             var fireball = Instantiate(fireBallPrefab);
-            fireball.position = transform.position;
+            fireball.position = transform.position + spawnLocationOffset;
             fireball.name = "Fireball";
             //var temp = fireball.gameObject.AddComponent<ProjectileForward>();
 

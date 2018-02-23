@@ -1,10 +1,12 @@
 fileFormatVersion: 2
 guid: 5fb0ef3d1e73b364d88f01053f23e7db
-timeCreated: 1516455225
+timeCreated: 1518324293
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
+  - HealthDrop: {fileID: 4636217074882892, guid: 577c15f6c1b09ab42b824fad5c1f119c,
+      type: 2}
   - loot: {fileID: 4425881544222182, guid: 06b0c2b703f394b438870eb9a78b2b6c, type: 2}
   - loot2: {fileID: 4724824790748332, guid: 4b2939b4686d402448b6dea172410955, type: 2}
   - loot3: {fileID: 4251220755674976, guid: c2eb96701c2ce6e4186d7b57199dd7b9, type: 2}

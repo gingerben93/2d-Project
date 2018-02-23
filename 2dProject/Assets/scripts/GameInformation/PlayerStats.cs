@@ -9,12 +9,20 @@ public class PlayerStats : MonoBehaviour {
 
     public int health;
     public int maxHealth;
+
+    public int magic;
+    public int maxMagic;
+
     public int experiencePoints;
     public int level;
 
-    public int skillPoints = 3;
+    public int skillPoints = 8;
     public int statPoints = 20;
     public int maxPoints = 20;
+
+    public int itemAttractDistance;
+
+    public int maxJumps;
 
     public int armor = 0;
     public int dexterity = 0;
@@ -31,6 +39,13 @@ public class PlayerStats : MonoBehaviour {
     // for diaplaying exp and level
     private Text experiencePointsTxt;
     private Text levelTxt;
+
+    private Text healthTxt;
+    private RectTransform healthSize;
+    private RectTransform healthSizeMax;
+
+    private Text magicTxt;
+    private RectTransform magicSize;
 
     private Text statPoinsTxt;
     private Text skillPoinsTxt;
@@ -61,15 +76,22 @@ public class PlayerStats : MonoBehaviour {
     {
         if (GameController.GameControllerSingle.dontLoadTheGame)
         {
-            //Don't do anything
+            Debug.Log("didn't load game data");
         }
         else
         {
             GameController.GameControllerSingle.LoadPlayerData();
         }
 
+        //temp magic set
+        maxMagic = 10;
+        magic = maxMagic;
         //set skill point temporarely
-        skillPoints = 3;
+        skillPoints = 8;
+        //temp attract distance set
+        itemAttractDistance = 5;
+
+        maxJumps = 1;
 
         //find button and set method
         GameObject.Find("ArmorUp").GetComponent<Button>().onClick.AddListener(delegate { IncArmor(); });
@@ -89,6 +111,8 @@ public class PlayerStats : MonoBehaviour {
         //find text box
         experiencePointsTxt = GameObject.Find("Experience").GetComponent<Text>();
         levelTxt = GameObject.Find("Level").GetComponent<Text>();
+        healthTxt = GameObject.Find("PlayerHealthText").GetComponent<Text>();
+        magicTxt = GameObject.Find("PlayerMagicText").GetComponent<Text>();
 
         statPoinsTxt = GameObject.Find("StatPoints").GetComponent<Text>();
         skillPoinsTxt = GameObject.Find("SkillPoints").GetComponent<Text>();
@@ -98,7 +122,12 @@ public class PlayerStats : MonoBehaviour {
         intelligenceTxt = GameObject.Find("IntelligenceText").GetComponent<Text>();
         strengthTxt = GameObject.Find("StrengthText").GetComponent<Text>();
         vitalityTxt = GameObject.Find("VitalityText").GetComponent<Text>();
-        
+
+        //get Status rec
+        healthSize = GameObject.Find("PlayerHealth").GetComponent<RectTransform>();
+        healthSizeMax = GameObject.Find("PlayerHealthBack").GetComponent<RectTransform>();
+        magicSize = GameObject.Find("PlayerMagic").GetComponent<RectTransform>();
+
 
         //set text
         experiencePointsTxt.text = "EXP: " + experiencePoints;
@@ -112,8 +141,37 @@ public class PlayerStats : MonoBehaviour {
         intelligenceTxt.text = "Intelligence: " + intelligence;
         strengthTxt.text = "Strength: " + strength;
         vitalityTxt.text = "Vitality: " + vitality;
-        
-        
+
+        ChangeHealth(0);
+        ChangeMagic(0);
+    }
+
+    public void ChangeHealth(int changeAmount)
+    {
+        if ((health += changeAmount) <= maxHealth)
+        {
+            //nothing needs to happen if didn't overload health
+        }
+        else
+        {
+            health = maxHealth;
+        }
+        healthTxt.text = health.ToString();
+        healthSize.sizeDelta = new Vector2(-healthSizeMax.rect.width + (healthSizeMax.rect.width * ((float)health / maxHealth)), healthSize.sizeDelta.y);
+    }
+
+    public void ChangeMagic(int changeAmount)
+    {
+        if((magic += changeAmount) <= maxMagic)
+        {
+            //nothing needs to happen if didn't overload magic
+        }
+        else
+        {
+            magic = maxMagic;
+        }
+        magicTxt.text = magic.ToString();
+        magicSize.sizeDelta = new Vector2(-healthSizeMax.rect.width + (healthSizeMax.rect.width * ((float)magic / maxMagic)), magicSize.sizeDelta.y);
     }
 
     //for gain exp
@@ -132,7 +190,7 @@ public class PlayerStats : MonoBehaviour {
             //level character up
             level += 1;
             maxHealth += 2;
-            health = maxHealth;
+            ChangeHealth(maxHealth);
             statPoints += 3;
             maxPoints = statPoints;
 

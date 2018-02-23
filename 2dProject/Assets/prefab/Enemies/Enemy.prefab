@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 50397434612035828}
   - component: {fileID: 61020975457908754}
   - component: {fileID: 114268409170823224}
-  - component: {fileID: 114794132532217190}
+  - component: {fileID: 114012996982519614}
   m_Layer: 13
   m_Name: Enemy
   m_TagString: Enemy
@@ -118,18 +118,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.9984727, y: 1.3571317}
   m_EdgeRadius: 0
---- !u!114 &114268409170823224
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1765742243938816}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57d8e85f9671f644b903d585ca00ef1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114794132532217190
+--- !u!114 &114012996982519614
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -141,11 +130,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items: []
-  health: 2
+  dropRate: 0
+  damagePlayerOnCollision: 0
+  health: 0
+  experiencePoint: 0
   invincible: 0
+  HealthDrop: {fileID: 4636217074882892, guid: 577c15f6c1b09ab42b824fad5c1f119c, type: 2}
   loot: {fileID: 4608652777673112, guid: b6fd51c9f95fc474b94f7579577cb2f8, type: 2}
   loot2: {fileID: 4165315825156496, guid: ca4e98373ebece349a7bb63b9164dcb0, type: 2}
   loot3: {fileID: 4238880327069878, guid: 115d04814098586478167a45d53b2d7d, type: 2}
+--- !u!114 &114268409170823224
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1765742243938816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57d8e85f9671f644b903d585ca00ef1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212346422831796108
 SpriteRenderer:
   m_ObjectHideFlags: 1

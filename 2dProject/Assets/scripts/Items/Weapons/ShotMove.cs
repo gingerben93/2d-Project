@@ -27,7 +27,7 @@ public class ShotMove : MonoBehaviour
 
     void Shoot()
     {
-        mousePos = Input.mousePosition;
+        //mousePos = Input.mousePosition;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos += new Vector3(Random.Range(-.2f, .2f), Random.Range(-.2f, .2f), 0);
         var dir = mousePos - transform.position;

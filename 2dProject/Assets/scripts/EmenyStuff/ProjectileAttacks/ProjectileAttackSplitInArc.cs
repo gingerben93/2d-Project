@@ -77,22 +77,4 @@ public class ProjectileAttackSplitInArc : MonoBehaviour {
     {
         Destroy(gameObject);
     }
-
-    //causes game to crash because it tries to instantiate things when i stop game (destroys all objects) and that bugs out;
-    //void OnDestroy()
-    //{
-    //    var fireball = Instantiate(transform.parent.GetComponent<TurretAttack>().fireBallPrefab, transform.parent.transform);
-    //    fireball.position = transform.position;
-    //    fireball.rotation = transform.rotation;
-    //    fireball.name = "Fireball";
-    //    var temp = fireball.gameObject.AddComponent<ProjectileAttackSplitInArc>();
-    //    temp.transform.eulerAngles = new Vector3(0, 0, transform.rotation.z + 30);
-
-    //    var fireball2 = Instantiate(transform.parent.GetComponent<TurretAttack>().fireBallPrefab, transform.parent.transform);
-    //    fireball2.position = transform.position;
-    //    fireball2.rotation = transform.rotation;
-    //    fireball2.name = "Fireball";
-    //    var temp2 = fireball2.gameObject.AddComponent<ProjectileAttackSplitInArc>();
-    //    temp2.transform.eulerAngles = new Vector3(0, 0, transform.rotation.z - 30);
-    //}
 }

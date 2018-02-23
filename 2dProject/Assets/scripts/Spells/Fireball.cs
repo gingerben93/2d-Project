@@ -8,7 +8,7 @@ public class Fireball : MonoBehaviour
 
     void Start()
     {
-        transform.GetComponent<DamageOnCollision>().damage = 1;
+        transform.GetComponent<DamageOnCollision>().damage = PlayerStats.PlayerStatsSingle.intelligence;
         transform.GetComponent<DamageOnCollision>().onCollide = onCollide;
         Destroy(gameObject, 5);
     }

@@ -19,6 +19,9 @@ public class DrawPlayerMap : MonoBehaviour {
     private bool localMapOn = false;
     private bool worldMapOn = false;
 
+    //for camra
+    public Camera localMapCam;
+
     //if change room bool
     //public bool touchingDoor { get; set; }
 
@@ -58,6 +61,10 @@ public class DrawPlayerMap : MonoBehaviour {
 
     //for keeping worldmap locked on player
     GameObject currentWorldMap;
+
+    //local map offset
+    Vector3 OffSet;
+    Vector3 temp;
 
     public static DrawPlayerMap DrawPlayerMapSingle;
 
@@ -149,16 +156,23 @@ public class DrawPlayerMap : MonoBehaviour {
                 //turn map off and erase it
                 localMapOn = false;
                 playerLocalMap.mesh = null;
+
+                localMapCam.enabled = false;
             }
             else
             {
+                localMapCam.enabled = true;
+
                 //turn off teemo marker
-                MapMarkerTeemoSprite.enabled = true;
+                MapMarkerTeemoSprite.enabled = false;
+
+                //turn off teemo marker
+                //MapMarkerTeemoSprite.enabled = true;
                 //turn map on and draw it
                 worldMapOn = false;
 
                 localMapOn = true;
-                DrawLocalMap();
+                //DrawLocalMap();
 
                 //turn map doors on
                 var oldMapDoors = GameObject.FindGameObjectsWithTag("MapDoor");
@@ -177,15 +191,29 @@ public class DrawPlayerMap : MonoBehaviour {
 
         if (localMapOn)
         {
-            //keep map locked on character
-            MapMarkerTeemoPos.position = PlayerController.PlayerControllerSingle.transform.position + (PlayerController.PlayerControllerSingle.transform.position * .175f);
-            //keep map locked on character
-            UpdatePosition();
+            localMapCam.orthographicSize -= Input.mouseScrollDelta.y;
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                OffSet = temp + Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            }
+            else if (Input.GetMouseButton(0))
+            {
+                temp = OffSet - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                localMapCam.gameObject.transform.position = new Vector3(temp.x, temp.y, -20);
+            }
+
+            ////keep map locked on character
+            //MapMarkerTeemoPos.position = PlayerController.PlayerControllerSingle.transform.position + (PlayerController.PlayerControllerSingle.transform.position * .175f);
+            ////keep map locked on character
+            //UpdatePosition();
         }
 
         //world map
         if (Input.GetKeyDown(KeyCode.N))
         {
+            localMapCam.enabled = false;
+
             if (worldMapOn)
             {
                 //turn off teemo marker
@@ -254,8 +282,8 @@ public class DrawPlayerMap : MonoBehaviour {
     {
         if (localMapOn)
         {
-            drawDoors = false;
-            DrawLocalMap();
+            //drawDoors = false;
+            //DrawLocalMap();
 
         }
         else if (worldMapOn)

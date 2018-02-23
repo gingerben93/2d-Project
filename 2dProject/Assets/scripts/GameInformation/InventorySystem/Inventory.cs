@@ -126,14 +126,6 @@ public class Inventory : MonoBehaviour
 
         emptySlots = slots;
 
-        /*
-        slots = 128;
-        rows = 12;
-        slotSize = 2;
-        slotPaddingLeft = 2;
-        slotPaddingTop = 2;
-        */
-
         invWidth = (slots / rows) * (slotSize + slotPaddingLeft) + slotPaddingLeft;
         invHeight = rows * (slotSize + slotPaddingTop) + slotPaddingTop;
 
@@ -305,8 +297,6 @@ public class Inventory : MonoBehaviour
             }
         }
         //Helm Location
-
-
     }
 
     public bool AddItem(Item item)
@@ -395,8 +385,17 @@ public class Inventory : MonoBehaviour
             {
                 info = from.Items.Peek();
 
+                //Debug.Log(" 2 from.gameObject.name  = " + from.gameObject.name + " to.gameObject.name = " + to.gameObject.name);
+                //Debug.Log(" 2 info.type.ToString()  = " + info.type.ToString());
+
+                //if swapping to a slot of same name, weapons swaping spot
+                if (from.gameObject.name == to.gameObject.name)
+                {
+                    to.AddItems(from.Items);
+                    from.ClearSlot();
+                }
                 //swap to slot of same name then equipt item
-                if (info.type.ToString() == to.gameObject.name)
+                else if (info.type.ToString() == to.gameObject.name)
                 {
                     info.Use();
 
@@ -426,7 +425,13 @@ public class Inventory : MonoBehaviour
                 //Debug.Log(" 2 from.gameObject.name  = " + from.gameObject.name + " to.gameObject.name = " + to.gameObject.name);
                 //Debug.Log(" 2 info.type.ToString()  = " + info.type.ToString() + " info2.type.ToString() = " + info2.type.ToString());
 
-                if (info.type.ToString() == to.gameObject.name)
+                //if swapping to a slot of same name, weapons swaping spot
+                if (from.gameObject.name == to.gameObject.name)
+                {
+                    to.AddItems(from.Items);
+                    from.AddItems(tmpTo);
+                }
+                else if (info.type.ToString() == to.gameObject.name)
                 {
                     //order when decide if armor is over or under what is should be fore  a very little amount of time
                     info2.UnEquipt();
@@ -488,47 +493,59 @@ public class Inventory : MonoBehaviour
     {
         if (weaponName == "Blowdart")
         {
-            //destroy current
-            Destroy(WeaponGameobject);
-
             //instantiate a object with the weapon attack on it
             Attack = Resources.Load("Prefabs/WeaponAttacks/BlowDartAttack", typeof(GameObject)) as GameObject;
             WeaponGameobject = Instantiate(Attack, GameObject.Find("WeaponAttack").transform);
+            WeaponGameobject.name = "BlowDartAttack";
             WeaponGameobject.transform.localPosition = Vector3.zero;
 
             //set attack and damage
             Blowdart temp = WeaponGameobject.GetComponent<Blowdart>();
-            PlayerController.PlayerControllerSingle.playerAttack = temp.Attack;
+            PlayerController.PlayerControllerSingle.playerAttack += temp.Attack;
 
             //set damage
 
         }
         else if (weaponName == "ShortSword")
         {
-            //destroy current
-            Destroy(WeaponGameobject);
-
             //instantiate a object with the weapon attack on it
             Attack = Resources.Load("Prefabs/WeaponAttacks/ShortSwordAttack", typeof(GameObject)) as GameObject;
             WeaponGameobject = Instantiate(Attack, GameObject.Find("WeaponAttack").transform);
+            WeaponGameobject.name = "ShortSwordAttack";
             WeaponGameobject.transform.localPosition = Vector3.zero;
 
 
             ShortSword temp = WeaponGameobject.GetComponent<ShortSword>();
-            PlayerController.PlayerControllerSingle.playerAttack = temp.Attack;
+            PlayerController.PlayerControllerSingle.playerAttack += temp.Attack;
 
             //ShortSword temp = GameObject.Find("WeaponAttack").AddComponent<ShortSword>();
             //GameController.GameControllerSingle.playerAttack = temp.Attack;
         }
         else if (weaponName == "GodHands")
         {
-            Destroy(WeaponGameobject);
             Attack = Resources.Load("Prefabs/WeaponAttacks/GodHands", typeof(GameObject)) as GameObject;
             WeaponGameobject = Instantiate(Attack, GameObject.Find("WeaponAttack").transform);
+            WeaponGameobject.name = "GodHands";
             WeaponGameobject.transform.localPosition = Vector3.zero;
             GodHands temp = WeaponGameobject.GetComponent<GodHands>();
             temp.targetLocation = GameObject.Find("Hero").transform.position;
-            PlayerController.PlayerControllerSingle.playerAttack = temp.Attack;
+            PlayerController.PlayerControllerSingle.playerAttack += temp.Attack;
+        }
+    }
+
+    public void UnequiptWeapon(string weaponName)
+    {
+        if (weaponName == "Blowdart")
+        {
+            Destroy(GameObject.Find("BlowDartAttack"));
+        }
+        else if (weaponName == "ShortSword")
+        {
+            Destroy(GameObject.Find("ShortSwordAttack"));
+        }
+        else if (weaponName == "GodHands")
+        {
+            Destroy(GameObject.Find("GodHands"));
         }
     }
 }

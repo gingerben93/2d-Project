@@ -6,12 +6,15 @@ using System.IO;
 /// Handle hitpoints and damages
 public class EnemyStats : MonoBehaviour
 {
-
     //List of transforms to hold droppable items
     public List<Transform> items = new List<Transform>();
 
-    //drop rate of an item
-    private float dropRate = .50f;
+    //Set these for different enemies;
+    public float dropRate;
+    public bool damagePlayerOnCollision;
+    public int health;
+    public int experiencePoint;
+    public bool invincible;
 
     //drop chance for an item
     private float dropChance;
@@ -19,25 +22,25 @@ public class EnemyStats : MonoBehaviour
     //int to choose item from list
     private int choice;
 
-    /// Total hitpoints
-    public int health = 2;
-    private int experiencePoint = 5;
-
-    //invinsible
-    public bool invincible = false;
-
     void Start()
     {
-        // set emeny information
-        experiencePoint = 5;
-        
+        StartStats();
+    }
+
+    public virtual void StartStats()
+    {
+        dropRate = 0;
+        damagePlayerOnCollision = true;
+        health = 1;
+        experiencePoint = 1;
+        invincible = false;
     }
 
     //getting name is for seeing which part of the game object was hit if it has children
     //and special interation is required
-    public virtual void Damage(int damageCount, string NameObject)
+    public virtual void Damage(int damageCount, string NameObject, float InvicTime)
     {
-        //Debug.Log("NameObject = " + NameObject);
+        Debug.Log("NameObject = " + NameObject);
         if (!invincible)
         {
             health -= damageCount;
@@ -47,6 +50,13 @@ public class EnemyStats : MonoBehaviour
                 DeathPhase();
             }
         }
+    }
+
+    public IEnumerator MakeInvincible(float it)
+    {
+        invincible = true;
+        yield return new WaitForSeconds(it);
+        invincible = false;
     }
 
 
@@ -91,41 +101,38 @@ public class EnemyStats : MonoBehaviour
         //        Debug.Log("name = " + f.Name);
         //}
 
-        Instantiate(items[0], transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
+        //creates small variance on spawn location
+        Vector3 SpawnLocation = new Vector3(Random.Range(0.0f, 1f), Random.Range(0.0f, 1f), 0);
+        //spawn first thing in itesms which is health essence
+        Instantiate(items[0], transform.position + SpawnLocation, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
 
-        dropChance = Random.Range(0, 1.0f);
+        dropChance = Random.Range(0.0f, 1.0f);
 
-        if (dropChance < dropRate)
+        if (dropChance >= dropRate)
         {
+            SpawnLocation = new Vector3(Random.Range(0.0f, 1f), Random.Range(0.0f, 1f), 0);
             choice = Random.Range(0, items.Count);
-            Debug.Log("items.count = " + items.Count + " choice = " + choice);
-            Instantiate(items[choice], transform.position, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
+            Instantiate(items[choice], transform.position + SpawnLocation, Quaternion.identity).transform.parent = (GameObject.Find("WorldItems")).transform;
         }
-        
     }
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        //if (collision.gameObject.tag == "Player" && !PlayerController.PlayerControllerSingle.invincible)
-        //Debug.Log("parent = " + gameObject.name);
-        if (collision.gameObject.tag == "Player")
+        if (damagePlayerOnCollision)
         {
-            Debug.Log("name object = " + gameObject.name);
-            PlayerController.PlayerControllerSingle.DamagePlayer(1);
+            //Debug.Log("parent = " + gameObject.name);
+            if (collision.gameObject.tag == "Player")
+            {
+                //Debug.Log("name object = " + gameObject.name);
+                PlayerController.PlayerControllerSingle.DamagePlayer(1);
+            }
         }
     }
 
-    //void OnTriggerEnter2D(Collider2D otherCollider)
+    //can use dame here to hit certain parts of objects
+    //void OnTriggerEnter2D(Collider2D Trigger)
     //{
-    //    //if bullet, do bullet stuff
-    //    if (otherCollider.tag == "Bullet")
-    //    {
-    //        Destroy(otherCollider.gameObject);
-
-    //        if (!invincible)
-    //        {
-    //            Damage(PlayerController.PlayerControllerSingle.weaponDamage);
-    //        }
-    //    }
+    //    Debug.Log(gameObject.name);
+    //    Damage(100, Trigger.name);
     //}
 }

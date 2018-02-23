@@ -81,12 +81,12 @@ public class MagicController : MonoBehaviour
             {
                 
                 FromMagic = Instantiate(MagicImagePrefab, GameObject.Find("HotbarCanvas").transform);
-                Debug.Log("FromMagic = " + FromMagic.name);
-                Debug.Log("clicked = " + clicked.name);
+                //Debug.Log("FromMagic = " + FromMagic.name);
+                //Debug.Log("clicked = " + clicked.name);
                 FromMagic.GetComponent<Image>().sprite = clicked.GetComponent<Image>().sprite;
                 FromMagic.name = clicked.name;
                 //FromMagic.transform.SetParent(GameObject.Find("MagicMenuCanvas").transform, true);
-                Debug.Log("clicked.GetComponent<Magic>().type + " + clicked.GetComponent<Magic>().type);
+                //Debug.Log("clicked.GetComponent<Magic>().type + " + clicked.GetComponent<Magic>().type);
                 //Debug.Log("FromMagic.GetComponent<Magic>().type + " + FromMagic.GetComponent<Magic>().type);
                 //FromMagic.GetComponent<Magic>().type = clicked.GetComponent<Magic>().type;
             }

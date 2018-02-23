@@ -11,7 +11,7 @@ public class ConsumableItem : Item {
             case ItemType.HEALTH:
                 if (PlayerStats.PlayerStatsSingle.health <= PlayerStats.PlayerStatsSingle.maxHealth)
                 {
-                    PlayerStats.PlayerStatsSingle.health += 1;
+                    PlayerStats.PlayerStatsSingle.ChangeHealth(1);
                     Debug.Log("Health potion was used");
                 }
                 else

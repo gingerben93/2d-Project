@@ -27,6 +27,12 @@ public class GrapplingHookTip : MonoBehaviour {
 
         drawGrapHook.HasTipCollided = true;
 
+        //give player back jumps if has skill
+        if (PlayerController.PlayerControllerSingle.hookResetJumpsSkill)
+        {
+            PlayerController.PlayerControllerSingle.jumpCounter = PlayerStats.PlayerStatsSingle.maxJumps;
+        }
+
         if (tip.tag == "Enemy" && drawGrapHook.hitEnemy == false)
         {
             drawGrapHook.InstanceID = tip.GetInstanceID();

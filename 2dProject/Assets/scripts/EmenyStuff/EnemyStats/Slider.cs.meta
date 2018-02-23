@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: baba9df2932164e4e91c20b0b2e0eea8
+timeCreated: 1519332782
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - HealthDrop: {fileID: 4636217074882892, guid: 577c15f6c1b09ab42b824fad5c1f119c,
+      type: 2}
+  - loot: {fileID: 4913389887696664, guid: 5053b64c7494e95408f34e7ff621bd25, type: 2}
+  - loot2: {fileID: 4871406016944426, guid: b8998d3b5f040474ebb7d325688d3ebb, type: 2}
+  - loot3: {fileID: 4502387004759054, guid: a0f8f1b6c7fcdc740a6fa80ff54bbd8c, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

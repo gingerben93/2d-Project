@@ -29,6 +29,9 @@ public class EquiptItem : Item {
     public int vitalityH;
     public int vitality;
 
+    //for melee skills
+    public bool meleeWeapon;
+
     void Start()
     {
         //great little line for getting a random enum
@@ -70,8 +73,11 @@ public class EquiptItem : Item {
         switch (type)
         {
             case ItemType.WEAPON:
-                Debug.Log("Weapon used");
                 Inventory.InventorySingle.SelectWeapon(itemName);
+                if (meleeWeapon)
+                {
+                    PlayerController.PlayerControllerSingle.meleeEquipt = meleeWeapon;
+                }
                 break;
             case ItemType.HELM:
                 break;
@@ -94,7 +100,18 @@ public class EquiptItem : Item {
 
     public override void UnEquipt()
     {
-        Debug.Log("unEquipt");
+        //check for unequipt weapon
+        if (type == ItemType.WEAPON)
+        {
+            Inventory.InventorySingle.UnequiptWeapon(itemName);
+
+            //for player melee skills
+            if (meleeWeapon)
+            {
+                PlayerController.PlayerControllerSingle.meleeEquipt = false;
+            }
+        }
+
         PlayerStats.PlayerStatsSingle.UpdateStatText(-armor, -dexterity, -intelligence, -strength, -vitality);
     }
 

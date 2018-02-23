@@ -58,13 +58,4 @@ public class ProjectileAttackSplitTowardsPlayer : MonoBehaviour {
     {
         Destroy(gameObject);
     }
-
-    //causes game to crash because it tries to instantiate things when i stop game (destroys all objects) and that bugs out;
-    //void OnDestroy()
-    //{
-    //    var fireball = Instantiate(transform.parent.GetComponent<TurretAttack>().fireBallPrefab, transform.parent.transform);
-    //    fireball.position = transform.position;
-    //    fireball.name = "Fireball";
-    //    fireball.gameObject.AddComponent<ProjectileAttackSplitTowardsPlayer>();
-    //}
 }

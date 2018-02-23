@@ -26,16 +26,12 @@ public class SliderEnemyMovment : MonoBehaviour {
     float coolDown = 2;
     float coolDownTimer = 2;
 
-
-
     // Use this for initialization
     void Start ()
     {
         //for attack
         PlayerTransform = PlayerController.PlayerControllerSingle.transform;
         Attack = GetComponentInChildren<SliderEnemyAttack>();
-
-
 
         try
         {
@@ -51,7 +47,6 @@ public class SliderEnemyMovment : MonoBehaviour {
             //random variables
             Direction = Random.Range(0, 2);
             speed = Random.Range(20, 40) / 100f;
- 
         }
         catch
         {

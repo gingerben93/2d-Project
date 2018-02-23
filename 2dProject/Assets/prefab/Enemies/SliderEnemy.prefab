@@ -74,8 +74,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4517377780509876}
   - component: {fileID: 114345315016249190}
-  - component: {fileID: 114567841623913344}
   - component: {fileID: 50957940208858326}
+  - component: {fileID: 114345620980269932}
   m_Layer: 13
   m_Name: SliderEnemy
   m_TagString: Enemy
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 61159430653526604}
   m_Layer: 13
   m_Name: Image
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -354,6 +354,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacking: 0
+--- !u!114 &114345620980269932
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1733065828027804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: baba9df2932164e4e91c20b0b2e0eea8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  items: []
+  dropRate: 0
+  damagePlayerOnCollision: 0
+  health: 0
+  experiencePoint: 0
+  invincible: 0
+  HealthDrop: {fileID: 4636217074882892, guid: 577c15f6c1b09ab42b824fad5c1f119c, type: 2}
+  loot: {fileID: 4913389887696664, guid: 5053b64c7494e95408f34e7ff621bd25, type: 2}
+  loot2: {fileID: 4871406016944426, guid: b8998d3b5f040474ebb7d325688d3ebb, type: 2}
+  loot3: {fileID: 4502387004759054, guid: a0f8f1b6c7fcdc740a6fa80ff54bbd8c, type: 2}
 --- !u!114 &114469304431811098
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -366,31 +387,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attacking: 0
---- !u!114 &114567841623913344
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1733065828027804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f963711c28e4c342b90c88535fc0377, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loot: {fileID: 4608652777673112, guid: b6fd51c9f95fc474b94f7579577cb2f8, type: 2}
-  loot2: {fileID: 4608652777673112, guid: b6fd51c9f95fc474b94f7579577cb2f8, type: 2}
-  loot3: {fileID: 0}
-  loot4: {fileID: 4425881544222182, guid: 06b0c2b703f394b438870eb9a78b2b6c, type: 2}
-  loot5: {fileID: 4724824790748332, guid: 4b2939b4686d402448b6dea172410955, type: 2}
-  loot6: {fileID: 4251220755674976, guid: c2eb96701c2ce6e4186d7b57199dd7b9, type: 2}
-  loot7: {fileID: 4502387004759054, guid: a0f8f1b6c7fcdc740a6fa80ff54bbd8c, type: 2}
-  loot8: {fileID: 4684830867315142, guid: 5da3b325d197e2744bf946436d8d666a, type: 2}
-  loot9: {fileID: 4871406016944426, guid: b8998d3b5f040474ebb7d325688d3ebb, type: 2}
-  loot10: {fileID: 4913389887696664, guid: 5053b64c7494e95408f34e7ff621bd25, type: 2}
-  loot11: {fileID: 4184709057733690, guid: 6322bc45db7b5214d8a1909ebc499a80, type: 2}
-  items: []
-  health: 0
-  invincible: 0
 --- !u!212 &212048288659661892
 SpriteRenderer:
   m_ObjectHideFlags: 1

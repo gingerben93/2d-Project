@@ -60,14 +60,28 @@ public class GameController : MonoBehaviour
         //DontDestroyOnLoad(GameObject.Find("GrapplingHookParts"));
 
         //assign skill functions
+
+        //jump skills
+        GameObject.Find("GrapplingHookSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnGrapplingHookSkill(); });
+        GameObject.Find("HookResetJumps").GetComponent<Button>().onClick.AddListener(delegate { LearnHookResetJumps(); });
+
+        //grappling hook skills
+        GameObject.Find("DoubleJump").GetComponent<Button>().onClick.AddListener(delegate { LearnDoubleJump(); });
+        GameObject.Find("TripleJump").GetComponent<Button>().onClick.AddListener(delegate { LearnTripleJump(); });
+
         //dash
         GameObject.Find("DashSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill(); });
-        GameObject.Find("DashSkill2").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkill2(); });
+
+        //melee skills
+        GameObject.Find("DashSkillMelee").GetComponent<Button>().onClick.AddListener(delegate { LearnDashSkillMelee(); });
 
         //slide skill
-        GameObject.Find("SlideSkill1").GetComponent<Button>().onClick.AddListener(delegate { LearnSlideSkill(); });
+        GameObject.Find("SlideSkillLearn").GetComponent<Button>().onClick.AddListener(delegate { LearnSlideSkill(); });
         GameObject.Find("SlideJumpSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnSlideJumpSkill(); });
         GameObject.Find("SlideSteerSkill").GetComponent<Button>().onClick.AddListener(delegate { LearnSlideSteerSkill(); });
+
+        //attract passive skill
+        GameObject.Find("AttractPassive").GetComponent<Button>().onClick.AddListener(delegate { LearnAttractPassive(); });
 
         //assign buttons functions for menu
         GameObject.Find("InventoryButton").GetComponent<Button>().onClick.AddListener(delegate { InventoryOnButton(); });
@@ -146,6 +160,76 @@ public class GameController : MonoBehaviour
         //}
     }
 
+    //player item distance attract skill learn
+    public void LearnAttractPassive()
+    {
+        if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
+        {
+            PlayerStats.PlayerStatsSingle.DecSkillPoints();
+
+            PlayerStats.PlayerStatsSingle.itemAttractDistance = 1000;
+
+            GameObject.Find("AttractPassive").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("AttractPassive").GetComponent<Button>().interactable = false;
+        }
+    }
+
+    public void LearnGrapplingHookSkill()
+    {
+        if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
+        {
+            PlayerStats.PlayerStatsSingle.DecSkillPoints();
+
+            PlayerController.PlayerControllerSingle.grapplingHookSkill = true;
+
+            GameObject.Find("GrapplingHookSkill").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("GrapplingHookSkill").GetComponent<Button>().interactable = false;
+            GameObject.Find("HookResetJumps").GetComponent<Button>().interactable = true;
+        }
+    }
+
+    public void LearnHookResetJumps()
+    {
+        if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
+        {
+            PlayerStats.PlayerStatsSingle.DecSkillPoints();
+
+            PlayerController.PlayerControllerSingle.hookResetJumpsSkill = true;
+
+            GameObject.Find("HookResetJumps").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("HookResetJumps").GetComponent<Button>().interactable = false;
+        }
+    }
+
+    public void LearnDoubleJump()
+    {
+        if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
+        {
+            PlayerStats.PlayerStatsSingle.DecSkillPoints();
+
+            PlayerController.PlayerControllerSingle.jumpCounter = 2;
+            PlayerStats.PlayerStatsSingle.maxJumps = 2;
+
+            GameObject.Find("DoubleJump").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("DoubleJump").GetComponent<Button>().interactable = false;
+            GameObject.Find("TripleJump").GetComponent<Button>().interactable = true;
+        }
+    }
+
+    public void LearnTripleJump()
+    {
+        if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
+        {
+            PlayerStats.PlayerStatsSingle.DecSkillPoints();
+
+            PlayerController.PlayerControllerSingle.jumpCounter = 3;
+            PlayerStats.PlayerStatsSingle.maxJumps = 3;
+
+            GameObject.Find("TripleJump").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("TripleJump").GetComponent<Button>().interactable = false;
+        }
+    }
+
     public void LearnDashSkill()
     {
         if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
@@ -156,20 +240,20 @@ public class GameController : MonoBehaviour
 
             GameObject.Find("DashSkill").GetComponent<Button>().image.color = Color.yellow;
             GameObject.Find("DashSkill").GetComponent<Button>().interactable = false;
-            GameObject.Find("DashSkill2").GetComponent<Button>().interactable = true;
+            GameObject.Find("DashSkillMelee").GetComponent<Button>().interactable = true;
         }
     }
 
-    public void LearnDashSkill2()
+    public void LearnDashSkillMelee()
     {
         if (PlayerStats.PlayerStatsSingle.skillPoints > 0)
         {
             PlayerStats.PlayerStatsSingle.DecSkillPoints();
 
-            PlayerController.PlayerControllerSingle.dashSkill2 = true;
+            PlayerController.PlayerControllerSingle.dashSkillMelee= true;
 
-            GameObject.Find("DashSkill2").GetComponent<Button>().image.color = Color.yellow;
-            GameObject.Find("DashSkill2").GetComponent<Button>().interactable = false;
+            GameObject.Find("DashSkillMelee").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("DashSkillMelee").GetComponent<Button>().interactable = false;
         }
     }
 
@@ -181,8 +265,8 @@ public class GameController : MonoBehaviour
 
             PlayerController.PlayerControllerSingle.slideSkill = true;
 
-            GameObject.Find("SlideSkill1").GetComponent<Button>().image.color = Color.yellow;
-            GameObject.Find("SlideSkill1").GetComponent<Button>().interactable = false;
+            GameObject.Find("SlideSkillLearn").GetComponent<Button>().image.color = Color.yellow;
+            GameObject.Find("SlideSkillLearn").GetComponent<Button>().interactable = false;
             GameObject.Find("SlideJumpSkill").GetComponent<Button>().interactable = true;
         }
     }

@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 61282074624479508}
   - component: {fileID: 50959732511427808}
   - component: {fileID: 114970440738155256}
-  - component: {fileID: 114142277219815916}
+  - component: {fileID: 114731092664462282}
   m_Layer: 0
   m_Name: ShortSword
   m_TagString: Item
@@ -89,7 +89,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32, y: 0.32}
   m_EdgeRadius: 0
---- !u!114 &114142277219815916
+--- !u!114 &114731092664462282
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -110,21 +110,19 @@ MonoBehaviour:
   armorL: 0
   armorH: 0
   armor: 0
-  damageL: 1
-  damageH: 5
-  damage: 0
-  vitL: 0
-  vitH: 0
-  vit: 0
+  dexterityL: 0
+  dexterityH: 0
+  dexterity: 0
   intelligenceL: 0
   intelligenceH: 0
   intelligence: 0
   strengthL: 0
   strengthH: 0
   strength: 0
-  charismaL: 0
-  charismaH: 0
-  charisma: 0
+  vitalityL: 0
+  vitalityH: 0
+  vitality: 0
+  meleeWeapon: 1
 --- !u!114 &114970440738155256
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -136,6 +134,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d56ec8de48bb60747bfa716da857218f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attractDistance: 10
+  faceTarget: 0
+  attractSpeed: 0.2
+  magicChange: 0
+  healthChange: 0
 --- !u!212 &212824262857551628
 SpriteRenderer:
   m_ObjectHideFlags: 1

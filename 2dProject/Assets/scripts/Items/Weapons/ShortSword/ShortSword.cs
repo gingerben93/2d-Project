@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class ShortSword : Weapon
 {
-
-    public float weaponAttackRate = 0.25f;
-    private float weaponCooldown;
+    bool attacking = false;
+    private Vector3 mousePos;
 
     SpriteRenderer Image;
     BoxCollider2D ObjectCollider;
@@ -14,79 +13,62 @@ public class ShortSword : Weapon
     void Start()
     {
         //set damage
-        transform.GetComponent<DamageOnCollision>().damage = 1;
+        transform.GetComponent<DamageOnCollision>().damage = PlayerStats.PlayerStatsSingle.strength;
         transform.GetComponent<DamageOnCollision>().onCollide = onCollide;
 
         Image = gameObject.GetComponentInChildren<SpriteRenderer>();
-        ObjectCollider = gameObject.GetComponent<BoxCollider2D>();
-        weaponCooldown = 0f;
+        ObjectCollider = gameObject.GetComponentInChildren<BoxCollider2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (weaponCooldown > 0)
+        if (attacking)
         {
-            weaponCooldown -= Time.deltaTime;
-
-            if (PlayerController.PlayerControllerSingle.facingRight)
-            {
-                transform.position = PlayerController.PlayerControllerSingle.transform.position + PlayerController.PlayerControllerSingle.transform.right;
-            }
-            else
-            {
-                transform.position = PlayerController.PlayerControllerSingle.transform.position - PlayerController.PlayerControllerSingle.transform.right;
-            }
-        }
-        else
-        {
-            Image.enabled = false;
-            ObjectCollider.enabled = false;
+            transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z - 8f);
         }
     }
 
     public override void Attack()
     {
-        if (CanAttack)
+        if (!attacking)
         {
-            weaponCooldown = weaponAttackRate;
-            Image.enabled = true;
-            ObjectCollider.enabled = true;
+            StartCoroutine(SwordAttack());
         }
     }
 
-    public bool CanAttack
+    IEnumerator SwordAttack()
     {
-        get
-        {
-            return weaponCooldown <= 0f;
-        }
-    }
+        //calculate angle for pointing at mouse
+        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        var dir = mousePos - transform.position;
+        var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
 
-    void onCollide()
-    {
+        //off set where it starts so it swings aross player
+        transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + 60);
+
+        attacking = true;
+        Image.enabled = true;
+        ObjectCollider.enabled = true;
+
+        yield return new WaitForSeconds(.25f);
+
         Image.enabled = false;
         ObjectCollider.enabled = false;
-        weaponCooldown = weaponAttackRate;
+        attacking = false;
     }
 
-    //void OnTriggerEnter2D(Collider2D otherCollider)
-    //{
-    //    //if bullet, do bullet stuff
-    //    if (otherCollider.tag == "Enemy")
-    //    {
-    //        EnemyStats Enemy;
-    //        //might needs to also look in children of gameobjects fi this ever fails
-    //        if (Enemy = otherCollider.gameObject.GetComponent<EnemyStats>())
-    //        {
+    //sword does nothing on collide right now, but alter sounds, effects, etc.
+    void onCollide()
+    {
+        //Image.enabled = false;
+        //ObjectCollider.enabled = false;
+        //attacking = false;
+        //StopCoroutine(StartDashAttack());
+    }
 
-    //        }
-    //        else
-    //        {
-    //            Enemy = otherCollider.gameObject.transform.parent.GetComponent<EnemyStats>();
-    //        }
-
-    //        Enemy.Damage(PlayerController.PlayerControllerSingle.weaponDamage);
-    //    }
-    //}
-
+    void OnDestroy()
+    {
+        PlayerController.PlayerControllerSingle.playerAttack -= Attack;
+    }
 }

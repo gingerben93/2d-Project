@@ -6,18 +6,35 @@ public class Magnet : MonoBehaviour
 {
     Rigidbody2D rbd2OfItem;
     bool attract = false;
+    bool deathPhase = false;
+    public float attractDistance = 10f;
+    public bool faceTarget;
+    public float attractSpeed = .2f;
+
+    public int magicChange;
+    public int healthChange;
 
     void Start()
     {
         rbd2OfItem = gameObject.GetComponent<Rigidbody2D>();
+        attractSpeed = Random.Range(.1f, .3f);
     }
-
-    // Update is called once per frame
+    
     void LateUpdate()
     {
-        if (attract)
+        if (attract && !deathPhase)
         {
-            transform.position = Vector3.MoveTowards(gameObject.transform.position, PlayerController.PlayerControllerSingle.transform.position, .125f);
+            //face target
+            if (faceTarget)
+            {
+                var dir = PlayerController.PlayerControllerSingle.transform.position - transform.position;
+                var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+            }
+
+            //move toward target
+            transform.position = Vector3.MoveTowards(gameObject.transform.position, PlayerController.PlayerControllerSingle.transform.position, attractSpeed);
+
             if (Vector2.Distance(transform.position, PlayerController.PlayerControllerSingle.transform.position) <= 1f)
             {
                 //check with all gather quest that item was needed
@@ -35,13 +52,28 @@ public class Magnet : MonoBehaviour
                 }
 
                 //put item in iventory
-                Inventory.InventorySingle.AddItem(gameObject.GetComponent<Item>());
+                if (gameObject.tag == "Item")
+                {
+                    Inventory.InventorySingle.AddItem(gameObject.GetComponent<Item>());
+                }
 
-                //destory item
-                Destroy(gameObject);
+                deathPhase = true;
+
+                //if has particle system then do resource change
+                if (gameObject.GetComponent<ParticleSystem>())
+                {
+                    gameObject.GetComponent<ParticleSystem>().Stop();
+                    PlayerStats.PlayerStatsSingle.ChangeHealth(healthChange);
+                    PlayerStats.PlayerStatsSingle.ChangeMagic(magicChange);
+                    Destroy(gameObject, 1f);
+                }
+                else
+                {
+                    Destroy(gameObject);
+                }
             }
         }
-        else if (Vector3.Distance(gameObject.transform.position, PlayerController.PlayerControllerSingle.transform.position) < 10f)
+        else if (Vector3.Distance(gameObject.transform.position, PlayerController.PlayerControllerSingle.transform.position) < PlayerStats.PlayerStatsSingle.itemAttractDistance)
         {
             rbd2OfItem.simulated = false;
             attract = true;

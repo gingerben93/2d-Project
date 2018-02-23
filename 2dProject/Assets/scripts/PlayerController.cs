@@ -5,7 +5,6 @@ using UnityEngine.EventSystems;
 
 public class PlayerController : MonoBehaviour
 {
-
     public string playerName { get; set; }
 
     public bool facingRight { get; set; }
@@ -49,10 +48,15 @@ public class PlayerController : MonoBehaviour
 
     //skillBoolCheck
     public bool dashSkill = false;
-    public bool dashSkill2 = false;
+    public bool dashSkillMelee = false;
     public bool slideSkill = false;
     public bool slideJumpSkill = false;
     public bool slideSteerSKill = false;
+    public bool grapplingHookSkill = false;
+    public bool hookResetJumpsSkill = false;
+
+    //skill attack objects
+    public GameObject DashAttack;
 
     //for hotbar
     public delegate void HotBarDelegate();
@@ -94,7 +98,7 @@ public class PlayerController : MonoBehaviour
     float InvinicbleCoolDownTimer = 0;
 
     //for fade in and out player sprite
-    SpriteRenderer PlayerSprite;
+    public SpriteRenderer PlayerSprite;
 
     //for smooth force movments
     public Vector2 forceAddToPlayer;
@@ -120,6 +124,12 @@ public class PlayerController : MonoBehaviour
 
     public bool isGrapplingHook;
 
+    //what weapon is equipt
+    public bool meleeEquipt;
+    //public bool rangeEquipt;
+
+    //jump counter
+    public int jumpCounter;
 
     //singleton
     public static PlayerController PlayerControllerSingle;
@@ -148,6 +158,7 @@ public class PlayerController : MonoBehaviour
         //moveForce = 5f;
         jumpForce = 500;
         facingRight = true;
+        jumpCounter = 1;
 
         //other start stuff
         doorInfo = GetComponent<DoorCollider>();
@@ -159,12 +170,12 @@ public class PlayerController : MonoBehaviour
         //start player name
         playerName = "fukin nerd";
 
-        //set sprite
+        //set sprite, make sure play image is top sprite or another will be found
         PlayerSprite =  transform.GetComponentInChildren<SpriteRenderer>();
 
         //slide particle system
-        SlideParticles = transform.Find("SlideSkill").transform.Find("ParticleSlide").GetComponentInChildren<ParticleSystem>();
-        SlideJumpParticles = transform.Find("SlideSkill").transform.Find("ParticleJump").GetComponentInChildren<ParticleSystem>();
+        SlideParticles = transform.Find("Teemo_Standing").transform.Find("ParticleSlide").GetComponentInChildren<ParticleSystem>();
+        SlideJumpParticles = transform.Find("PlayerSkills").transform.Find("SlideSkill").transform.Find("ParticleJump").GetComponentInChildren<ParticleSystem>();
 
         //for gappling hook
         grapplingHookScript = GameObject.Find("GrapplingHook").GetComponent<DrawGrapHook>();
@@ -198,7 +209,7 @@ public class PlayerController : MonoBehaviour
         {
             ResetPlayer();
             transform.position = respawnLocation;
-            PlayerStats.PlayerStatsSingle.health = PlayerStats.PlayerStatsSingle.maxHealth;
+            PlayerStats.PlayerStatsSingle.ChangeHealth(PlayerStats.PlayerStatsSingle.maxHealth);
         }
 
         //going through doors
@@ -229,16 +240,14 @@ public class PlayerController : MonoBehaviour
 
         if (Mouse0Down)
         {
-            isGrapplingHook = true;
-            grapplingHookScript.TurnGrapHookOn();
+            isGrapplingHook = grapplingHookScript.TurnGrapHookOn();
         }
 
         if (Mouse0Up)
         {
             if (isGrapplingHook)
             {
-                isGrapplingHook = false;
-                grapplingHookScript.TurnGrapHookOff();
+                isGrapplingHook = grapplingHookScript.TurnGrapHookOff();
                 StartCoroutine(RotateToZero());
             }
         }
@@ -279,35 +288,41 @@ public class PlayerController : MonoBehaviour
         if (rotateRight)
         {
             //euler angle start at 360 when going right
-            transform.Rotate(Vector3.back, rotateSpeed);
-            if (lastRotationAngle < transform.eulerAngles.z)
+            PlayerSprite.transform.Rotate(Vector3.back, rotateSpeed);
+            if (lastRotationAngle < PlayerSprite.transform.eulerAngles.z)
             {
-                transform.eulerAngles = new Vector3(0, 0, 0);
+                PlayerSprite.transform.eulerAngles = new Vector3(0, 0, 0);
                 rotateRight = false;
             }
-            lastRotationAngle = transform.eulerAngles.z;
+            lastRotationAngle = PlayerSprite.transform.eulerAngles.z;
         }
 
         if (rotateleft)
         {
             //euler angle start at 0 when going left
-            transform.Rotate(Vector3.forward, rotateSpeed);
-            if (lastRotationAngle > transform.eulerAngles.z)
+            PlayerSprite.transform.Rotate(Vector3.forward, rotateSpeed);
+            if (lastRotationAngle > PlayerSprite.transform.eulerAngles.z)
             {
-                transform.eulerAngles = Vector3.zero;
+                PlayerSprite.transform.eulerAngles = Vector3.zero;
                 rotateleft = false;
             }
-            lastRotationAngle = transform.eulerAngles.z;
+            lastRotationAngle = PlayerSprite.transform.eulerAngles.z;
         }
 
         //have to learn dash skill to start using it can't dash while sliding
-        if (!IsSliding && dashSkill && dashSkill2)
+        if (!IsSliding && dashSkill)
         {
             if (Input.GetKeyDown(KeyCode.D))
             {
                 //Number of Taps you want Minus One
                 if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
                 {
+                    //dash attack
+                    if (meleeEquipt && dashSkillMelee)
+                    {
+                        StartCoroutine(StartDashAttack());
+                    }
+
                     dashCoolDown = 1f;
                     if (rb2d.velocity.x >= 6f)
                     {
@@ -335,6 +350,12 @@ public class PlayerController : MonoBehaviour
                 //Number of Taps you want Minus One
                 if (ButtonCooler > 0.0f && ButtonCount == 1 && dashCoolDown <= 0f)
                 {
+                    //dash attack
+                    if (meleeEquipt && dashSkillMelee)
+                    {
+                        StartCoroutine(StartDashAttack());
+                    }
+
                     dashCoolDown = 1f;
                     if (rb2d.velocity.x <= -6f)
                     {
@@ -413,6 +434,7 @@ public class PlayerController : MonoBehaviour
         {
             return;
         }
+
         if (slideSkill && SHold && !IsSliding)
         {
             try
@@ -423,9 +445,9 @@ public class PlayerController : MonoBehaviour
                     float closestCollider = 5000;
                     foreach (EdgeCollider2D edge in Edges)
                     {
-                        if (edge.Distance(transform.GetComponent<CapsuleCollider2D>()).distance < closestCollider)
+                        if (edge.Distance(PlayerSprite.transform.GetComponent<CapsuleCollider2D>()).distance < closestCollider)
                         {
-                            closestCollider = edge.Distance(transform.GetComponent<CapsuleCollider2D>()).distance;
+                            closestCollider = edge.Distance(PlayerSprite.transform.GetComponent<CapsuleCollider2D>()).distance;
 
                             if (closestCollider <= 2)
                             {
@@ -450,7 +472,10 @@ public class PlayerController : MonoBehaviour
                     {
                         GetContactPoint();
 
+                        //no gravity while sliding
+                        //Debug.Log("gravity 0");
                         rb2d.gravityScale = 0;
+
                         //turn on particles
                         SlideParticles.Play();
                     }
@@ -466,6 +491,7 @@ public class PlayerController : MonoBehaviour
             noMovement = false;
             IsSliding = false;
             firstRun = true;
+            //Debug.Log("gravity 1");
             rb2d.gravityScale = 1;
 
             jumpOff = false;
@@ -483,25 +509,26 @@ public class PlayerController : MonoBehaviour
             {
                 jumpOff = true;
                 SlideJumpParticles.Play();
+                //Debug.Log("gravity 0");
                 rb2d.gravityScale = 0;
-                rb2d.AddForce(transform.up * 25f);
+                rb2d.AddForce(PlayerSprite.transform.up * 25f);
             }
             else if (jumpOff)
             {
                 if (slideSteerSKill && DHold)
                 {
-                    transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z - 2);
+                    PlayerSprite.transform.eulerAngles = new Vector3(0, 0, PlayerSprite.transform.eulerAngles.z - 2);
                 }
                 else if (slideSteerSKill && AHold)
                 {
-                    transform.eulerAngles = new Vector3(0, 0, transform.eulerAngles.z + 2);
+                    PlayerSprite.transform.eulerAngles = new Vector3(0, 0, PlayerSprite.transform.eulerAngles.z + 2);
                 }
 
                 //if (rb2d.velocity.magnitude < 20f)
                 //{
                 //    rb2d.AddForce(transform.localPosition * 25f);
                 //}
-                transform.position += transform.up * .25f;
+                transform.position += PlayerSprite.transform.up * .25f;
             }
             //for rotating the object
             else if (!jumpOff)
@@ -516,7 +543,7 @@ public class PlayerController : MonoBehaviour
                 gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, perpVec, .25f);
 
                 targetRotation = Quaternion.LookRotation(Vector3.forward, perpVec - CurrentVector);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, .25f);
+                PlayerSprite.transform.rotation = Quaternion.Slerp(PlayerSprite.transform.rotation, targetRotation, .25f);
             }
 
 
@@ -598,58 +625,67 @@ public class PlayerController : MonoBehaviour
             rb2d.velocity = new Vector2(rb2d.velocity.x * .97f, rb2d.velocity.y);
         }
 
-        if (-rb2d.velocity.y >= maxSpeed*2)
+        if (!falling && rb2d.velocity.y <= -maxSpeed*2 && !isGrapplingHook)
         {
-            //start timer for falling; take damage after 1 sec
-            //deltatime is time sinece last frame.
-            timer += Time.deltaTime;
+            Debug.Log("FALLING " + rb2d.velocity.y);
+            
             falling = true;
+            timer = 0f;
+            //Debug.Log("gravity 0");
             rb2d.gravityScale = 0;
         }
-        else
+        else if(falling)
         {
-            falling = false;
-            timer = 0;
-            if (!IsSliding)
+            //timer for when you take damage
+            timer += Time.deltaTime;
+            //Debug.Log(timer);
+
+            //Debug.Log("falling" + rb2d.velocity.y);
+            if (rb2d.velocity.y >= 0f)
             {
-                rb2d.gravityScale = 1;
+                falling = false;
             }
         }
 
         if (spaceDown && !jumpOff && !IsSliding)
         {
+            //Debug.Log("gravity 1");
             rb2d.gravityScale = 1;
-            if (isGrapplingHook)
+
+            //only jump sideways of on grappinghook and moving slow
+            if (isGrapplingHook && grapplingHookScript.HasTipCollided && rb2d.velocity.magnitude < maxSpeed*1.5f)
             {
                 if (facingRight)
                 {
-                    rb2d.AddForce(transform.right * jumpForce);
+                    rb2d.AddForce(PlayerSprite.transform.right * jumpForce*.5f);
                 }
                 else
                 {
-                    rb2d.AddForce(-transform.right * jumpForce);
+                    rb2d.AddForce(-PlayerSprite.transform.right * jumpForce*.5f);
                 }
             }
-            else
+            //can only jump if you have one and not going too fast
+            else if(jumpCounter > 0 && rb2d.velocity.y < maxSpeed)
             {
                 if (rb2d.velocity.y < 0)
                 {
                     rb2d.velocity = new Vector3(rb2d.velocity.x, 0, 0);
                 }
-                if (rb2d.velocity.y < 1.2f)
-                {
-                    rb2d.AddForce(new Vector2(0f, jumpForce));
-                }
+                ////gives jumps based on speed
+                //if (rb2d.velocity.y < 1.2f)
+                //{
+                jumpCounter -= 1;
+                rb2d.AddForce(new Vector2(0f, jumpForce));
+                //}
             }
         }
 
         if (spaceDown)
         {
             //turn off grappling hook
-            if (isGrapplingHook)
+            if (isGrapplingHook && grapplingHookScript.HasTipCollided)
             {
-                isGrapplingHook = false;
-                grapplingHookScript.TurnGrapHookOff();
+                isGrapplingHook = grapplingHookScript.TurnGrapHookOff();
             }
 
             if (!IsSliding)
@@ -675,9 +711,7 @@ public class PlayerController : MonoBehaviour
     void Flip()
     {
         facingRight = !facingRight;
-        Vector3 theScale = transform.localScale;
-        theScale.x *= -1;
-        transform.localScale = theScale;
+        PlayerSprite.flipX = !PlayerSprite.flipX;
     }
 
     //stops play all player actions and x y movements, rotations, etc.
@@ -693,7 +727,7 @@ public class PlayerController : MonoBehaviour
         freezePlayer = false;
         rb2d.constraints = RigidbodyConstraints2D.None;
         rb2d.constraints = RigidbodyConstraints2D.FreezeRotation;
-        transform.transform.rotation = Quaternion.identity;
+        PlayerSprite.transform.transform.rotation = Quaternion.identity;
     }
 
     private void SetInvisible()
@@ -707,7 +741,7 @@ public class PlayerController : MonoBehaviour
         if (!invincible)
         {
             SetInvisible();
-            PlayerStats.PlayerStatsSingle.health -= DamageAmount;
+            PlayerStats.PlayerStatsSingle.ChangeHealth(-DamageAmount);
         }
     }
 
@@ -737,17 +771,17 @@ public class PlayerController : MonoBehaviour
         if (!isRotating && !IsSliding && !isGrapplingHook)
         {
             isRotating = true;
-            Quaternion start = transform.rotation;
+            Quaternion start = PlayerSprite.transform.rotation;
             Quaternion end = Quaternion.Euler(new Vector3(0.0f, 0.0f, 0.0f));
             float elapsed = 0.0f;
             while (elapsed < 1f)
             {
                 //Debug.Log("rotate playercon");
-                transform.rotation = Quaternion.Slerp(start, end, elapsed/.1f);
+                PlayerSprite.transform.rotation = Quaternion.Slerp(start, end, elapsed/.1f);
                 elapsed += Time.deltaTime;
-                if (Mathf.Abs(transform.rotation.eulerAngles.z) <= 5)
+                if (Mathf.Abs(PlayerSprite.transform.rotation.eulerAngles.z) <= 5)
                 {
-                    transform.eulerAngles = new Vector3(0, 0, 0);
+                    PlayerSprite.transform.eulerAngles = new Vector3(0, 0, 0);
                     elapsed = 1f;
                 }
 
@@ -755,6 +789,14 @@ public class PlayerController : MonoBehaviour
             }
             isRotating = false;
         }
+    }
+
+    //skills
+    IEnumerator StartDashAttack()
+    {
+        DashAttack.SetActive(true);
+        yield return new WaitForSeconds(.65f);
+        DashAttack.SetActive(false);
     }
 
     public void ResetPlayer()
@@ -790,7 +832,7 @@ public class PlayerController : MonoBehaviour
         SlideJumpParticles.Stop();
 
         //reset grappling hook;
-        grapplingHookScript.TurnGrapHookOff();
+        isGrapplingHook = grapplingHookScript.TurnGrapHookOff();
     }
 
     void OnTriggerEnter2D(Collider2D triggerCollition)
@@ -801,6 +843,7 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         IsColliding = true;
+        jumpCounter = PlayerStats.PlayerStatsSingle.maxJumps;
         
         //moved this into magnet script for testing stuff
         //add item to inventory
@@ -811,9 +854,15 @@ public class PlayerController : MonoBehaviour
         //}
 
         //falling damage
-        if (falling && timer >= 1.5f)
+        if (falling)
         {
-            DamagePlayer(1);
+            if(timer >= 1.5f)
+            {
+                DamagePlayer(1);
+            }
+            falling = false;
+            //Debug.Log("gravity 1");
+            rb2d.gravityScale = 1f;
         }
 
         //for slide move; gets edge collider player is touching

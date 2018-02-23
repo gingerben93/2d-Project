@@ -29,4 +29,9 @@ public class ProjectileForward : MonoBehaviour {
     {
         transform.rotation = rotation;
     }
+
+    void OnTriggerEnter2D(Collider2D otherCollider)
+    {
+        Destroy(gameObject);
+    }
 }

@@ -55,11 +55,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 40
   maxHealth: 40
+  magic: 0
+  maxMagic: 0
   experiencePoints: 2
   level: 1
   skillPoints: 5
   statPoints: 20
   maxPoints: 20
+  itemAttractDistance: 0
+  maxJumps: 0
   armor: 0
   dexterity: 0
   intelligence: 0

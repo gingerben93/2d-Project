@@ -6,6 +6,11 @@ public class Weapon : MonoBehaviour {
 
     public virtual void Attack()
     {
-        Debug.Log("base attack find overide");
+        Debug.Log("base attack find override");
     }
+
+    //public virtual void onCollide()
+    //{
+    //    Debug.Log("base onCollide find override");
+    //}
 }

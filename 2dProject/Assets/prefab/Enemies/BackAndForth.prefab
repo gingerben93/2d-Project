@@ -39,7 +39,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4468268295003718}
   - component: {fileID: 212208784931357806}
-  - component: {fileID: 61706609867516126}
+  - component: {fileID: 61345938739656644}
   m_Layer: 13
   m_Name: Image
   m_TagString: Enemy
@@ -54,7 +54,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1420590591024050}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1, y: -0.4, z: 0}
+  m_LocalPosition: {x: -1, y: -0.25, z: 0}
   m_LocalScale: {x: 10, y: 10, z: 1}
   m_Children: []
   m_Father: {fileID: 4988045538070964}
@@ -67,7 +67,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1135119845152672}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 6.79, z: 0}
+  m_LocalPosition: {x: -2.1711545, y: 7.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4468268295003718}
@@ -94,7 +94,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 2
---- !u!61 &61706609867516126
+--- !u!61 &61345938739656644
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -106,7 +106,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.04}
+  m_Offset: {x: 0.0000000037252903, y: 0.03349397}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -117,7 +117,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.18, y: 0.09}
+  m_Size: {x: 0.17951816, y: 0.0850605}
   m_EdgeRadius: 0
 --- !u!114 &114400362528585638
 MonoBehaviour:
@@ -131,7 +131,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   items: []
+  dropRate: 0
+  damagePlayerOnCollision: 0
   health: 2
+  experiencePoint: 0
   invincible: 0
 --- !u!114 &114708397634734064
 MonoBehaviour:
@@ -159,6 +162,7 @@ MonoBehaviour:
   fireBallPrefab: {fileID: 4117291810871610, guid: 66b2cbeb8a68b524ba9f3d3a8a73e332,
     type: 2}
   attackType: 0
+  spawnLocationOffset: {x: 0, y: 0, z: 0}
 --- !u!212 &212208784931357806
 SpriteRenderer:
   m_ObjectHideFlags: 1

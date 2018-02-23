@@ -41,6 +41,7 @@ public class DrawGrapHook : MonoBehaviour
     public Transform enemyTransform;
     public bool hitEnemy;
     public int InstanceID;
+    
 
     //on start
     void Start()
@@ -87,23 +88,23 @@ public class DrawGrapHook : MonoBehaviour
 
 
             //for rotating body
-            difference = GrapTip.transform.position - PlayerController.PlayerControllerSingle.transform.position;
-            grapBody.transform.position = (PlayerController.PlayerControllerSingle.transform.position + GrapTip.transform.position) / 2;
-            grap2Body.transform.position = (PlayerController.PlayerControllerSingle.transform.position + GrapTip.transform.position) / 2;
+            difference = GrapTip.transform.position - PlayerController.PlayerControllerSingle.PlayerSprite.transform.position;
+            grapBody.transform.position = (PlayerController.PlayerControllerSingle.PlayerSprite.transform.position + GrapTip.transform.position) / 2;
+            grap2Body.transform.position = (PlayerController.PlayerControllerSingle.PlayerSprite.transform.position + GrapTip.transform.position) / 2;
 
             grapBodyAngle = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
             bodyRoatation = Quaternion.AngleAxis(grapBodyAngle, Vector3.forward);
             grapBody.transform.rotation = bodyRoatation;
             grap2Body.transform.rotation = bodyRoatation;
 
-            grapBodyCollider.size = new Vector2(Vector3.Distance(GrapTip.transform.position, PlayerController.PlayerControllerSingle.transform.position), .25f);
-            grapBody2Collider.size = new Vector2(Vector3.Distance(GrapTip.transform.position, PlayerController.PlayerControllerSingle.transform.position), .25f);
-            bodyImage.size = new Vector2(Vector3.Distance(GrapTip.transform.position, PlayerController.PlayerControllerSingle.transform.position), .2f);
+            grapBodyCollider.size = new Vector2(Vector3.Distance(GrapTip.transform.position, PlayerController.PlayerControllerSingle.PlayerSprite.transform.position), .25f);
+            grapBody2Collider.size = new Vector2(Vector3.Distance(GrapTip.transform.position, PlayerController.PlayerControllerSingle.PlayerSprite.transform.position), .25f);
+            bodyImage.size = new Vector2(Vector3.Distance(GrapTip.transform.position, PlayerController.PlayerControllerSingle.PlayerSprite.transform.position), .2f);
 
         }
         else
         {
-            GrapTip.transform.position = PlayerController.PlayerControllerSingle.transform.position;
+            GrapTip.transform.position = PlayerController.PlayerControllerSingle.PlayerSprite.transform.position;
         }
     }
 
@@ -116,19 +117,20 @@ public class DrawGrapHook : MonoBehaviour
             // move up rope
             if (WDown)
             {
-                joint.distance = Vector2.Distance(rb2dTip.transform.position, PlayerController.PlayerControllerSingle.transform.position);
+                joint.maxDistanceOnly = true;
+                joint.distance = Vector2.Distance(rb2dTip.transform.position, PlayerController.PlayerControllerSingle.PlayerSprite.transform.position);
                 joint.enabled = false;
             }
             else if (!WDown && HasTipCollided)
             {
-
+                joint.maxDistanceOnly = false;
                 joint.enabled = true;
             }
 
             //move down rope
             if (SDown)
             {
-                joint.distance = Vector2.Distance(rb2dTip.transform.position, PlayerController.PlayerControllerSingle.transform.position);
+                joint.distance = Vector2.Distance(rb2dTip.transform.position, PlayerController.PlayerControllerSingle.PlayerSprite.transform.position);
                 joint.enabled = false;
             }
 
@@ -146,27 +148,30 @@ public class DrawGrapHook : MonoBehaviour
             }
             else
             {
-                if (PlayerController.PlayerControllerSingle.isGrapplingHook && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
-                {
-                    PlayerController.PlayerControllerSingle.rb2d.gravityScale = 0;
-                }
-                else
-                {
-                    PlayerController.PlayerControllerSingle.rb2d.gravityScale = 1;
-                }
+                //if (PlayerController.PlayerControllerSingle.isGrapplingHook && (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D)))
+                //{
+                //    Debug.Log("gravity off");
+                //    PlayerController.PlayerControllerSingle.rb2d.gravityScale = 0;
+                //}
+                //else if(!PlayerController.PlayerControllerSingle.IsSliding)
+                //{
+                //    Debug.Log("gravity on");
+                //    PlayerController.PlayerControllerSingle.rb2d.gravityScale = 1;
+                //}
+
                 //don't rotate when sliding or move when sliding
                 if (!PlayerController.PlayerControllerSingle.IsSliding)
                 {
                     //for rotating the player object;
-                    playerRotation = Quaternion.LookRotation(Vector3.forward, GrapTip.transform.position - PlayerController.PlayerControllerSingle.transform.position);
-                    PlayerController.PlayerControllerSingle.transform.rotation = Quaternion.Slerp(PlayerController.PlayerControllerSingle.transform.rotation, playerRotation, .2f);
+                    playerRotation = Quaternion.LookRotation(Vector3.forward, GrapTip.transform.position - PlayerController.PlayerControllerSingle.PlayerSprite.transform.position);
+                    PlayerController.PlayerControllerSingle.PlayerSprite.transform.rotation = Quaternion.Slerp(PlayerController.PlayerControllerSingle.PlayerSprite.transform.rotation, playerRotation, .2f);
 
                     if (WDown)
                     {
                         //PlayerController.PlayerControllerSingle.transform.position += PlayerController.PlayerControllerSingle.transform.up * .5f;
                         if (PlayerController.PlayerControllerSingle.rb2d.velocity.y <= 10f)
                         {
-                            PlayerController.PlayerControllerSingle.rb2d.velocity += (Vector2)PlayerController.PlayerControllerSingle.transform.up * .5f;
+                            PlayerController.PlayerControllerSingle.rb2d.velocity += (Vector2)PlayerController.PlayerControllerSingle.PlayerSprite.transform.up * .5f;
                         }
                     }
                 }
@@ -174,18 +179,19 @@ public class DrawGrapHook : MonoBehaviour
         }
     }
 
-    public void TurnGrapHookOn()
+    public bool TurnGrapHookOn()
     {
-        EventSystem eventSystem = EventSystem.current;
-        if (eventSystem.IsPointerOverGameObject())
+        //EventSystem eventSystem = EventSystem.current; This over just .current maybe?
+        //hook won't fire is skill isn't learned or over inventory
+        if (EventSystem.current.IsPointerOverGameObject() || !PlayerController.PlayerControllerSingle.grapplingHookSkill)
         {
-            return;
+            return false;
         }
         else
         {
             //grap body info
-            grapBody.transform.position = PlayerController.PlayerControllerSingle.transform.position;
-            grap2Body.transform.position = PlayerController.PlayerControllerSingle.transform.position;
+            grapBody.transform.position = PlayerController.PlayerControllerSingle.PlayerSprite.transform.position;
+            grap2Body.transform.position = PlayerController.PlayerControllerSingle.PlayerSprite.transform.position;
             grapBodyCollider.enabled = true;
             grapBody2Collider.enabled = true;
             grapBody.GetComponent<Rigidbody2D>().isKinematic = false;
@@ -193,13 +199,13 @@ public class DrawGrapHook : MonoBehaviour
 
             //grap tip info
             grabTipCollider.enabled = true;
-            GrapTip.transform.position = PlayerController.PlayerControllerSingle.transform.position;
+            GrapTip.transform.position = PlayerController.PlayerControllerSingle.PlayerSprite.transform.position;
             //set tip to dynamic for collision detection
             rb2dTip.isKinematic = false;
             tipImage.enabled = true;
             HasTipCollided = false;
 
-            startPosLine = PlayerController.PlayerControllerSingle.transform.position;
+            startPosLine = PlayerController.PlayerControllerSingle.PlayerSprite.transform.position;
             endPosLine = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             float TipAngle = Mathf.Atan2(endPosLine.y - startPosLine.y, endPosLine.x - startPosLine.x) * Mathf.Rad2Deg;
@@ -208,10 +214,19 @@ public class DrawGrapHook : MonoBehaviour
 
             //start grap hook
             drawHook = true;
+
+            //set gravity to normal
+            if (!PlayerController.PlayerControllerSingle.IsSliding)
+            {
+                //Debug.Log("gravity 1");
+                PlayerController.PlayerControllerSingle.rb2d.gravityScale = 1;
+            }
+
+            return true;
         }
     }
 
-    public void TurnGrapHookOff()
+    public bool TurnGrapHookOff()
     {
         //HasTipCollided = true;
 
@@ -239,5 +254,7 @@ public class DrawGrapHook : MonoBehaviour
         joint.enabled = false;
         //turn off tip
         drawHook = false;
+
+        return false;
     }
 }

@@ -34,18 +34,23 @@ public class Magic : MonoBehaviour
         switch (type)
         {
             case SpellType.FIRE:
-                Debug.Log("PewPewFireball");
-                spellPrefab = Resources.Load("Prefabs/Spells/Fireball", typeof(GameObject)) as GameObject;
 
-                // Create a new spell
-                spellGameObject = Instantiate(spellPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
-                spellGameObject.name = spellPrefab.name;
+                if (PlayerStats.PlayerStatsSingle.magic > 0)
+                {
+                    PlayerStats.PlayerStatsSingle.ChangeMagic(-1);
+                    
+                    spellPrefab = Resources.Load("Prefabs/Spells/Fireball", typeof(GameObject)) as GameObject;
 
-                var temp = Input.mousePosition;
-                Vector3 mousePos;
-                mousePos = Camera.main.ScreenToWorldPoint(temp);
-                mousePos.z = 0;
-                spellGameObject.GetComponent<Fireball>().SetStartData(PlayerController.PlayerControllerSingle.transform.position, mousePos);
+                    // Create a new spell
+                    spellGameObject = Instantiate(spellPrefab, GameObject.Find("PlayerProjectiles").transform) as GameObject;
+                    spellGameObject.name = spellPrefab.name;
+
+                    var temp = Input.mousePosition;
+                    Vector3 mousePos;
+                    mousePos = Camera.main.ScreenToWorldPoint(temp);
+                    mousePos.z = 0;
+                    spellGameObject.GetComponent<Fireball>().SetStartData(PlayerController.PlayerControllerSingle.transform.position, mousePos);
+                }
      
                 break;
             case SpellType.HEAL:
